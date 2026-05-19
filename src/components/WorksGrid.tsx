@@ -9,7 +9,7 @@ type Work = {
   description?: string
   price?: string
   badge?: string
-  externalLink?: boolean
+  externalLink?: string
   tag?: string
   media: {
     type: 'image' | 'video'
@@ -43,7 +43,7 @@ const works: Work[] = [
     name: 'Symbl',
     tag: 'Tools',
     description: 'Test your logo before the world does.\nDesigners are already using it',
-    externalLink: true,
+    externalLink: 'https://www.symbl.space/',
     media: { type: 'image', src: '/works/symbl/1.jpg', aspect: 'aspect-[432/324]', bg: '#f5f5f5' },
   },
   {
@@ -80,7 +80,7 @@ function WorkCard({ work }: { work: Work }) {
   }
 
   if (work.tag === 'Tools') {
-    return <ToolCard name={work.name} description={work.description} src={work.media.src} href={work.externalLink ? '#' : undefined} aspect={work.media.aspect} />
+    return <ToolCard name={work.name} description={work.description} src={work.media.src} href={work.externalLink} aspect={work.media.aspect} />
   }
 
   return (
@@ -110,10 +110,10 @@ function WorkCard({ work }: { work: Work }) {
         <div className="flex items-center justify-between w-full">
           <span className="text-[#0c0c0c] font-medium leading-[0.9] text-base">{work.name}</span>
           {work.price && <span className="text-[#7e7e7e] leading-[1.3] text-base">{work.price}</span>}
-          {work.externalLink &&(
-            <span>
+          {work.externalLink && (
+            <a href={work.externalLink} target="_blank" rel="noopener noreferrer" className="text-[#0c0c0c] leading-[0.9] text-base">
               Try now ↗
-            </span>
+            </a>
           )}
         </div>
         {work.description && (

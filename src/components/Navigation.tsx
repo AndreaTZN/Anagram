@@ -1,20 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
-const imgTeamAvatar =
-  "http://localhost:3845/assets/6e8d552d22a534ead7d3e57b091a51492f8d313f.png";
-const imgPlanity =
-  "http://localhost:3845/assets/5e3648d1f686f1c7c082d742f5d58020bb31716c.png";
-const imgFortuneo =
-  "http://localhost:3845/assets/22377f9752524731ccd558d9f4a2f2f21a60603a.png";
-const imgPerma =
-  "http://localhost:3845/assets/8b39358272674eb998d47f7c653eeca0be577063.png";
-const imgMailIcon =
-  "http://localhost:3845/assets/8bed890f70af27844096358aa5ce597cfc3dd284.svg";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -30,14 +21,14 @@ const works = [
     href: "/works/planity",
     category: "Fintech",
     type: "image" as const,
-    image: imgPlanity,
+    image: "/navigation/planity.jpg",
   },
   {
     name: "Fortuneo",
     href: "/works/fortuneo",
     category: "Banking",
     type: "image" as const,
-    image: imgFortuneo,
+    image: "/navigation/fortuneo.jpg",
   },
   {
     name: "Founders future",
@@ -59,8 +50,7 @@ const works = [
     href: "/works/perma",
     category: "Social",
     type: "icon" as const,
-    icon: imgPerma,
-    iconBg: "#0c0c0c",
+    icon: "/navigation/perma.png",
     iconCover: true,
   },
   {
@@ -319,13 +309,14 @@ export default function Navigation() {
               {work.type === "image" ? (
                 <div className="flex flex-col gap-1">
                   <div
-                    className="bg-[#0c0c0c] rounded overflow-hidden relative"
+                    className="rounded overflow-hidden relative"
                     style={{ aspectRatio: "67.66 / 37.24" }}
                   >
-                    <img
+                    <Image
                       src={work.image}
                       alt={work.name}
-                      className="absolute inset-0 w-full h-full object-cover"
+                      fill
+                      className="object-cover"
                     />
                   </div>
                   <div className="flex items-center justify-between">
@@ -354,13 +345,14 @@ export default function Navigation() {
                       {"svgIcon" in work ? (
                         work.svgIcon
                       ) : (
-                        <img
+                        <Image
                           src={work.icon}
                           alt={work.name}
+                          fill
                           className={
                             work.iconCover
-                              ? "absolute inset-0 w-full h-full object-cover"
-                              : "absolute inset-0 w-full h-full object-contain p-1.5"
+                              ? "object-cover"
+                              : "object-contain p-1.5"
                           }
                         />
                       )}
@@ -380,7 +372,8 @@ export default function Navigation() {
 
         {/* Show all works pill — sticky bottom */}
         <div className="absolute bottom-0 left-0 right-0 flex justify-center py-6">
-          <button
+          <Link
+            href="/works"
             className="text-white font-medium leading-[0.9] whitespace-nowrap rounded-full px-4 py-4 text-base"
             style={{
               backdropFilter: "blur(40px)",
@@ -388,7 +381,7 @@ export default function Navigation() {
             }}
           >
             Show all works
-          </button>
+          </Link>
         </div>
       </div>
     </nav>
