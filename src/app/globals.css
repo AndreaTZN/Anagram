@@ -1,134 +1,135 @@
 @import "tailwindcss";
 
 body {
-  font-family: 'Aeonik', sans-serif;
+  font-family: "Aeonik", sans-serif;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-Air.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-Air.ttf") format("truetype");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-AirItalic.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-AirItalic.ttf") format("truetype");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik Light.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-LightItalic.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-LightItalic.ttf") format("truetype");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-Regular.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-RegularItalic.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-RegularItalic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-Medium.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-MediumItalic.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-MediumItalic.ttf") format("truetype");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-Bold.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-Black.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-Black.ttf") format("truetype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-BlackItalic.ttf') format('truetype');
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-BlackItalic.ttf") format("truetype");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
 }
 
+:root {
+  --font-from: 18;
+  --font-to: 20;
+  --vw-from: calc(1920 / 100);
+  --vw-to: calc(2400 / 100);
+  --coefficient: calc(
+    (var(--font-to) - var(--font-from)) / (var(--vw-to) - var(--vw-from))
+  );
+  --base: calc((var(--font-from) - var(--vw-from) * var(--coefficient)) / 16);
+}
 
+html {
+  font-size: calc(var(--base) * 1rem + var(--coefficient) * 1vw);
+}
+
+@media screen and (max-width: 1920px) {
   :root {
-    --font-from: 18;
-    --font-to: 20;
-    --vw-from: calc(1920 / 100);
-    --vw-to: calc(2400 / 100);
-    --coefficient: calc((var(--font-to) - var(--font-from)) / (var(--vw-to) - var(--vw-from)));
-    --base: calc((var(--font-from) - var(--vw-from) * var(--coefficient)) / 16);
+    --font-from: 16;
+    --font-to: 18;
+    --vw-from: calc(1440 / 100);
+    --vw-to: calc(1920 / 100);
   }
+}
 
-  html {
-    font-size: calc(var(--base) * 1rem + var(--coefficient) * 1vw);
+@media screen and (max-width: 1440px) {
+  :root {
+    --font-from: 14;
+    --font-to: 16;
+    --vw-from: calc(479 / 100);
+    --vw-to: calc(1440 / 100);
   }
+}
 
-  @media screen and (max-width: 1920px) {
-    :root {
-      --font-from: 16;
-      --font-to: 18;
-      --vw-from: calc(1440 / 100);
-      --vw-to: calc(1920 / 100);
-      }
+@media screen and (max-width: 479px) {
+  :root {
+    --font-from: 12;
+    --font-to: 16;
+    --vw-from: calc(1 / 100);
+    --vw-to: calc(479 / 100);
   }
-
-  @media screen and (max-width: 1440px) {
-    :root {
-      --font-from: 14;
-      --font-to: 16;
-      --vw-from: calc(479 / 100);
-      --vw-to: calc(1440 / 100);
-      }
-  }
-
-  @media screen and (max-width: 479px) {
-    :root {
-      --font-from: 12;
-      --font-to: 16;
-      --vw-from: calc(1 / 100);
-      --vw-to: calc(479 / 100);
-      }
-  }
+}
