@@ -10,6 +10,7 @@ import "swiper/css/effect-fade";
 import AnalogClock from "@/components/AnalogClock";
 import ClockLabel from "@/components/ClockLabel";
 import Footer from "@/components/Footer";
+import ShirtRotation from "@/components/ShirtRotation";
 
 const studioImages = ["/studio/1.webp", "/studio/2.webp", "/studio/3.webp"];
 
@@ -491,11 +492,7 @@ export default function AboutPage() {
               className="relative bg-[#f4f4f4] rounded-sm overflow-hidden flex justify-center items-start pb-8"
               style={{ minHeight: "28rem" }}
             >
-              <img
-                src="https://www.figma.com/api/mcp/asset/f1fb7924-6b8d-409c-84f6-ee3f52d0e4b9"
-                alt="Anagram 30g Teeshirt"
-                className="w-[26.9rem] h-[26.9rem] object-cover pointer-events-none"
-              />
+              <ShirtRotation />
               <div className="absolute bottom-8 left-4 right-4 flex gap-2">
                 <div className="flex flex-1 items-center justify-between px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">
                   <span className="text-white text-sm font-medium opacity-50 whitespace-nowrap">
