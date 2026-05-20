@@ -175,8 +175,8 @@ export default function AboutPage() {
               className="text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem]"
               style={{
                 fontSize:
-                  "clamp(2rem, calc(2rem + (100vw - 90rem) / 38), 3rem)",
-                marginBottom: "4rem",
+                  "clamp(1.5rem, calc(1.5rem + (100vw - 62.5rem) * 1.5 / 65.5), 3rem)",
+                marginBottom: "2rem",
               }}
             >
               <span className="uppercase">anagram</span>
