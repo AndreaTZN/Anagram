@@ -92,32 +92,33 @@ body {
   font-display: swap;
 }
 
-:root {
-  --font-from: 18;
-  --font-to: 20;
-  --vw-from: calc(1920 / 100);
-  --vw-to: calc(2400 / 100);
-  --coefficient: calc(
-    (var(--font-to) - var(--font-from)) / (var(--vw-to) - var(--vw-from))
-  );
-  --base: calc((var(--font-from) - var(--vw-from) * var(--coefficient)) / 16);
+html {
+  font-size: 16px;
 }
-
-html { font-size: 16px; }
 @media (min-width: 240px) {
-   html {font-size: calc(8px + 8 * ((100vw - 240px) / 239));}
+  html {
+    font-size: calc(8px + 8 * ((100vw - 240px) / 239));
+  }
 }
 @media (min-width: 768px) {
-   html {font-size: calc(12px + 4 * ((100vw - 768px) / 223));}
+  html {
+    font-size: calc(12px + 4 * ((100vw - 768px) / 223));
+  }
 }
 @media (min-width: 992px) {
-   html {font-size: calc(10.67px + 5.33 * ((100vw - 992px) / 448));}
+  html {
+    font-size: calc(10.67px + 5.33 * ((100vw - 992px) / 448));
+  }
 }
 
 @media (min-width: 1440px) {
-   html {font-size: calc(16px + 5.33 * ((100vw - 1440px) / 480));}
+  html {
+    font-size: calc(16px + 5.33 * ((100vw - 1440px) / 480));
+  }
 }
 
 @media (min-width: 1920px) {
-   html {font-size: 21.33px;}
+  html {
+    font-size: 21.33px;
+  }
 }

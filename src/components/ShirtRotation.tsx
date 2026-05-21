@@ -31,15 +31,15 @@ export default function ShirtRotation() {
     images.current = FRAMES.map((src, i) => {
       const img = new window.Image();
       img.src = src;
-      if (i === 0) {
-        img.onload = () => {
-          if (canvasRef.current) {
-            canvasRef.current.width = img.naturalWidth;
-            canvasRef.current.height = img.naturalHeight;
-          }
+      img.onload = () => {
+        if (i === 0 && canvasRef.current) {
+          canvasRef.current.width = img.naturalWidth;
+          canvasRef.current.height = img.naturalHeight;
+        }
+        if (i === INITIAL_FRAME) {
           drawFrame(INITIAL_FRAME);
-        };
-      }
+        }
+      };
       return img;
     });
 
