@@ -26,7 +26,7 @@ export default function ClockLabel({ city, timezone, offsetLabel }: Props) {
   }, [timezone])
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 rounded-full backdrop-blur-xl bg-[rgba(12,12,12,0.05)] w-[15.625rem]">
+    <div className="flex items-center justify-between px-4 py-3 rounded-full  w-full gap-2">
       <span className="text-[#0c0c0c] text-sm font-medium leading-[0.9] opacity-50 uppercase">
         {city}
       </span>

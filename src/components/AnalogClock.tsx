@@ -32,12 +32,24 @@ function getAngles(timezone: string) {
 export default function AnalogClock({ timezone, color }: Props) {
   const hourRef = useRef<SVGLineElement>(null)
   const minuteRef = useRef<SVGLineElement>(null)
+  const secondRef = useRef<SVGLineElement>(null)
+  const cumulativeSecond = useRef<number | null>(null)
 
   useEffect(() => {
     function tick() {
-      const { hour, minute } = getAngles(timezone)
+      const { hour, minute, second } = getAngles(timezone)
       if (hourRef.current) gsap.set(hourRef.current, { rotation: hour, transformOrigin: '50% 100%' })
       if (minuteRef.current) gsap.set(minuteRef.current, { rotation: minute, transformOrigin: '50% 100%' })
+      if (secondRef.current) {
+        if (cumulativeSecond.current === null) {
+          cumulativeSecond.current = second
+        } else {
+          let delta = second - (cumulativeSecond.current % 360)
+          if (delta < 0) delta += 360
+          cumulativeSecond.current += delta
+        }
+        gsap.to(secondRef.current, { rotation: cumulativeSecond.current, svgOrigin: '80 80', duration: 0.15, ease: 'back.out(2)' })
+      }
     }
     tick()
     const id = setInterval(tick, 1000)
@@ -93,6 +105,16 @@ export default function AnalogClock({ timezone, color }: Props) {
         y2={cy - r * 0.68}
         stroke="#0c0c0c"
         strokeWidth="1"
+        strokeLinecap="round"
+      />
+      <line
+        ref={secondRef}
+        x1={cx}
+        y1={cy}
+        x2={cx}
+        y2={cy - r * 0.78}
+        stroke="#0c0c0c"
+        strokeWidth="0.5"
         strokeLinecap="round"
       />
       <circle cx={cx} cy={cy} r="3" fill="#0c0c0c" />
