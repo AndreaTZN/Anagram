@@ -124,8 +124,8 @@ export default function Navigation() {
   }, [open]);
 
   return (
-    <nav className="relative flex flex-col bg-white w-76.5 h-dvh max-h-screen">
-      <div className="flex flex-col gap-10 pl-6 pr-4 pt-8">
+    <nav className="relative flex flex-col bg-white w-56.25 h-dvh max-h-screen">
+      <div className="flex flex-col gap-10 pl-3 pr-1.5 pt-3">
         {/* Logo */}
         <Link href="/">
           <svg
@@ -144,10 +144,10 @@ export default function Navigation() {
           </svg>
         </Link>
 
-        <div className="flex flex-col gap-14">
+        <div className="flex flex-col gap-8">
           {/* CTA card */}
           <div className="flex flex-col gap-6">
-            <p className="text-[#0c0c0c] leading-[1.1] text-2xl tracking-[-0.12px]">
+            <p className="text-[#0c0c0c] leading-[1.1] text-lg tracking-[-0.12px]">
               We shape brands that need no introduction.
             </p>
 
@@ -283,14 +283,14 @@ export default function Navigation() {
           </div>
 
           {/* Nav links */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-[#0c0c0c] font-medium leading-[0.8] text-xl transition-opacity"
+                  className="text-[#0c0c0c] font-medium leading-[0.8] text-base transition-opacity"
                   style={{ opacity: isActive ? 1 : 0.3 }}
                 >
                   {link.label}
@@ -303,86 +303,52 @@ export default function Navigation() {
 
       {/* Works list + Show all works */}
       <div className="relative flex flex-col flex-1 overflow-hidden mt-14">
-        <div className="flex flex-col gap-4 px-6 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-24">
-          {works.map((work) => (
+        <div className="flex flex-col gap-4 pl-3 pr-1.5 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-24">
+          {works.map((work, index) => (
             <Link key={work.name} href={work.href}>
-              {work.type === "image" ? (
-                <div className="flex flex-col gap-1">
-                  <div
-                    className="rounded overflow-hidden relative"
-                    style={{ aspectRatio: "67.66 / 37.24" }}
-                  >
+              <div
+                className="flex items-center gap-4 p-2 rounded-sm"
+                style={{ backgroundColor: index === 0 ? "#f5f5f5" : "white" }}
+              >
+                <div className="relative shrink-0 rounded-sm overflow-hidden w-25 h-15">
+                  {work.type === "image" ? (
                     <Image
                       src={work.image}
                       alt={work.name}
                       fill
                       className="object-cover"
                     />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[#0c0c0c] leading-normal text-base">
-                      {work.name}
-                    </span>
-                    <span className="text-[#7e7e7e] leading-[1.1] text-right text-sm tracking-[-0.28px]">
-                      {work.category}
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className="flex items-center justify-between"
-                  style={{ height: 38.5 }}
-                >
-                  <div className="flex gap-3 items-center">
+                  ) : (
                     <div
-                      className="rounded overflow-hidden shrink-0 relative"
-                      style={{
-                        width: 38.5,
-                        height: 38.5,
-                        backgroundColor: work.iconBg,
-                      }}
+                      className="w-full h-full flex items-center justify-center rounded-sm overflow-hidden"
+                      style={{ backgroundColor: work.iconBg }}
                     >
                       {"svgIcon" in work ? (
-                        work.svgIcon
+                        <div className="scale-[2.07]">{work.svgIcon}</div>
                       ) : (
                         <Image
                           src={work.icon}
                           alt={work.name}
                           fill
-                          className={
-                            work.iconCover
-                              ? "object-cover"
-                              : "object-contain p-1.5"
-                          }
+                          className={work.iconCover ? "object-cover" : "object-contain p-3"}
                         />
                       )}
                     </div>
-                    <span className="text-[#0c0c0c] leading-normal whitespace-nowrap text-base">
-                      {work.name}
-                    </span>
-                  </div>
-                  <span className="text-[#7e7e7e] leading-[1.1] text-right whitespace-nowrap text-sm tracking-[-0.28px]">
+                  )}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <span className="text-[#7c7c7c] text-sm leading-[0.8] font-normal">
                     {work.category}
                   </span>
+                  <span className="text-[#0c0c0c] text-base leading-[0.8] font-medium">
+                    {work.name}
+                  </span>
                 </div>
-              )}
+              </div>
             </Link>
           ))}
         </div>
 
-        {/* Show all works pill — sticky bottom */}
-        <div className="absolute bottom-0 left-0 right-0 flex justify-center py-6">
-          <Link
-            href="/works"
-            className="text-white font-medium leading-[0.9] whitespace-nowrap rounded-full px-4 py-4 text-base"
-            style={{
-              backdropFilter: "blur(40px)",
-              backgroundColor: "rgba(12, 12, 12, 0.2)",
-            }}
-          >
-            Show all works
-          </Link>
-        </div>
       </div>
     </nav>
   );

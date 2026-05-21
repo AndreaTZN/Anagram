@@ -103,33 +103,21 @@ body {
   --base: calc((var(--font-from) - var(--vw-from) * var(--coefficient)) / 16);
 }
 
-html {
-  font-size: calc(var(--base) * 1rem + var(--coefficient) * 1vw);
+html { font-size: 16px; }
+@media (min-width: 240px) {
+   html {font-size: calc(8px + 8 * ((100vw - 240px) / 239));}
+}
+@media (min-width: 768px) {
+   html {font-size: calc(12px + 4 * ((100vw - 768px) / 223));}
+}
+@media (min-width: 992px) {
+   html {font-size: calc(10.67px + 5.33 * ((100vw - 992px) / 448));}
 }
 
-@media screen and (max-width: 1920px) {
-  :root {
-    --font-from: 16;
-    --font-to: 18;
-    --vw-from: calc(1440 / 100);
-    --vw-to: calc(1920 / 100);
-  }
+@media (min-width: 1440px) {
+   html {font-size: calc(16px + 5.33 * ((100vw - 1440px) / 480));}
 }
 
-@media screen and (max-width: 1440px) {
-  :root {
-    --font-from: 14;
-    --font-to: 16;
-    --vw-from: calc(479 / 100);
-    --vw-to: calc(1440 / 100);
-  }
-}
-
-@media screen and (max-width: 479px) {
-  :root {
-    --font-from: 12;
-    --font-to: 16;
-    --vw-from: calc(1 / 100);
-    --vw-to: calc(479 / 100);
-  }
+@media (min-width: 1920px) {
+   html {font-size: 21.33px;}
 }
