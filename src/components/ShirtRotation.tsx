@@ -37,8 +37,14 @@ export default function ShirtRotation() {
             canvasRef.current.width = img.naturalWidth;
             canvasRef.current.height = img.naturalHeight;
           }
-          drawFrame(INITIAL_FRAME);
+          const initImg = images.current[INITIAL_FRAME];
+          if (initImg?.complete && initImg.naturalWidth > 0) {
+            drawFrame(INITIAL_FRAME);
+          }
         };
+      }
+      if (i === INITIAL_FRAME) {
+        img.onload = () => drawFrame(INITIAL_FRAME);
       }
       return img;
     });
