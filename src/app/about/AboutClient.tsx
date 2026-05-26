@@ -11,41 +11,9 @@ import AnalogClock from "@/components/AnalogClock";
 import ClockLabel from "@/components/ClockLabel";
 import Footer from "@/components/Footer";
 import ShirtRotation from "@/components/ShirtRotation";
+import OpenRoles, { type OpenRole } from "@/components/OpenRoles";
 
 const studioImages = ["/studio/1.webp", "/studio/2.webp", "/studio/3.webp"];
-
-const manifesto = (
-  <>
-    <span className="uppercase">anagram</span>
-    {` was founded on the ambition to help companies define a distinct position and express it with clarity, relevance, and impact.`}
-    <br />
-    <br />
-    Through a balance of strategic thinking and refined design, we build
-    identities that resonate, differentiate, and endure in an increasingly
-    complex landscape.
-  </>
-);
-
-const ourStudio = {
-  title: "Our studio",
-  description:
-    "Anagram is a creative studio founded in 2020. We bring together multidisciplinary talents driven by a shared ambition: to craft unique experiences through iteration, creativity, and an eye for detail. Passionate about craft in all its forms, we love pushing the boundaries of design to help our clients' projects grow.",
-};
-
-const clocks = [
-  {
-    timezone: "America/New_York",
-    color: "#03c8ff",
-    city: "NEW YORK",
-    offsetLabel: "GMT-4",
-  },
-  {
-    timezone: "Europe/Paris",
-    color: "#e3cefc",
-    city: "PARIS",
-    offsetLabel: "CEST",
-  },
-];
 
 const team = [
   { name: "Valentin Salomon", role: "Co-founder", image: "/team/valentin.jpg" },
@@ -81,14 +49,11 @@ function DotDivider() {
   );
 }
 
-export default function AboutPage() {
+export default function AboutPage({ openRoles }: { openRoles: OpenRole[] }) {
   const [hoveredIndex, setHoveredIndex] = useState(0);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [activeClockSlide, setActiveClockSlide] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
-  const clockSwiperRef = useRef<SwiperType | null>(null);
   const progressRef = useRef<HTMLSpanElement>(null);
-  const clockProgressRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (!progressRef.current) return;
@@ -99,42 +64,10 @@ export default function AboutPage() {
       { width: "100%", duration: 4, ease: "none" },
     );
   }, [activeSlide]);
-
-  useEffect(() => {
-    if (!clockProgressRef.current) return;
-    gsap.killTweensOf(clockProgressRef.current);
-    gsap.fromTo(
-      clockProgressRef.current,
-      { width: "0%" },
-      { width: "100%", duration: 4, ease: "none" },
-    );
-  }, [activeClockSlide]);
   const baseRef = useRef<HTMLImageElement>(null);
   const topRef = useRef<HTMLImageElement>(null);
-  const baseMobileRef = useRef<HTMLImageElement>(null);
-  const topMobileRef = useRef<HTMLImageElement>(null);
   const isAnimating = useRef(false);
   const currentImage = useRef(team[0].image);
-
-  function animatePair(
-    top: HTMLImageElement,
-    base: HTMLImageElement,
-    src: string,
-    onDone?: () => void,
-  ) {
-    top.src = src;
-    gsap.set(top, { opacity: 0 });
-    gsap.to(top, {
-      opacity: 1,
-      duration: 0.35,
-      ease: "power2.out",
-      onComplete: () => {
-        base.src = src;
-        gsap.set(top, { opacity: 0 });
-        onDone?.();
-      },
-    });
-  }
 
   function handleNameHover(index: number) {
     setHoveredIndex(index);
@@ -147,41 +80,36 @@ export default function AboutPage() {
       return;
 
     isAnimating.current = true;
-    if (topRef.current && baseRef.current)
-      animatePair(topRef.current, baseRef.current, member.image, () => {
+    const top = topRef.current!;
+    const base = baseRef.current!;
+
+    top.src = member.image;
+    gsap.set(top, { opacity: 0 });
+    gsap.to(top, {
+      opacity: 1,
+      duration: 0.35,
+      ease: "power2.out",
+      onComplete: () => {
+        base.src = member.image!;
+        gsap.set(top, { opacity: 0 });
         currentImage.current = member.image;
         isAnimating.current = false;
-      });
-    if (topMobileRef.current && baseMobileRef.current)
-      animatePair(topMobileRef.current, baseMobileRef.current, member.image);
+      },
+    });
   }
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <main className="flex flex-col gap-6 flex-1">
         {/* Hero */}
-        <div
-          id="about-hero-container"
-          className="flex gap-6 flex-1 max-[766px]:flex-col"
-        >
+        <div id="about-hero-container" className="flex gap-6 flex-1">
           {/* colonne gauche */}
-          <div className="w-[55%] max-[766px]:w-full shrink-0 flex flex-col gap-8">
-            {/* Manifesto — mobile duplicate */}
-            <p
-              className="hidden max-[766px]:block text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem]"
-              style={{
-                fontSize:
-                  "clamp(1.5rem, calc(1.5rem + (100vw - 62.5rem) / 65.5), 3rem)",
-              }}
-            >
-              {manifesto}
-            </p>
-
+          <div className="w-[55%] shrink-0 flex flex-col gap-8">
             {/* Hero image */}
             <div
               id="about-hero"
               className="relative bg-[#f4f4f4] rounded-sm overflow-hidden"
-              style={{ aspectRatio: "855 / 670" }}
+              style={{ aspectRatio: "855 / 790" }}
             >
               <Swiper
                 loop
@@ -227,126 +155,71 @@ export default function AboutPage() {
             </div>
 
             {/* Our studio */}
-            <div
-              id="about-our-studio"
-              className="flex flex-col gap-6 mt-auto max-[766px]:hidden"
-            >
+            <div id="about-our-studio" className="flex flex-col gap-6 mt-auto">
               <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
-                {ourStudio.title}
+                Our studio
               </h2>
               <p className="text-[#7e7e7e] text-sm leading-[1.3]">
-                {ourStudio.description}
+                Anagram is a creative studio founded in 2020. We bring together
+                multidisciplinary talents driven by a shared ambition: to craft
+                unique experiences through iteration, creativity, and an eye for
+                detail. Passionate about craft in all its forms, we love pushing
+                the boundaries of design to help our clients&apos; projects
+                grow.
               </p>
             </div>
           </div>
           {/* colonne droite */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col ">
             {/* Manifesto text */}
             <p
               id="about-manifesto"
-              className="text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem] max-[766px]:hidden"
+              className="text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem]"
               style={{
                 fontSize:
-                  "clamp(1.5rem, calc(1.5rem + (100vw - 62.5rem) / 65.5), 3rem)",
+                  "clamp(1.5rem, calc(1.5rem + (100vw - 62.5rem) * 1.5 / 65.5), 3rem)",
                 marginBottom: "2rem",
               }}
             >
-              {manifesto}
+              <span className="uppercase">anagram</span>
+              {` was founded on the ambition to help companies define a distinct position and express it with clarity, relevance, and impact.`}
+              <br />
+              <br />
+              Through a balance of strategic thinking and refined design, we
+              build identities that resonate, differentiate, and endure in an
+              increasingly complex landscape.
             </p>
 
-            {/* Our studio — mobile duplicate */}
-            <div className="hidden max-[766px]:flex flex-col gap-6">
-              <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
-                {ourStudio.title}
-              </h2>
-              <p className="text-[#7e7e7e] text-sm leading-[1.3]">
-                {ourStudio.description}
-              </p>
-            </div>
-
             {/* Clocks */}
-            <div id="about-clocks" className="mt-auto max-[766px]:mt-8">
-              {/* Desktop */}
-              <div className="flex gap-8 justify-center max-[766px]:hidden">
-                {clocks.map((clock) => (
-                  <div
-                    key={clock.city}
-                    className="flex flex-col items-center gap-4"
-                  >
-                    <AnalogClock
-                      timezone={clock.timezone}
-                      color={clock.color}
-                    />
-                    <ClockLabel
-                      city={clock.city}
-                      timezone={clock.timezone}
-                      offsetLabel={clock.offsetLabel}
-                    />
-                  </div>
-                ))}
+            <div
+              id="about-clocks"
+              className="flex gap-8 justify-center mt-auto"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <AnalogClock timezone="America/New_York" color="#03c8ff" />
+                <ClockLabel
+                  city="NEW YORK"
+                  timezone="America/New_York"
+                  offsetLabel="GMT-4"
+                />
               </div>
-
-              {/* Mobile — Swiper */}
-              <div className="hidden max-[766px]:block overflow-hidden">
-                <Swiper
-                  loop
-                  effect="fade"
-                  modules={[EffectFade, Autoplay]}
-                  autoplay={{ delay: 4000, disableOnInteraction: false }}
-                  onSwiper={(s) => {
-                    clockSwiperRef.current = s;
-                  }}
-                  onSlideChange={(s) => setActiveClockSlide(s.realIndex)}
-                >
-                  {clocks.map((clock) => (
-                    <SwiperSlide key={clock.city}>
-                      <div className="flex flex-col items-center gap-4 max-w-56 mx-auto bg-white">
-                        <AnalogClock
-                          timezone={clock.timezone}
-                          color={clock.color}
-                        />
-                        <ClockLabel
-                          city={clock.city}
-                          timezone={clock.timezone}
-                          offsetLabel={clock.offsetLabel}
-                        />
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-                <div className="flex justify-center items-center gap-2 mt-4">
-                  {clocks.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => clockSwiperRef.current?.slideToLoop(i)}
-                      className="cursor-pointer"
-                    >
-                      <span
-                        className={`relative rounded-full shrink-0 overflow-hidden block transition-[width] duration-300 ${i === activeClockSlide ? "h-1.25 w-5.25 bg-[#0c0c0c]/20" : "size-1.25 bg-[#0c0c0c] opacity-30"}`}
-                      >
-                        {i === activeClockSlide && (
-                          <span
-                            ref={clockProgressRef}
-                            className="absolute inset-y-0 left-0 bg-[#0c0c0c] rounded-full w-0"
-                          />
-                        )}
-                      </span>
-                    </button>
-                  ))}
-                </div>
+              <div className="flex flex-col items-center gap-4">
+                <AnalogClock timezone="Europe/Paris" color="#e3cefc" />
+                <ClockLabel
+                  city="PARIS"
+                  timezone="Europe/Paris"
+                  offsetLabel="CEST"
+                />
               </div>
             </div>
           </div>
         </div>
 
-        <div
-          id="about-col-contain"
-          className="flex gap-6 flex-1 max-[766px]:flex-col"
-        >
+        <div id="about-col-contain" className="flex gap-6 flex-1">
           {/* Left column */}
           <div
             id="about-col-left"
-            className="flex flex-col gap-6 w-[55%] max-[766px]:w-full shrink-0 flex-none"
+            className="flex flex-col gap-6 w-[55%] shrink-0 flex-none"
           >
             <DotDivider />
             {/* Meet the team */}
@@ -354,8 +227,8 @@ export default function AboutPage() {
               <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
                 Meet the team
               </h2>
-              {/* Desktop */}
-              <div className="flex gap-8 items-start max-[766px]:hidden">
+              <div className="flex gap-8 items-start">
+                {/* Rows — full row is hoverable */}
                 <div className="flex flex-col gap-2">
                   {team.map((member, i) => (
                     <div
@@ -374,12 +247,12 @@ export default function AboutPage() {
                   ))}
                 </div>
 
-                {/* Photo desktop — double-buffered crossfade */}
+                {/* Photo — double-buffered crossfade */}
                 <div
                   className="relative rounded-sm overflow-hidden flex-1"
                   style={{
-                    aspectRatio: "1.7 / 1.9",
-                    maxWidth: "10rem",
+                    height: "12rem",
+                    maxWidth: "12rem",
                     marginLeft: "auto",
                   }}
                 >
@@ -397,55 +270,6 @@ export default function AboutPage() {
                   />
                 </div>
               </div>
-
-              {/* Mobile */}
-              <div className="hidden max-[766px]:block relative">
-                {/* Photo — centered, floating over text */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                  <div className="relative size-37.5 rounded-sm overflow-hidden">
-                    <img
-                      ref={baseMobileRef}
-                      src={team[0].image!}
-                      alt="Team member"
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <img
-                      ref={topMobileRef}
-                      src={team[0].image!}
-                      alt="Team member"
-                      className="absolute inset-0 w-full h-full object-cover opacity-0"
-                    />
-                  </div>
-                </div>
-
-                {/* Text list — mix-blend-difference */}
-                <div className="mix-blend-difference flex justify-between text-white text-base leading-[1.3]">
-                  <div className="flex flex-col gap-2">
-                    {team.map((member, i) => (
-                      <p
-                        key={member.name}
-                        className="whitespace-nowrap transition-opacity duration-200 cursor-pointer"
-                        style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
-                        onClick={() => handleNameHover(i)}
-                      >
-                        {member.name}
-                      </p>
-                    ))}
-                  </div>
-                  <div className="flex flex-col gap-2 items-end">
-                    {team.map((member, i) => (
-                      <p
-                        key={member.name}
-                        className="whitespace-nowrap transition-opacity duration-200 cursor-pointer"
-                        style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
-                        onClick={() => handleNameHover(i)}
-                      >
-                        {member.role}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </div>
 
             <DotDivider />
@@ -458,7 +282,7 @@ export default function AboutPage() {
               <h2 className="text-2xl leading-[1.1] tracking-[-0.0075rem]">
                 Offerings
               </h2>
-              <div className="flex flex-wrap gap-8 items-start max-[766px]:grid max-[766px]:grid-cols-2 max-[766px]:gap-4">
+              <div className="flex flex-wrap gap-8 items-start">
                 {[
                   {
                     category: "Strategy",
@@ -509,7 +333,7 @@ export default function AboutPage() {
                     ],
                   },
                 ].map((col) => (
-                  <div key={col.category} className="flex flex-col w-37.5 max-[766px]:w-auto">
+                  <div key={col.category} className="flex flex-col w-37.5">
                     <span className="text-[#7e7e7e] text-sm leading-[1.6]">
                       {col.category}
                     </span>
@@ -530,7 +354,7 @@ export default function AboutPage() {
               <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
                 We worked for
               </h2>
-              <div className="flex gap-8 items-start text-[#7e7e7e] text-sm leading-[1.6] max-[766px]:grid max-[766px]:grid-cols-2 max-[766px]:gap-x-4 max-[766px]:gap-y-0">
+              <div className="flex gap-8 items-start text-[#7e7e7e] text-sm leading-[1.6]">
                 <div className="flex-1 flex flex-col">
                   {[
                     "Everyday",
@@ -605,61 +429,18 @@ export default function AboutPage() {
 
           {/* Right — content */}
           <div id="about-col-right" className="flex flex-col gap-8 flex-1">
-            <DotDivider />
-
             {/* Open roles */}
-            <div id="about-open-roles" className="flex flex-col gap-6">
-              <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
-                Open roles
-              </h2>
-              <div className="flex flex-col gap-4">
-                {[
-                  {
-                    title: "Web Designer",
-                    description:
-                      "Designs clear, intuitive, and visually refined web interfaces, aligned with both user experience and brand identity.",
-                    dot: "green",
-                  },
-                  {
-                    title: "Dev Ingeneer",
-                    description:
-                      "Builds and implements robust technical solutions, ensuring performance, reliability, and scalability across projects.",
-                    dot: "green",
-                  },
-                  {
-                    title: "Project Manager",
-                    description:
-                      "Leads projects end-to-end, balancing creative vision, technical constraints, and timelines.",
-                    dot: "green",
-                  },
-                  {
-                    title: "Brand Designer",
-                    description:
-                      "Creates strong and cohesive brand identities through thoughtful and impactful visual systems.",
-                    dot: "red",
-                  },
-                ].map((role) => (
-                  <div key={role.title} className="flex flex-col gap-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={`size-2 rounded-full shrink-0 ${role.dot === "green" ? "bg-[#57E085]" : "bg-[#FF381E]"}`}
-                        />
-                        <span className="text-[#0c0c0c] text-sm font-medium leading-[1.6]">
-                          {role.title}
-                        </span>
-                      </div>
-                      <span className="bg-[#f5f5f5] rounded-full px-2 py-2 text-[#0c0c0c] text-sm leading-none">
-                        Remote
-                      </span>
-                    </div>
-                    <p className="text-[#7e7e7e] text-sm leading-[1.3]">
-                      {role.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {openRoles.length > 0 && (
+              <>
+                <DotDivider />
+                <div id="about-open-roles" className="flex flex-col gap-6">
+                  <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
+                    Open roles
+                  </h2>
+                  <OpenRoles roles={openRoles} />
+                </div>
+              </>
+            )}
 
             <DotDivider />
 
@@ -693,19 +474,4 @@ export default function AboutPage() {
       <Footer />
     </div>
   );
-import { client } from "@/sanity/client";
-import AboutClient from "./AboutClient";
-import type { OpenRole } from "@/components/OpenRoles";
-
-async function getOpenRoles(): Promise<OpenRole[]> {
-  return client.fetch(
-    `*[_type == "openRole"] | order(order asc) { _id, title, description, available, location }`,
-    {},
-    { next: { revalidate: 60 } }
-  );
-}
-
-export default async function AboutPage() {
-  const openRoles = await getOpenRoles();
-  return <AboutClient openRoles={openRoles} />;
 }
