@@ -42,3 +42,15 @@ The following GSAP skills are available — invoke them with `/gsap-*` when need
 - No comments unless the WHY is non-obvious
 - Prefer editing existing files over creating new ones
 - Always use `rem` for sizing and spacing — never `px`
+
+## DOM naming — inspector-first
+
+Every meaningful section or block must have an `id` following the pattern `[page]-[section]` (e.g. `about-hero`, `case-nav-tabs`).
+
+Rules:
+- Use the **page name** as prefix: `about-`, `case-`, `works-`, `home-`, etc.
+- Separate words with `-`, all lowercase
+- Apply to every layout container, section, and interactive block
+- Sub-elements follow `[page]-[section]-[element]` (e.g. `case-nav-section-objectives`)
+- This is mandatory on every new page and component — never skip it
+- **No duplicate `id` across the entire codebase** — before adding an `id`, verify it doesn't already exist elsewhere (SVG-internal ids like `id="icon"` are exempt since they're scoped inside their `<svg>`)

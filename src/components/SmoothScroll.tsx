@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
+import gsap from "gsap";
 
 export default function SmoothScroll({
   children,
@@ -12,6 +13,7 @@ export default function SmoothScroll({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const lenisRef = useRef<Lenis | null>(null);
+  const isFirstRender = useRef(true);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -43,6 +45,16 @@ export default function SmoothScroll({
 
   useEffect(() => {
     lenisRef.current?.scrollTo(0, { immediate: true });
+  }, [pathname]);
+
+  useLayoutEffect(() => {
+    const content = contentRef.current;
+    if (!content) return;
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    gsap.fromTo(content, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.inOut" });
   }, [pathname]);
 
   return (
