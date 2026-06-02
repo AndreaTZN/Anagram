@@ -40,9 +40,21 @@ export default function CaseNavigation() {
     const navBg = dark ? "#0c0c0c" : "#ffffff";
 
     gsap.to(nav, { backgroundColor: navBg, duration, ease: "power2.inOut" });
-    gsap.to(nav.querySelectorAll("span, p, h1, a, button"), { color: textColor, duration, ease: "power2.inOut" });
-    gsap.to(nav.querySelectorAll(".section-desc"), { color: "#7e7e7e", duration, ease: "power2.inOut" });
-    gsap.to(nav.querySelectorAll("path"), { attr: { stroke: textColor }, duration, ease: "power2.inOut" });
+    gsap.to(nav.querySelectorAll("span, p, h1, a, button"), {
+      color: textColor,
+      duration,
+      ease: "power2.inOut",
+    });
+    gsap.to(nav.querySelectorAll(".section-desc"), {
+      color: "#7e7e7e",
+      duration,
+      ease: "power2.inOut",
+    });
+    gsap.to(nav.querySelectorAll("path"), {
+      attr: { stroke: textColor },
+      duration,
+      ease: "power2.inOut",
+    });
 
     // Tab buttons — Release is active in light, Backstage is active in dark
     if (tabReleaseRef.current) {
@@ -68,7 +80,12 @@ export default function CaseNavigation() {
 
     const prevEl = contentRefs.current[activeSectionRef.current];
     if (prevEl) {
-      gsap.to(prevEl, { height: 0, opacity: 0, duration: 0.25, ease: "power2.inOut" });
+      gsap.to(prevEl, {
+        height: 0,
+        opacity: 0,
+        duration: 0.25,
+        ease: "power2.inOut",
+      });
     }
 
     const nextEl = contentRefs.current[id];
@@ -82,7 +99,7 @@ export default function CaseNavigation() {
           duration: 0.35,
           ease: "power2.out",
           onComplete: () => gsap.set(nextEl, { height: "auto" }),
-        }
+        },
       );
     }
 
@@ -91,32 +108,67 @@ export default function CaseNavigation() {
   }
 
   return (
-    <nav ref={navRef} id="case-nav" className="relative flex flex-col bg-white w-56.25 h-dvh max-h-screen overflow-y-auto scrollbar-none">
-      <div id="case-nav-inner" className="flex flex-col gap-10 pl-3 pr-1.5 pt-3 pb-8">
-
+    <nav
+      ref={navRef}
+      id="case-nav"
+      className="relative flex flex-col bg-white h-dvh max-h-screen overflow-y-auto scrollbar-none"
+    >
+      <div
+        id="case-nav-inner"
+        className="flex flex-col gap-10 pl-4 pr-2 pt-6 pb-8"
+      >
         <Link
           id="case-nav-close"
           href="/works"
           className="flex items-center gap-2 opacity-50 w-fit"
-          onMouseEnter={() => gsap.to(closeIconRef.current, { rotation: 90, duration: 0.3, ease: "power2.out" })}
-          onMouseLeave={() => gsap.to(closeIconRef.current, { rotation: 0, duration: 0.3, ease: "power2.inOut" })}
+          onMouseEnter={() =>
+            gsap.to(closeIconRef.current, {
+              rotation: 90,
+              duration: 0.3,
+              ease: "power2.out",
+            })
+          }
+          onMouseLeave={() =>
+            gsap.to(closeIconRef.current, {
+              rotation: 0,
+              duration: 0.3,
+              ease: "power2.inOut",
+            })
+          }
         >
-          <svg ref={closeIconRef} width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 1L9 9M9 1L1 9" stroke="#0C0C0C" strokeWidth="1.5" strokeLinecap="round" />
+          <svg
+            ref={closeIconRef}
+            width="10"
+            height="10"
+            viewBox="0 0 10 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 1L9 9M9 1L1 9"
+              stroke="#0C0C0C"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
           </svg>
-          <span className="text-[#0c0c0c] text-base leading-[0.9] tracking-[-0.16px]">
+          <span className="text-[#0c0c0c] text-sm leading-[0.9] tracking-[-0.16px]">
             Close project
           </span>
         </Link>
 
         {data && (
           <div id="case-nav-content" className="flex flex-col gap-10">
-
-            <div id="case-nav-header" className="flex flex-col gap-2">
-              <h1 id="case-nav-title" className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.12px]">
+            <div id="case-nav-header" className="flex flex-col gap-4">
+              <h1
+                id="case-nav-title"
+                className="text-[#0c0c0c] text-xl leading-[1.1] tracking-[-0.12px]"
+              >
                 {data.title}
               </h1>
-              <p id="case-nav-description" className="text-[#0c0c0c] text-[0.875rem] leading-[1.3]">
+              <p
+                id="case-nav-description"
+                className="text-[#0c0c0c] text-sm leading-[1.3]"
+              >
                 {data.description}
               </p>
               <a
@@ -124,7 +176,7 @@ export default function CaseNavigation() {
                 href={data.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#0c0c0c] text-base font-medium leading-[1.3] underline w-fit"
+                className="text-[#0c0c0c] text-sm leading-[1.3]  w-fit"
               >
                 See it live
               </a>
@@ -137,7 +189,7 @@ export default function CaseNavigation() {
                     ref={tabReleaseRef}
                     id="case-nav-tab-release"
                     onClick={() => setActiveTab("release")}
-                    className="cursor-pointer px-4 py-2.5 rounded-full text-[1rem] leading-[0.9] tracking-[-0.16px] bg-[#0c0c0c] text-white"
+                    className="cursor-pointer px-4 py-4 rounded-full text-sm leading-[0.9] tracking-[-0.16px] bg-[#0c0c0c] text-white"
                   >
                     Release
                   </button>
@@ -147,7 +199,7 @@ export default function CaseNavigation() {
                     ref={tabBackstageRef}
                     id="case-nav-tab-backstage"
                     onClick={() => setActiveTab("backstage")}
-                    className="cursor-pointer px-4 py-2.5 rounded-full text-[1rem] leading-[0.9] tracking-[-0.16px] bg-[#f5f5f5] text-[#0c0c0c]"
+                    className="cursor-pointer px-4 py-4 rounded-full text-sm leading-[0.9] tracking-[-0.16px] bg-[#f5f5f5] text-[#0c0c0c]"
                   >
                     Backstage
                   </button>
@@ -184,7 +236,6 @@ export default function CaseNavigation() {
                 ))}
               </div>
             )}
-
           </div>
         )}
       </div>

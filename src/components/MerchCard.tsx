@@ -65,6 +65,7 @@ export default function MerchCard({ name, price, src }: Props) {
         src={src}
         alt={name}
         fill
+        sizes="25vw"
         className="object-cover pointer-events-none"
       />
 

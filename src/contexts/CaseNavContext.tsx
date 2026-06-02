@@ -34,8 +34,16 @@ const CaseNavContext = createContext<CaseNavContextType>({
   setActiveTab: () => {},
 });
 
-export function CaseNavProvider({ children }: { children: React.ReactNode }) {
-  const [data, setData] = useState<CaseNavData | null>(null);
+export function CaseNavProvider({
+  children,
+  isCasePage = false,
+}: {
+  children: React.ReactNode;
+  isCasePage?: boolean;
+}) {
+  const [data, setData] = useState<CaseNavData | null>(
+    isCasePage ? ({} as CaseNavData) : null,
+  );
   const [activeTab, setActiveTab] = useState<"release" | "backstage">("release");
 
   return (

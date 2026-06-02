@@ -103,8 +103,8 @@ const works: Work[] = [
     description:
       "Redefine industrial automation through real-time vision-guided robotics. Inbolt enables robots to see, think and adapt in real time, removing the need.",
     media: {
-      type: "video",
-      src: "/_videos/v1/e8a6ffb8d332a22fa8980945cc71432aefb4ba6a",
+      type: "image",
+      src: "/works/geobrowser/1.jpg",
       aspect: "aspect-[16/9]",
     },
   },
@@ -219,7 +219,23 @@ export default function WorksGrid() {
 
       {/* Grid */}
       <div className="grid grid-cols-4 gap-3 items-start">
-        {filtered.map((work) => (
+        {filtered.slice(0, 4).map((work) => (
+          <WorkCard key={work.name} work={work} />
+        ))}
+        {filtered.length > 4 && (
+          <div className="col-span-4 rounded-sm overflow-hidden aspect-video my-8">
+            <video
+              loop
+              autoPlay
+              playsInline
+              muted
+              className="w-full h-full object-cover"
+            >
+              <source src="/home/videos/wastetide.mp4" />
+            </video>
+          </div>
+        )}
+        {filtered.slice(4).map((work) => (
           <WorkCard key={work.name} work={work} />
         ))}
       </div>

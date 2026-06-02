@@ -40,6 +40,7 @@ export default function ToolCard({
             src={src}
             alt={name}
             fill
+            sizes="25vw"
             className="w-full h-full object-cover"
           />
         </div>

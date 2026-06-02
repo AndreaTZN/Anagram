@@ -58,8 +58,8 @@ export default function SmoothScroll({
   }, [pathname]);
 
   return (
-    <div ref={wrapperRef} className="flex-1 pt-6 pr-6 pl-2 overflow-y-auto overflow-x-hidden max-[766px]:px-4 max-[766px]:pt-4">
-      <div ref={contentRef} className="flex flex-col min-h-full">
+    <div ref={wrapperRef} className="flex-1 pt-6 pr-6 pl-2 pb-6 overflow-y-auto overflow-x-hidden max-[766px]:px-4 max-[766px]:pt-4">
+      <div ref={contentRef} className="flex flex-col">
         {children}
       </div>
     </div>
