@@ -26,11 +26,11 @@ export default function WorldClock() {
 
   return (
     <>
-      <span className="text-white text-xs leading-[0.9] tracking-[-0.01em] whitespace-nowrap">
+      <span className="text-white text-sm leading-[0.9] tracking-[-0.01em] whitespace-nowrap">
         Paris: {paris}
       </span>
       <div className="w-1 h-1 rounded-full bg-white shrink-0" />
-      <span className="text-white text-xs leading-[0.9] tracking-[-0.01em] whitespace-nowrap">
+      <span className="text-white text-sm leading-[0.9] tracking-[-0.01em] whitespace-nowrap">
         New York: {newYork}
       </span>
     </>

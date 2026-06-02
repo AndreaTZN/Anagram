@@ -27,7 +27,7 @@ export default function ToolCard({
           rel="noopener noreferrer"
           className="absolute top-4 right-4 z-10 flex items-center px-4 py-4 rounded-full bg-[#1c1c1c]"
         >
-          <span className="text-xs leading-[0.8] text-white whitespace-nowrap">
+          <span className="text-sm leading-[0.8] text-white whitespace-nowrap">
             Try now ↗
           </span>
         </a>
@@ -47,11 +47,11 @@ export default function ToolCard({
 
       {/* Name + description bottom left */}
       <div className="absolute bottom-0 left-0 p-4 flex flex-col gap-2">
-        <span className="font-medium text-xs leading-[0.9] text-white">
+        <span className="font-medium text-sm leading-[0.9] text-white">
           {name}
         </span>
         {description && (
-          <p className="text-xs leading-[1.3] text-[#7e7e7e] whitespace-pre-line">
+          <p className="text-sm leading-[1.3] text-[#7e7e7e] whitespace-pre-line">
             {description}
           </p>
         )}

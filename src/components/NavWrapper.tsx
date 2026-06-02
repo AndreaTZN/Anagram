@@ -8,7 +8,9 @@ import { useCaseNav } from "@/contexts/CaseNavContext";
 
 export default function NavWrapper() {
   const { data } = useCaseNav();
-  const showCaseNav = data !== null && (data.release !== undefined || data.backstage !== undefined);
+  const showCaseNav =
+    data !== null &&
+    (data.release !== undefined || data.backstage !== undefined);
 
   const mainNavRef = useRef<HTMLDivElement>(null);
   const caseNavRef = useRef<HTMLDivElement>(null);
@@ -32,17 +34,25 @@ export default function NavWrapper() {
       mainNav.style.pointerEvents = "none";
       caseNav.style.pointerEvents = "auto";
       gsap.to(mainNav, { opacity: 0, duration: 0.35, ease: "power2.inOut" });
-      gsap.fromTo(caseNav, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.inOut" });
+      gsap.fromTo(
+        caseNav,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.35, ease: "power2.inOut" },
+      );
     } else {
       caseNav.style.pointerEvents = "none";
       mainNav.style.pointerEvents = "auto";
       gsap.to(caseNav, { opacity: 0, duration: 0.35, ease: "power2.inOut" });
-      gsap.fromTo(mainNav, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.inOut" });
+      gsap.fromTo(
+        mainNav,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.35, ease: "power2.inOut" },
+      );
     }
   }, [showCaseNav]);
 
   return (
-    <div id="nav-wrapper" className="relative h-full w-56.25">
+    <div id="nav-wrapper" className="relative h-full w-62.5">
       <div id="nav-main" ref={mainNavRef} className="absolute inset-0">
         <Navigation />
       </div>

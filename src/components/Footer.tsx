@@ -16,20 +16,32 @@ const Logo = () => (
 
 export default function Footer() {
   return (
-    <footer className="text-[#0c0c0c] text-base">
+    <footer className="text-[#0c0c0c] text-sm">
       {/* Desktop */}
-      <div className="hidden min-[767px]:flex items-center justify-between pb-6 pr-6 pt-20">
+      <div className="hidden min-[767px]:flex items-center justify-between pr-6 pt-20">
         <Logo />
         <div className="flex items-center gap-4 font-medium whitespace-nowrap">
-          <span className="leading-[1.1] opacity-50">© {new Date().getFullYear()} Anagram</span>
-          <a href="/privacy" className="leading-[1.1] underline">Privacy</a>
-          <a href="/terms" className="leading-[1.1] underline">Terms & Conditions</a>
+          <span className="leading-[1.1] opacity-50">
+            © {new Date().getFullYear()} Anagram
+          </span>
+          <a href="/privacy" className="leading-[1.1] underline">
+            Privacy
+          </a>
+          <a href="/terms" className="leading-[1.1] underline">
+            Terms & Conditions
+          </a>
           <span className="leading-[1.1]">Website by Anagram</span>
         </div>
         <div className="flex items-center gap-4 whitespace-nowrap">
-          <a href="https://linkedin.com" className="leading-[1.6]">Linkedin</a>
-          <a href="https://instagram.com" className="leading-[1.6]">Instagram</a>
-          <a href="https://x.com" className="leading-[1.6]">X</a>
+          <a href="https://linkedin.com" className="leading-[1.6]">
+            Linkedin
+          </a>
+          <a href="https://instagram.com" className="leading-[1.6]">
+            Instagram
+          </a>
+          <a href="https://x.com" className="leading-[1.6]">
+            X
+          </a>
         </div>
       </div>
 
@@ -38,15 +50,27 @@ export default function Footer() {
         <Logo />
         <div className="flex items-start justify-between whitespace-nowrap">
           <div className="flex flex-col gap-2 font-medium">
-            <a href="/privacy" className="leading-[1.1] underline">Privacy</a>
-            <a href="/terms" className="leading-[1.1] underline">Terms & Conditions</a>
+            <a href="/privacy" className="leading-[1.1] underline">
+              Privacy
+            </a>
+            <a href="/terms" className="leading-[1.1] underline">
+              Terms & Conditions
+            </a>
             <span className="leading-[1.1]">Website by Anagram</span>
-            <span className="leading-[1.1] opacity-50">© {new Date().getFullYear()} Anagram</span>
+            <span className="leading-[1.1] opacity-50">
+              © {new Date().getFullYear()} Anagram
+            </span>
           </div>
           <div className="flex flex-col gap-2">
-            <a href="https://linkedin.com" className="leading-[1.1]">Linkedin</a>
-            <a href="https://instagram.com" className="leading-[1.1]">Instagram</a>
-            <a href="https://x.com" className="leading-[1.1]">X</a>
+            <a href="https://linkedin.com" className="leading-[1.1]">
+              Linkedin
+            </a>
+            <a href="https://instagram.com" className="leading-[1.1]">
+              Instagram
+            </a>
+            <a href="https://x.com" className="leading-[1.1]">
+              X
+            </a>
           </div>
         </div>
       </div>

@@ -3,8 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -134,42 +132,17 @@ const works = [
 
 export default function Navigation() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const plusRef = useRef<SVGSVGElement>(null);
-
-  useEffect(() => {
-    const panel = panelRef.current;
-    const plus = plusRef.current;
-    if (!panel || !plus) return;
-
-    if (open) {
-      gsap.to(panel, {
-        height: "auto",
-        opacity: 1,
-        duration: 0.4,
-        ease: "power3.inOut",
-      });
-      gsap.to(plus, { rotation: 45, duration: 0.3, ease: "power2.inOut" });
-    } else {
-      gsap.to(panel, {
-        height: 0,
-        opacity: 0,
-        duration: 0.35,
-        ease: "power3.inOut",
-      });
-      gsap.to(plus, { rotation: 0, duration: 0.3, ease: "power2.inOut" });
-    }
-  }, [open]);
 
   return (
-    <nav className={`relative flex flex-col bg-white w-56.25 h-dvh max-h-screen${pathname === "/about" ? " max-[992px]:hidden" : ""}`}>
-      <div className="flex flex-col gap-10 pl-3 pr-1.5 pt-3">
+    <nav
+      className={`relative flex flex-col bg-white  h-dvh max-h-screen${pathname === "/about" ? " max-[992px]:hidden" : ""}`}
+    >
+      <div className="flex flex-col gap-10 pl-4 pr-1.5 pt-6">
         {/* Logo */}
         <Link href="/">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="76"
+            width="100"
             fill="none"
             viewBox="0 0 102 18"
             aria-label="Anagram"
@@ -185,139 +158,18 @@ export default function Navigation() {
         <div className="flex flex-col gap-8">
           {/* CTA card */}
           <div className="flex flex-col gap-6">
-            <p className="text-[#0c0c0c] leading-[1.1] text-lg tracking-[-0.12px]">
+            <p className="text-[#0c0c0c] leading-[1.1] text-xl tracking-[-0.12px]">
               We shape brands that need no introduction.
             </p>
 
-            <div className="relative bg-[#f5f5f5] rounded-[20px] overflow-hidden">
-              {/* "Work with us" pill — header, always visible */}
-              <button
-                onClick={() => setOpen((v) => !v)}
-                className="flex items-center justify-between bg-[#f5f5f5] rounded-full px-4 py-2.5 w-full"
-                style={{ height: 44 }}
-              >
-                <span className="text-[#0c0c0c] leading-[1.1] text-base tracking-[-0.08px]">
-                  Work with us
-                </span>
-                <svg
-                  ref={plusRef}
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  fill="none"
-                  viewBox="0 0 14 14"
-                  style={{ display: "inline-block" }}
-                >
-                  <g id="Vector">
-                    <path
-                      fill="#0C0C0C"
-                      d="M6.794 13.57a.679.679 0 0 1-.679-.678V.678a.679.679 0 0 1 1.358 0v12.214a.679.679 0 0 1-.679.679Z"
-                    />
-                    <path
-                      fill="#0C0C0C"
-                      d="M0 6.785c0-.375.304-.678.678-.678h12.215a.679.679 0 0 1 0 1.357H.678A.679.679 0 0 1 0 6.785Z"
-                    />
-                  </g>
-                </svg>
-              </button>
-
-              {/* Expandable content */}
-              <div
-                ref={panelRef}
-                className="overflow-hidden"
-                style={{ height: 0, opacity: 0 }}
-              >
-                <div className="flex flex-col gap-2 p-2">
-                  {/* Book a call card */}
-                  <a
-                    href="https://cal.com/anagram/hello"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white rounded-lg p-4 flex items-center mt-2"
-                  >
-                    <div className="flex gap-2 items-center">
-                      <div className="self-stretch flex items-center">
-                        <div className="bg-[#0c0c0c] w-1 h-full rounded-full" />
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <span className="text-[#0c0c0c] font-medium leading-[1.1] text-base tracking-[-0.12px]">
-                          Book a call
-                        </span>
-                        <div className="flex gap-1 items-center">
-                          <span className="text-[#0c0c0c] opacity-50 leading-[0.9] whitespace-nowrap text-base">
-                            Anagram
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-
-                  {/* Email pills */}
-                  <div className="flex flex-col gap-2">
-                    <a
-                      href="mailto:business@anagram.club"
-                      className="flex gap-2 items-center bg-[#e3cefc] rounded-full px-4 py-3 self-start"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="12"
-                        height="12"
-                        fill="none"
-                        viewBox="0 0 12 12"
-                      >
-                        <g id="Union">
-                          <path
-                            fill="#0C0C0C"
-                            fillRule="evenodd"
-                            d="M2.674 4.108h-.978a.458.458 0 0 0-.457.457v5.739c0 .252.205.457.457.457h5.739a.458.458 0 0 0 .457-.457v-.978H9.13v.978C9.13 11.24 8.37 12 7.435 12H1.696C.76 12 0 11.24 0 10.304V4.565C0 3.63.76 2.87 1.696 2.87h.978v1.24Zm5.188 7.565a1.435 1.435 0 0 1-.424.065H1.7a1.436 1.436 0 0 1-1.435-1.435V4.564c0-.54.298-1.012.74-1.257A1.435 1.435 0 0 0 .26 4.565v5.739c0 .742.564 1.354 1.288 1.427l.147.008h5.739c.149 0 .292-.024.427-.066Zm.29-1.37-.014.146a.712.712 0 0 1-.085.216.711.711 0 0 0 .104-.362v-.716h-.004v.717ZM1.7 3.848a.724.724 0 0 0-.15.015l.146-.014h.717H1.7Z"
-                            clipRule="evenodd"
-                          />
-                          <path
-                            fill="#0C0C0C"
-                            fillRule="evenodd"
-                            d="M10.305 0C11.241 0 12 .76 12 1.696v5.739c0 .936-.759 1.696-1.695 1.696h-5.74c-.936 0-1.695-.76-1.695-1.696V1.696C2.87.76 3.63 0 4.565 0h5.74ZM4.02.368c-.522.215-.89.729-.89 1.328v5.739c0 .742.565 1.354 1.289 1.427l.146.008h5.74l.146-.008a1.438 1.438 0 0 1-.143.006H4.57a1.436 1.436 0 0 1-1.435-1.435V1.695c0-.598.366-1.111.886-1.327Zm.545.871a.458.458 0 0 0-.457.457v5.739c0 .252.205.457.457.457h5.74a.457.457 0 0 0 .456-.457V1.696a.457.457 0 0 0-.456-.457h-5.74Zm-.09-.253c.03-.004.06-.008.09-.008h5.74c.396 0 .717.322.717.718v5.739c0 .297-.18.55-.438.66a.716.716 0 0 0 .442-.662V1.695a.718.718 0 0 0-.717-.718h-5.74c-.032 0-.063.005-.094.009Z"
-                            clipRule="evenodd"
-                          />
-                        </g>
-                      </svg>
-                      <span className="text-[#0c0c0c] whitespace-nowrap leading-[1.1] text-base tracking-[-0.12px]">
-                        business@anagram.club
-                      </span>
-                    </a>
-                    <a
-                      href="mailto:jobs@anagram.club"
-                      className="flex gap-2 items-center bg-[#03c8ff] rounded-full px-4 py-3 self-start"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="12"
-                        height="12"
-                        fill="none"
-                        viewBox="0 0 12 12"
-                      >
-                        <g id="Union">
-                          <path
-                            fill="#0C0C0C"
-                            fillRule="evenodd"
-                            d="M2.674 4.108h-.978a.458.458 0 0 0-.457.457v5.739c0 .252.205.457.457.457h5.739a.458.458 0 0 0 .457-.457v-.978H9.13v.978C9.13 11.24 8.37 12 7.435 12H1.696C.76 12 0 11.24 0 10.304V4.565C0 3.63.76 2.87 1.696 2.87h.978v1.24Zm5.188 7.565a1.435 1.435 0 0 1-.424.065H1.7a1.436 1.436 0 0 1-1.435-1.435V4.564c0-.54.298-1.012.74-1.257A1.435 1.435 0 0 0 .26 4.565v5.739c0 .742.564 1.354 1.288 1.427l.147.008h5.739c.149 0 .292-.024.427-.066Zm.29-1.37-.014.146a.712.712 0 0 1-.085.216.711.711 0 0 0 .104-.362v-.716h-.004v.717ZM1.7 3.848a.724.724 0 0 0-.15.015l.146-.014h.717H1.7Z"
-                            clipRule="evenodd"
-                          />
-                          <path
-                            fill="#0C0C0C"
-                            fillRule="evenodd"
-                            d="M10.305 0C11.241 0 12 .76 12 1.696v5.739c0 .936-.759 1.696-1.695 1.696h-5.74c-.936 0-1.695-.76-1.695-1.696V1.696C2.87.76 3.63 0 4.565 0h5.74ZM4.02.368c-.522.215-.89.729-.89 1.328v5.739c0 .742.565 1.354 1.289 1.427l.146.008h5.74l.146-.008a1.438 1.438 0 0 1-.143.006H4.57a1.436 1.436 0 0 1-1.435-1.435V1.695c0-.598.366-1.111.886-1.327Zm.545.871a.458.458 0 0 0-.457.457v5.739c0 .252.205.457.457.457h5.74a.457.457 0 0 0 .456-.457V1.696a.457.457 0 0 0-.456-.457h-5.74Zm-.09-.253c.03-.004.06-.008.09-.008h5.74c.396 0 .717.322.717.718v5.739c0 .297-.18.55-.438.66a.716.716 0 0 0 .442-.662V1.695a.718.718 0 0 0-.717-.718h-5.74c-.032 0-.063.005-.094.009Z"
-                            clipRule="evenodd"
-                          />
-                        </g>
-                      </svg>
-                      <span className="text-[#0c0c0c] whitespace-nowrap leading-[1.1] text-base tracking-[-0.12px]">
-                        jobs@anagram.club
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <a
+              href="mailto:hello@anagram.club"
+              className="flex items-center bg-[#f5f5f5] rounded-full px-4 py-3 self-start"
+            >
+              <span className="text-[#0c0c0c] leading-[0.9] text-sm tracking-[-0.07px]">
+                hello@anagram.club
+              </span>
+            </a>
           </div>
 
           {/* Nav links */}
@@ -328,7 +180,7 @@ export default function Navigation() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-[#0c0c0c] font-medium leading-[0.8] text-base transition-opacity"
+                  className="text-[#0c0c0c] font-medium leading-[0.8] text-sm transition-opacity"
                   style={{ opacity: isActive ? 1 : 0.3 }}
                 >
                   {link.label}
@@ -341,13 +193,10 @@ export default function Navigation() {
 
       {/* Works list + Show all works */}
       <div className="relative flex flex-col flex-1 overflow-hidden mt-14">
-        <div className="flex flex-col gap-1.5 pl-3 pr-1.5 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-24">
-          {works.map((work, index) => (
+        <div className="flex flex-col gap-1.5 pl-3 pr-1.5 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden pb-24">
+          {works.map((work) => (
             <Link key={work.name} href={work.href}>
-              <div
-                className="flex items-center gap-3 p-2 rounded-sm"
-                style={{ backgroundColor: index === 0 ? "#f5f5f5" : "white" }}
-              >
+              <div className="flex items-center gap-3 p-2 rounded-sm transition-colors bg-[#f9f9f9] hover:bg-[#ededed]">
                 <div className="relative shrink-0 rounded-sm overflow-hidden w-25 h-15">
                   {work.type === "image" ? (
                     <Image
@@ -379,10 +228,10 @@ export default function Navigation() {
                   )}
                 </div>
                 <div className="flex flex-col gap-2">
-                  <span className="text-[#7c7c7c] text-[0.625rem] leading-[0.8] font-normal">
+                  <span className="text-[#7c7c7c] text-sm  leading-[0.8] font-normal">
                     {work.category}
                   </span>
-                  <span className="text-[#0c0c0c] text-xs leading-[0.8] font-medium">
+                  <span className="text-[#0c0c0c] text-sm  leading-[0.8] font-medium">
                     {work.name}
                   </span>
                 </div>

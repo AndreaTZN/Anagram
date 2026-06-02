@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Badge from "./Badge";
 import MerchCard from "./MerchCard";
 import ToolCard from "./ToolCard";
 
@@ -153,21 +154,15 @@ function WorkCard({ work }: { work: Work }) {
             <source src={work.media.src} />
           </video>
         )}
-        {work.badge && (
-          <div className="absolute top-5 left-5 flex items-center justify-center px-4 py-3 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">
-            <span className="text-white leading-[0.8] whitespace-nowrap text-xs">
-              {work.badge}
-            </span>
-          </div>
-        )}
+        {work.badge && <Badge label={work.badge} />}
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between w-full">
-          <span className="text-[#0c0c0c] font-medium leading-[0.9] text-xs">
+          <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
             {work.name}
           </span>
           {work.price && (
-            <span className="text-[#7e7e7e] leading-[1.3] text-xs">
+            <span className="text-[#7e7e7e] leading-[1.3] text-sm">
               {work.price}
             </span>
           )}
@@ -176,14 +171,14 @@ function WorkCard({ work }: { work: Work }) {
               href={work.externalLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#0c0c0c] leading-[0.9] text-xs"
+              className="text-[#0c0c0c] leading-[0.9] text-sm"
             >
               Try now ↗
             </a>
           )}
         </div>
         {work.description && (
-          <p className="text-[#7e7e7e] leading-[1.3] text-xs">
+          <p className="text-[#7e7e7e] leading-[1.3] text-sm">
             {work.description}
           </p>
         )}
@@ -203,17 +198,17 @@ export default function WorksGrid() {
   return (
     <div className="flex flex-col gap-4">
       {/* Filters */}
-      <div className="flex items-center gap-4 justify-end">
-        <span className="text-[#7e7e7e] text-xs leading-[0.8]">Filters</span>
+      <div className="flex items-center gap-4">
+        <span className="text-[#7e7e7e] text-base leading-[0.8]">Filters</span>
         <div className="flex flex-wrap gap-2">
           {FILTERS.map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
-              className={`px-4 py-4 rounded-full text-xs leading-[0.8] cursor-pointer transition-colors ${
+              className={`px-4 py-4 rounded-full text-sm leading-[0.8] cursor-pointer transition-colors ${
                 activeFilter === filter
                   ? "bg-[#0c0c0c] text-white"
-                  : "bg-[#f5f5f5] text-[#0c0c0c]"
+                  : "bg-[#f5f5f5] text-[#7C7C7C]"
               }`}
             >
               {filter}
@@ -223,7 +218,7 @@ export default function WorksGrid() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-3 2xl:grid-cols-4 gap-3 items-start">
+      <div className="grid grid-cols-4 gap-3 items-start">
         {filtered.map((work) => (
           <WorkCard key={work.name} work={work} />
         ))}

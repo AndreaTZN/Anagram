@@ -93,8 +93,8 @@ export default function WidgetPanel() {
           <WorldClock />
         </div>
         <svg
-          width="11"
-          height="11"
+          width="15"
+          height="15"
           viewBox="0 0 15 15"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +121,7 @@ export default function WidgetPanel() {
 
       <div
         ref={panelRef}
-        className="absolute z-20 top-32 left-1/2 -translate-x-1/2 w-[47rem] pointer-events-none opacity-0"
+        className="absolute z-20 top-32 left-1/2 -translate-x-1/2 w-188 pointer-events-none opacity-0"
         onClick={(e) => e.stopPropagation()}
         style={{ pointerEvents: open ? "auto" : "none" }}
       >
