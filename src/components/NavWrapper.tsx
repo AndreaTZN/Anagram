@@ -18,11 +18,18 @@ export default function NavWrapper() {
     if (!nav) return;
     if (prevShowCaseNav.current === showCaseNav) return;
     prevShowCaseNav.current = showCaseNav;
-    gsap.fromTo(nav, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.inOut" });
+    gsap.fromTo(
+      nav,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.35, ease: "power2.inOut" },
+    );
   }, [showCaseNav]);
 
   return (
-    <div id="nav-wrapper" className="relative h-full w-62.5">
+    <div
+      id="nav-wrapper"
+      className="relative h-full w-62.5  max-[992px]:hidden"
+    >
       <div
         ref={navRef}
         id={showCaseNav ? "nav-cases" : "nav-main"}

@@ -17,14 +17,13 @@ const studioImages = ["/studio/1.webp", "/studio/2.webp", "/studio/3.webp"];
 
 const manifesto = (
   <>
-    <span className="uppercase">anagram </span>
-    was founded on the ambition to help companies define a distinct position and
-    express it with clarity, relevance, and impact.
+    <span className="uppercase">anagram</span>
+    {` was founded on the ambition to help companies define a distinct position and express it with clarity, relevance, and impact.`}
     <br />
     <br />
     Through a balance of strategic thinking and refined design, we build
     identities that resonate, differentiate, and endure in an increasingly
-    complex landscape. with clarity, relevance, and impact.
+    complex landscape.
   </>
 );
 
@@ -34,9 +33,19 @@ const ourStudio = {
     "Anagram is a creative studio founded in 2020. We bring together multidisciplinary talents driven by a shared ambition: to craft unique experiences through iteration, creativity, and an eye for detail. Passionate about craft in all its forms, we love pushing the boundaries of design to help our clients' projects grow.",
 };
 
-const clockBases = [
-  { timezone: "America/New_York", city: "NEW YORK", offsetLabel: "GMT-4" },
-  { timezone: "Europe/Paris", city: "PARIS", offsetLabel: "CEST" },
+const clocks = [
+  {
+    timezone: "America/New_York",
+    color: "#03c8ff",
+    city: "NEW YORK",
+    offsetLabel: "GMT-4",
+  },
+  {
+    timezone: "Europe/Paris",
+    color: "#e3cefc",
+    city: "PARIS",
+    offsetLabel: "CEST",
+  },
 ];
 
 const team = [
@@ -73,49 +82,7 @@ function DotDivider() {
   );
 }
 
-function DotDividerVertical() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [count, setCount] = useState(60);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const update = () => {
-      // dot size 1.5px + gap 4px = 5.5px per dot
-      setCount(Math.floor(el.clientHeight / 5.5));
-    };
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className="flex flex-col items-center justify-between self-stretch"
-    >
-      {Array.from({ length: count }).map((_, i) => (
-        <div
-          key={i}
-          className="bg-[#0c0c0c] opacity-30 rounded-full shrink-0 size-[1.5px]"
-        />
-      ))}
-    </div>
-  );
-}
-
-export default function AboutPage({
-  openRoles,
-  colorPair,
-}: {
-  openRoles: OpenRole[];
-  colorPair: readonly [string, string];
-}) {
-  const clocks = clockBases.map((base, i) => ({
-    ...base,
-    color: colorPair[i],
-  }));
+export default function AboutPage({ openRoles }: { openRoles: OpenRole[] }) {
   const [hoveredIndex, setHoveredIndex] = useState(0);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeClockSlide, setActiveClockSlide] = useState(0);
@@ -194,27 +161,118 @@ export default function AboutPage({
     <div className="flex flex-col min-h-screen bg-white">
       <main className="flex flex-col gap-6 flex-1">
         {/* Hero */}
-        <div id="about-hero-container">
-          {/* colonne droite */}
-          <div className="flex gap-8 mb-8">
-            {/* Manifesto text */}
-            <div className="max-w-141.75">
-              <p
-                id="about-manifesto"
-                className="text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem] text-2xl"
+        <div
+          id="about-hero-container"
+          className="flex gap-6 flex-1 max-[766px]:flex-col"
+        >
+          {/* colonne gauche */}
+          <div className="w-[55%] max-[766px]:w-full shrink-0 flex flex-col gap-8">
+            {/* Manifesto — mobile duplicate */}
+            <p
+              className="hidden max-[766px]:block text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem]"
+              style={{
+                fontSize:
+                  "clamp(1.5rem, calc(1.5rem + (100vw - 62.5rem) / 65.5), 3rem)",
+              }}
+            >
+              {manifesto}
+            </p>
+
+            {/* Hero image */}
+            <div
+              id="about-hero"
+              className="relative bg-[#f4f4f4] rounded-sm overflow-hidden"
+              style={{ aspectRatio: "855 / 670" }}
+            >
+              <Swiper
+                loop
+                effect="fade"
+                modules={[EffectFade, Autoplay]}
+                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                onSwiper={(s) => {
+                  swiperRef.current = s;
+                }}
+                onSlideChange={(s) => setActiveSlide(s.realIndex)}
+                className="h-full"
               >
-                {manifesto}
+                {studioImages.map((src, i) => (
+                  <SwiperSlide key={i}>
+                    <img
+                      src={src}
+                      alt={`Studio ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center rounded-full backdrop-blur-xl bg-[rgba(12,12,12,0.2)] px-2">
+                {studioImages.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => swiperRef.current?.slideToLoop(i)}
+                    className="flex items-center justify-center px-1 py-3 cursor-pointer"
+                  >
+                    <span
+                      className={`relative rounded-full shrink-0 overflow-hidden transition-[width,opacity] duration-300 ${i === activeSlide ? "h-1.25 w-5.25 bg-white/30 opacity-100" : "h-1.25 w-1.25 bg-white opacity-30"}`}
+                    >
+                      {i === activeSlide && (
+                        <span
+                          ref={progressRef}
+                          className="absolute inset-y-0 left-0 bg-white rounded-full w-0"
+                        />
+                      )}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Our studio */}
+            <div
+              id="about-our-studio"
+              className="flex flex-col gap-6 mt-auto max-[766px]:hidden"
+            >
+              <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
+                {ourStudio.title}
+              </h2>
+              <p className="text-[#7e7e7e] text-sm leading-[1.3]">
+                {ourStudio.description}
+              </p>
+            </div>
+          </div>
+          {/* colonne droite */}
+          <div className="flex-1 flex flex-col">
+            {/* Manifesto text */}
+            <p
+              id="about-manifesto"
+              className="text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem] max-[766px]:hidden"
+              style={{
+                fontSize:
+                  "clamp(1.5rem, calc(1.5rem + (100vw - 62.5rem) / 65.5), 3rem)",
+                marginBottom: "2rem",
+              }}
+            >
+              {manifesto}
+            </p>
+
+            {/* Our studio — mobile duplicate */}
+            <div className="hidden max-[766px]:flex flex-col gap-6">
+              <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
+                {ourStudio.title}
+              </h2>
+              <p className="text-[#7e7e7e] text-sm leading-[1.3]">
+                {ourStudio.description}
               </p>
             </div>
 
             {/* Clocks */}
-            <div id="about-clocks" className="w-full">
+            <div id="about-clocks" className="mt-auto max-[766px]:mt-8">
               {/* Desktop */}
-              <div className="flex gap-8 justify-center w-full max-[766px]:hidden">
+              <div className="flex gap-8 justify-center max-[766px]:hidden">
                 {clocks.map((clock) => (
                   <div
                     key={clock.city}
-                    className="flex flex-col items-center gap-4 max-w-62.5 w-full"
+                    className="flex flex-col items-center gap-4"
                   >
                     <AnalogClock
                       timezone={clock.timezone}
@@ -280,284 +338,26 @@ export default function AboutPage({
               </div>
             </div>
           </div>
-          {/* colonne gauche */}
-          <div className="grid grid-cols-12 gap-4">
-            {/* Hero image */}
-            <div
-              id="about-hero"
-              className="col-span-8 relative bg-[#f4f4f4] rounded-sm overflow-hidden"
-              style={{ aspectRatio: "800 / 500" }}
-            >
-              <Swiper
-                loop
-                effect="fade"
-                modules={[EffectFade, Autoplay]}
-                autoplay={{ delay: 4000, disableOnInteraction: false }}
-                onSwiper={(s) => {
-                  swiperRef.current = s;
-                }}
-                onSlideChange={(s) => setActiveSlide(s.realIndex)}
-                className="h-full"
-              >
-                {studioImages.map((src, i) => (
-                  <SwiperSlide key={i}>
-                    <img
-                      src={src}
-                      alt={`Studio ${i + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center rounded-full backdrop-blur-xl bg-[rgba(12,12,12,0.2)] px-2">
-                {studioImages.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => swiperRef.current?.slideToLoop(i)}
-                    className="flex items-center justify-center px-1 py-3 cursor-pointer"
-                  >
-                    <span
-                      className={`relative rounded-full shrink-0 overflow-hidden transition-[width,opacity] duration-300 ${i === activeSlide ? "h-1.25 w-5.25 bg-white/30 opacity-100" : "h-1.25 w-1.25 bg-white opacity-30"}`}
-                    >
-                      {i === activeSlide && (
-                        <span
-                          ref={progressRef}
-                          className="absolute inset-y-0 left-0 bg-white rounded-full w-0"
-                        />
-                      )}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Merch — T-shirt */}
-            <div
-              id="about-merch"
-              className="col-span-4 relative bg-[#f4f4f4] rounded-sm overflow-hidden flex justify-center items-start"
-            >
-              <ShirtRotation />
-              <div className="absolute bottom-8 left-4 right-4 flex gap-2">
-                <div className="flex flex-1 items-center justify-between px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">
-                  <span className="text-white text-sm font-medium opacity-50 whitespace-nowrap">
-                    Anagram 30g Teeshirt
-                  </span>
-                  <span className="text-white text-sm font-medium whitespace-nowrap">
-                    39.99$
-                  </span>
-                </div>
-                <button className="flex items-center justify-center px-4 py-4 rounded-full bg-white shrink-0">
-                  <span className="text-[#0c0c0c] text-sm font-medium whitespace-nowrap">
-                    Add to bag
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div
           id="about-col-contain"
-          className="flex gap-4 flex-1 max-[766px]:flex-col"
+          className="flex gap-6 flex-1 max-[766px]:flex-col"
         >
           {/* Left column */}
           <div
             id="about-col-left"
-            className="flex flex-col gap-8 w-[50%] max-[766px]:w-full shrink-0 flex-none"
+            className="flex flex-col gap-6 w-[55%] max-[766px]:w-full shrink-0 flex-none"
           >
-            <div
-              id="about-our-studio"
-              className="flex flex-col gap-6 mt-auto max-[766px]:hidden"
-            >
-              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem]">
-                {ourStudio.title}
-              </h2>
-              <p className="text-[#7e7e7e] text-sm leading-[1.3]">
-                {ourStudio.description}
-              </p>
-            </div>
-
-            {/* Offerings */}
-            <div
-              id="about-offerings"
-              className="flex flex-col gap-6 text-[#0c0c0c]"
-            >
-              <h2 className="text-lg leading-[1.1] tracking-[-0.0075rem]">
-                Offerings
-              </h2>
-              <div className="grid grid-cols-3 gap-6">
-                {[
-                  {
-                    category: "Strategy",
-                    items: [
-                      "Brand Architecture",
-                      "Brand Positioning",
-                      "Market & Consumer",
-                      "Analysis",
-                      "Brand Narrative",
-                      "Brand Pitch",
-                      "Tone of Voice",
-                    ],
-                  },
-                  {
-                    category: "Visual Identity",
-                    items: [
-                      "Logo Design",
-                      "Art Direction",
-                      "Brand Production",
-                      "Illustrations",
-                      "Graphic Guidelines",
-                      "3D & Motion Design",
-                    ],
-                  },
-                  {
-                    category: "Digital Experience",
-                    items: [
-                      "UI/UX Design",
-                      "Product design",
-                      "Web Design",
-                      "Development",
-                    ],
-                  },
-
-                  {
-                    category: "Production",
-                    items: [
-                      "Photography",
-                      "Video Production",
-                      "Music & Sound Design",
-                    ],
-                  },
-                  {
-                    category: "Marketing & Activation",
-                    items: [
-                      "TV & Display Campaigns",
-                      "Brand Launch",
-                      "Social Media Campaigns",
-                      "Advertising Campaigns",
-                    ],
-                  },
-                ].map((col) => (
-                  <div
-                    key={col.category}
-                    className="flex flex-col max-[766px]:w-auto"
-                  >
-                    <span className="text-[#0C0C0C] text-sm leading-[1.6]">
-                      {col.category}
-                    </span>
-                    {col.items.map((item) => (
-                      <span
-                        key={item}
-                        className="text-sm leading-[1.6] text-[#7e7e7e]"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* We worked for */}
-            <div id="about-worked-for" className="flex flex-col gap-6">
-              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem]">
-                We worked for
-              </h2>
-              <div className="flex gap-8 items-start text-[#7e7e7e] text-sm leading-[1.6] max-[766px]:grid max-[766px]:grid-cols-2 max-[766px]:gap-x-4 max-[766px]:gap-y-0">
-                <div className="flex-1 flex flex-col">
-                  {[
-                    "Everyday",
-                    "Peeps",
-                    "Incard",
-                    "Frequentiel",
-                    "Fortuneo",
-                    "Planiti",
-                    "Omnia",
-                    "Wastetide",
-                    "Bonsai",
-                    "Buybox",
-                    "Rauva",
-                  ].map((n) => (
-                    <span key={n}>{n}</span>
-                  ))}
-                </div>
-                <div className="flex-1 flex flex-col">
-                  {[
-                    "Twin",
-                    "Nabla",
-                    "Rauva",
-                    "Gigi",
-                    "Aiup",
-                    "Drop",
-                    "Swaive",
-                    "Omi",
-                    "Trezy",
-                    "Evy",
-                    "Vizzia",
-                  ].map((n) => (
-                    <span key={n}>{n}</span>
-                  ))}
-                </div>
-                <div className="flex-1 flex flex-col">
-                  {[
-                    "RockFi",
-                    "Electra",
-                    "Madomiciliation",
-                    "Nijta",
-                    "Shift",
-                    "TMFC",
-                    "Gorgias",
-                    "Spendesk",
-                    "Wave",
-                    "Qonto",
-                    "Vybe",
-                  ].map((n) => (
-                    <span key={n}>{n}</span>
-                  ))}
-                </div>
-                <div className="flex-1 flex flex-col">
-                  {[
-                    "Perma",
-                    "Allô",
-                    "Tilt Energy",
-                    "Adagio",
-                    "Pimento",
-                    "Homaio",
-                    "May",
-                    "Eplaque",
-                    "QSTNMRK",
-                    "Ringover",
-                    "Pearl",
-                  ].map((n) => (
-                    <span key={n}>{n}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <DotDividerVertical />
-
-          {/* Right — content */}
-          <div id="about-col-right" className="flex flex-col gap-8 flex-1">
-            {/* Open roles */}
-            {openRoles.length > 0 && (
-              <div id="about-open-roles" className="flex flex-col gap-6">
-                <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem]">
-                  Open roles
-                </h2>
-                <OpenRoles roles={openRoles} />
-              </div>
-            )}
-
+            <DotDivider />
             {/* Meet the team */}
             <div id="about-meet-the-team" className="flex flex-col gap-6">
-              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem]">
+              <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
                 Meet the team
               </h2>
               {/* Desktop */}
               <div className="flex gap-8 items-start max-[766px]:hidden">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
                   {team.map((member, i) => (
                     <div
                       key={member.name}
@@ -646,6 +446,204 @@ export default function AboutPage({
                     ))}
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <DotDivider />
+
+            {/* Offerings */}
+            <div
+              id="about-offerings"
+              className="flex flex-col gap-6 text-[#0c0c0c]"
+            >
+              <h2 className="text-2xl leading-[1.1] tracking-[-0.0075rem]">
+                Offerings
+              </h2>
+              <div className="flex flex-wrap gap-8 items-start max-[766px]:grid max-[766px]:grid-cols-2 max-[766px]:gap-4">
+                {[
+                  {
+                    category: "Strategy",
+                    items: [
+                      "Brand Architecture",
+                      "Brand Positioning",
+                      "Market & Consumer Analysis",
+                      "Brand Narrative",
+                      "Brand Pitch",
+                      "Tone of Voice",
+                    ],
+                  },
+                  {
+                    category: "Visual Identity",
+                    items: [
+                      "Logo Design",
+                      "Art Direction",
+                      "Brand Production",
+                      "Illustrations",
+                      "Graphic Guidelines",
+                      "3D & Motion Design",
+                    ],
+                  },
+                  {
+                    category: "Digital Experience",
+                    items: [
+                      "UI/UX Design",
+                      "Product design",
+                      "Web Design",
+                      "Development",
+                    ],
+                  },
+                  {
+                    category: "Marketing & Activation",
+                    items: [
+                      "TV & Display Campaigns",
+                      "Brand Launch",
+                      "Social Media Campaigns",
+                      "Advertising Campaigns",
+                    ],
+                  },
+                  {
+                    category: "Production",
+                    items: [
+                      "Photography",
+                      "Video Production",
+                      "Music & Sound Design",
+                    ],
+                  },
+                ].map((col) => (
+                  <div
+                    key={col.category}
+                    className="flex flex-col w-37.5 max-[766px]:w-auto"
+                  >
+                    <span className="text-[#7e7e7e] text-sm leading-[1.6]">
+                      {col.category}
+                    </span>
+                    {col.items.map((item) => (
+                      <span key={item} className="text-base leading-[1.6]">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <DotDivider />
+
+            {/* We worked for */}
+            <div id="about-worked-for" className="flex flex-col gap-6">
+              <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
+                We worked for
+              </h2>
+              <div className="flex gap-8 items-start text-[#7e7e7e] text-sm leading-[1.6] max-[766px]:grid max-[766px]:grid-cols-2 max-[766px]:gap-x-4 max-[766px]:gap-y-0">
+                <div className="flex-1 flex flex-col">
+                  {[
+                    "Everyday",
+                    "Peeps",
+                    "Incard",
+                    "Frequentiel",
+                    "Fortuneo",
+                    "Planiti",
+                    "Omnia",
+                    "Wastetide",
+                    "Bonsai",
+                    "Buybox",
+                    "Rauva",
+                  ].map((n) => (
+                    <span key={n}>{n}</span>
+                  ))}
+                </div>
+                <div className="flex-1 flex flex-col">
+                  {[
+                    "Twin",
+                    "Nabla",
+                    "Rauva",
+                    "Gigi",
+                    "Aiup",
+                    "Drop",
+                    "Swaive",
+                    "Omi",
+                    "Trezy",
+                    "Evy",
+                    "Vizzia",
+                  ].map((n) => (
+                    <span key={n}>{n}</span>
+                  ))}
+                </div>
+                <div className="flex-1 flex flex-col">
+                  {[
+                    "RockFi",
+                    "Electra",
+                    "Madomiciliation",
+                    "Nijta",
+                    "Shift",
+                    "TMFC",
+                    "Gorgias",
+                    "Spendesk",
+                    "Wave",
+                    "Qonto",
+                    "Vybe",
+                  ].map((n) => (
+                    <span key={n}>{n}</span>
+                  ))}
+                </div>
+                <div className="flex-1 flex flex-col">
+                  {[
+                    "Perma",
+                    "Allô",
+                    "Tilt Energy",
+                    "Adagio",
+                    "Pimento",
+                    "Homaio",
+                    "May",
+                    "Eplaque",
+                    "QSTNMRK",
+                    "Ringover",
+                    "Pearl",
+                  ].map((n) => (
+                    <span key={n}>{n}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right — content */}
+          <div id="about-col-right" className="flex flex-col gap-8 flex-1">
+            <DotDivider />
+
+            {/* Open roles */}
+            {openRoles.length > 0 && (
+              <div id="about-open-roles" className="flex flex-col gap-6">
+                <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem]">
+                  Open roles
+                </h2>
+                <OpenRoles roles={openRoles} />
+              </div>
+            )}
+
+            {openRoles.length > 0 && <DotDivider />}
+
+            {/* Merch — T-shirt */}
+            <div
+              id="about-merch"
+              className="relative bg-[#f4f4f4] rounded-sm overflow-hidden flex justify-center items-start pb-8"
+              style={{ minHeight: "28rem" }}
+            >
+              <ShirtRotation />
+              <div className="absolute bottom-8 left-4 right-4 flex gap-2">
+                <div className="flex flex-1 items-center justify-between px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">
+                  <span className="text-white text-sm font-medium opacity-50 whitespace-nowrap">
+                    Anagram 30g Teeshirt
+                  </span>
+                  <span className="text-white text-sm font-medium whitespace-nowrap">
+                    39.99$
+                  </span>
+                </div>
+                <button className="flex items-center justify-center px-4 py-4 rounded-full bg-white shrink-0">
+                  <span className="text-[#0c0c0c] text-sm font-medium whitespace-nowrap">
+                    Add to bag
+                  </span>
+                </button>
               </div>
             </div>
           </div>

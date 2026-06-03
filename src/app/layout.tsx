@@ -4,6 +4,14 @@ import NavWrapper from "@/components/NavWrapper";
 import SmoothScroll from "@/components/SmoothScroll";
 import PageTheme from "@/components/PageTheme";
 import { CaseNavProvider } from "@/contexts/CaseNavContext";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  icons: {
+    icon: "/favicon.jpg",
+    apple: "/webclip.jpg",
+  },
+};
 
 export default async function RootLayout({
   children,

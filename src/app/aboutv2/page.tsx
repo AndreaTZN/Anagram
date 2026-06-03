@@ -1,18 +1,16 @@
 import { client } from "@/sanity/client";
 import AboutClient from "./AboutClient";
 import type { OpenRole } from "@/components/OpenRoles";
-import { colorPairs } from "./clockColors";
 
 async function getOpenRoles(): Promise<OpenRole[]> {
   return client.fetch(
     `*[_type == "openRole"] | order(order asc) { _id, title, description, available, location }`,
     {},
-    { next: { revalidate: 60 } }
+    { next: { revalidate: 60 } },
   );
 }
 
 export default async function AboutPage() {
   const openRoles = await getOpenRoles();
-  const colorPair = colorPairs[Math.floor(Math.random() * colorPairs.length)];
-  return <AboutClient openRoles={openRoles} colorPair={colorPair} />;
+  return <AboutClient openRoles={openRoles} />;
 }
