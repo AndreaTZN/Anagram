@@ -66,6 +66,7 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
 
     let player: any = null;
     let st: InstanceType<typeof ScrollTrigger> | null = null;
+    let iframeWrapper: HTMLDivElement | null = null;
     let destroyed = false;
 
     const ratio = dataRatio || "16/9";
@@ -97,11 +98,29 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
 
       wrapper.appendChild(iframe);
       el.appendChild(wrapper);
+      iframeWrapper = wrapper;
+
+      // Check again — component may have unmounted while waiting in queue
+      if (destroyed) {
+        el.removeChild(wrapper);
+        iframeWrapper = null;
+        return;
+      }
 
       const Vimeo = (window as any).Vimeo;
       player = new Vimeo.Player(iframe);
       activePlayers.add(player);
-      player.ready().then(() => player.pause());
+
+      // Check again — cleanup may have run between player creation and now
+      if (destroyed) {
+        player.pause().catch(() => {});
+        activePlayers.delete(player);
+        player = null;
+        el.removeChild(wrapper);
+        return;
+      }
+
+      player.ready().then(() => { if (!destroyed) player?.pause(); });
 
       const scroller = document.getElementById("smooth-scroll-container");
 
@@ -140,6 +159,10 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
         player.pause().catch(() => {});
         activePlayers.delete(player);
         player = null;
+      }
+      if (iframeWrapper && el.contains(iframeWrapper)) {
+        el.removeChild(iframeWrapper);
+        iframeWrapper = null;
       }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps

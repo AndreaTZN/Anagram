@@ -157,6 +157,34 @@ export default function FortuneoCasePage() {
                 img1={{ src: "/works/Fortuneo/release/14.avif", alt: "..." }}
                 img2={{ src: "/works/Fortuneo/release/15.avif", alt: "..." }}
               />
+              <Vimeo169
+                src="/works/Fortuneo/release/16.webp"
+                alt="poster image 16"
+                dataSrc="1164024559"
+                dataRatio="1920/1080"
+              />
+              <Frame01
+                src="/works/Fortuneo/release/17.webp"
+                alt="Fortuneo release 17"
+              />
+              <Frame01
+                src="/works/Fortuneo/release/18.webp"
+                alt="Fortuneo release 18"
+              />
+              <Frame01
+                src="/works/Fortuneo/release/19.avif"
+                alt="Fortuneo release 19"
+              />
+              <Frame02
+                img1={{
+                  src: "/works/Fortuneo/release/20.avif",
+                  alt: "Fortuneo release 20",
+                }}
+                img2={{
+                  src: "/works/Fortuneo/release/21.avif",
+                  alt: "Fortuneo release 21",
+                }}
+              />
             </div>
           }
           backstage={
@@ -165,9 +193,103 @@ export default function FortuneoCasePage() {
                 src="/works/Fortuneo/backstage/1.webp"
                 alt="Fortuneo backstage 1"
               />
+              <Vimeo169
+                src="/works/Fortuneo/backstage/24.avif"
+                alt="poster image 24"
+                dataSrc="1174728775"
+                dataRatio="3456/1944"
+              />
               <Frame01
-                src="/works/Fortuneo/backstage/1.webp"
-                alt="Fortuneo backstage 1"
+                src="/works/Fortuneo/backstage/25.webp"
+                alt="Fortuneo backstage 25"
+              />
+              <Frame01
+                src="/works/Fortuneo/backstage/26.webp"
+                alt="Fortuneo backstage 26"
+              />
+              <Frame02
+                img1={{
+                  src: "/works/Fortuneo/backstage/27.webp",
+                  alt: "Fortuneo backstage 27",
+                }}
+                img2={{
+                  src: "/works/Fortuneo/backstage/28.webp",
+                  alt: "Fortuneo backstage 28",
+                }}
+              />
+              <Frame01
+                src="/works/Fortuneo/backstage/29.webp"
+                alt="Fortuneo backstage 29"
+              />
+              <Vimeo169
+                src="/works/Fortuneo/backstage/30.avif"
+                alt="poster image 30"
+                dataSrc="1174728814"
+                dataRatio="3456/1944"
+              />
+              <Frame01
+                src="/works/Fortuneo/backstage/31.webp"
+                alt="Fortuneo backstage 31"
+              />
+              <Vimeo169
+                src="/works/Fortuneo/backstage/32.webp"
+                alt="poster image 32"
+                dataSrc="1178745726"
+                dataRatio="3456/1944"
+              />
+              <Vimeo169
+                src="/works/Fortuneo/backstage/33.avif"
+                alt="poster image 33"
+                dataSrc="1174728836"
+                dataRatio="3456/1944"
+              />
+              <Vimeo169
+                src="/works/Fortuneo/backstage/34.webp"
+                alt="poster image 34"
+                dataSrc="1164024760"
+                dataRatio="3456/1944"
+              />
+              <Frame02
+                img1={{
+                  src: "/works/Fortuneo/backstage/35.webp",
+                  alt: "Fortuneo backstage 35",
+                }}
+                img2={{
+                  src: "/works/Fortuneo/backstage/36.webp",
+                  alt: "Fortuneo backstage 36",
+                }}
+              />
+              <Frame01
+                src="/works/Fortuneo/backstage/37.webp"
+                alt="Fortuneo backstage 37"
+              />
+              <Vimeo169
+                src="/works/Fortuneo/backstage/38.webp"
+                alt="poster image 38"
+                dataSrc="1164024782"
+                dataRatio="3456/1944"
+              />
+              <Frame01
+                src="/works/Fortuneo/backstage/39.webp"
+                alt="Fortuneo backstage 39"
+              />
+              <Vimeo169
+                src="/works/Fortuneo/backstage/40.webp"
+                alt="poster image 40"
+                dataSrc="1164024804"
+                dataRatio="3456/1944"
+              />
+              <Vimeo169
+                src="/works/Fortuneo/backstage/41.webp"
+                alt="poster image 41"
+                dataSrc="1164024826"
+                dataRatio="3456/1944"
+              />
+              <Vimeo169
+                src="/works/Fortuneo/backstage/42.webp"
+                alt="poster image 42"
+                dataSrc="1164024851"
+                dataRatio="3456/1944"
               />
             </div>
           }
