@@ -1,7 +1,11 @@
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
+import Vimeo169 from "@/components/cases-frame/Vimeo169";
+import VimeoTwoCards from "@/components/cases-frame/VimeoTwoCards";
+import ThreePhones from "@/components/cases-frame/ThreePhones";
 import type { CaseNavData } from "@/contexts/CaseNavContext";
+import Frame02 from "@/components/cases-frame/Frame02";
 
 const navData: CaseNavData = {
   title: "Fortuneo",
@@ -89,10 +93,78 @@ export default function FortuneoCasePage() {
                 src="/works/Fortuneo/release/1.webp"
                 alt="Fortuneo release 1"
               />
+              <Vimeo169
+                src="/works/Fortuneo/release/2.webp"
+                alt="poster image noir"
+                dataSrc="1164024409"
+                dataRatio="1920/1080"
+              />
+              <Frame01
+                src="/works/Fortuneo/release/3.avif"
+                alt="Fortuneo release 2"
+              />
+              <Frame01
+                src="/works/Fortuneo/release/4.webp"
+                alt="Fortuneo release 4"
+              />
+              <Frame01
+                src="/works/Fortuneo/release/5.webp"
+                alt="Fortuneo release 5"
+              />
+              <VimeoTwoCards
+                card1={{
+                  src: "/works/Fortuneo/release/6.webp",
+                  alt: "Fortuneo release 6",
+                  dataSrc: "1172552727",
+                  dataRatio: "1920/2160",
+                }}
+                card2={{
+                  src: "/works/Fortuneo/release/7.webp",
+                  alt: "Fortuneo release 7",
+                  dataSrc: "1172552765",
+                  dataRatio: "1920/2160",
+                }}
+              />
+              <Frame01
+                src="/works/Fortuneo/release/8.webp"
+                alt="Fortuneo release 8"
+              />
+              <ThreePhones
+                phone1={{
+                  src: "/works/Fortuneo/release/9.webp",
+                  alt: "Fortuneo release 9",
+                }}
+                phone2={{
+                  src: "/works/Fortuneo/release/10.webp",
+                  alt: "Fortuneo release 10",
+                }}
+                phone3={{
+                  src: "/works/Fortuneo/release/11.webp",
+                  alt: "Fortuneo release 11",
+                }}
+              />
+              <Frame01
+                src="/works/Fortuneo/release/12.webp"
+                alt="Fortuneo release 12"
+              />
+              <Vimeo169
+                src="/works/Fortuneo/release/13.webp"
+                alt="poster image 3 mobiles"
+                dataSrc="1164024513"
+                dataRatio="1920/1080"
+              />
+              <Frame02
+                img1={{ src: "/works/Fortuneo/release/14.avif", alt: "..." }}
+                img2={{ src: "/works/Fortuneo/release/15.avif", alt: "..." }}
+              />
             </div>
           }
           backstage={
             <div className="flex flex-col gap-6">
+              <Frame01
+                src="/works/Fortuneo/backstage/1.webp"
+                alt="Fortuneo backstage 1"
+              />
               <Frame01
                 src="/works/Fortuneo/backstage/1.webp"
                 alt="Fortuneo backstage 1"
