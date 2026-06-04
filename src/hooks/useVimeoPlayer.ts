@@ -120,8 +120,6 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
         return;
       }
 
-      player.ready().then(() => { if (!destroyed) player?.pause(); });
-
       const scroller = document.getElementById("smooth-scroll-container");
 
       st = ScrollTrigger.create({
@@ -138,10 +136,15 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
 
       ScrollTrigger.refresh();
 
-      // Play immediately if already in viewport
-      setTimeout(() => {
-        if (st?.isActive) player?.play().catch(() => {});
-      }, 200);
+      // On ready: play if already in viewport, pause otherwise
+      player.ready().then(() => {
+        if (destroyed) return;
+        if (st?.isActive) {
+          setTimeout(() => player?.play().catch(() => {}), 120);
+        } else {
+          player?.pause().catch(() => {});
+        }
+      });
     }
 
     async function init() {
