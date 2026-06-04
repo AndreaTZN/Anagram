@@ -64,8 +64,16 @@ const DURATIONS = [0.5, 0.8, 0.6, 0.3, 0.7];
 function Card({ card, colWidth }: { card: CardData; colWidth: number }) {
   const height = colWidth / ASPECT_RATIO[card.variant];
   return (
-    <div className="shrink-0 w-full overflow-hidden rounded-sm" style={{ height: `${height}px` }}>
-      <img src={card.src} alt="" className="w-full h-full object-cover" draggable={false} />
+    <div
+      className="shrink-0 w-full overflow-hidden rounded-sm"
+      style={{ height: `${height}px` }}
+    >
+      <img
+        src={card.src}
+        alt=""
+        className="w-full h-full object-cover"
+        draggable={false}
+      />
     </div>
   );
 }
@@ -165,7 +173,7 @@ export default function LabColumns() {
     <div
       ref={containerRef}
       id="lab-columns"
-      className="flex gap-4 w-full h-full px-2"
+      className="flex gap-4 w-full h-full pl-2 pr-4"
     >
       {COLUMNS.map((cards, i) => (
         <Column
