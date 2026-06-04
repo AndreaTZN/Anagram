@@ -70,7 +70,7 @@ export default function PlanityPage() {
   return (
     <>
       <CaseNavSetter data={navData} />
-      <div id="case-page" className="flex flex-col gap-10 pb-8">
+      <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
           release={
             <div className="flex flex-col gap-6">
