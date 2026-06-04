@@ -6,6 +6,8 @@ import VimeoTwoCards from "@/components/cases-frame/VimeoTwoCards";
 import ThreePhones from "@/components/cases-frame/ThreePhones";
 import type { CaseNavData } from "@/contexts/CaseNavContext";
 import Frame02 from "@/components/cases-frame/Frame02";
+import TeamCredits from "@/components/cases-frame/TeamCredits";
+import CaseStats from "@/components/cases-frame/CaseStats";
 
 const navData: CaseNavData = {
   title: "Fortuneo",
@@ -85,7 +87,7 @@ export default function FortuneoCasePage() {
   return (
     <>
       <CaseNavSetter data={navData} />
-      <div id="case-page" className="flex flex-col gap-10 pb-8">
+      <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
           release={
             <div className="flex flex-col gap-6">
@@ -184,6 +186,66 @@ export default function FortuneoCasePage() {
                   src: "/works/Fortuneo/release/21.avif",
                   alt: "Fortuneo release 21",
                 }}
+              />
+              <TeamCredits
+                rows={[
+                  {
+                    role: "Global direction",
+                    names: "Valentin Salmon, Emmanuel Julliot",
+                  },
+                  { role: "Project management", names: "Emmanuel Julliot" },
+                  {
+                    role: "Strategy",
+                    names: "Emmanuel Julliot, Priscillia Vebret, Romance",
+                  },
+                  {
+                    role: "Creative direction",
+                    names: "Valentin Salmon, Emmanuel Julliot",
+                  },
+                  {
+                    role: "3D Design",
+                    names: "Rémy Godet, Emmanuel Julliot, Julien Brisson",
+                  },
+                  { role: "Motion Design", names: "Rémy Godet, Kévin Robin" },
+                  { role: "Interactive Design", names: "Valentin Salmon" },
+                  {
+                    role: "UX/UI",
+                    names:
+                      "Gael Sauzeau, Emmanuel Julliot, David Amsellem, Francois-Xavier Manceau, Vincenzo Tilleul",
+                  },
+                  {
+                    role: "Credit card",
+                    names: "Emmanuel Julliot, Anthony Velen",
+                  },
+                  { role: "Production", names: "anagram production" },
+                  { role: "Photography", names: "Sébastien Marchand" },
+                  { role: "Video", names: "Gurvann Touzé" },
+                  {
+                    role: "Copywriting",
+                    names: "Marie Emmanuelle-Hamom, Julie Barthélemy",
+                  },
+                  { role: "Sound Design", names: "Tanguy Drobniewski" },
+                  { role: "Integration", names: "Fortuneo" },
+                  { role: "Fonts", names: "Söhne" },
+                ]}
+              />
+              <CaseStats
+                logo1={{
+                  src: "/works/Fortuneo/release/fotuneo-logo.png",
+                  alt: "Fortuneo",
+                }}
+                logo2={{
+                  src: "/works/Fortuneo/release/anagram-logo.png",
+                  alt: "Anagram",
+                }}
+                stats={[
+                  {
+                    value: "+45%",
+                    label: "entry into the subscription funnel",
+                  },
+                  { value: "+27%", label: "prospect who starts a project" },
+                  { value: "+63%", label: "documents sent on the course" },
+                ]}
               />
             </div>
           }
@@ -290,6 +352,29 @@ export default function FortuneoCasePage() {
                 alt="poster image 42"
                 dataSrc="1164024851"
                 dataRatio="3456/1944"
+              />
+              <TeamCredits
+                rows={[
+                  { role: "Project management", names: "Emmanuel Julliot" },
+                  { role: "Production", names: "anagram production" },
+                  { role: "Photography", names: "Sébastien Marchand" },
+                  { role: "Photography assistant", names: "Gurvann Touzé" },
+                  { role: "Video", names: "Gurvann Touzé" },
+                  { role: "Stylist", names: "Pierre Turbe" },
+                  { role: "Lighting", names: "Gurvann Touzé" },
+                  { role: "Makeup artist", names: "Allison le Fur" },
+                  { role: "Hairdresser", names: "Fanny Offelman" },
+                  {
+                    role: "Models",
+                    names:
+                      "Abdel K, Charlotte P, Thibault B, Agnes T, Elodie L, Cedric O, Ida M, Sylvain Sencier, Maëlla Hauray, Jade Lukebadio, Kevin Houdu, Jeanne Bonjour, Sylvie Jourdan, Jean-Louis Tellier",
+                  },
+                  {
+                    role: "Client",
+                    names:
+                      "Priscillia Vebret, Léa Carpentier, Madison Loco, Marie-Emmanuelle Hamon, Guillain Chauffert-Yvart, Grégory Guermonprez",
+                  },
+                ]}
               />
             </div>
           }

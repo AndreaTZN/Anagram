@@ -12,7 +12,7 @@ export default function PermaCasePage() {
   return (
     <>
       <CaseNavSetter data={navData} />
-      <div id="case-page" className="flex flex-col gap-10 pb-8">
+      <div id="case-page" className="flex flex-col gap-10">
         <p className="opacity-30 text-sm">perma</p>
       </div>
     </>
