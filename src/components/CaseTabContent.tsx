@@ -3,6 +3,7 @@
 import { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { useCaseNav } from "@/contexts/CaseNavContext";
+import { globalLenisRef } from "@/lib/lenis";
 
 type Props = {
   release?: React.ReactNode;
@@ -21,6 +22,7 @@ export default function CaseTabContent({ release, backstage }: Props) {
       isFirst.current = false;
       return;
     }
+    globalLenisRef.current?.scrollTo(0, { immediate: true });
     gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.inOut" });
   }, [activeTab]);
 

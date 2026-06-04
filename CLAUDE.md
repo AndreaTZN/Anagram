@@ -35,6 +35,31 @@ The following GSAP skills are available — invoke them with `/gsap-*` when need
 | `gsap-performance` | Perf best-practices, will-change, GPU layers |
 | `gsap-utils` | `gsap.utils` helpers |
 
+## Scroll — Lenis
+
+The page scroll is handled by **Lenis** (custom wrapper element, NOT `window`). This is critical for anything scroll-related:
+
+- The scroll container is `<div id="smooth-scroll-container">` rendered by `SmoothScroll.tsx`
+- The global Lenis instance is exposed via `src/lib/lenis.ts` → `globalLenisRef.current`
+- To scroll to top: `globalLenisRef.current?.scrollTo(0, { immediate: true })` — never use native `scrollTo` or set `scrollTop` directly, Lenis will override it on the next RAF tick
+- **GSAP ScrollTrigger** must use `scroller: document.getElementById("smooth-scroll-container")` — default `window` scroller won't work
+- Lenis fires `ScrollTrigger.update()` on every scroll tick via `lenis.on("scroll", () => ScrollTrigger.update())` (set up in `SmoothScroll.tsx`)
+
+## Vimeo videos
+
+Vimeo players are managed via the `useVimeoPlayer` hook (`src/hooks/useVimeoPlayer.ts`):
+
+- The Vimeo SDK is loaded once via a singleton promise (CDN script injection)
+- Each `Vimeo169` or `VimeoTwoCards` component manages its own player lifecycle via the hook
+- The iframe is injected dynamically into the `.projet-card_embed-vimeo-contain` / `.video-vimeo-two_embed-contain` element
+- Play/pause is driven by GSAP ScrollTrigger (using Lenis scroller — see above)
+- On tab switch (release ↔ backstage), React unmounts the inactive tab's content → hook cleanup runs → player is paused and ScrollTrigger is killed automatically. No manual kill needed.
+- Mobile Safari unlock: a single global `touchstart`/`touchmove` listener pre-warms all active players
+- Available frame components in `src/components/cases-frame/`:
+  - `Frame01` — static image, 16:9 ratio
+  - `Vimeo169` — single Vimeo video, 16:9
+  - `VimeoTwoCards` — two Vimeo videos side by side, 16:9 wrapper with 2-col grid
+
 ## Conventions
 
 - Font: **Aeonik** (`'Aeonik', sans-serif`)

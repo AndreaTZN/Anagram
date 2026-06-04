@@ -4,6 +4,10 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
+import { globalLenisRef } from "@/lib/lenis";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll({
   children,
@@ -28,6 +32,21 @@ export default function SmoothScroll({
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
     lenisRef.current = lenis;
+    globalLenisRef.current = lenis;
+
+    lenis.on("scroll", () => ScrollTrigger.update());
+
+    let lastWidth = window.innerWidth;
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    function onResize() {
+      const currentWidth = window.innerWidth;
+      if (currentWidth !== lastWidth) {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => location.reload(), 500);
+        lastWidth = currentWidth;
+      }
+    }
+    window.addEventListener("resize", onResize);
 
     let raf: number;
     function loop(time: number) {
@@ -38,8 +57,11 @@ export default function SmoothScroll({
 
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", onResize);
       lenis.destroy();
       lenisRef.current = null;
+      globalLenisRef.current = null;
     };
   }, []);
 
@@ -58,7 +80,7 @@ export default function SmoothScroll({
   }, [pathname]);
 
   return (
-    <div ref={wrapperRef} className="flex-1 pt-6 pr-6 pl-2 pb-6 overflow-y-auto overflow-x-hidden max-[766px]:px-4 max-[766px]:pt-4">
+    <div ref={wrapperRef} id="smooth-scroll-container" className="flex-1 pt-6 pr-6 pl-2 pb-6 overflow-y-auto overflow-x-hidden max-[766px]:px-4 max-[766px]:pt-4">
       <div ref={contentRef} className="flex flex-col">
         {children}
       </div>
