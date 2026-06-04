@@ -87,7 +87,7 @@ export default function WidgetPanel() {
       <button
         ref={buttonRef}
         onClick={toggle}
-        className="absolute top-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between gap-12 px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)] cursor-pointer overflow-hidden opacity-0"
+        className="absolute top-12 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between gap-12 px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)] cursor-pointer overflow-hidden opacity-0"
       >
         <div className="flex items-center gap-1.5">
           <WorldClock />

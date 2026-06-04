@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <main
       id="not-found-root"
-      className="flex flex-col items-center justify-center flex-1 gap-6 text-center"
+      className="flex flex-col items-center justify-center flex-1 gap-6 text-center min-h-screen"
     >
       <p className="text-[#7e7e7e] text-sm leading-[0.9]">404</p>
 

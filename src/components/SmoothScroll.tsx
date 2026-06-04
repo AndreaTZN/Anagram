@@ -76,14 +76,20 @@ export default function SmoothScroll({
       isFirstRender.current = false;
       return;
     }
-    gsap.fromTo(content, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.inOut" });
+    gsap.fromTo(
+      content,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.35, ease: "power2.inOut" },
+    );
   }, [pathname]);
 
   return (
-    <div ref={wrapperRef} id="smooth-scroll-container" className="flex-1 pt-6 pr-6 pl-2 pb-6 overflow-y-auto overflow-x-hidden max-[766px]:px-4 max-[766px]:pt-4">
-      <div ref={contentRef} className="flex flex-col">
-        {children}
-      </div>
+    <div
+      ref={wrapperRef}
+      id="smooth-scroll-container"
+      className="flex-1  overflow-y-auto overflow-x-hidden"
+    >
+      <div ref={contentRef}>{children}</div>
     </div>
   );
 }

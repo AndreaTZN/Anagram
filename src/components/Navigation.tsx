@@ -135,7 +135,7 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`relative flex flex-col bg-white  h-dvh max-h-screen${pathname === "/about" ? "" : ""}`}
+      className={`relative flex flex-col bg-white  h-dvh max-h-screen${pathname === "/about" ? " max-[992px]:hidden" : ""}`}
     >
       <div className="flex flex-col gap-10 pl-4 pr-1.5 pt-6">
         {/* Logo */}
@@ -203,12 +203,11 @@ export default function Navigation() {
                       src={work.image}
                       alt={work.name}
                       fill
-                      sizes="100px"
                       className="object-cover"
                     />
                   ) : (
                     <div
-                      className="relative w-full h-full flex items-center justify-center rounded-sm overflow-hidden"
+                      className="w-full h-full flex items-center justify-center rounded-sm overflow-hidden"
                       style={{ backgroundColor: work.iconBg }}
                     >
                       {"svgIcon" in work ? (
@@ -218,7 +217,6 @@ export default function Navigation() {
                           src={work.icon}
                           alt={work.name}
                           fill
-                          sizes="100px"
                           className={
                             work.iconCover
                               ? "object-cover"

@@ -191,138 +191,83 @@ export default function AboutPage({
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      <main className="flex flex-col gap-6 flex-1">
-        {/* Hero */}
-        <div id="about-hero-container">
-          {/* colonne droite */}
-          <div className="flex gap-8 mb-8">
-            {/* Manifesto text */}
-            <div className="max-w-141.75">
-              <p
-                id="about-manifesto"
-                className="text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem] text-2xl"
-              >
-                {manifesto}
-              </p>
-            </div>
+    <main className="pt-6 pr-6 pl-2 pb-6 max-[766px]:px-4 max-[766px]:pt-4 ">
+      {/* Hero */}
 
-            {/* Clocks */}
-            <div id="about-clocks" className="w-full">
-              {/* Desktop */}
-              <div className="flex gap-8 justify-center w-full max-[766px]:hidden">
-                {clocks.map((clock) => (
-                  <div
-                    key={clock.city}
-                    className="flex flex-col items-center gap-4 max-w-62.5 w-full"
-                  >
-                    <AnalogClock
-                      timezone={clock.timezone}
-                      color={clock.color}
-                    />
-                    <ClockLabel
-                      city={clock.city}
-                      timezone={clock.timezone}
-                      offsetLabel={clock.offsetLabel}
-                    />
-                  </div>
-                ))}
-              </div>
-
-              {/* Mobile — Swiper */}
-              <div className="hidden max-[766px]:block overflow-hidden">
-                <Swiper
-                  loop
-                  effect="fade"
-                  modules={[EffectFade, Autoplay]}
-                  autoplay={{ delay: 4000, disableOnInteraction: false }}
-                  onSwiper={(s) => {
-                    clockSwiperRef.current = s;
-                  }}
-                  onSlideChange={(s) => setActiveClockSlide(s.realIndex)}
-                >
-                  {clocks.map((clock) => (
-                    <SwiperSlide key={clock.city}>
-                      <div className="flex flex-col items-center gap-4 max-w-56 mx-auto bg-white">
-                        <AnalogClock
-                          timezone={clock.timezone}
-                          color={clock.color}
-                        />
-                        <ClockLabel
-                          city={clock.city}
-                          timezone={clock.timezone}
-                          offsetLabel={clock.offsetLabel}
-                        />
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-                <div className="flex justify-center items-center gap-2 mt-4">
-                  {clocks.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => clockSwiperRef.current?.slideToLoop(i)}
-                      className="cursor-pointer"
-                    >
-                      <span
-                        className={`relative rounded-full shrink-0 overflow-hidden block transition-[width] duration-300 ${i === activeClockSlide ? "h-1.25 w-5.25 bg-[#0c0c0c]/20" : "size-1.25 bg-[#0c0c0c] opacity-30"}`}
-                      >
-                        {i === activeClockSlide && (
-                          <span
-                            ref={clockProgressRef}
-                            className="absolute inset-y-0 left-0 bg-[#0c0c0c] rounded-full w-0"
-                          />
-                        )}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* colonne gauche */}
-          <div className="grid grid-cols-12 gap-4">
-            {/* Hero image */}
-            <div
-              id="about-hero"
-              className="col-span-8 relative bg-[#f4f4f4] rounded-sm overflow-hidden"
-              style={{ aspectRatio: "800 / 500" }}
+      <div className="flex flex-col gap-6 flex-1">
+        {/* colonne droite */}
+        <section className="flex gap-8 mb-8">
+          {/* Manifesto text */}
+          <div className="max-w-141.75">
+            <p
+              id="about-manifesto"
+              className="text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem] text-2xl"
             >
+              {manifesto}
+            </p>
+          </div>
+
+          {/* Clocks */}
+          <div id="about-clocks" className="w-full">
+            {/* Desktop */}
+            <div className="flex gap-8 justify-center w-full max-[766px]:hidden">
+              {clocks.map((clock) => (
+                <div
+                  key={clock.city}
+                  className="flex flex-col items-center gap-4 max-w-62.5 w-full"
+                >
+                  <AnalogClock timezone={clock.timezone} color={clock.color} />
+                  <ClockLabel
+                    city={clock.city}
+                    timezone={clock.timezone}
+                    offsetLabel={clock.offsetLabel}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile — Swiper */}
+            <div className="hidden max-[766px]:block overflow-hidden">
               <Swiper
                 loop
                 effect="fade"
                 modules={[EffectFade, Autoplay]}
                 autoplay={{ delay: 4000, disableOnInteraction: false }}
                 onSwiper={(s) => {
-                  swiperRef.current = s;
+                  clockSwiperRef.current = s;
                 }}
-                onSlideChange={(s) => setActiveSlide(s.realIndex)}
-                className="h-full"
+                onSlideChange={(s) => setActiveClockSlide(s.realIndex)}
               >
-                {studioImages.map((src, i) => (
-                  <SwiperSlide key={i}>
-                    <img
-                      src={src}
-                      alt={`Studio ${i + 1}`}
-                      className="w-full h-full object-cover"
-                    />
+                {clocks.map((clock) => (
+                  <SwiperSlide key={clock.city}>
+                    <div className="flex flex-col items-center gap-4 max-w-56 mx-auto bg-white">
+                      <AnalogClock
+                        timezone={clock.timezone}
+                        color={clock.color}
+                      />
+                      <ClockLabel
+                        city={clock.city}
+                        timezone={clock.timezone}
+                        offsetLabel={clock.offsetLabel}
+                      />
+                    </div>
                   </SwiperSlide>
                 ))}
               </Swiper>
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center rounded-full backdrop-blur-xl bg-[rgba(12,12,12,0.2)] px-2">
-                {studioImages.map((_, i) => (
+              <div className="flex justify-center items-center gap-2 mt-4">
+                {clocks.map((_, i) => (
                   <button
                     key={i}
-                    onClick={() => swiperRef.current?.slideToLoop(i)}
-                    className="flex items-center justify-center px-1 py-3 cursor-pointer"
+                    onClick={() => clockSwiperRef.current?.slideToLoop(i)}
+                    className="cursor-pointer"
                   >
                     <span
-                      className={`relative rounded-full shrink-0 overflow-hidden transition-[width,opacity] duration-300 ${i === activeSlide ? "h-1.25 w-5.25 bg-white/30 opacity-100" : "h-1.25 w-1.25 bg-white opacity-30"}`}
+                      className={`relative rounded-full shrink-0 overflow-hidden block transition-[width] duration-300 ${i === activeClockSlide ? "h-1.25 w-5.25 bg-[#0c0c0c]/20" : "size-1.25 bg-[#0c0c0c] opacity-30"}`}
                     >
-                      {i === activeSlide && (
+                      {i === activeClockSlide && (
                         <span
-                          ref={progressRef}
-                          className="absolute inset-y-0 left-0 bg-white rounded-full w-0"
+                          ref={clockProgressRef}
+                          className="absolute inset-y-0 left-0 bg-[#0c0c0c] rounded-full w-0"
                         />
                       )}
                     </span>
@@ -330,33 +275,84 @@ export default function AboutPage({
                 ))}
               </div>
             </div>
-
-            {/* Merch — T-shirt */}
-            <div
-              id="about-merch"
-              className="col-span-4 relative bg-[#f4f4f4] rounded-sm overflow-hidden flex justify-center items-start"
+          </div>
+        </section>
+        {/* colonne gauche */}
+        <section className="grid grid-cols-12 gap-4">
+          {/* Hero image */}
+          <div
+            id="about-hero"
+            className="col-span-8 relative bg-[#f4f4f4] rounded-sm overflow-hidden"
+            style={{ aspectRatio: "800 / 500" }}
+          >
+            <Swiper
+              loop
+              effect="fade"
+              modules={[EffectFade, Autoplay]}
+              autoplay={{ delay: 4000, disableOnInteraction: false }}
+              onSwiper={(s) => {
+                swiperRef.current = s;
+              }}
+              onSlideChange={(s) => setActiveSlide(s.realIndex)}
+              className="h-full"
             >
-              <ShirtRotation />
-              <div className="absolute bottom-8 left-4 right-4 flex gap-2">
-                <div className="flex flex-1 items-center justify-between px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">
-                  <span className="text-white text-sm font-medium opacity-50 whitespace-nowrap">
-                    Anagram 30g Teeshirt
-                  </span>
-                  <span className="text-white text-sm font-medium whitespace-nowrap">
-                    39.99$
-                  </span>
-                </div>
-                <button className="flex items-center justify-center px-4 py-4 rounded-full bg-white shrink-0">
-                  <span className="text-[#0c0c0c] text-sm font-medium whitespace-nowrap">
-                    Add to bag
+              {studioImages.map((src, i) => (
+                <SwiperSlide key={i}>
+                  <img
+                    src={src}
+                    alt={`Studio ${i + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center rounded-full backdrop-blur-xl bg-[rgba(12,12,12,0.2)] px-2">
+              {studioImages.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => swiperRef.current?.slideToLoop(i)}
+                  className="flex items-center justify-center px-1 py-3 cursor-pointer"
+                >
+                  <span
+                    className={`relative rounded-full shrink-0 overflow-hidden transition-[width,opacity] duration-300 ${i === activeSlide ? "h-1.25 w-5.25 bg-white/30 opacity-100" : "h-1.25 w-1.25 bg-white opacity-30"}`}
+                  >
+                    {i === activeSlide && (
+                      <span
+                        ref={progressRef}
+                        className="absolute inset-y-0 left-0 bg-white rounded-full w-0"
+                      />
+                    )}
                   </span>
                 </button>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
 
-        <div
+          {/* Merch — T-shirt */}
+          <div
+            id="about-merch"
+            className="col-span-4 relative bg-[#f4f4f4] rounded-sm overflow-hidden flex justify-center items-start"
+          >
+            <ShirtRotation />
+            <div className="absolute bottom-8 left-4 right-4 flex gap-2">
+              <div className="flex flex-1 items-center justify-between px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">
+                <span className="text-white text-sm font-medium opacity-50 whitespace-nowrap">
+                  Anagram 30g Teeshirt
+                </span>
+                <span className="text-white text-sm font-medium whitespace-nowrap">
+                  39.99$
+                </span>
+              </div>
+              <button className="flex items-center justify-center px-4 py-4 rounded-full bg-white shrink-0">
+                <span className="text-[#0c0c0c] text-sm font-medium whitespace-nowrap">
+                  Add to bag
+                </span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section
           id="about-col-contain"
           className="flex gap-4 flex-1 max-[766px]:flex-col"
         >
@@ -649,10 +645,10 @@ export default function AboutPage({
               </div>
             </div>
           </div>
-        </div>
-      </main>
+        </section>
+      </div>
 
       <Footer />
-    </div>
+    </main>
   );
 }
