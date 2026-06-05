@@ -31,7 +31,7 @@ export default function VimeoTwoCards({ card1, card2 }: Props) {
             { ref: embedRef1, card: card1 },
             { ref: embedRef2, card: card2 },
           ].map(({ ref, card }, i) => (
-            <div key={i} className="video-vimeo-two_card rounded-lg w-full h-full relative overflow-hidden">
+            <div key={i} className="video-vimeo-two_card w-full h-full relative overflow-hidden">
               <div
                 ref={ref}
                 data-src={card.dataSrc}

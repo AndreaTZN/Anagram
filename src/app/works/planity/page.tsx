@@ -73,7 +73,7 @@ export default function PlanityPage() {
       <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
           release={
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <Frame01
                 src="/works/Planity/release/1.webp"
                 alt="Planity release 1"
@@ -81,7 +81,7 @@ export default function PlanityPage() {
             </div>
           }
           backstage={
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <Frame01
                 src="/works/Planity/backstage/1.webp"
                 alt="Planity backstage 1"

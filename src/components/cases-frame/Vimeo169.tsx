@@ -17,7 +17,7 @@ export default function Vimeo169({ dataSrc, dataRatio, src, alt = "" }: Props) {
   useVimeoPlayer({ embedRef, dataSrc, dataRatio });
 
   return (
-    <div className="framevideo16-9_component rounded-lg overflow-hidden">
+    <div className="framevideo16-9_component overflow-hidden">
       <div className="framevideo16-9_container relative">
         <div className="framevideo16-9_wrapper aspect-video relative">
           <div
