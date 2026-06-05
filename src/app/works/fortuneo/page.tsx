@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -9,6 +10,26 @@ import Frame02 from "@/components/cases-frame/Frame02";
 import TeamCredits from "@/components/cases-frame/TeamCredits";
 import CaseStats from "@/components/cases-frame/CaseStats";
 import NextCase from "@/components/cases-frame/NextCase";
+
+export const metadata: Metadata = {
+  title: "Fortuneo Branding — Brand Strategy & Product Design by Anagram",
+  description:
+    "Anagram Club rebuilt Fortuneo's brand strategy and product design, helping France's most affordable online bank achieve a 45% increase in subscriptions.",
+  openGraph: {
+    title: "Fortuneo Branding — Brand Strategy & Product Design by Anagram",
+    description:
+      "Anagram Club rebuilt Fortuneo's brand strategy and product design, helping France's most affordable online bank achieve a 45% increase in subscriptions.",
+    url: "https://anagramclub.com/works/fortuneo",
+    siteName: "Anagram Club",
+    locale: "fr_FR",
+    type: "website",
+  },
+  metadataBase: new URL("https://anagramclub.com"),
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 const navData: CaseNavData = {
   title: "Fortuneo",
@@ -74,11 +95,6 @@ const navData: CaseNavData = {
         label: "B2C Textures",
         description:
           "The goal was to stay close to the B2C audience while remaining consistent with the visual direction established for B2B photography and the more human side of the website.",
-      },
-      {
-        id: "Team",
-        label: "Team",
-        description: "Discover the team behind this project.",
       },
     ],
   },
@@ -250,34 +266,13 @@ export default function FortuneoCasePage() {
                 projectDescription={
                   <>
                     <p>
-                      Since working with Robinhood in 2024 to create a more
-                      grown-up, elevated identity, the brand has continued its
-                      trajectory as a leader in next-generation finance.
-                      Throughout 2025, Robinhood expanded internationally,
-                      introduced new products, and surged over 575% in stock
-                      performance. The platform has evolved from its early days
-                      of being a commission-free trading pioneer to a
-                      comprehensive financial ecosystem.
+                      Fortuneo is France&apos;s most affordable online bank, built around a simple promise: zero fees, maximum value. With over a million customers and a profitable track record, the brand entered a new growth phase — needing to attract younger audiences with Fosfo while driving premium adoption with the Black Card.
                     </p>
                     <p className="mt-4">
-                      As Robinhood&apos;s core audience matured alongside the
-                      platform, the brand looked to deepen its relationship with
-                      users through new brand touchpoints. Users who started
-                      trading in their early twenties are now seasoned investors
-                      entering their late twenties and early thirties—settling
-                      into careers, starting families, and seeking financial
-                      sophistication. This demographic shift represents an
-                      opportunity for physical brand expression that matches
-                      evolving lifestyle aspirations, with merchandise emerging
-                      as a strategic means to extend the brand beyond digital
-                      interfaces.
+                      Anagram rebuilt Fortuneo&apos;s brand from the ground up, making the &ldquo;0&rdquo; — the symbol of free banking — the central visual asset of the identity. This dynamic graphic element brought motion, desirability, and coherence across every touchpoint, from product design to photography and motion.
                     </p>
                     <p className="mt-4">
-                      Introducing Robinhood Market, a merch store that acts as
-                      an integrated storytelling channel to reinforce the
-                      brand&apos;s elevated positioning, and to create a new
-                      lifestyle expression of the brand that fans would actually
-                      want to own and wear.
+                      The result: a 45% increase in subscription funnel entry, a 27% rise in prospects starting a project, and a 63% growth in documents submitted.
                     </p>
                   </>
                 }
