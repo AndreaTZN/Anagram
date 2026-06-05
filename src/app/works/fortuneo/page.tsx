@@ -8,6 +8,7 @@ import type { CaseNavData } from "@/contexts/CaseNavContext";
 import Frame02 from "@/components/cases-frame/Frame02";
 import TeamCredits from "@/components/cases-frame/TeamCredits";
 import CaseStats from "@/components/cases-frame/CaseStats";
+import NextCase from "@/components/cases-frame/NextCase";
 
 const navData: CaseNavData = {
   title: "Fortuneo",
@@ -85,12 +86,12 @@ const navData: CaseNavData = {
 
 export default function FortuneoCasePage() {
   return (
-    <main className="relative flex-1 pt-6 pr-6 pl-2 pb-6 max-[766px]:px-4 max-[766px]:pt-4">
+    <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
       <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
           release={
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <Frame01
                 src="/works/Fortuneo/release/1.webp"
                 alt="Fortuneo release 1"
@@ -187,6 +188,24 @@ export default function FortuneoCasePage() {
                   alt: "Fortuneo release 21",
                 }}
               />
+              <CaseStats
+                logo1={{
+                  src: "/works/Fortuneo/release/fotuneo-logo.png",
+                  alt: "Fortuneo",
+                }}
+                logo2={{
+                  src: "/works/Fortuneo/release/anagram-logo.png",
+                  alt: "Anagram",
+                }}
+                stats={[
+                  {
+                    value: "+45%",
+                    label: "entry into the subscription funnel",
+                  },
+                  { value: "+27%", label: "prospect who starts a project" },
+                  { value: "+63%", label: "documents sent on the course" },
+                ]}
+              />
               <TeamCredits
                 rows={[
                   {
@@ -228,29 +247,45 @@ export default function FortuneoCasePage() {
                   { role: "Integration", names: "Fortuneo" },
                   { role: "Fonts", names: "Söhne" },
                 ]}
-              />
-              <CaseStats
-                logo1={{
-                  src: "/works/Fortuneo/release/fotuneo-logo.png",
-                  alt: "Fortuneo",
-                }}
-                logo2={{
-                  src: "/works/Fortuneo/release/anagram-logo.png",
-                  alt: "Anagram",
-                }}
-                stats={[
-                  {
-                    value: "+45%",
-                    label: "entry into the subscription funnel",
-                  },
-                  { value: "+27%", label: "prospect who starts a project" },
-                  { value: "+63%", label: "documents sent on the course" },
-                ]}
+                projectDescription={
+                  <>
+                    <p>
+                      Since working with Robinhood in 2024 to create a more
+                      grown-up, elevated identity, the brand has continued its
+                      trajectory as a leader in next-generation finance.
+                      Throughout 2025, Robinhood expanded internationally,
+                      introduced new products, and surged over 575% in stock
+                      performance. The platform has evolved from its early days
+                      of being a commission-free trading pioneer to a
+                      comprehensive financial ecosystem.
+                    </p>
+                    <p className="mt-4">
+                      As Robinhood&apos;s core audience matured alongside the
+                      platform, the brand looked to deepen its relationship with
+                      users through new brand touchpoints. Users who started
+                      trading in their early twenties are now seasoned investors
+                      entering their late twenties and early thirties—settling
+                      into careers, starting families, and seeking financial
+                      sophistication. This demographic shift represents an
+                      opportunity for physical brand expression that matches
+                      evolving lifestyle aspirations, with merchandise emerging
+                      as a strategic means to extend the brand beyond digital
+                      interfaces.
+                    </p>
+                    <p className="mt-4">
+                      Introducing Robinhood Market, a merch store that acts as
+                      an integrated storytelling channel to reinforce the
+                      brand&apos;s elevated positioning, and to create a new
+                      lifestyle expression of the brand that fans would actually
+                      want to own and wear.
+                    </p>
+                  </>
+                }
               />
             </div>
           }
           backstage={
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <Frame01
                 src="/works/Fortuneo/backstage/1.webp"
                 alt="Fortuneo backstage 1"
@@ -375,9 +410,53 @@ export default function FortuneoCasePage() {
                       "Priscillia Vebret, Léa Carpentier, Madison Loco, Marie-Emmanuelle Hamon, Guillain Chauffert-Yvart, Grégory Guermonprez",
                   },
                 ]}
+                projectDescription={
+                  <>
+                    <p>
+                      Since working with Robinhood in 2024 to create a more
+                      grown-up, elevated identity, the brand has continued its
+                      trajectory as a leader in next-generation finance.
+                      Throughout 2025, Robinhood expanded internationally,
+                      introduced new products, and surged over 575% in stock
+                      performance. The platform has evolved from its early days
+                      of being a commission-free trading pioneer to a
+                      comprehensive financial ecosystem.
+                    </p>
+                    <p className="mt-4">
+                      As Robinhood&apos;s core audience matured alongside the
+                      platform, the brand looked to deepen its relationship with
+                      users through new brand touchpoints. Users who started
+                      trading in their early twenties are now seasoned investors
+                      entering their late twenties and early thirties—settling
+                      into careers, starting families, and seeking financial
+                      sophistication. This demographic shift represents an
+                      opportunity for physical brand expression that matches
+                      evolving lifestyle aspirations, with merchandise emerging
+                      as a strategic means to extend the brand beyond digital
+                      interfaces.
+                    </p>
+                    <p className="mt-4">
+                      Introducing Robinhood Market, a merch store that acts as
+                      an integrated storytelling channel to reinforce the
+                      brand&apos;s elevated positioning, and to create a new
+                      lifestyle expression of the brand that fans would actually
+                      want to own and wear.
+                    </p>
+                  </>
+                }
               />
             </div>
           }
+        />
+        <NextCase
+          projectName="Wastetide"
+          href="/works/wastetide"
+          media={{
+            type: "vimeo",
+            dataSrc: "1198689576",
+            dataRatio: "1920/1080",
+            posterSrc: "/works/wastetide/poster.webp",
+          }}
         />
       </div>
     </main>

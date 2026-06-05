@@ -151,7 +151,7 @@ export default function CaseNavigation() {
               strokeLinecap="round"
             />
           </svg>
-          <span className="text-[#0c0c0c] text-sm leading-[0.9] tracking-[-0.16px]">
+          <span className="text-[#0c0c0c] text-sm leading-[0.9] tracking-[-0.07px]">
             Close project
           </span>
         </Link>
@@ -161,7 +161,7 @@ export default function CaseNavigation() {
             <div id="case-nav-header" className="flex flex-col gap-4">
               <h1
                 id="case-nav-title"
-                className="text-[#0c0c0c] text-xl leading-[1.1] tracking-[-0.12px]"
+                className="text-[#0c0c0c] text-xl leading-[1.1] tracking-[-0.1px]"
               >
                 {data.title}
               </h1>
@@ -176,20 +176,20 @@ export default function CaseNavigation() {
                 href={data.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#0c0c0c] text-sm leading-[1.3]  w-fit"
+                className="text-[#0c0c0c] text-sm leading-[0.9] tracking-[-0.07px] w-fit"
               >
                 See it live
               </a>
             </div>
 
-            {(data.release || data.backstage) && (
+            {(data.release && data.backstage) && (
               <div id="case-nav-tabs" className="flex gap-2">
                 {data.release && (
                   <button
                     ref={tabReleaseRef}
                     id="case-nav-tab-release"
                     onClick={() => setActiveTab("release")}
-                    className="cursor-pointer px-4 py-4 rounded-full text-sm leading-[0.9] tracking-[-0.16px] bg-[#0c0c0c] text-white"
+                    className="cursor-pointer px-4 py-4 rounded-full text-sm font-medium leading-[0.9] bg-[#0c0c0c] text-white"
                   >
                     Release
                   </button>
@@ -199,7 +199,7 @@ export default function CaseNavigation() {
                     ref={tabBackstageRef}
                     id="case-nav-tab-backstage"
                     onClick={() => setActiveTab("backstage")}
-                    className="cursor-pointer px-4 py-4 rounded-full text-sm leading-[0.9] tracking-[-0.16px] bg-[#f5f5f5] text-[#0c0c0c]"
+                    className="cursor-pointer px-4 py-4 rounded-full text-sm font-medium leading-[0.9] bg-[#f5f5f5] text-[#0c0c0c]"
                   >
                     Backstage
                   </button>
@@ -207,13 +207,13 @@ export default function CaseNavigation() {
               </div>
             )}
 
-            {sections?.length && (
-              <div id="case-nav-sections" className="flex flex-col gap-4">
+            {sections && sections.length > 0 && (
+              <div id="case-nav-sections" className="flex flex-col gap-6">
                 {sections.map((section, i) => (
                   <div id={`case-nav-section-${section.id}`} key={section.id}>
                     <button
                       onClick={() => handleSectionClick(section.id)}
-                      className={`cursor-pointer text-[1rem] font-medium leading-[0.8] text-[#0c0c0c] transition-opacity duration-200 ${
+                      className={`cursor-pointer text-[1.125rem] font-normal leading-[1.1] tracking-[-0.09px] text-[#0c0c0c] transition-opacity duration-200 ${
                         activeSection !== section.id ? "opacity-30" : ""
                       }`}
                     >
@@ -228,7 +228,7 @@ export default function CaseNavigation() {
                       }}
                       className="overflow-hidden"
                     >
-                      <p className="section-desc mt-1 text-[#7e7e7e] text-[0.875rem] leading-[1.3]">
+                      <p className="section-desc mt-2 text-[#7c7c7c] text-[0.875rem] leading-[1.3]">
                         {section.description}
                       </p>
                     </div>

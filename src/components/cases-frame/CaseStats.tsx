@@ -13,7 +13,7 @@ type Props = {
 
 export default function CaseStats({ logo1, logo2, stats }: Props) {
   return (
-    <div className="casestats_component relative aspect-video w-full rounded-lg overflow-hidden bg-[#0c0c0c] flex flex-col items-center justify-center">
+    <div className="casestats_component relative aspect-video w-full overflow-hidden bg-[#0c0c0c] flex flex-col items-center justify-center">
 
       <div className="casestats_logo absolute top-28 flex items-center gap-3">
         <Image

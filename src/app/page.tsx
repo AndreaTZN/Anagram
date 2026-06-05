@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <main className="relative flex-1 pt-6 pr-6 pl-2 pb-6 max-[766px]:px-4 max-[766px]:pt-4">
+    <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <section
         className="relative bg-[#a6f1e4] w-full rounded-sm overflow-hidden"
         style={{ aspectRatio: "16 / 9" }}

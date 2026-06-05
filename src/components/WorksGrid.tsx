@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Badge from "./Badge";
 import MerchCard from "./MerchCard";
 import ToolCard from "./ToolCard";
@@ -11,6 +12,7 @@ type Work = {
   price?: string;
   badge?: string;
   externalLink?: string;
+  href?: string;
   tag?: string;
   media: {
     type: "image" | "video";
@@ -45,10 +47,10 @@ const works: Work[] = [
   },
   {
     name: "Wastetide",
+    href: "/works/wastetide",
     tag: "Coming project",
     description:
       "Wastetide reframes waste as untapped value. Built on the belief that nothing is truly discarded, the brand positions industrial waste as a resource. A hidden asset waiting to be captured, optimized, and monetized.",
-    badge: "Coming soon",
     media: {
       type: "image",
       src: "/works/wastetide/1.jpg",
@@ -131,8 +133,13 @@ function WorkCard({ work }: { work: Work }) {
     );
   }
 
+  const MediaWrapper = work.href
+    ? ({ children }: { children: React.ReactNode }) => <Link href={work.href!}>{children}</Link>
+    : ({ children }: { children: React.ReactNode }) => <>{children}</>;
+
   return (
     <div className="flex flex-col gap-3">
+      <MediaWrapper>
       <div
         className={`relative ${work.media.aspect} rounded-sm overflow-hidden w-full`}
         style={{ backgroundColor: work.media.bg }}
@@ -156,6 +163,7 @@ function WorkCard({ work }: { work: Work }) {
         )}
         {work.badge && <Badge label={work.badge} />}
       </div>
+      </MediaWrapper>
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between w-full">
           <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">

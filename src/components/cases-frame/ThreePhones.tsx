@@ -61,7 +61,7 @@ export default function ThreePhones({ phone1, phone2, phone3 }: Props) {
   ];
 
   return (
-    <div className="threephones_component w-full rounded-lg overflow-hidden">
+    <div className="threephones_component w-full overflow-hidden">
       <div
         ref={containerRef}
         className="threephones_container aspect-video flex items-end justify-center gap-6 py-10"
