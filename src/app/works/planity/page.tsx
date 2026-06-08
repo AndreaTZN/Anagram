@@ -7,25 +7,15 @@ import Vimeo169 from "@/components/cases-frame/Vimeo169";
 import Frame02 from "@/components/cases-frame/Frame02";
 import TeamCredits from "@/components/cases-frame/TeamCredits";
 import VimeoImageCards from "@/components/cases-frame/VimeoImageCards";
+import NextCase from "@/components/cases-frame/NextCase";
 
 export const metadata: Metadata = {
   title: "Planity Branding — Brand Identity Case Study by Anagram",
   description:
     "See how Anagram Club rebuilt Planity's brand — from strategy and identity to product design and photography for France's top beauty booking platform.",
-  openGraph: {
-    title: "Planity Branding — Brand Strategy & Product Design by Anagram",
-    description:
-      "Anagram Club shaped Planity's brand strategy and product design, helping Europe's leading beauty booking platform build a market-defining identity.",
-    url: "https://anagramclub.com/works/planity",
-    siteName: "Anagram Club",
-    locale: "fr_FR",
-    type: "website",
-  },
+  openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
 const navData: CaseNavData = {
@@ -439,6 +429,16 @@ export default function PlanityPage() {
               />
             </div>
           }
+        />
+        <NextCase
+          projectName="Fortuneo"
+          href="/works/fortuneo"
+          media={{
+            type: "vimeo",
+            dataSrc: "1164024409",
+            dataRatio: "1920/1080",
+            posterSrc: "/works/Fortuneo/release/2.webp",
+          }}
         />
       </div>
     </main>
