@@ -15,20 +15,9 @@ export const metadata: Metadata = {
   title: "Fortuneo Branding — Brand Strategy & Product Design by Anagram",
   description:
     "Anagram Club rebuilt Fortuneo's brand strategy and product design, helping France's most affordable online bank achieve a 45% increase in subscriptions.",
-  openGraph: {
-    title: "Fortuneo Branding — Brand Strategy & Product Design by Anagram",
-    description:
-      "Anagram Club rebuilt Fortuneo's brand strategy and product design, helping France's most affordable online bank achieve a 45% increase in subscriptions.",
-    url: "https://anagramclub.com/works/fortuneo",
-    siteName: "Anagram Club",
-    locale: "fr_FR",
-    type: "website",
-  },
+  openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
 const navData: CaseNavData = {

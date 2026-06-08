@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
 import type { CaseNavData } from "@/contexts/CaseNavContext";
+
+export const metadata: Metadata = {
+  title: "Wastetide Branding — Brand Strategy & Identity by Anagram Club",
+  description:
+    "Anagram Club built Wastetide's brand identity, reframing industrial waste as untapped value through a bold visual and strategic system.",
+  openGraph: { images: ["/opengraph.webp"] },
+  metadataBase: new URL("https://anagramclub.com"),
+  robots: { index: true, follow: true },
+};
 
 const navData: CaseNavData = {
   title: "Wastetide",
