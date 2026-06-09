@@ -4,8 +4,9 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import WorldClock from "./WorldClock";
-import PhotoCarouselWidget from "./widgets/PhotoCarouselWidget";
-import ClockWidget from "./widgets/ClockWidget";
+import PhotoCarouselWidget from "./PhotoCarouselWidget";
+import ClockWidget from "./ClockWidget";
+import { globalLenisRef } from "@/lib/lenis";
 
 gsap.registerPlugin(useGSAP);
 
@@ -71,8 +72,10 @@ export default function WidgetPanel() {
     if (!tl.current) return;
     if (!open) {
       tl.current.play();
+      globalLenisRef.current?.stop();
     } else {
       tl.current.reverse();
+      globalLenisRef.current?.start();
     }
     setOpen((v) => !v);
   }
@@ -115,7 +118,7 @@ export default function WidgetPanel() {
       {/* Overlay + Panel */}
       <div
         ref={overlayRef}
-        className="absolute -inset-6 z-20 backdrop-blur-2xl bg-[rgba(12,12,12,0.5)] opacity-0 pointer-events-none"
+        className="absolute -inset-6 z-20 backdrop-blur-2xl bg-[rgba(12,12,12,0.15)] opacity-0 pointer-events-none"
         onClick={toggle}
       />
 
@@ -127,7 +130,7 @@ export default function WidgetPanel() {
       >
         {/* Widgets grid */}
         <div className="flex gap-4">
-          <div ref={(el) => addWidget(el, 0)} className="flex-1">
+          <div ref={(el) => addWidget(el, 0)} className="">
             <PhotoCarouselWidget />
           </div>
           <div ref={(el) => addWidget(el, 1)} className="shrink-0">

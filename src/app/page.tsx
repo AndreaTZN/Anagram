@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import WidgetPanel from "@/components/WidgetPanel";
+import WidgetPanel from "@/components/widgets/WidgetPanel";
 import WorksGrid from "@/components/WorksGrid";
 import Footer from "@/components/Footer";
 

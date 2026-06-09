@@ -4,6 +4,7 @@ import NavWrapper from "@/components/NavWrapper";
 import SmoothScroll from "@/components/SmoothScroll";
 import PageTheme from "@/components/PageTheme";
 import { CaseNavProvider } from "@/contexts/CaseNavContext";
+import MobileNav from "@/components/MobileNav";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -27,12 +28,11 @@ export default async function RootLayout({
       <body className="antialiased overflow-hidden">
         <CaseNavProvider isCasePage={isCasePage}>
           <PageTheme>
-            <div className="sticky top-0 h-screen shrink-0">
+            <div className="sticky top-0 h-screen shrink-0 max-[992px]:hidden">
               <NavWrapper />
             </div>
-            <SmoothScroll>
-              {children}
-            </SmoothScroll>
+            <MobileNav />
+            <SmoothScroll>{children}</SmoothScroll>
           </PageTheme>
         </CaseNavProvider>
       </body>

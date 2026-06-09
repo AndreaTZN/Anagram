@@ -134,35 +134,37 @@ function WorkCard({ work }: { work: Work }) {
   }
 
   const MediaWrapper = work.href
-    ? ({ children }: { children: React.ReactNode }) => <Link href={work.href!}>{children}</Link>
+    ? ({ children }: { children: React.ReactNode }) => (
+        <Link href={work.href!}>{children}</Link>
+      )
     : ({ children }: { children: React.ReactNode }) => <>{children}</>;
 
   return (
     <div className="flex flex-col gap-3">
       <MediaWrapper>
-      <div
-        className={`relative ${work.media.aspect} rounded-sm overflow-hidden w-full`}
-        style={{ backgroundColor: work.media.bg }}
-      >
-        {work.media.type === "image" ? (
-          <img
-            src={work.media.src}
-            alt={work.name}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        ) : (
-          <video
-            autoPlay
-            loop
-            playsInline
-            muted
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src={work.media.src} />
-          </video>
-        )}
-        {work.badge && <Badge label={work.badge} />}
-      </div>
+        <div
+          className={`relative ${work.media.aspect} rounded-sm overflow-hidden w-full`}
+          style={{ backgroundColor: work.media.bg }}
+        >
+          {work.media.type === "image" ? (
+            <img
+              src={work.media.src}
+              alt={work.name}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <video
+              autoPlay
+              loop
+              playsInline
+              muted
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={work.media.src} />
+            </video>
+          )}
+          {work.badge && <Badge label={work.badge} />}
+        </div>
       </MediaWrapper>
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between w-full">
@@ -205,10 +207,12 @@ export default function WorksGrid() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Filters */}
+      {/* Filters — pills on desktop, dropdown on tablet/mobile */}
       <div className="flex items-center gap-4">
         <span className="text-[#7e7e7e] text-base leading-[0.8]">Filters</span>
-        <div className="flex flex-wrap gap-2">
+
+        {/* Desktop pills */}
+        <div className="hidden md:flex flex-wrap gap-2">
           {FILTERS.map((filter) => (
             <button
               key={filter}
@@ -223,15 +227,34 @@ export default function WorksGrid() {
             </button>
           ))}
         </div>
+
+        {/* Tablet/mobile dropdown */}
+        <select
+          value={activeFilter}
+          onChange={(e) => setActiveFilter(e.target.value)}
+          className="md:hidden px-4 py-3 rounded-full text-sm bg-[#f5f5f5] text-[#0c0c0c] cursor-pointer border-none outline-none appearance-none pr-8"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%230c0c0c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right 0.75rem center",
+          }}
+        >
+          {FILTERS.map((filter) => (
+            <option key={filter} value={filter}>
+              {filter}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-4 gap-3 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-start">
         {filtered.slice(0, 4).map((work) => (
           <WorkCard key={work.name} work={work} />
         ))}
         {filtered.length > 4 && (
-          <div className="col-span-4 rounded-sm overflow-hidden aspect-video my-8">
+          <div className="col-span-1 md:col-span-4 rounded-sm overflow-hidden aspect-video my-8">
             <video
               loop
               autoPlay

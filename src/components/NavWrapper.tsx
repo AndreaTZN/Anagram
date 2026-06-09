@@ -26,10 +26,7 @@ export default function NavWrapper() {
   }, [showCaseNav]);
 
   return (
-    <div
-      id="nav-wrapper"
-      className="relative h-full w-62.5  max-[992px]:hidden"
-    >
+    <div id="nav-wrapper" className="relative h-full w-62.5 ">
       <div
         ref={navRef}
         id={showCaseNav ? "nav-cases" : "nav-main"}
