@@ -36,17 +36,17 @@ export default function SmoothScroll({
 
     lenis.on("scroll", () => ScrollTrigger.update());
 
-    let lastWidth = window.innerWidth;
-    let resizeTimeout: ReturnType<typeof setTimeout>;
-    function onResize() {
-      const currentWidth = window.innerWidth;
-      if (currentWidth !== lastWidth) {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => location.reload(), 500);
-        lastWidth = currentWidth;
-      }
-    }
-    window.addEventListener("resize", onResize);
+    // let lastWidth = window.innerWidth;
+    // let resizeTimeout: ReturnType<typeof setTimeout>;
+    // function onResize() {
+    //   const currentWidth = window.innerWidth;
+    //   if (currentWidth !== lastWidth) {
+    //     clearTimeout(resizeTimeout);
+    //     resizeTimeout = setTimeout(() => location.reload(), 500);
+    //     lastWidth = currentWidth;
+    //   }
+    // }
+    // window.addEventListener("resize", onResize);
 
     let raf: number;
     function loop(time: number) {
@@ -57,8 +57,8 @@ export default function SmoothScroll({
 
     return () => {
       cancelAnimationFrame(raf);
-      clearTimeout(resizeTimeout);
-      window.removeEventListener("resize", onResize);
+      // clearTimeout(resizeTimeout);
+      // window.removeEventListener("resize", onResize);
       lenis.destroy();
       lenisRef.current = null;
       globalLenisRef.current = null;
