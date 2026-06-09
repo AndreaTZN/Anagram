@@ -79,28 +79,22 @@ export default function CaseNavigation() {
     if (id === activeSectionRef.current) return;
 
     const prevEl = contentRefs.current[activeSectionRef.current];
+    const nextEl = contentRefs.current[id];
+
     if (prevEl) {
-      gsap.to(prevEl, {
-        height: 0,
-        opacity: 0,
-        duration: 0.25,
-        ease: "power2.inOut",
-      });
+      gsap.set(prevEl, { height: prevEl.scrollHeight });
+      const prevText = prevEl.querySelector("p");
+      if (prevText) gsap.set(prevText, { opacity: 0, y: 6 });
+      gsap.to(prevEl, { height: 0, opacity: 0, duration: 0.5, ease: "power3.out" });
     }
 
-    const nextEl = contentRefs.current[id];
     if (nextEl) {
-      gsap.fromTo(
-        nextEl,
-        { height: 0, opacity: 0 },
-        {
-          height: nextEl.scrollHeight,
-          opacity: 1,
-          duration: 0.35,
-          ease: "power2.out",
-          onComplete: () => gsap.set(nextEl, { height: "auto" }),
-        },
-      );
+      const nextText = nextEl.querySelector("p");
+      gsap.set(nextEl, { height: 0, opacity: 0 });
+      gsap.to(nextEl, { height: "auto", opacity: 1, duration: 0.65, ease: "power4.out" });
+      if (nextText) {
+        gsap.fromTo(nextText, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.65, ease: "power4.out" });
+      }
     }
 
     activeSectionRef.current = id;
@@ -171,15 +165,17 @@ export default function CaseNavigation() {
               >
                 {data.description}
               </p>
-              <a
-                id="case-nav-live"
-                href={data.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#0c0c0c] text-sm leading-[0.9] tracking-[-0.07px] w-fit"
-              >
-                See it live
-              </a>
+              {data.liveUrl && (
+                <a
+                  id="case-nav-live"
+                  href={data.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#0c0c0c] text-sm leading-[0.9] tracking-[-0.07px] w-fit"
+                >
+                  See it live
+                </a>
+              )}
             </div>
 
             {(data.release && data.backstage) && (
@@ -224,6 +220,8 @@ export default function CaseNavigation() {
                         contentRefs.current[section.id] = el;
                         if (el && i !== 0) {
                           gsap.set(el, { height: 0, opacity: 0 });
+                          const p = el.querySelector("p");
+                          if (p) gsap.set(p, { opacity: 0, y: 6 });
                         }
                       }}
                       className="overflow-hidden"

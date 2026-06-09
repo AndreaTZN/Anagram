@@ -15,7 +15,7 @@ export type CaseTab = {
 export type CaseNavData = {
   title: string;
   description: string;
-  liveUrl: string;
+  liveUrl?: string;
   release?: CaseTab;
   backstage?: CaseTab;
 };
