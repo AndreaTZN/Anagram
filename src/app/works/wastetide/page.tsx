@@ -227,9 +227,11 @@ export default function WastetidePage() {
                   { role: "Creative direction", names: "Lou Bontemps" },
                   { role: "Global direction", names: "Rémy Godet" },
                   { role: "Project management", names: "Valentin Salmon" },
-                  { role: "Creative direction", names: "Rémy Godet" },
                   { role: "3D Design", names: "Rémy Godet" },
-                  { role: "UX/UI", names: "Rémy Godet, Vincenzo Tileui" },
+                  {
+                    role: "UX/UI",
+                    names: "Rémy Godet, Vincenzo Tilleul, Lou Bontemps",
+                  },
                   {
                     role: "Motion Design",
                     names: "Rémy Godet, Bérengère Morel",
