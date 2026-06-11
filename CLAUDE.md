@@ -68,6 +68,15 @@ Vimeo players are managed via the `useVimeoPlayer` hook (`src/hooks/useVimeoPlay
 - Prefer editing existing files over creating new ones
 - Always use `rem` for sizing and spacing — never `px`
 
+## Assets — case-sensitivity (Vercel)
+
+Vercel runs on Linux (case-sensitive filesystem); macOS is case-insensitive, so a casing mismatch works locally but 404s in production.
+
+- Asset folders in `public/works/` use **PascalCase** (e.g. `Wastetide`, `FoundersFuture`) — paths in code must match the exact casing
+- Page routes stay lowercase (`/works/wastetide`) — only **asset paths** (`/works/Wastetide/1.webp`) follow folder casing
+- Before referencing an asset, verify the file exists with the exact name and extension (no guessing `.jpg` vs `.webp`)
+- Renaming a folder's casing on macOS requires a two-step `git mv` (via a temp name)
+
 ## DOM naming — inspector-first
 
 Every meaningful section or block must have an `id` following the pattern `[page]-[section]` (e.g. `about-hero`, `case-nav-tabs`).
