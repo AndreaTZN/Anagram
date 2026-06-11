@@ -47,11 +47,15 @@ export default function WastetidePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
-      <div id="case-page" className="flex flex-col gap-6">
+      <div id="case-page" className="flex flex-col gap-4">
         <CaseTabContent
           release={
-            <div className="flex flex-col gap-6">
-              <Frame01 src="/works/Wastetide/1.webp" alt="Wastetide 1" priority />
+            <div className="flex flex-col gap-4">
+              <Frame01
+                src="/works/Wastetide/1.webp"
+                alt="Wastetide 1"
+                priority
+              />
               <VimeoSound
                 dataSrc="1199785516"
                 dataRatio="1920/1080"
