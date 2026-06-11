@@ -100,13 +100,13 @@ const works: Work[] = [
     },
   },
   {
-    name: "Geobrowser",
+    name: "Arcads",
     tag: "All",
     description:
-      "Redefine industrial automation through real-time vision-guided robotics. Inbolt enables robots to see, think and adapt in real time, removing the need.",
+      "They help brands quickly turn text into high-quality video ads using AI actors and automation.",
     media: {
       type: "image",
-      src: "/works/geobrowser/1.jpg",
+      src: "/works/arcads/2.webp",
       aspect: "aspect-[16/9]",
     },
   },
