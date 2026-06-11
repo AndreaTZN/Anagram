@@ -224,6 +224,7 @@ export default function WastetidePage() {
               <Frame01 src="/works/Wastetide/26.webp" alt="Wastetide 26" />
               <TeamCredits
                 rows={[
+                  { role: "Creative direction", names: "Lou Bontemps" },
                   { role: "Global direction", names: "Rémy Godet" },
                   { role: "Project management", names: "Valentin Salmon" },
                   { role: "Creative direction", names: "Rémy Godet" },
