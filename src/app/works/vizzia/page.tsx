@@ -65,6 +65,7 @@ export default function VizziaPage() {
                 alt="Vizzia video 1"
                 dataSrc="1172566718"
                 dataRatio="2000/1124"
+                priority
               />
               <Frame01 src="/works/Vizzia/2.avif" alt="Vizzia 2 " />
               <Vimeo169

@@ -60,7 +60,7 @@ export default function InboltPage() {
         <CaseTabContent
           release={
             <div className="flex flex-col gap-4">
-              <Frame01 src="/works/Inbolt/1.avif" alt="Inbolt 1" />
+              <Frame01 src="/works/Inbolt/1.avif" alt="Inbolt 1" priority />
               <Vimeo169
                 src="/works/Inbolt/inbolt-1-vimeo.webp"
                 alt="Inbolt video 1"

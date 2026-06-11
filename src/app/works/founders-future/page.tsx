@@ -80,6 +80,7 @@ export default function FoundersFuturePage() {
               <Frame01
                 src="/works/FoundersFuture/release/1.webp"
                 alt="Founders Future release 1"
+                priority
               />
               <Vimeo169
                 src="/works/FoundersFuture/release/2.webp"

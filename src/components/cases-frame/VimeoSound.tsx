@@ -12,10 +12,10 @@ type Props = {
   dataRatio?: string;
   src: string;
   alt?: string;
-  loading?: "lazy" | "eager";
+  priority?: boolean;
 };
 
-export default function VimeoSound({ dataSrc, dataRatio, src, alt = "", loading = "lazy" }: Props) {
+export default function VimeoSound({ dataSrc, dataRatio, src, alt = "", priority = false }: Props) {
   const embedRef = useRef<HTMLDivElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const barRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -80,7 +80,8 @@ export default function VimeoSound({ dataSrc, dataRatio, src, alt = "", loading 
           src={src}
           alt={alt}
           fill
-          loading={loading}
+          loading={priority ? undefined : "lazy"}
+          priority={priority}
           sizes="100vw"
           className="projet-card_vimeo-image object-cover z-1 scale-[1.01]"
         />
