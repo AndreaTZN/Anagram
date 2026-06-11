@@ -51,13 +51,13 @@ export default function WastetidePage() {
         <CaseTabContent
           release={
             <div className="flex flex-col gap-6">
-              <Frame01 src="/works/Wastetide/1.webp" alt="Wastetide 1" />
+              <Frame01 src="/works/Wastetide/1.webp" alt="Wastetide 1" priority />
               <VimeoSound
                 dataSrc="1199785516"
                 dataRatio="1920/1080"
                 src="/works/Wastetide/2.webp"
                 alt="Wastetide video"
-                loading="eager"
+                priority
               />
 
               <VimeoTextImage

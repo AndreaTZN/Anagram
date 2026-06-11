@@ -98,6 +98,7 @@ export default function PlanityPage() {
               <Frame01
                 src="/works/Planity/release/1.webp"
                 alt="Planity release 1"
+                priority
               />
               <Vimeo169
                 src="/works/Planity/release/2.webp"

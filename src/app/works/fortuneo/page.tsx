@@ -100,6 +100,7 @@ export default function FortuneoCasePage() {
               <Frame01
                 src="/works/Fortuneo/release/1.webp"
                 alt="Fortuneo release 1"
+                priority
               />
               <Vimeo169
                 src="/works/Fortuneo/release/2.webp"

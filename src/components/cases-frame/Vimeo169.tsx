@@ -9,9 +9,10 @@ type Props = {
   dataRatio?: string;
   src: string;
   alt?: string;
+  priority?: boolean;
 };
 
-export default function Vimeo169({ dataSrc, dataRatio, src, alt = "" }: Props) {
+export default function Vimeo169({ dataSrc, dataRatio, src, alt = "", priority = false }: Props) {
   const embedRef = useRef<HTMLDivElement>(null);
 
   useVimeoPlayer({ embedRef, dataSrc, dataRatio });
@@ -30,7 +31,9 @@ export default function Vimeo169({ dataSrc, dataRatio, src, alt = "" }: Props) {
               src={src}
               alt={alt}
               fill
-              loading="lazy"
+              loading={priority ? undefined : "lazy"}
+              priority={priority}
+              sizes="100vw"
               className="projet-card_vimeo-image object-cover z-1 scale-[1.01]"
             />
           </div>

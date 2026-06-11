@@ -60,7 +60,7 @@ export default function ArcadsCasePage() {
         <CaseTabContent
           release={
             <div className="flex flex-col gap-4">
-              <Frame01 src="/works/Arcads/1.avif" alt="Arcads 1" />
+              <Frame01 src="/works/Arcads/1.avif" alt="Arcads 1" priority />
               <Frame02
                 img1={{
                   src: "/works/Arcads/2.webp",

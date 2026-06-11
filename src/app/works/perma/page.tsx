@@ -60,7 +60,7 @@ export default function PermaCasePage() {
         <CaseTabContent
           release={
             <div className="flex flex-col gap-4">
-              <Frame01 src="/works/Perma/1.webp" alt="Perma 1" />
+              <Frame01 src="/works/Perma/1.webp" alt="Perma 1" priority />
               <Frame01 src="/works/Perma/2.avif" alt="Perma 2" />
               <Frame01 src="/works/Perma/3.avif" alt="Perma 3" />
               <SplitTextImage

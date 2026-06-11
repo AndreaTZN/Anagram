@@ -26,6 +26,8 @@ export default async function RootLayout({
   return (
     <html lang="fr">
       <body className="antialiased overflow-hidden">
+        <link rel="preconnect" href="https://player.vimeo.com" />
+        <link rel="preconnect" href="https://f.vimeocdn.com" />
         <CaseNavProvider isCasePage={isCasePage}>
           <PageTheme>
             <div className="sticky top-0 h-screen shrink-0 max-[992px]:hidden">
