@@ -53,7 +53,7 @@ const works: Work[] = [
       "Wastetide reframes waste as untapped value. Built on the belief that nothing is truly discarded, the brand positions industrial waste as a resource. A hidden asset waiting to be captured, optimized, and monetized.",
     media: {
       type: "image",
-      src: "/works/wastetide/1.jpg",
+      src: "/works/Wastetide/1.webp",
       aspect: "aspect-[582/351]",
     },
   },

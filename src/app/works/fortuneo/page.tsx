@@ -440,7 +440,7 @@ export default function FortuneoCasePage() {
             type: "vimeo",
             dataSrc: "1198689576",
             dataRatio: "1920/1080",
-            posterSrc: "/works/wastetide/poster.webp",
+            posterSrc: "/works/Wastetide/1.webp",
           }}
         />
       </div>
