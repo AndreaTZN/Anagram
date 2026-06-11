@@ -106,7 +106,7 @@ const works: Work[] = [
       "They help brands quickly turn text into high-quality video ads using AI actors and automation.",
     media: {
       type: "image",
-      src: "/works/arcads/2.webp",
+      src: "/works/Arcads/2.webp",
       aspect: "aspect-[16/9]",
     },
   },
