@@ -4,6 +4,7 @@ import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
 import type { CaseNavData } from "@/contexts/CaseNavContext";
 import SplitTextImage from "@/components/cases-frame/SplitTextImage";
+import NextCase from "@/components/cases-frame/NextCase";
 import Vimeo169 from "@/components/cases-frame/Vimeo169";
 import Frame02 from "@/components/cases-frame/Frame02";
 import FourPhones from "@/components/cases-frame/FourPhones";
@@ -99,6 +100,16 @@ export default function BeeCasePage() {
               <Frame01 src="/works/Bee/21.avif" alt="Bee 21" />
             </div>
           }
+        />
+        <NextCase
+          projectName="Fortuneo"
+          href="/works/fortuneo"
+          media={{
+            type: "vimeo",
+            dataSrc: "1164024409",
+            dataRatio: "1920/1080",
+            posterSrc: "/works/Fortuneo/release/2.webp",
+          }}
         />
       </div>
     </main>
