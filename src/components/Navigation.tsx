@@ -139,6 +139,7 @@ export default function Navigation() {
                       src={work.image}
                       alt={work.name}
                       fill
+                      sizes="100px"
                       className="object-cover"
                     />
                   )}

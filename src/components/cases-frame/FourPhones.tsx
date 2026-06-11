@@ -16,18 +16,18 @@ type Props = {
   phone1: PhoneProps;
   phone2: PhoneProps;
   phone3: PhoneProps;
+  phone4: PhoneProps;
+  bgColor?: string;
 };
 
-export default function ThreePhones({ phone1, phone2, phone3 }: Props) {
+export default function FourPhones({ phone1, phone2, phone3, phone4, bgColor }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const phone1Ref = useRef<HTMLDivElement>(null);
-  const phone2Ref = useRef<HTMLDivElement>(null);
-  const phone3Ref = useRef<HTMLDivElement>(null);
+  const phoneRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useLayoutEffect(() => {
-    const phones = [phone1Ref.current, phone2Ref.current, phone3Ref.current];
+    const phones = phoneRefs.current.filter(Boolean);
     const container = containerRef.current;
-    if (!container || phones.some((p) => !p)) return;
+    if (!container || phones.length === 0) return;
 
     gsap.set(phones, { y: "2rem", opacity: 0 });
 
@@ -54,20 +54,25 @@ export default function ThreePhones({ phone1, phone2, phone3 }: Props) {
     };
   }, []);
 
-  const phones = [
-    { ...phone1, ref: phone1Ref },
-    { ...phone2, ref: phone2Ref },
-    { ...phone3, ref: phone3Ref },
-  ];
+  const phones = [phone1, phone2, phone3, phone4];
 
   return (
-    <div className="threephones_component w-full overflow-hidden">
+    <div
+      className="fourphones_component w-full overflow-hidden"
+      style={{ backgroundColor: bgColor }}
+    >
       <div
         ref={containerRef}
-        className="threephones_container aspect-video flex items-end justify-center gap-6 py-10"
+        className="fourphones_container aspect-video flex items-end justify-center gap-6 py-10"
       >
-        {phones.map(({ src, alt, ref }, i) => (
-          <div key={i} ref={ref} className="threephones_phone relative h-[80%] max-w-80 aspect-170/348">
+        {phones.map(({ src, alt }, i) => (
+          <div
+            key={i}
+            ref={(el) => {
+              phoneRefs.current[i] = el;
+            }}
+            className="fourphones_phone relative h-[80%] max-w-80 aspect-170/348"
+          >
             <Image
               src={src}
               alt={alt ?? ""}

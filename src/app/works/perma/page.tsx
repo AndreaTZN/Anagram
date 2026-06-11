@@ -56,7 +56,7 @@ export default function PermaCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
-      <div id="case-page" className="flex flex-col gap-10">
+      <div id="case-page" className="flex flex-col gap-10 max-[992px]:mt-12">
         <CaseTabContent
           release={
             <div className="flex flex-col gap-4">

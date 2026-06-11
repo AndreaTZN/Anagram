@@ -7,6 +7,7 @@ type Props = {
   imageAlt?: string;
   bgColor?: string;
   imagePosition?: "left" | "right";
+  imageFit?: "cover" | "contain";
 };
 
 export default function SplitTextImage({
@@ -16,6 +17,7 @@ export default function SplitTextImage({
   imageAlt = "",
   bgColor = "#f3f0ed",
   imagePosition = "right",
+  imageFit = "cover",
 }: Props) {
   const textBlock = (
     <div className="splittextimage_text flex flex-col gap-4 justify-center px-10 py-10 w-[42%] max-[992px]:w-full max-[992px]:px-6 max-[992px]:pt-8 max-[992px]:pb-0 max-[992px]:order-2 shrink-0">
@@ -31,7 +33,7 @@ export default function SplitTextImage({
         alt={imageAlt}
         fill
         sizes="(max-width: 992px) 100vw, 58vw"
-        className="object-cover"
+        className={imageFit === "contain" ? "object-contain" : "object-cover"}
       />
     </div>
   );

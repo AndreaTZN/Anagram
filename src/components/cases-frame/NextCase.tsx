@@ -106,6 +106,7 @@ export default function NextCase({ projectName, href, media }: Props) {
             src={posterSrc}
             alt={posterAlt}
             fill
+            sizes="100vw"
             className="object-cover"
           />
         </div>

@@ -13,6 +13,7 @@ export default function Frame02({ img1, img2 }: Props) {
           src={img1.src}
           alt={img1.alt ?? ""}
           fill
+          sizes="50vw"
           className="object-cover"
         />
       </div>
@@ -21,6 +22,7 @@ export default function Frame02({ img1, img2 }: Props) {
           src={img2.src}
           alt={img2.alt ?? ""}
           fill
+          sizes="50vw"
           className="object-cover"
         />
       </div>
