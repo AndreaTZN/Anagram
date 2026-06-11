@@ -1,4 +1,4 @@
-import { useEffect, type RefObject } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -60,6 +60,8 @@ type Options = {
 };
 
 export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
+  const playerRef = useRef<any>(null);
+
   useEffect(() => {
     const el = embedRef.current;
     if (!el || !dataSrc) return;
@@ -109,6 +111,7 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
 
       const Vimeo = (window as any).Vimeo;
       player = new Vimeo.Player(iframe);
+      playerRef.current = player;
       activePlayers.add(player);
 
       // Check again — cleanup may have run between player creation and now
@@ -157,6 +160,7 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
 
     return () => {
       destroyed = true;
+      playerRef.current = null;
       st?.kill();
       if (player) {
         player.pause().catch(() => {});
@@ -170,4 +174,6 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataSrc, dataRatio]);
+
+  return { playerRef };
 }

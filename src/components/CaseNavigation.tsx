@@ -45,11 +45,10 @@ export default function CaseNavigation() {
       duration,
       ease: "power2.inOut",
     });
-    gsap.to(nav.querySelectorAll(".section-desc"), {
-      color: "#7e7e7e",
-      duration,
-      ease: "power2.inOut",
-    });
+    const sectionDescs = Array.from(nav.querySelectorAll(".section-desc"));
+    if (sectionDescs.length > 0) {
+      gsap.to(sectionDescs, { color: "#7e7e7e", duration, ease: "power2.inOut" });
+    }
     gsap.to(nav.querySelectorAll("path"), {
       attr: { stroke: textColor },
       duration,
