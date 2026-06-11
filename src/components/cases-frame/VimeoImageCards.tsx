@@ -34,6 +34,7 @@ export default function VimeoImageCards({ video, image, imagePosition = "right" 
                 alt={image.alt ?? ""}
                 fill
                 loading="lazy"
+                sizes="(max-width: 992px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>
@@ -50,6 +51,7 @@ export default function VimeoImageCards({ video, image, imagePosition = "right" 
                 alt={video.alt ?? ""}
                 fill
                 loading="lazy"
+                sizes="(max-width: 992px) 100vw, 50vw"
                 className="projet-card_vimeo-image object-cover z-1 scale-[1.01]"
               />
             </div>
@@ -61,6 +63,7 @@ export default function VimeoImageCards({ video, image, imagePosition = "right" 
                 alt={image.alt ?? ""}
                 fill
                 loading="lazy"
+                sizes="(max-width: 992px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>

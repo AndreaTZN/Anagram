@@ -43,6 +43,7 @@ export default function VimeoTwoCards({ card1, card2 }: Props) {
                   alt={card.alt ?? ""}
                   fill
                   loading="lazy"
+                  sizes="(max-width: 992px) 100vw, 50vw"
                   className="video-vimeo-two_image object-cover z-1 scale-[1.01]"
                 />
               </div>
