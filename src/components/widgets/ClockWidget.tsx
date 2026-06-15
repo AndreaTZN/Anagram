@@ -1,94 +1,123 @@
-'use client'
+"use client";
 
-import { useEffect, useRef, useState } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import AnalogClock from '../AnalogClock'
-
-gsap.registerPlugin(useGSAP)
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectFade, Autoplay } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+import "swiper/css";
+import "swiper/css/effect-fade";
+import AnalogClock from "../AnalogClock";
 
 const CITIES = [
-  { label: 'New York', timezone: 'America/New_York', color: '#f981fe' },
-  { label: 'Paris', timezone: 'Europe/Paris', color: '#f981fe' },
-]
+  { label: "New York", timezone: "America/New_York", color: "#03C8FF" },
+  { label: "Paris", timezone: "Europe/Paris", color: "#E3CEFC" },
+];
 
 function getOffset(timezone: string) {
-  const now = new Date()
-  const diff = (new Date(now.toLocaleString('en-US', { timeZone: timezone })).getTime() - new Date(now.toLocaleString('en-US', { timeZone: 'UTC' })).getTime()) / 3600000
-  const sign = diff >= 0 ? '+' : '-'
-  const abs = Math.abs(diff)
-  return `GMT${sign}${abs % 1 === 0 ? abs : abs.toFixed(1)}`
+  const now = new Date();
+  const diff =
+    (new Date(now.toLocaleString("en-US", { timeZone: timezone })).getTime() -
+      new Date(now.toLocaleString("en-US", { timeZone: "UTC" })).getTime()) /
+    3600000;
+  const sign = diff >= 0 ? "+" : "-";
+  const abs = Math.abs(diff);
+  return `GMT${sign}${abs % 1 === 0 ? abs : abs.toFixed(1)}`;
 }
 
 function getTime(timezone: string) {
-  return new Date().toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-    timeZone: timezone,
-  }).replace(' ', '')
+  return new Date()
+    .toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: timezone,
+    })
+    .replace(" ", "");
 }
 
 export default function ClockWidget() {
-  const [active, setActive] = useState(0)
-  const [times, setTimes] = useState<string[]>([])
-  const [offsets, setOffsets] = useState<string[]>([])
-  const contentRef = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0);
+  const [times, setTimes] = useState<string[]>([]);
+  const [offsets, setOffsets] = useState<string[]>([]);
+  const swiperRef = useRef<SwiperType | null>(null);
+  const progressRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     function tick() {
-      setTimes(CITIES.map(c => getTime(c.timezone)))
-      setOffsets(CITIES.map(c => getOffset(c.timezone)))
+      setTimes(CITIES.map((c) => getTime(c.timezone)));
+      setOffsets(CITIES.map((c) => getOffset(c.timezone)));
     }
-    tick()
-    const id = setInterval(tick, 1000)
-    return () => clearInterval(id)
-  }, [])
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
 
-  function goTo(i: number) {
-    if (i === active) return
-    gsap.to(contentRef.current, {
-      opacity: 0,
-      duration: 0.2,
-      ease: 'power2.in',
-      onComplete: () => {
-        setActive(i)
-        gsap.to(contentRef.current, { opacity: 1, duration: 0.3, ease: 'power2.out' })
-      },
-    })
-  }
+  useEffect(() => {
+    if (!progressRef.current) return;
+    gsap.killTweensOf(progressRef.current);
+    gsap.fromTo(
+      progressRef.current,
+      { width: "0%" },
+      { width: "100%", duration: 4, ease: "none" },
+    );
+  }, [active]);
 
-  const city = CITIES[active]
+  const city = CITIES[active];
 
   return (
-    <div className="flex flex-col items-center rounded-[0.5rem] bg-[#f5f5f5] pt-4 px-4 overflow-hidden">
-      <div ref={contentRef}>
-        <AnalogClock timezone={city.timezone} color={city.color} />
-      </div>
+    <div className="w-46 flex flex-col items-center rounded-lg bg-[#f5f5f5] pt-4 px-4 overflow-hidden">
+      <Swiper
+        effect="fade"
+        modules={[EffectFade, Autoplay]}
+        onSwiper={(s) => {
+          swiperRef.current = s;
+        }}
+        onSlideChange={(s) => setActive(s.realIndex)}
+        className="w-full"
+      >
+        {CITIES.map((c) => (
+          <SwiperSlide key={c.timezone}>
+            <AnalogClock timezone={c.timezone} color={c.color} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-      {/* Dots */}
+      {/* Dots with GSAP progress bar */}
       <div className="flex items-center gap-2 mt-4">
         {CITIES.map((_, i) => (
           <button
             key={i}
-            onClick={() => goTo(i)}
-            className={[
-              'rounded-full bg-[#0c0c0c] transition-none cursor-pointer',
-              i === active ? 'w-5.25 h-1.25' : 'w-1.25 h-1.25 opacity-30',
-            ].join(' ')}
-          />
+            onClick={() => swiperRef.current?.slideToLoop(i)}
+            className="cursor-pointer"
+          >
+            <span
+              className={`relative rounded-full shrink-0 overflow-hidden block transition-[width] duration-300 ${
+                i === active
+                  ? "h-1.25 w-5.25 bg-[#0c0c0c]/20"
+                  : "size-1.25 bg-[#0c0c0c] opacity-30"
+              }`}
+            >
+              {i === active && (
+                <span
+                  ref={progressRef}
+                  className="absolute inset-y-0 left-0 bg-[#0c0c0c] rounded-full w-0"
+                />
+              )}
+            </span>
+          </button>
         ))}
       </div>
 
       {/* Label */}
-      <div className="flex flex-col items-center gap-2 px-4 py-3 mt-4 w-full rounded-full backdrop-blur-[2.5rem]">
+      <div className="flex flex-col items-center gap-2 px-4 py-3 mt-4 w-full rounded-full backdrop-blur-2xl">
         <span className="text-base font-medium leading-[0.9] text-[#0c0c0c] opacity-50 uppercase tracking-wide whitespace-nowrap">
           {city.label}
         </span>
         <span className="text-base font-medium leading-[0.9] text-[#0c0c0c] whitespace-nowrap">
-          {offsets[active] ?? ''} {times[active] ?? ''}
+          {offsets[active] ?? ""} {times[active] ?? ""}
         </span>
       </div>
     </div>
-  )
+  );
 }

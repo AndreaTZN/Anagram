@@ -1,8 +1,13 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -59,6 +64,70 @@ const works = [
 
 export default function Navigation() {
   const pathname = usePathname();
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const list = listRef.current;
+      if (!list) return;
+
+      const items = gsap.utils.toArray<HTMLElement>("[data-nav-work]", list);
+      if (!items.length) return;
+
+      gsap.set(items, { transformOrigin: "left center", force3D: true });
+
+      const setters = items.map((item) => ({
+        scaleX: gsap.quickTo(item, "scaleX", {
+          duration: 0.45,
+          ease: "power3.out",
+        }),
+        scaleY: gsap.quickTo(item, "scaleY", {
+          duration: 0.45,
+          ease: "power3.out",
+        }),
+        opacity: gsap.quickTo(item, "opacity", {
+          duration: 0.45,
+          ease: "power3.out",
+        }),
+        x: gsap.quickTo(item, "x", { duration: 0.45, ease: "power3.out" }),
+      }));
+
+      const update = () => {
+        const bounds = list.getBoundingClientRect();
+        const atTop = list.scrollTop <= 1;
+        const atBottom =
+          list.scrollTop + list.clientHeight >= list.scrollHeight - 1;
+        items.forEach((item, i) => {
+          const rect = item.getBoundingClientRect();
+          const center = rect.top + rect.height / 2;
+          const zone = rect.height * 1.6;
+          const topProgress = atTop
+            ? 1
+            : gsap.utils.clamp(0, 1, (center - bounds.top) / zone);
+          const bottomProgress = atBottom
+            ? 1
+            : gsap.utils.clamp(0, 1, (bounds.bottom - center) / zone);
+          const progress = Math.min(topProgress, bottomProgress);
+          const eased = gsap.parseEase("power2.out")(progress);
+          const scale = 0.9 + 0.1 * eased;
+          setters[i].scaleX(scale);
+          setters[i].scaleY(scale);
+          setters[i].opacity(0.15 + 0.85 * eased);
+          setters[i].x(-6 * (1 - eased));
+        });
+      };
+
+      update();
+      list.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+
+      return () => {
+        list.removeEventListener("scroll", update);
+        window.removeEventListener("resize", update);
+      };
+    },
+    { scope: listRef },
+  );
 
   return (
     <nav
@@ -119,11 +188,26 @@ export default function Navigation() {
       </div>
 
       {/* Works list + Show all works */}
-      <div className="relative flex flex-col flex-1 overflow-hidden mt-14">
-        <div className="flex flex-col gap-1.5 pl-3 pr-1.5 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden pb-24">
+      <div
+        className="relative flex flex-col flex-1 overflow-hidden"
+        style={{
+          maskImage:
+            "linear-gradient(to bottom, transparent 0, #000 5rem, #000 calc(100% - 1.5rem), transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent 0, #000 5rem, #000 calc(100% - 1.5rem), transparent 100%)",
+        }}
+      >
+        <div
+          id="nav-works-list"
+          ref={listRef}
+          className="flex flex-col gap-1.5 pl-3 pr-1.5 pb-4  pt-14 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden "
+        >
           {works.map((work) => (
             <Link key={work.name} href={work.href}>
-              <div className="flex items-center gap-3 p-2 rounded-sm transition-colors bg-[#f9f9f9] hover:bg-[#ededed]">
+              <div
+                data-nav-work
+                className="flex items-center gap-3 p-2 rounded-sm transition-colors bg-[#f9f9f9] hover:bg-[#ededed]"
+              >
                 <div className="relative shrink-0 rounded-sm overflow-hidden w-25 h-15">
                   {work.image.endsWith(".mp4") ? (
                     <video

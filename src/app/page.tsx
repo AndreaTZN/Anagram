@@ -3,6 +3,14 @@ import Image from "next/image";
 import WidgetPanel from "@/components/widgets/WidgetPanel";
 import WorksGrid from "@/components/WorksGrid";
 import Footer from "@/components/Footer";
+import { client } from "@/sanity/client";
+import type { OpenRole } from "@/components/OpenRoles";
+
+function getOpenRoles() {
+  return client.fetch<OpenRole[]>(
+    `*[_type == "openRole"] | order(order asc) { _id, title, description, available, location }`,
+  );
+}
 
 export const metadata: Metadata = {
   title: "Anagram Club — Shaping brands that need no introduction",
@@ -30,7 +38,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const openRoles = await getOpenRoles();
+
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <section
@@ -45,7 +55,7 @@ export default function HomePage() {
           className="object-cover"
         />
       </section>
-      <WidgetPanel />
+      <WidgetPanel openRoles={openRoles} />
       <section className="py-6">
         <WorksGrid />
       </section>

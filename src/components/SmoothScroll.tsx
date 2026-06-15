@@ -79,7 +79,7 @@ export default function SmoothScroll({
     gsap.fromTo(
       content,
       { opacity: 0 },
-      { opacity: 1, duration: 0.35, ease: "power2.inOut" },
+      { opacity: 1, duration: 1, ease: "power2.inOut" },
     );
   }, [pathname]);
 
