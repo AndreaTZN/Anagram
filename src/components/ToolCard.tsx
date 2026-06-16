@@ -18,7 +18,7 @@ export default function ToolCard({
   aspect,
 }: Props) {
   return (
-    <div className={`relative ${aspect} rounded-sm overflow-hidden `}>
+    <div className={`relative ${aspect} overflow-hidden `}>
       {/* Try now button */}
       {href && (
         <a

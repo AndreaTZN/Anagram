@@ -180,7 +180,7 @@ export default function AboutPage({ openRoles }: { openRoles: OpenRole[] }) {
           {/* Hero image */}
           <div
             id="about-hero"
-            className="relative bg-[#f4f4f4] rounded-sm overflow-hidden"
+            className="relative bg-[#f4f4f4] overflow-hidden"
             style={{ aspectRatio: "855 / 670" }}
           >
             <Swiper
@@ -373,7 +373,7 @@ export default function AboutPage({ openRoles }: { openRoles: OpenRole[] }) {
 
               {/* Photo desktop — double-buffered crossfade */}
               <div
-                className="relative rounded-sm overflow-hidden flex-1"
+                className="relative overflow-hidden flex-1"
                 style={{
                   aspectRatio: "1.7 / 1.9",
                   maxWidth: "10rem",
@@ -399,7 +399,7 @@ export default function AboutPage({ openRoles }: { openRoles: OpenRole[] }) {
             <div className="hidden max-[766px]:block relative">
               {/* Photo — centered, floating over text */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                <div className="relative size-37.5 rounded-sm overflow-hidden">
+                <div className="relative size-37.5 overflow-hidden">
                   <img
                     ref={baseMobileRef}
                     src={team[0].image!}
@@ -622,7 +622,7 @@ export default function AboutPage({ openRoles }: { openRoles: OpenRole[] }) {
           {/* Merch — T-shirt */}
           <div
             id="about-merch"
-            className="relative bg-[#f4f4f4] rounded-sm overflow-hidden flex justify-center items-start pb-8"
+            className="relative bg-[#f4f4f4] overflow-hidden flex justify-center items-start pb-8"
             style={{ minHeight: "28rem" }}
           >
             <ShirtRotation />

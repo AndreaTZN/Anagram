@@ -57,7 +57,7 @@ export default function MerchCard({ name, price, src }: Props) {
   return (
     <div
       ref={containerRef}
-      className="relative h-112.5 rounded-sm overflow-hidden bg-[#f5f5f5] flex items-center justify-center cursor-pointer"
+      className="relative h-112.5 overflow-hidden bg-[#f5f5f5] flex items-center justify-center cursor-pointer"
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
     >
