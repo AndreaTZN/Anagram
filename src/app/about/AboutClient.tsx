@@ -282,7 +282,7 @@ export default function AboutPage({
           {/* Hero image */}
           <div
             id="about-hero"
-            className="col-span-8 relative bg-[#f4f4f4] rounded-sm overflow-hidden"
+            className="col-span-8 relative bg-[#f4f4f4] overflow-hidden"
             style={{ aspectRatio: "800 / 500" }}
           >
             <Swiper
@@ -331,7 +331,7 @@ export default function AboutPage({
           {/* Merch — T-shirt */}
           <div
             id="about-merch"
-            className="col-span-4 relative bg-[#f4f4f4] rounded-sm overflow-hidden flex justify-center items-start"
+            className="col-span-4 relative bg-[#f4f4f4] overflow-hidden flex justify-center items-start"
           >
             <ShirtRotation />
             <div className="absolute bottom-8 left-4 right-4 flex gap-2">
@@ -573,7 +573,7 @@ export default function AboutPage({
 
                 {/* Photo desktop — double-buffered crossfade */}
                 <div
-                  className="relative rounded-sm overflow-hidden flex-1"
+                  className="relative overflow-hidden flex-1"
                   style={{
                     aspectRatio: "1.7 / 1.9",
                     maxWidth: "10rem",
@@ -599,7 +599,7 @@ export default function AboutPage({
               <div className="hidden max-[766px]:block relative">
                 {/* Photo — centered, floating over text */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                  <div className="relative size-37.5 rounded-sm overflow-hidden">
+                  <div className="relative size-37.5 overflow-hidden">
                     <img
                       ref={baseMobileRef}
                       src={team[0].image!}

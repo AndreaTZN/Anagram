@@ -65,7 +65,7 @@ function Card({ card, colWidth }: { card: CardData; colWidth: number }) {
   const height = colWidth / ASPECT_RATIO[card.variant];
   return (
     <div
-      className="shrink-0 w-full overflow-hidden rounded-sm"
+      className="shrink-0 w-full overflow-hidden"
       style={{ height: `${height}px` }}
     >
       <img

@@ -206,9 +206,9 @@ export default function Navigation() {
             <Link key={work.name} href={work.href}>
               <div
                 data-nav-work
-                className="flex items-center gap-3 p-2 rounded-sm transition-colors bg-[#f9f9f9] hover:bg-[#ededed]"
+                className="flex items-center gap-3 p-2 transition-colors bg-[#f9f9f9] hover:bg-[#ededed]"
               >
-                <div className="relative shrink-0 rounded-sm overflow-hidden w-25 h-15">
+                <div className="relative shrink-0 overflow-hidden w-25 h-15">
                   {work.image.endsWith(".mp4") ? (
                     <video
                       src={work.image}

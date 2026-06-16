@@ -44,7 +44,7 @@ export default async function HomePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <section
-        className="relative bg-[#a6f1e4] w-full rounded-sm overflow-hidden"
+        className="relative bg-[#a6f1e4] w-full overflow-hidden"
         style={{ aspectRatio: "16 / 9" }}
       >
         <Image

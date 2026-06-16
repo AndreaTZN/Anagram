@@ -143,7 +143,7 @@ function WorkCard({ work }: { work: Work }) {
     <div className="flex flex-col gap-3">
       <MediaWrapper>
         <div
-          className={`relative ${work.media.aspect} rounded-sm overflow-hidden w-full`}
+          className={`relative ${work.media.aspect} overflow-hidden w-full`}
           style={{ backgroundColor: work.media.bg }}
         >
           {work.media.type === "image" ? (
@@ -254,7 +254,7 @@ export default function WorksGrid() {
           <WorkCard key={work.name} work={work} />
         ))}
         {filtered.length > 4 && (
-          <div className="col-span-1 md:col-span-4 rounded-sm overflow-hidden aspect-video my-8">
+          <div className="col-span-1 md:col-span-4 overflow-hidden aspect-video my-8">
             <video
               loop
               autoPlay
