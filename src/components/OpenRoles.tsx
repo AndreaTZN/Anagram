@@ -20,9 +20,9 @@ export default function OpenRoles({ roles }: { roles: OpenRole[] }) {
                 {role.title}
               </span>
             </div>
-            <span className="text-[#7C7C7C] text-sm leading-none">
+            {/* <span className="text-[#7C7C7C] text-sm leading-none">
               {role.location === "onsite" ? "On-site" : "Remote"}
-            </span>
+            </span> */}
           </div>
           <p className="text-[#7e7e7e] text-sm leading-[1.3]">
             {role.description}
