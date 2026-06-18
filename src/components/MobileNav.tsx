@@ -4,10 +4,12 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
+import { Flip } from "gsap/Flip";
 import { useGSAP } from "@gsap/react";
 import { globalLenisRef } from "@/lib/lenis";
+import AnalogClock from "./AnalogClock";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(useGSAP, Flip);
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -17,62 +19,139 @@ const navLinks = [
   { label: "Store", href: "/store" },
 ];
 
+const socials = [
+  { label: "X", href: "https://x.com" },
+  { label: "Instagram", href: "https://instagram.com" },
+  { label: "Linkedin", href: "https://linkedin.com" },
+];
+
+function getParisTime() {
+  return new Date()
+    .toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "Europe/Paris",
+    })
+    .replace(" ", "");
+}
+
 export default function MobileNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [time, setTime] = useState("");
   const menuRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const tl = useRef<gsap.core.Timeline | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const baseRef = useRef<HTMLDivElement>(null);
+  const baseHomeRef = useRef<HTMLDivElement>(null);
+  const baseSlotRef = useRef<HTMLDivElement>(null);
+  const animating = useRef(false);
 
   useGSAP(() => {
-    if (!menuRef.current || !overlayRef.current) return;
-    gsap.set(menuRef.current, { y: -16, opacity: 0, pointerEvents: "none" });
-    gsap.set(overlayRef.current, { opacity: 0, pointerEvents: "none" });
-
-    tl.current = gsap
-      .timeline({ paused: true })
-      .to(overlayRef.current, {
-        opacity: 1,
-        pointerEvents: "auto",
-        duration: 0.3,
-        ease: "power2.out",
-      })
-      .to(
-        menuRef.current,
-        {
-          y: 0,
-          opacity: 1,
-          pointerEvents: "auto",
-          duration: 0.4,
-          ease: "power3.out",
-        },
-        "<0.05",
-      );
+    if (!menuRef.current) return;
+    gsap.set(menuRef.current, { autoAlpha: 0, pointerEvents: "none" });
+    gsap.set(overlayRef.current, { autoAlpha: 0, pointerEvents: "none" });
   }, []);
 
-  function toggle() {
-    if (!tl.current) return;
-    if (!open) {
-      tl.current.play();
+  const FLIP = 0.5;
+
+  function play(opening: boolean) {
+    const menu = menuRef.current;
+    const overlay = overlayRef.current;
+    const content = contentRef.current;
+    const base = baseRef.current;
+    if (!menu || !overlay || !content || !base || animating.current) return;
+
+    animating.current = true;
+
+    if (opening) {
+      setTime(getParisTime());
       globalLenisRef.current?.stop();
+
+      gsap.set(menu, { autoAlpha: 1, pointerEvents: "auto" });
+
+      // Morph the shared base element from inside the button into the panel.
+      const state = Flip.getState(base);
+      baseSlotRef.current?.appendChild(base);
+      Flip.from(state, { duration: FLIP, ease: "power3.inOut", scale: false });
+
+      // Base background morphs from black pill to white rounded panel.
+      gsap.to(base, {
+        backgroundColor: "#ffffff",
+        borderRadius: "1.25rem",
+        duration: FLIP,
+        ease: "power3.inOut",
+      });
+
+      gsap.to(overlay, {
+        autoAlpha: 1,
+        duration: 0.4,
+        ease: "power2.out",
+        onStart: () => gsap.set(overlay, { pointerEvents: "auto" }),
+      });
+
+      gsap.fromTo(
+        content,
+        { autoAlpha: 0 },
+        {
+          autoAlpha: 1,
+          duration: 0.3,
+          delay: FLIP * 0.6,
+          ease: "power2.out",
+          onComplete: () => {
+            animating.current = false;
+          },
+        },
+      );
     } else {
-      tl.current.reverse();
+      gsap.to(content, { autoAlpha: 0, duration: 0.2, ease: "power2.in" });
+      gsap.to(overlay, {
+        autoAlpha: 0,
+        duration: 0.4,
+        ease: "power2.in",
+        onComplete: () => gsap.set(overlay, { pointerEvents: "none" }),
+      });
+
+      // Morph the base back into the button.
+      const state = Flip.getState(base);
+      baseHomeRef.current?.appendChild(base);
+      Flip.from(state, {
+        duration: FLIP,
+        ease: "power3.inOut",
+        scale: false,
+        onComplete: () => {
+          gsap.set(menu, { autoAlpha: 0, pointerEvents: "none" });
+          animating.current = false;
+        },
+      });
+
+      gsap.to(base, {
+        backgroundColor: "#0c0c0c",
+        borderRadius: "9999px",
+        duration: FLIP,
+        ease: "power3.inOut",
+      });
+
       globalLenisRef.current?.start();
     }
+  }
+
+  function toggle() {
+    play(!open);
     setOpen((v) => !v);
   }
 
   function close() {
     if (!open) return;
-    tl.current?.reverse();
-    globalLenisRef.current?.start();
+    play(false);
     setOpen(false);
   }
 
   return (
     <div
       id="mobile-nav"
-      className="absolute top-0 left-0 z-50  max-[992px]:flex hidden items-center justify-between px-4 py-3 w-full"
+      className="absolute top-0 left-0 z-100 max-[992px]:flex hidden items-center justify-between px-4 py-3 w-full"
     >
       {/* Logo */}
       <Link href="/" onClick={close}>
@@ -82,6 +161,7 @@ export default function MobileNav() {
           fill="none"
           viewBox="0 0 102 18"
           aria-label="Anagram"
+          className="relative z-100"
         >
           <path
             fill="#0C0C0C"
@@ -93,9 +173,27 @@ export default function MobileNav() {
       {/* Menu button */}
       <button
         onClick={toggle}
-        className="flex items-center gap-2 bg-[#0c0c0c] rounded-full px-4 py-3 cursor-pointer"
+        className="flex items-center gap-2 bg-[#0c0c0c] rounded-full px-4 py-3 cursor-pointer relative z-100"
       >
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        {/* Shared morphing base — lives here, reparents into the panel on open */}
+        <div
+          ref={baseHomeRef}
+          className="absolute inset-0 pointer-events-none"
+          aria-hidden
+        >
+          <div
+            ref={baseRef}
+            id="mobile-nav-base"
+            className="absolute inset-0 bg-[#0c0c0c] rounded-full"
+          />
+        </div>
+        <svg
+          className="relative z-10"
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          fill="none"
+        >
           {open ? (
             <>
               <line
@@ -120,19 +218,19 @@ export default function MobileNav() {
           ) : (
             <>
               <line
-                x1="0"
-                y1="3"
-                x2="10"
-                y2="3"
+                x1="5"
+                y1="0"
+                x2="5"
+                y2="10"
                 stroke="white"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
               <line
                 x1="0"
-                y1="7"
+                y1="5"
                 x2="10"
-                y2="7"
+                y2="5"
                 stroke="white"
                 strokeWidth="1.5"
                 strokeLinecap="round"
@@ -140,7 +238,7 @@ export default function MobileNav() {
             </>
           )}
         </svg>
-        <span className="text-white text-base leading-[0.9] tracking-[-0.08px]">
+        <span className="relative z-10 text-white text-base leading-[0.9] tracking-[-0.08px]">
           Menu
         </span>
       </button>
@@ -149,43 +247,88 @@ export default function MobileNav() {
       <div
         ref={overlayRef}
         onClick={close}
-        className="fixed inset-0 top-[49px] z-40 bg-[rgba(12,12,12,0.15)] backdrop-blur-sm opacity-0 pointer-events-none"
+        className="fixed inset-0 z-40 bg-[#F5F5F5]/50 backdrop-blur-sm opacity-0 pointer-events-none"
       />
 
       {/* Dropdown menu */}
       <div
         ref={menuRef}
-        className="fixed top-14.25 left-4 right-4 z-50 bg-white rounded-2xl p-6 flex flex-col gap-8 opacity-0 pointer-events-none"
+        id="mobile-nav-panel"
+        className="fixed top-3 right-4 z-50 w-62.5 opacity-0 pointer-events-none"
       >
-        <p className="text-[#0c0c0c] leading-[1.1] text-xl tracking-[-0.12px]">
-          We shape brands that need no introduction.
-        </p>
-
-        <div className="flex flex-col gap-3">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={close}
-                className="text-[#0c0c0c] font-medium leading-[0.8] text-2xl tracking-[-0.12px] transition-opacity"
-                style={{ opacity: isActive ? 1 : 0.3 }}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </div>
-
-        <a
-          href="mailto:hello@anagram.club"
-          className="flex items-center bg-[#f5f5f5] rounded-full px-4 py-3 self-start"
+        {/* Slot where the morphing base lands to become the panel background */}
+        <div
+          ref={baseSlotRef}
+          className="absolute inset-0 pointer-events-none drop-shadow-[0_3.75rem_2.5rem_rgba(0,0,0,0.1)]"
+          aria-hidden
+        />
+        <div
+          ref={contentRef}
+          className="relative z-10 flex flex-col gap-8 px-4 pt-16 pb-4"
         >
-          <span className="text-[#0c0c0c] leading-[0.9] text-sm tracking-[-0.07px]">
-            hello@anagram.club
-          </span>
-        </a>
+          {/* Nav links */}
+          <div id="mobile-nav-links" className="flex flex-col gap-2">
+            {navLinks
+              .filter((link) => link.href !== "/")
+              .map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={close}
+                    className="text-[#0c0c0c] font-medium leading-[0.8] text-[2rem] tracking-[-0.12px] transition-opacity"
+                    style={{ opacity: isActive ? 1 : 0.3 }}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+          </div>
+
+          {/* Clock + location */}
+          <div
+            id="mobile-nav-clock"
+            className="flex flex-col items-center gap-4 w-full"
+          >
+            <div className="size-28">
+              <AnalogClock timezone="Europe/Paris" color="#8b7759" />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-base font-medium leading-[0.9] text-[#0c0c0c] opacity-50">
+                PARIS
+              </span>
+              <span className="text-base font-medium leading-[0.9] text-[#0c0c0c]">
+                CEST {time}
+              </span>
+            </div>
+          </div>
+
+          {/* Footer: dot divider + socials */}
+          <div id="mobile-nav-footer" className="flex flex-col gap-4 w-full">
+            <div className="flex items-center justify-between w-full">
+              {Array.from({ length: 32 }).map((_, i) => (
+                <span
+                  key={i}
+                  className="size-0.75 rounded-full bg-[#0c0c0c] opacity-10 shrink-0"
+                />
+              ))}
+            </div>
+            <div className="flex flex-col">
+              {socials.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-base font-normal leading-[1.6] text-[#0c0c0c]"
+                >
+                  {social.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

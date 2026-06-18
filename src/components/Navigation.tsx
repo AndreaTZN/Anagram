@@ -19,44 +19,45 @@ const navLinks = [
 
 const works = [
   {
-    name: "Matis",
-    href: "/works/matis",
-    category: "Art",
-    image: "/navigation/matis.mp4",
-  },
-  {
-    name: "Raison",
-    href: "/works/fortuneo",
-    category: "Education",
-    image: "/navigation/Raison.mp4",
-  },
-  {
     name: "Wastetide",
     href: "/works/wastetide",
     category: "Environment",
     image: "/navigation/wastetide.mp4",
   },
   {
-    name: "Omnia",
+    name: "Fortuneo",
+    href: "/works/fortuneo",
+    category: "Art",
+    image: "/navigation/matis.mp4",
+  },
+  {
+    name: "Planity",
+    href: "/works/planity",
+    category: "Education",
+    image: "/navigation/Raison.mp4",
+  },
+
+  {
+    name: "Founders Future",
     href: "/works/founders-future",
     category: "AI Search",
     image: "/navigation/omnia.mp4",
   },
   {
-    name: "Incard",
-    href: "/works/founders-future",
+    name: "Vizzia",
+    href: "/works/vizzia",
     category: "Banking",
     image: "/navigation/incard.jpg",
   },
   {
-    name: "Bitstack",
-    href: "/works/founders-future",
+    name: "Semplice",
+    href: "/works/semplice",
     category: "Crypto",
     image: "/navigation/bistack.mp4",
   },
   {
-    name: "Geobrowser",
-    href: "/works/founders-future",
+    name: "Arcads",
+    href: "/works/arcads",
     category: "AI",
     image: "/navigation/geobrowser.mp4",
   },
@@ -131,7 +132,7 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`relative flex flex-col bg-white h-dvh max-h-screen${pathname === "/about" ? " max-[992px]:hidden" : ""}`}
+      className={`relative flex flex-col justify-between bg-white h-dvh max-h-screen${pathname === "/about" ? " max-[992px]:hidden" : ""}`}
     >
       <div className="flex flex-col gap-10 pl-4 pr-1.5 pt-6">
         {/* Logo */}
@@ -189,7 +190,7 @@ export default function Navigation() {
 
       {/* Works list + Show all works */}
       <div
-        className="relative flex flex-col flex-1 overflow-hidden"
+        className="relative flex flex-col overflow-hidden"
         style={{
           maskImage:
             "linear-gradient(to bottom, transparent 0, #000 5rem, #000 calc(100% - 1.5rem), transparent 100%)",
