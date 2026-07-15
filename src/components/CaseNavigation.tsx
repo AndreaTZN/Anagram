@@ -225,7 +225,7 @@ export default function CaseNavigation() {
                       }}
                       className="overflow-hidden"
                     >
-                      <p className="section-desc mt-2 text-[#7c7c7c] text-[0.875rem] leading-[1.3]">
+                      <p className="section-desc mt-2 text-[#7c7c7c] text-[0.875rem] leading-[1.3] whitespace-pre-line">
                         {section.description}
                       </p>
                     </div>

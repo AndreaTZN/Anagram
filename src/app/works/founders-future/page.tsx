@@ -8,11 +8,12 @@ import TeamCredits from "@/components/cases-frame/TeamCredits";
 import NextCase from "@/components/cases-frame/NextCase";
 import type { CaseNavData } from "@/contexts/CaseNavContext";
 import PortraitQuote from "@/components/cases-frame/PortraitQuote";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Founders Future Branding — Brand Identity by Anagram Club",
+  title: "Founders Future Branding | VC Fund Visual Identity | anagram",
   description:
-    "Discover how Anagram Club built Founders Future's brand identity around the carabiner symbol — a bold brand strategy for Europe's leading tech investment platform.",
+    "anagram redefined the identity of Founders Future, an entrepreneur-built tech investment platform. Brand strategy, design system and website for an international VC.",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -21,33 +22,21 @@ export const metadata: Metadata = {
 const navData: CaseNavData = {
   title: "Founders Future",
   description:
-    "Strategy, Copywriting, Brand Identity, Design System, Motion, Illustration, Website, Photography, Integration",
+    "Founders Future is an investment platform built by entrepreneurs, backing tech companies across Europe and the United States with both capital and operational expertise. We partnered with Founders Future to develop a brand strategy and identity capable of expressing that role: the carabiner as a secure connection point throughout a company's growth journey.",
   liveUrl: "https://foundersfuture.com",
   release: {
     sections: [
       {
-        id: "context",
-        label: "Context",
-        description:
-          "Founders Future is an investment platform built by entrepreneurs, supporting tech companies across Europe and the United States with both capital and operational expertise. As it grew, the firm evolved its identity to reflect its role as a long-term, founder-first partner rather than a traditional investor.",
-      },
-      {
         id: "objectives",
         label: "Objectives",
         description:
-          "Clarify the brand’s positioning in a competitive global investment landscape, strengthen credibility with founders and stakeholders, and build a visual and narrative system to support international growth. The goal was to move from a purely financial image to a more strategic, human, and forward-looking presence.",
+          "Clarify the brand's positioning in a competitive global investment landscape, strengthen credibility with founders and stakeholders, and build a visual and narrative system capable of supporting international growth.\n\nThe goal was to evolve from a purely financial image to a more strategic, human, and future-oriented presence.",
       },
       {
         id: "strategy",
         label: "Strategy",
         description:
-          "The brand strategy is built around the carabiner as a central symbol. Like the essential tool that enables climbers to progress safely and reach higher summits, Founders Future acts as a secure connection point throughout a company’s growth journey. It represents support, reliability, and momentum. A trusted link between ambition and achievement, opening new horizons alongside the founders it supports.",
-      },
-      {
-        id: "application",
-        label: "Application",
-        description:
-          "The strategy was deployed through a unified visual and communication system across digital and brand touchpoints. The identity reinforces trust and structure while remaining dynamic enough to reflect innovation, supporting Founders Future’s growth and international ambitions.",
+          "The brand strategy is built around the carabiner as a central symbol. Like the essential tool that enables climbers to progress safely and reach higher summits, Founders Future acts as a secure connection point throughout a company's growth journey.\n\nIt represents support, reliability, and momentum. A trusted link between ambition and achievement, opening new horizons alongside the founders it supports.",
       },
     ],
   },
@@ -57,17 +46,61 @@ const navData: CaseNavData = {
         id: "process",
         label: "Process",
         description:
-          "We have crafted and elevated Founders Future’s brand assets through a strategy designed to ensure both stability and long-term evolution. At the heart of this transformation lies the carabiner, the emblem of partnership. We reimagined it as a living graphic element, introducing movement, fluidity and momentum into the identity, while reinforcing the strength and reliability at the core of the brand.",
+          "We have crafted and elevated Founders Future's brand assets through a strategy designed to ensure both stability and long-term evolution.\n\nAt the heart of this transformation lies the carabiner, the emblem of partnership.\n\nWe reimagined it as a living graphic element, introducing movement, fluidity and momentum into the identity, while reinforcing the strength and reliability at the core of the brand.",
       },
       {
         id: "Human",
         label: "Human",
         description:
-          "For the photographic direction, we remained aligned with the brand’s premium and institutional positioning. We curated imagery that balances sophistication with authority refined yet grounded. Each image is designed to convey trust, credibility and a deep mastery of the sectors in which they invest. The result is a visual language that feels both elevated and reassuring, reinforcing their role as a confident, long-term partner.",
+          "For the photographic direction, we remained aligned with the brand's premium and institutional positioning. We curated imagery that balances sophistication with authority refined yet grounded.\n\nEach image is designed to convey trust, credibility and a deep mastery of the sectors in which they invest.\n\nThe result is a visual language that feels both elevated and reassuring, reinforcing their role as a confident, long-term partner.",
       },
     ],
   },
 };
+
+const projectDescription = (
+  <>
+    <p>
+      Founders Future is an investment platform built by entrepreneurs,
+      supporting tech companies across Europe and the United States with both
+      capital and operational expertise. As the firm grew, it needed to evolve
+      beyond a financial image toward something more strategic, human, and
+      forward-looking.
+    </p>
+    <p className="mt-4">
+      anagram developed a brand strategy centered on the carabiner as a core
+      symbol. Like the essential tool that enables climbers to progress safely,
+      Founders Future acts as a secure connection point throughout a
+      company&apos;s growth journey. The carabiner itself is derived from the
+      letter F, which also functions as a structural principle across all
+      compositions. This creates a natural continuity between symbol,
+      typography, and brand storytelling.
+    </p>
+    <p className="mt-4">
+      The result is an identity that communicates trust, structure, and
+      momentum, a premium brand capable of resonating with demanding founders
+      internationally.
+    </p>
+  </>
+);
+
+const faqItems = [
+  {
+    question: "What does the Founders Future logo represent?",
+    answer:
+      "The carabiner, a symbol of the secure link between ambition and achievement. It's derived from the letter “F” and serves as the structural foundation of the entire visual system.",
+  },
+  {
+    question: "What is the F-frame in the Founders Future identity?",
+    answer:
+      "The letter F functions as a compositional principle across all brand materials. The carabiner, the typography, and the graphic system all stem from this shape, creating full visual coherence.",
+  },
+  {
+    question: "What did anagram deliver for Founders Future?",
+    answer:
+      "Brand strategy, brand identity, design system, motion, illustration, website, photography, and development, a complete creative mission to reposition the firm internationally.",
+  },
+];
 
 export default function FoundersFuturePage() {
   return (
@@ -207,38 +240,19 @@ export default function FoundersFuturePage() {
                   { role: "Production", names: "anagram production" },
                   { role: "Photography", names: "Sébastien Marchand" },
                   { role: "Video", names: "Gurvann Touzé" },
-                  { role: "Copywriting", names: "anagram production" },
-                  { role: "Photography", names: "Clara Perrot" },
+                  { role: "Copywriting", names: "Clara Perrot" },
                   {
                     role: "Integration",
                     names: "Alexandre Tuysuzian, Andrea Tuysuzian",
                   },
-                  { role: "Fonts", names: "Aeonik" },
+                  {
+                    role: "Clients",
+                    names:
+                      "Marc Menasé, Louis Sautet, Paul Varrasso, Thibault Magnen, Thomas Bajas, Sophie Duval, Maxence Blanchy, Diane Conqueret, Matthieu Benkerant, Gabrielle Fourey, Ruben Koubi, Guillaume Ambar, Camille Aubery, Cyril Chiche, Fabien Cazes, Flore Lestrade, Benoit Koenig,  Thibault David",
+                  },
                 ]}
-                projectDescription={
-                  <>
-                    <p>
-                      Founders Future is an investment platform built by
-                      entrepreneurs, backing tech companies across Europe and
-                      the United States with both capital and hands-on
-                      expertise. As the firm grew, its identity needed to
-                      reflect its true role — a long-term, founder-first partner
-                      rather than a conventional investor.
-                    </p>
-                    <p className="mt-4">
-                      Anagram built the brand around the carabiner as a central
-                      symbol — a tool that connects, secures, and enables
-                      progress. From this single idea, we derived the visual
-                      system, the typographic approach, and a motion language
-                      that brings the identity to life across every touchpoint.
-                    </p>
-                    <p className="mt-4">
-                      The result is a brand that feels both institutional and
-                      human — credible enough for global LPs, approachable
-                      enough for the founders it serves.
-                    </p>
-                  </>
-                }
+                projectDescription={projectDescription}
+                faq={<Faq items={faqItems} />}
               />
             </div>
           }
@@ -294,59 +308,21 @@ export default function FoundersFuturePage() {
 
               <TeamCredits
                 rows={[
-                  {
-                    role: "Global direction",
-                    names: "Valentin Salmon, Emmanuel Julliot",
-                  },
                   { role: "Project management", names: "Emmanuel Julliot" },
-                  { role: "Strategy", names: "Emmanuel Julliot" },
-                  {
-                    role: "Creative direction",
-                    names: "Valentin Salmon, Emmanuel Julliot",
-                  },
-                  {
-                    role: "3D Design",
-                    names: "Julien Brisson, Emmanuel Julliot, Rémy Godet",
-                  },
-                  {
-                    role: "Motion Design",
-                    names: "Valentin Salmon, Rémy Godet, Kévin Robin",
-                  },
                   { role: "Production", names: "anagram production" },
                   { role: "Photography", names: "Sébastien Marchand" },
-                  { role: "Video", names: "Gurvann Touzé" },
-                  { role: "Copywriting", names: "anagram production" },
-                  { role: "Photography", names: "Clara Perrot" },
                   {
-                    role: "Integration",
-                    names: "Alexandre Tuysuzian, Andrea Tuysuzian",
+                    role: "Lighting",
+                    names: "Gurvann Touzé, François-Xavier Manceau",
                   },
-                  { role: "Fonts", names: "Aeonik" },
+                  {
+                    role: "Models",
+                    names:
+                      "Marc Menasé, Louis Sautet, Paul Varrasso, Thibault Magnen, Thomas Bajas, Sophie Duval, Maxence Blanchy, Diane Conqueret, Matthieu Benkerant, Gabrielle Fourey, Ruben Koubi, Guillaume Ambar, Camille Aubery, Cyril Chiche, Fabien Cazes, Flore Lestrade, Benoit Koenig, Thibault David",
+                  },
                 ]}
-                projectDescription={
-                  <>
-                    <p>
-                      Founders Future is an investment platform built by
-                      entrepreneurs, backing tech companies across Europe and
-                      the United States with both capital and hands-on
-                      expertise. As the firm grew, its identity needed to
-                      reflect its true role — a long-term, founder-first partner
-                      rather than a conventional investor.
-                    </p>
-                    <p className="mt-4">
-                      Anagram built the brand around the carabiner as a central
-                      symbol — a tool that connects, secures, and enables
-                      progress. From this single idea, we derived the visual
-                      system, the typographic approach, and a motion language
-                      that brings the identity to life across every touchpoint.
-                    </p>
-                    <p className="mt-4">
-                      The result is a brand that feels both institutional and
-                      human — credible enough for global LPs, approachable
-                      enough for the founders it serves.
-                    </p>
-                  </>
-                }
+                projectDescription={projectDescription}
+                faq={<Faq items={faqItems} />}
               />
             </div>
           }

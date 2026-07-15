@@ -8,11 +8,12 @@ import NextCase from "@/components/cases-frame/NextCase";
 import Vimeo169 from "@/components/cases-frame/Vimeo169";
 import Frame02 from "@/components/cases-frame/Frame02";
 import TeamCredits from "@/components/cases-frame/TeamCredits";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Amo Social App — Brand Assets & 3D Design by Anagram Club",
+  title: "amo Brand Design | Product Design & 3D for Social App | anagram",
   description:
-    "Anagram Club produced core 3D visual assets and animations for Amo, the social platform bringing real friendship back to the center of the digital experience.",
+    "anagram designed the key visual assets for amo social app: animated 3D hand, custom emoji system, and opening animation. Premium consumer product design.",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -21,25 +22,81 @@ export const metadata: Metadata = {
 const navData: CaseNavData = {
   title: "Amo",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+    "amo is bringing friendship back to the center of the online experience through a suite of connected apps, ID, Bump, and Sugar, built for real relationships rather than endless feeds. We partnered with amo to produce the 3D, motion, and emoji assets capable of expressing that vision: a playful, intimate product experience built to strengthen genuine connection.",
   liveUrl: "https://amo.co/",
   release: {
     sections: [
       {
+        id: "Context",
+        label: "Context",
+        description:
+          "amo is bringing friendship back to the center of the online experience. While most social platforms evolved toward endless entertainment feeds, amo focuses on simple apps designed for real relationships.\n\nThrough a suite of connected apps including ID, Bump and Sugar, the platform allows friends to express themselves together, find each other and turn conversations into shared creations.",
+      },
+      {
         id: "objectives",
         label: "Objectives",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+          "For the launch of its mobile ecosystem, amo needed a set of high-quality visual assets capable of translating its creative vision into a polished product experience.\n\nThe objective was to produce the key graphic elements required for the app while remaining fully aligned with the visual direction defined by the amo team.",
       },
       {
-        id: "strategy",
-        label: "Strategy",
+        id: "Role",
+        label: "Role",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+          "Creative direction and product design were led internally by the amo team.\n\nOur role was to translate their vision into refined graphic assets ready for production.",
+      },
+      {
+        id: "Application",
+        label: "Application",
+        description:
+          "Our agency produced several core visual assets for the application, including the animated 3D hand, the in-app emoji system and the app's opening animation.\n\nEach element was crafted to integrate seamlessly into the product experience.",
       },
     ],
   },
 };
+
+const projectDescription = (
+  <>
+    <p>
+      amo is bringing friendship back to the center of the online experience.
+      While most social platforms have evolved toward endless entertainment
+      feeds, amo focuses on real relationships through a suite of connected
+      apps: ID, Bump, and Sugar.
+    </p>
+    <p className="mt-4">
+      For its mobile launch, amo needed high-quality visual assets to translate
+      its creative vision into a polished product experience. Creative direction
+      and product design were led internally by the amo team. anagram&apos;s
+      role was to turn that vision into refined, production-ready graphic
+      assets.
+    </p>
+    <p className="mt-4">
+      The studio produced three foundational visual elements: the animated 3D
+      hand, the in-app custom emoji system, and the app&apos;s opening
+      animation. Each piece was crafted to integrate seamlessly into the product
+      and reinforce amo&apos;s emotional identity, playful, intimate, and
+      distinctly its own.
+    </p>
+  </>
+);
+
+const faqItems = [
+  {
+    question: "What did anagram produce for amo?",
+    answer:
+      "Three core visual assets: the animated 3D hand, a custom in-app emoji system, and the app's opening animation, all built to integrate into amo's existing product experience.",
+  },
+  {
+    question: "What does the animated 3D hand represent?",
+    answer:
+      "It's a central expression of amo's identity, tactile, human, and playful. It physically embodies the idea of connection between friends in a digital space.",
+  },
+  {
+    question:
+      "Why does a consumer app need premium motion and 3D assets at launch?",
+    answer:
+      "First impressions define brand perception and emotional attachment. High-quality motion design at launch reduces churn and amplifies word-of-mouth before any marketing budget kicks in.",
+  },
+];
 
 export default function AmoCasePage() {
   return (
@@ -120,8 +177,14 @@ export default function AmoCasePage() {
                     names: "André Nicolas, Clément Perron",
                   },
                   { role: "UX/UI", names: "Valentin Fougères" },
+                  {
+                    role: "Clients",
+                    names:
+                      "Valentin Fougères, Nicolas Fallourd Paoletti, Julien Martin, Antoine Martin",
+                  },
                 ]}
-                projectDescription="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat."
+                projectDescription={projectDescription}
+                faq={<Faq items={faqItems} />}
               />
             </div>
           }

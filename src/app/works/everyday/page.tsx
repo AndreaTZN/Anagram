@@ -7,11 +7,13 @@ import NextCase from "@/components/cases-frame/NextCase";
 import Vimeo169 from "@/components/cases-frame/Vimeo169";
 import Frame02 from "@/components/cases-frame/Frame02";
 import VimeoTwoCards from "@/components/cases-frame/VimeoTwoCards";
+import TeamCredits from "@/components/cases-frame/TeamCredits";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Everyday Rebrand — Brand Identity for an AI Mobile Game Studio",
+  title: "Everyday Branding | Brand Identity for AI Game Studio | anagram",
   description:
-    "Anagram Club rebranded Everyday, an AI game studio, with a sun-centered brand identity capturing daily engagement, playful routine, and creative momentum.",
+    "anagram created the brand identity for Everyday, an AI-powered mobile game studio. Brand strategy, sun logo, and design system for daily engagement gaming.",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
 const navData: CaseNavData = {
   title: "Everyday",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+    "Everyday is a mobile game studio exploring how AI can reshape play, building simple games designed to become a positive part of daily life. We partnered with Everyday to create a brand strategy and identity capable of expressing that idea: the sun as a symbol of daily rhythm, renewal, and positive energy.",
   liveUrl: "",
   release: {
     sections: [
@@ -28,13 +30,13 @@ const navData: CaseNavData = {
         id: "objectives",
         label: "Objectives",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+          "Create a brand that reflects the idea of daily engagement and positive routine.\n\nPosition the studio as both creative and technology driven, combining playful experiences with AI powered innovation.\n\nDesign an identity that expresses energy, optimism, and consistency while remaining simple and memorable.",
       },
       {
         id: "strategy",
         label: "Strategy",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+          "The brand is built around the idea of daily presence.\n\nThe sun becomes the central symbol. It represents rhythm, renewal, and the positive energy people encounter every day.\n\nThrough this metaphor, the identity connects gaming with a small but meaningful daily ritual.",
       },
     ],
   },
@@ -44,17 +46,106 @@ const navData: CaseNavData = {
         id: "Process",
         label: "Process",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+          "The Everyday brand is built around the idea of the sun. A symbol of renewal, rhythm, and daily presence.\n\nThis reflects a simple ambition. Creating games people come back to every day. Not occasionally, but as part of a natural routine.\n\nThe identity was therefore designed to live across multiple contexts. Flexible, expressive, and capable of adapting to every moment of use.",
       },
       {
         id: "Human",
         label: "Human",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+          "We chose to bring the brand directly into real life environments.\n\nThe goal was to express its entertainment value while showing that Everyday is not confined to screens. It exists beyond them.\n\nGames become something you can carry with you. In the city, at any time, as part of everyday life.",
       },
     ],
   },
 };
+
+const projectDescription = (
+  <>
+    <p>
+      Everyday is a mobile game studio exploring how AI can reshape play
+      experiences. In a saturated market, it focuses on games players return to
+      regularly, simple experiences designed to become a positive part of daily
+      life.
+    </p>
+    <p className="mt-4">
+      The brand strategy is built around the idea of daily presence. The sun
+      becomes the central symbol, representing rhythm, renewal, and the positive
+      energy people encounter every day. Through this metaphor, the identity
+      connects gaming to a small but meaningful daily ritual, which is exactly
+      what the studio is building toward.
+    </p>
+    <p className="mt-4">
+      The logo draws from solar symbolism. Its radial composition evokes light,
+      movement, and energy. The slightly imperfect circular arrangement
+      introduces vitality and motion, reflecting games that evolve and stay
+      engaging over time. anagram delivered the full creative scope: strategy,
+      identity, design system, motion, illustration, website, and development.
+    </p>
+  </>
+);
+
+const faqItems = [
+  {
+    question: "What does the Everyday logo represent?",
+    answer:
+      "A sun, symbolizing daily rhythm, renewal, and positive energy. Its radial composition and slightly imperfect circular arrangement introduce a sense of movement that mirrors games evolving over time.",
+  },
+  {
+    question: "What was the brand strategy behind Everyday?",
+    answer:
+      "Positioning gaming as a positive daily ritual, using the sun as a universal metaphor for rhythm and renewal, giving the studio a clear emotional territory in a crowded market.",
+  },
+  {
+    question: "What did anagram deliver for Everyday?",
+    answer:
+      "Brand strategy, brand identity, design system, motion design, illustration, website, and development.",
+  },
+];
+
+const releaseTeamRows = [
+  { role: "Global direction", names: "Guillaume Berthonneau" },
+  { role: "Project management", names: "Emmanuel Julliot" },
+  { role: "Strategy", names: "Lou Bontemps" },
+  {
+    role: "Creative direction",
+    names: "Guillaume Berthonneau, Lou Bontemps",
+  },
+  { role: "3D Design", names: "Rémy Godet" },
+  {
+    role: "Motion Design",
+    names: "Rémy Godet, Guillaume Berthonneau",
+  },
+  { role: "Interactive Design", names: "Valentin Salmon" },
+  {
+    role: "Photography",
+    names: "Sébastien Marchand, Pénélope Torres",
+  },
+  { role: "Copywriting", names: "Lou Bontemps" },
+  {
+    role: "Integration",
+    names: "Andrea Tuysuzian, Alexandre Tuysuzian",
+  },
+  {
+    role: "Clients",
+    names: "Olivier Le Bas, Jake Bales, Maxime Pham-Van, Manuel Pozo",
+  },
+];
+
+const backstageTeamRows = [
+  { role: "Project management", names: "Emmanuel Julliot" },
+  {
+    role: "Creative direction",
+    names: "Emmanuel Julliot, Guillaume Berthonneau, Lou Bontemps",
+  },
+  { role: "Photography", names: "Sébastien Marchand" },
+  { role: "Photography assistant", names: "Vincenzo Tilleul" },
+  { role: "Set design", names: "Pénélope Torres" },
+  { role: "Lighting", names: "Vincenzo Tilleul" },
+  { role: "Models", names: "Pénélope Torres" },
+  {
+    role: "Clients",
+    names: "Olivier Le Bas, Jake Bales, Maxime Pham-Van, Manuel Pozo",
+  },
+];
 
 export default function EverydayCasePage() {
   return (
@@ -170,6 +261,11 @@ export default function EverydayCasePage() {
                 src="/works/Everyday/release/22.avif"
                 alt="Everyday 22"
               />
+              <TeamCredits
+                rows={releaseTeamRows}
+                projectDescription={projectDescription}
+                faq={<Faq items={faqItems} />}
+              />
             </div>
           }
           backstage={
@@ -190,6 +286,11 @@ export default function EverydayCasePage() {
               <Frame01
                 src="/works/Everyday/backstage/26.webp"
                 alt="Everyday backstage 26"
+              />
+              <TeamCredits
+                rows={backstageTeamRows}
+                projectDescription={projectDescription}
+                faq={<Faq items={faqItems} />}
               />
             </div>
           }

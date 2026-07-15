@@ -8,11 +8,12 @@ import Frame02 from "@/components/cases-frame/Frame02";
 import TeamCredits from "@/components/cases-frame/TeamCredits";
 import VimeoImageCards from "@/components/cases-frame/VimeoImageCards";
 import NextCase from "@/components/cases-frame/NextCase";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Planity Branding — Brand Identity Case Study by Anagram",
+  title: "Planity Branding | Brand Identity & Product Design | anagram",
   description:
-    "See how Anagram Club rebuilt Planity's brand — from strategy and identity to product design and photography for France's top beauty booking platform.",
+    "How anagram redesigned Planity's brand for European expansion: brand strategy, design system, product design. +50% bookings per second.",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -21,39 +22,21 @@ export const metadata: Metadata = {
 const navData: CaseNavData = {
   title: "Planity",
   description:
-    "Strategy, Copywriting, Brand Identity, Design System, Product Design, Motion, Illustration, Website, Photography, Video, Development",
+    "Planity is France's leading online booking platform for beauty and wellness professionals, used by millions of clients to find and book appointments. We partnered with Planity to create a brand identity and product design system capable of expressing its next phase of growth: turning a functional booking app into a brand ready for European expansion.",
   liveUrl: "https://www.planity.com/",
   release: {
     sections: [
       {
-        id: "context",
-        label: "Context",
-        description:
-          "As France’s market leader, the brand entered a key growth phase accelerating adoption and preparing for European expansion. Despite an efficient product, complex journeys and a functional brand no longer matched the ambition, emotion, and closeness users expect.",
-      },
-      {
         id: "objectives",
         label: "Objectives",
         description:
-          "Simplify booking to reduce friction and boost conversion, while evolving beyond a purely functional UI. Also build a stronger, emotional brand to drive B2C growth, reinforce B2B, and support European expansion.",
+          "Simplify the booking experience by reducing friction and improving conversion, while evolving the product beyond a purely functional interface. \n\nBuild a stronger, more emotional and distinctive brand aligned with modern beauty codes, capable of supporting B2C adoption, reinforcing the B2B model, and enabling European expansion.",
       },
       {
         id: "strategy",
         label: "Strategy",
         description:
-          "The new identity turns the “P” into a door symbol, representing entry into the salon and transformation. Flexible and scalable, it frames content and ensures consistent visual coherence across all touchpoints and markets.",
-      },
-      {
-        id: "application",
-        label: "Application",
-        description:
-          "The design created a modern, expressive universe that breaks beauty codes and unifies product and brand. Built around the door symbol, it rolled out across B2C then B2B touchpoints, guided by making the experience simpler, more human, and more desirable.",
-      },
-      {
-        id: "results",
-        label: "Results",
-        description:
-          "Over the past three years, we have progressively built and refined Planity’s brand assets through a structured, iterative process, using the brand strategy as a solid foundation to ensure long-term consistency and evolution.",
+          "The new identity is built from the letter P in Planity, transformed into a central symbol: the door. \n\nA universal gesture, the door represents the moment you step into a salon, a threshold of transformation and well-being. \n\nFlexible by nature, it can adapt in scale and style, becoming a structuring graphic element that frames content and compositions. \n\nUsed consistently, it ensures visual coherence across all touchpoints while remaining adaptable to different contexts and markets.",
       },
     ],
   },
@@ -75,7 +58,7 @@ const navData: CaseNavData = {
         id: "Human",
         label: "Human",
         description:
-          "For the B2C audience, we adopted a more human and expressive photographic direction, shifting from black-and-white to color to bring warmth and modernity to the brand. Shot in studio and at the Niemeyer Space in Paris, the imagery was designed to fit the website’s UX constraints, especially within the hero section, ensuring clarity, impact, and visual consistency.",
+          "For the B2C audience, we introduced a more human and expressive photographic direction, moving from black-and-white to color to bring warmth and modernity to the brand. The shoots were conducted both in studio and at the Niemeyer Space in Paris, selected for its strong architectural presence and minimalist aesthetic. Designed with the website’s UX constraints in mind, particularly within the hero section, the imagery remains simple and focused, ensuring clarity, impact, and consistency across touchpoints.",
       },
       {
         id: "B2C Textures",
@@ -86,6 +69,57 @@ const navData: CaseNavData = {
     ],
   },
 };
+
+const projectDescription = (
+  <>
+    <p>
+      As France&apos;s market leader in beauty booking, Planity was entering a
+      pivotal growth phase: accelerating adoption and preparing for European
+      expansion. Despite a strong product, its functional brand no longer
+      matched its ambitions or the emotional expectations of its users.
+    </p>
+    <p className="mt-4">
+      anagram led the full creative scope: brand strategy, copywriting, brand
+      identity, design system, product design, motion design, illustration,
+      website, photography, and development.
+    </p>
+    <p className="mt-4">
+      The new identity is built around a door symbol, a metaphor for entering
+      the salon and transformation. The &ldquo;P&rdquo; becomes a threshold,
+      flexible and scalable, designed to frame content consistently across all
+      touchpoints and markets. The system rolled out progressively across B2C
+      then B2B surfaces, simplifying journeys and building a brand users
+      actually want to engage with.
+    </p>
+    <p className="mt-4">
+      Three years of iterative work. Measured result: +50% appointment bookings
+      per second.
+    </p>
+  </>
+);
+
+const faqItems = [
+  {
+    question: "What does the Planity logo represent?",
+    answer:
+      "The “P” was reimagined as a door, an entry point into the salon experience and a metaphor for personal transformation. It frames content across every brand touchpoint.",
+  },
+  {
+    question: "What did anagram deliver for Planity?",
+    answer:
+      "A complete mission covering brand strategy, identity, design system, product design, motion, website, photography, and development across B2C and B2B markets in Europe.",
+  },
+  {
+    question: "What results did the Planity rebrand generate?",
+    answer:
+      "+50% appointment bookings per second, and a coherent design system supporting Planity's ongoing European expansion.",
+  },
+  {
+    question: "How long did the collaboration last?",
+    answer:
+      "Over three years, with an iterative process of building and refining brand assets in step with Planity's growth.",
+  },
+];
 
 export default function PlanityPage() {
   return (
@@ -230,32 +264,14 @@ export default function PlanityPage() {
                     role: "Integration",
                     names: "Alexandre Tuysuzian, Andrea Tuysuzian, Planity",
                   },
-                  { role: "Fonts", names: "Aeonik" },
+                  {
+                    role: "Clients",
+                    names:
+                      "Ameerah Musbally, Camille Guilgaut, Antoine Puymirat, Pauline Katz, Chiraz Hassen, Jérémy Queroy",
+                  },
                 ]}
-                projectDescription={
-                  <>
-                    <p>
-                      Planity is France&apos;s leading beauty booking platform,
-                      connecting millions of clients with salons and beauty
-                      professionals across the country. As the market leader,
-                      the brand entered a pivotal growth phase — accelerating
-                      adoption and preparing for European expansion.
-                    </p>
-                    <p className="mt-4">
-                      Anagram rebuilt Planity&apos;s identity around the
-                      &ldquo;P&rdquo; as a door symbol — a metaphor for entry
-                      into the salon and personal transformation. Flexible and
-                      scalable, this system unified product and brand across
-                      every B2C and B2B touchpoint, from app UI to photography
-                      and motion.
-                    </p>
-                    <p className="mt-4">
-                      A three-year collaboration built progressively, with each
-                      iteration strengthening the foundation for long-term
-                      consistency and coherent evolution across markets.
-                    </p>
-                  </>
-                }
+                projectDescription={projectDescription}
+                faq={<Faq items={faqItems} />}
               />
             </div>
           }
@@ -370,63 +386,37 @@ export default function PlanityPage() {
 
               <TeamCredits
                 rows={[
-                  {
-                    role: "Global direction",
-                    names: "Valentin Salmon, Emmanuel Julliot",
-                  },
                   { role: "Project management", names: "Emmanuel Julliot" },
-                  { role: "Strategy", names: "Emmanuel Julliot" },
-                  {
-                    role: "Creative direction",
-                    names: "Valentin Salmon, Emmanuel Julliot, Anthony Velen",
-                  },
-                  {
-                    role: "3D Design",
-                    names: "Anthony Velen, Emmanuel Julliot",
-                  },
-                  {
-                    role: "Motion Design",
-                    names: "Valentin Salmon, Anthony Velen",
-                  },
-                  { role: "Interactive Design", names: "Valentin Salmon" },
-                  { role: "UX/UI", names: "Valentin Salmon, Emmanuel Julliot" },
                   { role: "Production", names: "anagram production" },
                   { role: "Photography", names: "Sébastien Marchand" },
+                  {
+                    role: "Photography assistant",
+                    names: "Camille Poildessous",
+                  },
                   { role: "Video", names: "Gurvann Touzé" },
+                  { role: "Set design", names: "Pénélope Torres" },
+                  { role: "Lighting", names: "Gurvann Touzé" },
+                  { role: "Makeup artist", names: "Allison le Fur" },
+                  { role: "Hairdresser", names: "Dylan Lebahy, Gabin Ahmed" },
+                  { role: "Barber", names: "Aldrick Quéval" },
                   {
-                    role: "Copywriting",
-                    names: "Ameerah Musbally, Camille Guilgaut, Pauline Katz",
+                    role: "Stylist",
+                    names:
+                      "Camille Poildessous, Ameerah Musbally, Camille Guilgaut, Pauline Katz",
                   },
                   {
-                    role: "Integration",
-                    names: "Alexandre Tuysuzian, Andrea Tuysuzian, Planity",
+                    role: "Models",
+                    names:
+                      "Marion Delorme, Yéro Mbow, Shannon Durand, Valentin Soares, Anthony Lewis, Agathe Fournier, Wissal Baroudi, Faiz Mahmoud, Nahil Mahmoud, Triana Muñoz, Lucas Meslet, Fanny Andriamasy, Silvestri Alan, Louann Pinel",
                   },
-                  { role: "Fonts", names: "Aeonik" },
+                  {
+                    role: "Clients",
+                    names:
+                      "Ameerah Musbally, Camille Guilgaut, Antoine Puymirat, Pauline Katz, Chiraz Hassen, Jérémy Queroy",
+                  },
                 ]}
-                projectDescription={
-                  <>
-                    <p>
-                      Planity is France&apos;s leading beauty booking platform,
-                      connecting millions of clients with salons and beauty
-                      professionals across the country. As the market leader,
-                      the brand entered a pivotal growth phase — accelerating
-                      adoption and preparing for European expansion.
-                    </p>
-                    <p className="mt-4">
-                      Anagram rebuilt Planity&apos;s identity around the
-                      &ldquo;P&rdquo; as a door symbol — a metaphor for entry
-                      into the salon and personal transformation. Flexible and
-                      scalable, this system unified product and brand across
-                      every B2C and B2B touchpoint, from app UI to photography
-                      and motion.
-                    </p>
-                    <p className="mt-4">
-                      A three-year collaboration built progressively, with each
-                      iteration strengthening the foundation for long-term
-                      consistency and coherent evolution across markets.
-                    </p>
-                  </>
-                }
+                projectDescription={projectDescription}
+                faq={<Faq items={faqItems} />}
               />
             </div>
           }

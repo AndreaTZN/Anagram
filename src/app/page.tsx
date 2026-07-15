@@ -58,7 +58,7 @@ export default async function HomePage() {
       <div className="hidden md:block">
         <WidgetPanel openRoles={openRoles} />
       </div>
-      <section className="py-6">
+      <section className="pt-6">
         <HomeContain />
       </section>
       <Footer />

@@ -10,11 +10,12 @@ import Frame02 from "@/components/cases-frame/Frame02";
 import TeamCredits from "@/components/cases-frame/TeamCredits";
 import CaseStats from "@/components/cases-frame/CaseStats";
 import NextCase from "@/components/cases-frame/NextCase";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Fortuneo Branding — Brand Strategy & Product Design by Anagram",
+  title: "Fortuneo Rebranding | Online Bank Visual Identity | anagram",
   description:
-    "Anagram Club rebuilt Fortuneo's brand strategy and product design, helping France's most affordable online bank achieve a 45% increase in subscriptions.",
+    "anagram rebranded Fortuneo: +45% funnel entry, +63% documents submitted. Online bank rebranding, brand strategy and product design.",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -23,39 +24,21 @@ export const metadata: Metadata = {
 const navData: CaseNavData = {
   title: "Fortuneo",
   description:
-    "Strategy, Copywriting, Brand Identity, Design System, Product Design, Motion, Illustration, Website, Photography, Video, Development",
+    "Fortuneo is a profitable French online bank looking to attract younger users and grow upgrades to its premium Black Card, without losing its core promise as the most affordable online bank in France. We partnered with Fortuneo to build a brand strategy and identity capable of expressing that ambition: turning the “0” of free banking into a dynamic, premium, and human brand asset.",
   liveUrl: "https://fortuneo.fr",
   release: {
     sections: [
       {
-        id: "context",
-        label: "Context",
-        description:
-          "Fortuneo, a profitable French online bank, aimed to boost growth by attracting younger users with the Fosfo card and increasing upgrades to the Black card, but its outdated brand no longer matched its premium ambitions.",
-      },
-      {
         id: "objectives",
         label: "Objectives",
         description:
-          "Fortuneo set out to become more desirable while staying true to its core strength: being France's most affordable online bank. To support growth, it refreshed its brand to attract younger users with Fosfo and drive premium adoption with the Black Card.",
+          "Transform Fortuneo into a more desirable brand while preserving what makes it unique: being France's most affordable online bank.\n\nTo fuel its next growth phase, the brand refreshed its image to attract younger users with the Fosfo card and increase premium adoption with the Black Card. The challenge was to balance a premium and expert positioning while remaining price led.\n\nThe ambition was a clear promise that feels premium yet accessible, competitive yet human, and always free.",
       },
       {
         id: "strategy",
         label: "Strategy",
         description:
-          'Fortuneo made the "0" — symbol of free banking — its core brand asset, turning it into a dynamic graphic element that adds motion and desirability.',
-      },
-      {
-        id: "application",
-        label: "Application",
-        description:
-          "Fortuneo stood out by turning its numbers into both emotional storytelling and clear proof points, combining accessible messaging with premium visuals.",
-      },
-      {
-        id: "results",
-        label: "Results",
-        description:
-          "Our collaboration with Fortuneo led to a 45% increase in subscription funnel entry, a 27% rise in prospects starting a project, and a 63% growth in documents submitted.",
+          "The “0”, symbol of free banking, became Fortuneo's central brand asset. We transformed it into a dynamic graphic element that brings motion, playfulness and desirability to the brand. \n\nBecause banking is about numbers such as how much you earn, how much you spend and where your money goes, we built the proposition around a simple truth. Numbers matter, turning “free” into something premium and emotional.",
       },
     ],
   },
@@ -65,29 +48,75 @@ const navData: CaseNavData = {
         id: "Process",
         label: "Process",
         description:
-          "Over the past three years, we have progressively built and refined Planity’s brand assets through a structured, iterative process, using the “door” strategy as a strong foundation to ensure long-term consistency and coherent evolution.",
+          "We elevated Fortuneo's brand assets through a strategy built for both consistency and evolution. At its core, the “0”, symbol of free banking became a living graphic element, bringing energy, fluidity, and desirability to the brand.",
       },
       {
-        id: "B2B Textures",
-        label: "B2B Textures",
+        id: "Credit card",
+        label: "Credit card",
         description:
-          "We extended the same strategic approach to B2B touchpoints, crafting refined textures and visual systems designed to resonate with a premium audience, strengthen credibility, and support lead generation among decision-makers.",
+          "In designing the credit cards, we centered the logo to anchor the brand visually. \n\nWe then elevated the physical experience through advanced print finishes: Pantone inks, tactile inks, varnish, and other premium treatments ensuring a highly qualitative and distinctive outcome.",
       },
       {
         id: "Human",
         label: "Human",
         description:
-          "For the B2C audience, we adopted a more human and expressive photographic direction, shifting from black-and-white to color to bring warmth and modernity to the brand. Shot in studio and at the Niemeyer Space in Paris, the imagery was designed to fit the website’s UX constraints, especially within the hero section, ensuring clarity, impact, and visual consistency.",
-      },
-      {
-        id: "B2C Textures",
-        label: "B2C Textures",
-        description:
-          "The goal was to stay close to the B2C audience while remaining consistent with the visual direction established for B2B photography and the more human side of the website.",
+          "For the photo direction, we stayed true to the lifestyle positioning defined in the original strategy, curating imagery that feels authentic yet elevated balancing everyday moments with a premium sensibility tailored to Fortuneo's audience.",
       },
     ],
   },
 };
+
+const projectDescription = (
+  <>
+    <p>
+      Fortuneo, a profitable French online bank, needed to attract younger users
+      with the Fosfo card and increase upgrades to the Black Card. Its outdated
+      brand no longer matched those premium ambitions.
+    </p>
+    <p className="mt-4">
+      The goal was to make Fortuneo more desirable while staying true to its
+      core strength: being France&apos;s most affordable online bank. anagram
+      turned the &ldquo;0&rdquo;, the symbol of free banking, into a dynamic
+      brand asset. A graphic element that generates motion, desirability, and
+      emotional storytelling. The identity elevated &ldquo;free&rdquo; into
+      something both premium and human.
+    </p>
+    <p className="mt-4">
+      The full creative scope covered brand strategy, identity, design system,
+      product design, motion, illustration, website, photography, video, and
+      development.
+    </p>
+    <p className="mt-4">
+      Results: +45% increase in subscription funnel entry, +27% rise in
+      prospects starting a project, +63% growth in documents submitted, and a
+      77% increase in awareness, consideration, and account openings.
+    </p>
+  </>
+);
+
+const faqItems = [
+  {
+    question: 'What does the "0" represent in the Fortuneo brand identity?',
+    answer:
+      "The zero, symbol of free banking, was transformed into a dynamic graphic element that generates movement and desirability, turning a functional proof point into an emotional brand asset.",
+  },
+  {
+    question: "What results did the Fortuneo rebrand generate?",
+    answer:
+      "+45% funnel entry, +27% prospects starting a project, +63% documents submitted, and +77% on awareness, consideration, and account openings.",
+  },
+  {
+    question: "What did anagram deliver for Fortuneo?",
+    answer:
+      "A complete creative and technical mission: brand strategy, identity, design system, product design, motion, illustration, website, photography, video, and development.",
+  },
+  {
+    question:
+      "How do you rebrand a bank to feel premium without losing its value positioning?",
+    answer:
+      'By reframing what "affordable" means. For Fortuneo, zero fees became a symbol of freedom, not just a discount.',
+  },
+];
 
 export default function FortuneoCasePage() {
   return (
@@ -251,21 +280,14 @@ export default function FortuneoCasePage() {
                   },
                   { role: "Sound Design", names: "Tanguy Drobniewski" },
                   { role: "Integration", names: "Fortuneo" },
-                  { role: "Fonts", names: "Söhne" },
+                  {
+                    role: "Clients",
+                    names:
+                      "Priscillia Vebret, Léa Carpentier, Madison Loco, Marie-Emmanuelle Hamon, Guillain Chauffert-Yvart, Grégory Guermonprez",
+                  },
                 ]}
-                projectDescription={
-                  <>
-                    <p>
-                      Fortuneo is France&apos;s most affordable online bank, built around a simple promise: zero fees, maximum value. With over a million customers and a profitable track record, the brand entered a new growth phase — needing to attract younger audiences with Fosfo while driving premium adoption with the Black Card.
-                    </p>
-                    <p className="mt-4">
-                      Anagram rebuilt Fortuneo&apos;s brand from the ground up, making the &ldquo;0&rdquo; — the symbol of free banking — the central visual asset of the identity. This dynamic graphic element brought motion, desirability, and coherence across every touchpoint, from product design to photography and motion.
-                    </p>
-                    <p className="mt-4">
-                      The result: a 45% increase in subscription funnel entry, a 27% rise in prospects starting a project, and a 63% growth in documents submitted.
-                    </p>
-                  </>
-                }
+                projectDescription={projectDescription}
+                faq={<Faq items={faqItems} />}
               />
             </div>
           }
@@ -390,45 +412,13 @@ export default function FortuneoCasePage() {
                       "Abdel K, Charlotte P, Thibault B, Agnes T, Elodie L, Cedric O, Ida M, Sylvain Sencier, Maëlla Hauray, Jade Lukebadio, Kevin Houdu, Jeanne Bonjour, Sylvie Jourdan, Jean-Louis Tellier",
                   },
                   {
-                    role: "Client",
+                    role: "Clients",
                     names:
                       "Priscillia Vebret, Léa Carpentier, Madison Loco, Marie-Emmanuelle Hamon, Guillain Chauffert-Yvart, Grégory Guermonprez",
                   },
                 ]}
-                projectDescription={
-                  <>
-                    <p>
-                      Since working with Robinhood in 2024 to create a more
-                      grown-up, elevated identity, the brand has continued its
-                      trajectory as a leader in next-generation finance.
-                      Throughout 2025, Robinhood expanded internationally,
-                      introduced new products, and surged over 575% in stock
-                      performance. The platform has evolved from its early days
-                      of being a commission-free trading pioneer to a
-                      comprehensive financial ecosystem.
-                    </p>
-                    <p className="mt-4">
-                      As Robinhood&apos;s core audience matured alongside the
-                      platform, the brand looked to deepen its relationship with
-                      users through new brand touchpoints. Users who started
-                      trading in their early twenties are now seasoned investors
-                      entering their late twenties and early thirties—settling
-                      into careers, starting families, and seeking financial
-                      sophistication. This demographic shift represents an
-                      opportunity for physical brand expression that matches
-                      evolving lifestyle aspirations, with merchandise emerging
-                      as a strategic means to extend the brand beyond digital
-                      interfaces.
-                    </p>
-                    <p className="mt-4">
-                      Introducing Robinhood Market, a merch store that acts as
-                      an integrated storytelling channel to reinforce the
-                      brand&apos;s elevated positioning, and to create a new
-                      lifestyle expression of the brand that fans would actually
-                      want to own and wear.
-                    </p>
-                  </>
-                }
+                projectDescription={projectDescription}
+                faq={<Faq items={faqItems} />}
               />
             </div>
           }

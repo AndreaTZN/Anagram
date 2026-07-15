@@ -10,11 +10,13 @@ import VimeoImageCards from "@/components/cases-frame/VimeoImageCards";
 import TeamCredits from "@/components/cases-frame/TeamCredits";
 import NextCase from "@/components/cases-frame/NextCase";
 import VimeoTextImage from "@/components/cases-frame/VimeoTextImage";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Wastetide Branding — Brand Strategy & Identity by Anagram Club",
+  title:
+    "Wastetide | Brand Identity for Industrial Waste Intelligence | anagram",
   description:
-    "Discover how Anagram Club created Wastetide’s brand identity and digital experience, transforming industrial waste into hidden value through a bold AI-powered sustainability platform.",
+    "anagram built the full brand and digital experience for Wastetide, an AI platform turning industrial waste into measurable financial value. Identity, strategy, and concept.",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -42,6 +44,72 @@ const navData: CaseNavData = {
     ],
   },
 };
+
+const projectDescription = (
+  <>
+    <p>
+      The scope covered brand strategy, identity, motion design, UX/UI,
+      product design, 3D, website, sound design, and development. A complete
+      mission from concept to shipped experience.
+    </p>
+    <p className="mt-4">
+      The brand sits deliberately outside conventional sustainability codes.
+      No green messaging, no earnest climate narrative. The tone is
+      industrial, performance-driven, and financial in register, built for
+      procurement leads and CFOs who think in terms of material recovery and
+      return on asset, not ESG communications teams. Wastetide&apos;s
+      positioning is simple: waste is a hidden financial asset, and their
+      technology makes it visible and tradeable.
+    </p>
+    <p className="mt-4">
+      The visual system comes from a torn paper pattern pulled directly from
+      shredded industrial waste. It&apos;s a texture that becomes a working
+      tool, flexible enough to frame photography, drive typographic
+      composition, and generate motion, while anchoring every touchpoint in
+      the same core idea: value already exists beneath the surface, it just
+      needs to be uncovered.
+    </p>
+    <p className="mt-4">
+      The logo carries three meanings compressed into one mark. The flag
+      signals identification, the ability to locate opportunity. The wave
+      references the continuous flow of materials across industrial cycles.
+      The ascending line marks value creation over time. Combined with the
+      &ldquo;W&rdquo;, these elements form a visual equation that describes
+      what Wastetide actually does: detect, transform, extract value from
+      overlooked waste.
+    </p>
+    <p className="mt-4">
+      The iceberg, wave, and segmentation motifs extend this logic into the
+      full identity system. Each is a visual metaphor for Wastetide&apos;s
+      analytical process. Together, they make an invisible service
+      immediately legible to decision-makers who have no patience for
+      abstraction.
+    </p>
+  </>
+);
+
+const faqItems = [
+  {
+    question: "What did anagram deliver for Wastetide?",
+    answer:
+      "A complete creative mission: brand strategy, identity, motion design, UX/UI, product design, 3D, sound design, website, and development, from the first strategic brief to the live digital experience.",
+  },
+  {
+    question: "What does the Wastetide logo represent?",
+    answer:
+      "Three elements converge in one mark. A flag for identification and discovery. A wave for the continuous flow of materials and transformation. An ascending line for value creation over time. Combined with the initial “W”, they form a visual equation describing exactly what Wastetide does.",
+  },
+  {
+    question: "Why did anagram avoid green branding for Wastetide?",
+    answer:
+      "Because Wastetide's buyers are industrial operators and financial decision-makers, not sustainability teams. The brief was to position waste as a financial asset, not a cause. The identity is bold, direct, and performance-driven, closer to a fintech or data platform in register than to a cleantech startup.",
+  },
+  {
+    question: "What is the torn paper pattern in the Wastetide identity?",
+    answer:
+      "The structural motif of the entire visual system, inspired directly by shredded industrial waste. It frames photography, drives typographic composition, and generates motion. A single visual principle that connects every touchpoint to the same idea: hidden value just beneath the surface.",
+  },
+];
 
 export default function WastetidePage() {
   return (
@@ -224,64 +292,39 @@ export default function WastetidePage() {
               <Frame01 src="/works/Wastetide/26.webp" alt="Wastetide 26" />
               <TeamCredits
                 rows={[
-                  { role: "Creative direction", names: "Lou Bontemps" },
                   { role: "Global direction", names: "Rémy Godet" },
                   { role: "Project management", names: "Valentin Salmon" },
+                  { role: "Strategy", names: "Rémy Godet, Lou Bontemps" },
+                  { role: "Creative direction", names: "Lou Bontemps" },
                   { role: "3D Design", names: "Rémy Godet" },
-                  {
-                    role: "UX/UI",
-                    names: "Rémy Godet, Vincenzo Tilleul, Lou Bontemps",
-                  },
                   {
                     role: "Motion Design",
                     names: "Rémy Godet, Bérengère Morel",
                   },
                   {
-                    role: "Development",
+                    role: "Interactive Design",
+                    names: "Rémy Godet, Valentin Salmon, Vincenzo Tilleul",
+                  },
+                  {
+                    role: "UX/UI",
+                    names:
+                      "Rémy Godet, Vincenzo Tilleul, Lou Bontemps, Valentin Salmon",
+                  },
+                  { role: "Copywriting", names: "Lou Bontemps" },
+                  { role: "Sound Design", names: "Tanguy Drobniewski" },
+                  {
+                    role: "Integration",
                     names: "Andrea Tuysuzian, Alexandre Tuysuzian",
                   },
-                  { role: "Product Design", names: "Valentin Salmon" },
-                  { role: "Sound Design", names: "Tanguy Drobniewski" },
-                  { role: "Copy", names: "Lou Bontemps" },
-                  {
-                    role: "Production",
-                    names: "Gurvann Touzé, Sébastien Marchand",
-                  },
+                  { role: "Photography", names: "Sébastien Marchand" },
+                  { role: "Photography assistant", names: "Gurvann Touzé" },
+                  { role: "Video", names: "Gurvann Touzé" },
+                  { role: "Set design", names: "Pénélope Torres" },
+                  { role: "Lighting", names: "Gurvann Touzé" },
+                  { role: "Client", names: "Nicolas Brien" },
                 ]}
-                projectDescription={
-                  <>
-                    <p>
-                      Since working with Robinhood in 2024 to create a more
-                      grown-up, elevated identity, the brand has continued its
-                      trajectory as a leader in next-generation finance.
-                      Throughout 2025, Robinhood expanded internationally,
-                      introduced new products, and surged over 575% in stock
-                      performance. The platform has evolved from its early days
-                      of being a commission-free trading pioneer to a
-                      comprehensive financial ecosystem.
-                    </p>
-                    <p className="mt-4">
-                      As Robinhood's core audience matured alongside the
-                      platform, the brand looked to deepen its relationship with
-                      users through new brand touchpoints. Users who started
-                      trading in their early twenties are now seasoned investors
-                      entering their late twenties and early thirties—settling
-                      into careers, starting families, and seeking financial
-                      sophistication. This demographic shift represents an
-                      opportunity for physical brand expression that matches
-                      evolving lifestyle aspirations, with merchandise emerging
-                      as a strategic means to extend the brand beyond digital
-                      interfaces.
-                    </p>
-                    <p className="mt-4">
-                      Introducing Robinhood Market, a merch store that acts as
-                      an integrated storytelling channel to reinforce the
-                      brand's elevated positioning, and to create a new
-                      lifestyle expression of the brand that fans would actually
-                      want to own and wear.
-                    </p>
-                  </>
-                }
+                projectDescription={projectDescription}
+                faq={<Faq items={faqItems} />}
               />
             </div>
           }

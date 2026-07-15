@@ -15,6 +15,7 @@ type Props = {
   title?: string;
   projectTitle?: string;
   projectDescription?: ReactNode;
+  faq?: ReactNode;
 };
 
 export default function TeamCredits({
@@ -22,6 +23,7 @@ export default function TeamCredits({
   title = "Team behind the project",
   projectTitle = "Project Informations",
   projectDescription,
+  faq,
 }: Props) {
   const { activeTab } = useCaseNav();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -42,6 +44,11 @@ export default function TeamCredits({
     });
     gsap.to(el.querySelectorAll(".tc-muted"), {
       color: dark ? "#9e9e9e" : "#7c7c7c",
+      duration,
+      ease: "power2.inOut",
+    });
+    gsap.to(el.querySelectorAll(".tc-dot"), {
+      backgroundColor: dark ? "#ffffff" : "#0c0c0c",
       duration,
       ease: "power2.inOut",
     });
@@ -79,6 +86,17 @@ export default function TeamCredits({
             {projectDescription}
           </div>
         )}
+        {faq && (
+          <div className="teamcredits_divider flex items-center justify-between w-full mt-6">
+            {Array.from({ length: 80 }).map((_, i) => (
+              <div
+                key={i}
+                className="tc-dot bg-[#0c0c0c] opacity-30 rounded-full shrink-0 size-[1.5px]"
+              />
+            ))}
+          </div>
+        )}
+        {faq}
       </div>
     </div>
   );

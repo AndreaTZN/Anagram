@@ -61,11 +61,17 @@ export default function Footer() {
   return (
     <footer className="text-[#0c0c0c] text-sm">
       {/* Desktop */}
-      <div id="footer-desktop" className="hidden min-[767px]:flex flex-col gap-6 pt-20">
+      <div
+        id="footer-desktop"
+        className="hidden min-[767px]:flex flex-col gap-6 pt-6"
+      >
         <DotDivider />
 
         <div className="flex gap-6 items-start">
-          <div id="footer-desktop-contact" className="flex flex-col gap-16 w-125 shrink-0">
+          <div
+            id="footer-desktop-contact"
+            className="flex flex-col gap-16 w-125 shrink-0"
+          >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Contact</p>
             <div className="flex flex-col gap-8 font-medium text-sm">
               <div className="flex flex-col gap-1">
@@ -81,18 +87,28 @@ export default function Footer() {
             </div>
           </div>
 
-          <div id="footer-desktop-sitemap" className="flex flex-1 flex-col gap-16">
+          <div
+            id="footer-desktop-sitemap"
+            className="flex flex-1 flex-col gap-16"
+          >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Sitemap</p>
             <div className="flex flex-col gap-1 font-medium text-sm whitespace-nowrap">
               {sitemapLinks.map((link) => (
-                <Link key={link.href} href={link.href} className="leading-[1.1]">
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="leading-[1.1]"
+                >
                   {link.label}
                 </Link>
               ))}
             </div>
           </div>
 
-          <div id="footer-desktop-links" className="flex flex-1 flex-col gap-16">
+          <div
+            id="footer-desktop-links"
+            className="flex flex-1 flex-col gap-16"
+          >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Links</p>
             <div className="flex flex-col gap-1 font-medium text-sm whitespace-nowrap">
               {desktopSocialLinks.map((link) => (
@@ -103,7 +119,10 @@ export default function Footer() {
             </div>
           </div>
 
-          <div id="footer-desktop-brands" className="flex flex-1 flex-col gap-16 whitespace-nowrap">
+          <div
+            id="footer-desktop-brands"
+            className="flex flex-1 flex-col gap-16 whitespace-nowrap"
+          >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Our brands</p>
             <div className="flex flex-col gap-1 font-medium text-sm">
               {brands.map((brand) => (
@@ -133,10 +152,16 @@ export default function Footer() {
       </div>
 
       {/* Mobile */}
-      <div id="footer-mobile" className="flex min-[767px]:hidden flex-col gap-6 pt-12 pb-6">
+      <div
+        id="footer-mobile"
+        className="flex min-[767px]:hidden flex-col gap-6 pt-12 pb-6"
+      >
         <Logo />
         <div className="flex items-start justify-between whitespace-nowrap">
-          <div id="footer-mobile-links" className="flex flex-col gap-2 font-medium">
+          <div
+            id="footer-mobile-links"
+            className="flex flex-col gap-2 font-medium"
+          >
             <Link href="/privacy" className="leading-[1.1] underline">
               Privacy
             </Link>
