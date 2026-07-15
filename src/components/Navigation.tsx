@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { navWorks } from "@/lib/nav-works";
 
 gsap.registerPlugin(useGSAP);
 
@@ -17,54 +18,18 @@ const navLinks = [
   { label: "Store", href: "/store" },
 ];
 
-const works = [
-  {
-    name: "Matis",
-    href: "/works/matis",
-    category: "Art",
-    image: "/navigation/matis.mp4",
-  },
-  {
-    name: "Raison",
-    href: "/works/fortuneo",
-    category: "Education",
-    image: "/navigation/Raison.mp4",
-  },
-  {
-    name: "Wastetide",
-    href: "/works/wastetide",
-    category: "Environment",
-    image: "/navigation/wastetide.mp4",
-  },
-  {
-    name: "Omnia",
-    href: "/works/founders-future",
-    category: "AI Search",
-    image: "/navigation/omnia.mp4",
-  },
-  {
-    name: "Incard",
-    href: "/works/founders-future",
-    category: "Banking",
-    image: "/navigation/incard.jpg",
-  },
-  {
-    name: "Bitstack",
-    href: "/works/founders-future",
-    category: "Crypto",
-    image: "/navigation/bistack.mp4",
-  },
-  {
-    name: "Geobrowser",
-    href: "/works/founders-future",
-    category: "AI",
-    image: "/navigation/geobrowser.mp4",
-  },
-];
-
 export default function Navigation() {
   const pathname = usePathname();
   const listRef = useRef<HTMLDivElement>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 993px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   useGSAP(
     () => {
@@ -202,16 +167,17 @@ export default function Navigation() {
           ref={listRef}
           className="flex flex-col gap-1.5 pl-3 pr-1.5 pb-4  pt-14 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden "
         >
-          {works.map((work) => (
+          {navWorks.map((work) => (
             <Link key={work.name} href={work.href}>
               <div
                 data-nav-work
                 className="flex items-center gap-3 p-2 transition-colors bg-[#f9f9f9] hover:bg-[#ededed]"
               >
                 <div className="relative shrink-0 overflow-hidden w-25 h-15">
-                  {work.image.endsWith(".mp4") ? (
+                  {isDesktop ? (
                     <video
-                      src={work.image}
+                      src={work.video}
+                      poster={work.poster}
                       autoPlay
                       muted
                       loop
@@ -220,7 +186,7 @@ export default function Navigation() {
                     />
                   ) : (
                     <Image
-                      src={work.image}
+                      src={work.poster}
                       alt={work.name}
                       fill
                       sizes="100px"

@@ -1,3 +1,8 @@
+"use client";
+
+import Link from "next/link";
+import { globalLenisRef } from "@/lib/lenis";
+
 const Logo = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -14,63 +19,139 @@ const Logo = () => (
   </svg>
 );
 
+const DotDivider = () => (
+  <div className="nextcase_separator flex items-center justify-between w-full">
+    {Array.from({ length: 250 }).map((_, i) => (
+      <div
+        key={i}
+        className="nextcase_dot bg-[#0c0c0c] opacity-30 rounded-full shrink-0 size-[1.5px]"
+      />
+    ))}
+  </div>
+);
+
+const sitemapLinks = [
+  { label: "Home", href: "/" },
+  { label: "Work", href: "/works" },
+  { label: "Studio", href: "/about" },
+  { label: "Lab", href: "/lab" },
+];
+
+const desktopSocialLinks = [
+  { label: "X", href: "https://x.com" },
+  { label: "Linkedin", href: "https://linkedin.com" },
+  { label: "Instagram", href: "https://instagram.com" },
+];
+
+const mobileSocialLinks = [
+  { label: "Linkedin", href: "https://linkedin.com" },
+  { label: "Instagram", href: "https://instagram.com" },
+  { label: "X", href: "https://x.com" },
+];
+
+const brands = ["Arpe", "Voff"];
+
+function handleBackToTop() {
+  globalLenisRef.current?.scrollTo(0);
+}
+
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="text-[#0c0c0c] text-sm">
       {/* Desktop */}
-      <div className="hidden min-[767px]:flex items-center justify-between pr-6 pt-20">
-        <Logo />
-        <div className="flex items-center gap-4 font-medium whitespace-nowrap">
-          <span className="leading-[1.1] opacity-50">
-            © {new Date().getFullYear()} Anagram
-          </span>
-          <a href="/privacy" className="leading-[1.1] underline">
-            Privacy
-          </a>
-          <a href="/terms" className="leading-[1.1] underline">
-            Terms & Conditions
-          </a>
-          <span className="leading-[1.1]">Website by Anagram</span>
+      <div id="footer-desktop" className="hidden min-[767px]:flex flex-col gap-6 pt-20">
+        <DotDivider />
+
+        <div className="flex gap-6 items-start">
+          <div id="footer-desktop-contact" className="flex flex-col gap-16 w-125 shrink-0">
+            <p className="text-[#7c7c7c] text-[0.8125rem]">Contact</p>
+            <div className="flex flex-col gap-8 font-medium text-sm">
+              <div className="flex flex-col gap-1">
+                <p className="leading-[1.1]">Anagram</p>
+                <p className="leading-[1.1]">Paris / New York</p>
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="leading-[1.1]">Book a call</p>
+                <a href="mailto:hello@anagram.club" className="leading-[1.1]">
+                  hello@anagram.club
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div id="footer-desktop-sitemap" className="flex flex-1 flex-col gap-16">
+            <p className="text-[#7c7c7c] text-[0.8125rem]">Sitemap</p>
+            <div className="flex flex-col gap-1 font-medium text-sm whitespace-nowrap">
+              {sitemapLinks.map((link) => (
+                <Link key={link.href} href={link.href} className="leading-[1.1]">
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div id="footer-desktop-links" className="flex flex-1 flex-col gap-16">
+            <p className="text-[#7c7c7c] text-[0.8125rem]">Links</p>
+            <div className="flex flex-col gap-1 font-medium text-sm whitespace-nowrap">
+              {desktopSocialLinks.map((link) => (
+                <a key={link.href} href={link.href} className="leading-[1.1]">
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div id="footer-desktop-brands" className="flex flex-1 flex-col gap-16 whitespace-nowrap">
+            <p className="text-[#7c7c7c] text-[0.8125rem]">Our brands</p>
+            <div className="flex flex-col gap-1 font-medium text-sm">
+              {brands.map((brand) => (
+                <p key={brand} className="leading-[1.1]">
+                  {brand}
+                </p>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-4 whitespace-nowrap">
-          <a href="https://linkedin.com" className="leading-[1.6]">
-            Linkedin
-          </a>
-          <a href="https://instagram.com" className="leading-[1.6]">
-            Instagram
-          </a>
-          <a href="https://x.com" className="leading-[1.6]">
-            X
-          </a>
+
+        <div id="footer-desktop-bottom" className="flex gap-6 items-end pb-6">
+          <p className="w-125 shrink-0 leading-[1.1]">
+            © Anagram Brand design studio {year}
+          </p>
+          <Link href="/privacy" className="flex-1 leading-[1.1]">
+            Privacy Policy
+          </Link>
+          <button
+            type="button"
+            onClick={handleBackToTop}
+            className="flex-1 text-left leading-[1.1] cursor-pointer"
+          >
+            Back to top
+          </button>
         </div>
       </div>
 
       {/* Mobile */}
-      <div className="flex min-[767px]:hidden flex-col gap-6 pt-12 pb-6">
+      <div id="footer-mobile" className="flex min-[767px]:hidden flex-col gap-6 pt-12 pb-6">
         <Logo />
         <div className="flex items-start justify-between whitespace-nowrap">
-          <div className="flex flex-col gap-2 font-medium">
-            <a href="/privacy" className="leading-[1.1] underline">
+          <div id="footer-mobile-links" className="flex flex-col gap-2 font-medium">
+            <Link href="/privacy" className="leading-[1.1] underline">
               Privacy
-            </a>
-            <a href="/terms" className="leading-[1.1] underline">
+            </Link>
+            <Link href="/terms" className="leading-[1.1] underline">
               Terms & Conditions
-            </a>
+            </Link>
             <span className="leading-[1.1]">Website by Anagram</span>
-            <span className="leading-[1.1] opacity-50">
-              © {new Date().getFullYear()} Anagram
-            </span>
+            <span className="leading-[1.1] opacity-50">© {year} Anagram</span>
           </div>
-          <div className="flex flex-col gap-2">
-            <a href="https://linkedin.com" className="leading-[1.1]">
-              Linkedin
-            </a>
-            <a href="https://instagram.com" className="leading-[1.1]">
-              Instagram
-            </a>
-            <a href="https://x.com" className="leading-[1.1]">
-              X
-            </a>
+          <div id="footer-mobile-socials" className="flex flex-col gap-2">
+            {mobileSocialLinks.map((link) => (
+              <a key={link.href} href={link.href} className="leading-[1.1]">
+                {link.label}
+              </a>
+            ))}
           </div>
         </div>
       </div>

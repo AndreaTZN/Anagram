@@ -6,11 +6,11 @@ import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { globalLenisRef } from "@/lib/lenis";
+import { navWorks } from "@/lib/nav-works";
 
 gsap.registerPlugin(useGSAP);
 
 const navLinks = [
-  { label: "Home", href: "/" },
   { label: "Works", href: "/works" },
   { label: "Studio", href: "/about" },
   { label: "Lab", href: "/lab" },
@@ -21,43 +21,56 @@ export default function MobileNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
   const tl = useRef<gsap.core.Timeline | null>(null);
 
   useGSAP(() => {
-    if (!menuRef.current || !overlayRef.current) return;
+    if (!menuRef.current) return;
     gsap.set(menuRef.current, { y: -16, opacity: 0, pointerEvents: "none" });
-    gsap.set(overlayRef.current, { opacity: 0, pointerEvents: "none" });
 
-    tl.current = gsap
-      .timeline({ paused: true })
-      .to(overlayRef.current, {
-        opacity: 1,
-        pointerEvents: "auto",
-        duration: 0.3,
-        ease: "power2.out",
-      })
-      .to(
-        menuRef.current,
-        {
-          y: 0,
-          opacity: 1,
-          pointerEvents: "auto",
-          duration: 0.4,
-          ease: "power3.out",
-        },
-        "<0.05",
-      );
+    tl.current = gsap.timeline({ paused: true }).to(menuRef.current, {
+      y: 0,
+      opacity: 1,
+      pointerEvents: "auto",
+      duration: 0.4,
+      ease: "power3.out",
+    });
   }, []);
+
+  function lockBody(lock: boolean) {
+    document.body.style.position = lock ? "fixed" : "";
+    document.body.style.inset = lock ? "0" : "";
+  }
+
+  function playVideos() {
+    menuRef.current?.querySelectorAll("video").forEach((video) => {
+      video.play().catch(() => {});
+    });
+  }
+
+  function resetVideos() {
+    menuRef.current?.querySelectorAll("video").forEach((video) => {
+      video.pause();
+      video.currentTime = 0;
+    });
+  }
+
+  function resetMenuScroll() {
+    if (menuRef.current) menuRef.current.scrollTop = 0;
+  }
 
   function toggle() {
     if (!tl.current) return;
     if (!open) {
+      resetMenuScroll();
       tl.current.play();
       globalLenisRef.current?.stop();
+      lockBody(true);
+      playVideos();
     } else {
       tl.current.reverse();
       globalLenisRef.current?.start();
+      lockBody(false);
+      resetVideos();
     }
     setOpen((v) => !v);
   }
@@ -66,16 +79,18 @@ export default function MobileNav() {
     if (!open) return;
     tl.current?.reverse();
     globalLenisRef.current?.start();
+    lockBody(false);
+    resetVideos();
     setOpen(false);
   }
 
   return (
     <div
       id="mobile-nav"
-      className="absolute top-0 left-0 z-50  max-[992px]:flex hidden items-center justify-between px-4 py-3 w-full"
+      className="absolute top-0 left-0 z-50 max-[992px]:flex hidden items-center justify-between px-4 py-3 w-full"
     >
       {/* Logo */}
-      <Link href="/" onClick={close}>
+      <Link href="/" onClick={close} className="relative z-50">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="93"
@@ -93,8 +108,11 @@ export default function MobileNav() {
       {/* Menu button */}
       <button
         onClick={toggle}
-        className="flex items-center gap-2 bg-[#0c0c0c] rounded-full px-4 py-3 cursor-pointer"
+        className="relative z-50 flex items-center gap-2 bg-[#0c0c0c] rounded-full px-4 py-3 cursor-pointer"
       >
+        <span className="text-white text-base leading-[0.9] tracking-[-0.08px]">
+          {open ? "Close" : "Menu"}
+        </span>
         <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
           {open ? (
             <>
@@ -140,28 +158,19 @@ export default function MobileNav() {
             </>
           )}
         </svg>
-        <span className="text-white text-base leading-[0.9] tracking-[-0.08px]">
-          Menu
-        </span>
       </button>
 
-      {/* Overlay */}
+      {/* Fullscreen menu */}
       <div
-        ref={overlayRef}
-        onClick={close}
-        className="fixed inset-0 top-[49px] z-40 bg-[rgba(12,12,12,0.15)] backdrop-blur-sm opacity-0 pointer-events-none"
-      />
-
-      {/* Dropdown menu */}
-      <div
+        id="mobile-nav-menu"
         ref={menuRef}
-        className="fixed top-14.25 left-4 right-4 z-50 bg-white rounded-2xl p-6 flex flex-col gap-8 opacity-0 pointer-events-none"
+        className="fixed inset-0 z-40 bg-white flex flex-col gap-6 px-4 pt-20 pb-6 overflow-y-auto overscroll-none opacity-0 pointer-events-none"
       >
-        <p className="text-[#0c0c0c] leading-[1.1] text-xl tracking-[-0.12px]">
+        <p className="text-[#0c0c0c] leading-[1.1] text-xl tracking-[-0.1px]">
           We shape brands that need no introduction.
         </p>
 
-        <div className="flex flex-col gap-3">
+        <div id="mobile-nav-links" className="flex flex-col gap-2">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -169,7 +178,7 @@ export default function MobileNav() {
                 key={link.href}
                 href={link.href}
                 onClick={close}
-                className="text-[#0c0c0c] font-medium leading-[0.8] text-2xl tracking-[-0.12px] transition-opacity"
+                className="text-[#0c0c0c] font-medium leading-[0.8] text-[2rem]"
                 style={{ opacity: isActive ? 1 : 0.3 }}
               >
                 {link.label}
@@ -182,10 +191,38 @@ export default function MobileNav() {
           href="mailto:hello@anagram.club"
           className="flex items-center bg-[#f5f5f5] rounded-full px-4 py-3 self-start"
         >
-          <span className="text-[#0c0c0c] leading-[0.9] text-sm tracking-[-0.07px]">
+          <span className="text-[#0c0c0c] leading-[0.9] text-base tracking-[-0.08px]">
             hello@anagram.club
           </span>
         </a>
+
+        <div id="mobile-nav-works" className="flex flex-col gap-2 pb-6">
+          {navWorks.map((work) => (
+            <Link key={work.name} href={work.href} onClick={close}>
+              <div className="flex items-center gap-4 p-2 bg-[#f9f9f9] rounded-sm">
+                <div className="relative shrink-0 overflow-hidden w-32.5 h-20">
+                  <video
+                    src={work.video}
+                    poster={work.poster}
+                    muted
+                    loop
+                    playsInline
+                    preload="none"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <span className="text-[#7c7c7c] text-sm leading-[0.9]">
+                    {work.category}
+                  </span>
+                  <span className="text-[#0c0c0c] text-base leading-[0.9] font-medium">
+                    {work.name}
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

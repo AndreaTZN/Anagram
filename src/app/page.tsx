@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import WidgetPanel from "@/components/widgets/WidgetPanel";
-import WorksGrid from "@/components/WorksGrid";
+import HomeContain from "@/components/HomeContain";
 import Footer from "@/components/Footer";
 import { client } from "@/sanity/client";
 import type { OpenRole } from "@/components/OpenRoles";
@@ -42,7 +42,7 @@ export default async function HomePage() {
   const openRoles = await getOpenRoles();
 
   return (
-    <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
+    <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12">
       <section
         className="relative bg-[#a6f1e4] w-full overflow-hidden"
         style={{ aspectRatio: "16 / 9" }}
@@ -55,9 +55,11 @@ export default async function HomePage() {
           className="object-cover"
         />
       </section>
-      <WidgetPanel openRoles={openRoles} />
+      <div className="hidden md:block">
+        <WidgetPanel openRoles={openRoles} />
+      </div>
       <section className="py-6">
-        <WorksGrid />
+        <HomeContain />
       </section>
       <Footer />
     </main>
