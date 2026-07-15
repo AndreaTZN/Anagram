@@ -10,8 +10,8 @@ import "swiper/css/effect-fade";
 import AnalogClock from "../AnalogClock";
 
 const CITIES = [
-  { label: "New York", timezone: "America/New_York", color: "#03C8FF" },
   { label: "Paris", timezone: "Europe/Paris", color: "#E3CEFC" },
+  { label: "New York", timezone: "America/New_York", color: "#03C8FF" },
 ];
 
 function getOffset(timezone: string) {
