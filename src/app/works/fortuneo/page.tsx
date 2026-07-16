@@ -224,7 +224,7 @@ export default function FortuneoCasePage() {
                   alt: "Fortuneo release 21",
                 }}
               />
-              <CaseStats
+              {/* <CaseStats
                 logo1={{
                   src: "/works/Fortuneo/release/fotuneo-logo.png",
                   alt: "Fortuneo",
@@ -241,7 +241,7 @@ export default function FortuneoCasePage() {
                   { value: "+27%", label: "prospect who starts a project" },
                   { value: "+63%", label: "documents sent on the course" },
                 ]}
-              />
+              /> */}
               <TeamCredits
                 rows={[
                   {
