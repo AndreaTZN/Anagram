@@ -101,7 +101,7 @@ export default function Faq({ items, title = "FAQ" }: Props) {
   }
 
   return (
-    <div ref={containerRef} className="faq_component flex flex-col gap-4 pt-8 w-full">
+    <div ref={containerRef} className="faq_component flex flex-col gap-4 w-full">
       <p className="faq-primary text-[#0c0c0c] text-[1.125rem] leading-[1.1] tracking-[-0.09px]">
         {title}
       </p>

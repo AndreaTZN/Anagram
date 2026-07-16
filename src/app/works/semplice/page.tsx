@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -6,11 +7,13 @@ import type { CaseNavData } from "@/contexts/CaseNavContext";
 import NextCase from "@/components/cases-frame/NextCase";
 import VimeoSound from "@/components/cases-frame/VimeoSound";
 import Vimeo169 from "@/components/cases-frame/Vimeo169";
+import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Semplice Branding — Brand Identity & Website by Anagram Club",
+  title: "Semplice Branding | Brand Identity & Website for SaaS | anagram",
   description:
-    "Explore Anagram Club's branding and website design for Semplice — a clean, distinctive brand identity built to stand out and make a lasting impression on the market.",
+    "anagram created the brand identity and website for Semplice. Brand design for a SaaS startup by the Paris branding agency specializing in tech scale-ups.",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -19,25 +22,51 @@ export const metadata: Metadata = {
 const navData: CaseNavData = {
   title: "Semplice",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+    "Semplice is a tech product co-founded by Tobias Van Schneider, operating in a SaaS landscape where visual identities too often look alike. We partnered with Semplice to build a brand identity and website capable of expressing real differentiation: an identity built to convert and build credibility, not just to win design awards.",
   liveUrl: "https://www.semplice.com/",
-  release: {
-    sections: [
-      {
-        id: "objectives",
-        label: "Objectives",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-      {
-        id: "strategy",
-        label: "Strategy",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-    ],
-  },
 };
+
+const projectDescription = (
+  <Fragment key="semplice-project-description">
+    <p>
+      Co-founded by Tobias Van Schneider, Semplice is a tech product for
+      which anagram created the logo, full brand identity, and website in
+      2025. The mission was to build a clear, memorable, and differentiated
+      brand in a SaaS landscape where visual identities too often look
+      alike.
+    </p>
+    <p className="mt-4">
+      In a competitive SaaS market, a brand is a trust signal before the
+      product demo even happens. It shapes first impressions with buyers,
+      accelerates confidence in B2B sales cycles, and strengthens
+      credibility during fundraising conversations.
+    </p>
+    <p className="mt-4">
+      anagram&apos;s approach was to start from Semplice&apos;s business
+      objectives and build an identity that works commercially, one that
+      converts, builds credibility, and creates brand preference. Not a
+      brand to win awards, but a brand built to drive growth.
+    </p>
+  </Fragment>
+);
+
+const faqItems = [
+  {
+    question: "What did anagram create for Semplice?",
+    answer:
+      "Logo, full brand identity, and website, designed to differentiate Semplice in a crowded SaaS market.",
+  },
+  {
+    question: "What is anagram's approach to branding a SaaS product?",
+    answer:
+      "Starting from business objectives, conversion, credibility, differentiation, to build an identity that works commercially, not just aesthetically.",
+  },
+  {
+    question: "Why does a SaaS startup need strong branding early?",
+    answer:
+      "A clear, distinctive brand creates immediate preference, lowers acquisition costs, and strengthens credibility with investors and enterprise buyers before the product sells itself.",
+  },
+];
 
 export default function SempliceCasePage() {
   return (
@@ -73,6 +102,10 @@ export default function SempliceCasePage() {
                 src="/works/Semplice/poster4.webp"
                 alt="Semplice 4"
                 priority
+              />
+              <ProjectInfoFaq
+                projectDescription={projectDescription}
+                faq={<Faq key="semplice-faq" items={faqItems} />}
               />
             </div>
           }

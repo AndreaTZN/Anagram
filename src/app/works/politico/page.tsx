@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -6,11 +7,13 @@ import type { CaseNavData } from "@/contexts/CaseNavContext";
 import NextCase from "@/components/cases-frame/NextCase";
 import PortraitQuote from "@/components/cases-frame/PortraitQuote";
 import DarkTextCard from "@/components/cases-frame/DarkTextCard";
+import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Politico Rebrand — Brand Identity & Website by Anagram Club",
+  title: "Politico.eu Redesign | Design System & UX for Media | anagram",
   description:
-    "See how Anagram Club redesigned Politico's brand and website in 2024, improving UX and discoverability to drive measurable traffic growth on politico.eu.",
+    "anagram redesigned the UX and design system for Politico.eu to support the .com/.eu merger. Result: improved UX, better discoverability, and significant traffic gains.",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -19,25 +22,51 @@ export const metadata: Metadata = {
 const navData: CaseNavData = {
   title: "Politico",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+    "Politico is renowned for the accuracy and speed of its political and institutional coverage, and needed a unified experience to support the merger of Politico.com and Politico.eu. We partnered with Politico to build a mobile-first design system and UX capable of expressing that merger: one consistent, modular experience across international markets.",
   liveUrl: "https://www.politico.eu/",
-  release: {
-    sections: [
-      {
-        id: "objectives",
-        label: "Objectives",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-      {
-        id: "strategy",
-        label: "Strategy",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-    ],
-  },
 };
+
+const projectDescription = (
+  <Fragment key="politico-project-description">
+    <p>
+      Politico is renowned for the accuracy and speed of its political and
+      institutional coverage. To support the merger of Politico.com and
+      Politico.eu, a full redesign of the user experience and the editorial
+      team&apos;s publishing process was necessary.
+    </p>
+    <p className="mt-4">
+      anagram developed a simple, efficient design system built mobile-first.
+      The system is based on a limited set of components and rules that
+      allow every interface element to be created while maintaining
+      experience consistency across international markets.
+    </p>
+    <p className="mt-4">
+      The new site delivers a simplified yet richer experience where the
+      modular system promotes both editorial selections and breaking news.
+      According to Politico, the collaboration delivered measurable
+      improvements: stronger UX, better content discoverability, and
+      significant traffic gains.
+    </p>
+  </Fragment>
+);
+
+const faqItems = [
+  {
+    question: "What did anagram deliver for Politico?",
+    answer:
+      "A full UX redesign and design system for Politico.eu, built mobile-first to support the merger of the .com and .eu platforms across international markets.",
+  },
+  {
+    question: "What results did the Politico redesign generate?",
+    answer:
+      "According to Politico, the redesign contributed to measurable improvements in platform performance: stronger UX, better content discoverability, and significant traffic gains.",
+  },
+  {
+    question: "Why does a global media platform need a design system?",
+    answer:
+      "A design system ensures visual consistency across all markets, accelerates editorial production, and guarantees a unified user experience regardless of language or platform.",
+  },
+];
 
 export default function PoliticoCasePage() {
   return (
@@ -67,6 +96,10 @@ export default function PoliticoCasePage() {
               <Frame01 src="/works/Politico/13.avif" alt="Politico 13" />
               <Frame01 src="/works/Politico/14.avif" alt="Politico 14" />
               <Frame01 src="/works/Politico/15.avif" alt="Politico 15" />
+              <ProjectInfoFaq
+                projectDescription={projectDescription}
+                faq={<Faq key="politico-faq" items={faqItems} />}
+              />
             </div>
           }
         />

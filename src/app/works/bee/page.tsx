@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -9,11 +10,13 @@ import Vimeo169 from "@/components/cases-frame/Vimeo169";
 import Frame02 from "@/components/cases-frame/Frame02";
 import FourPhones from "@/components/cases-frame/FourPhones";
 import VimeoImageCards from "@/components/cases-frame/VimeoImageCards";
+import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Bee Wearable AI — Brand Identity & Website by Anagram Club",
+  title: "Bee Branding | Brand Identity for Wearable AI | anagram",
   description:
-    "Discover how Anagram Club crafted the brand identity, website, and photography for Bee — the wearable AI device with a bold, human-first tech identity.",
+    "anagram created the brand identity for Bee, the wearable AI assistant that adapts to you. Logo, brand design and website for a hardware AI startup.",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -21,25 +24,52 @@ export const metadata: Metadata = {
 
 const navData: CaseNavData = {
   title: "Bee",
-  description: "The wearable AI that understands you",
+  description:
+    "Bee is the wearable AI assistant designed to understand and adapt to each user, betting on hardware in a market flooded with software-based AI interfaces. We partnered with Bee to create a brand identity, website, and photography direction capable of expressing that bet: making AI feel desirable and reassuring as an everyday physical object.",
   liveUrl: "https://bee.computer/",
-  release: {
-    sections: [
-      {
-        id: "objectives",
-        label: "Objectives",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-      {
-        id: "strategy",
-        label: "Strategy",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-    ],
-  },
 };
+
+const projectDescription = (
+  <Fragment key="bee-project-description">
+    <p>
+      Bee is the wearable AI assistant designed to understand and adapt to
+      each user. In a market flooded with software-based AI interfaces, Bee
+      bets on hardware: a discreet, always-available physical device that
+      learns from you over time. Bee was acquired by Amazon in 2025, marking
+      its entry into the wearable AI space.
+    </p>
+    <p className="mt-4">
+      anagram created the logo, full brand identity, website, and photography
+      direction for Bee. Every element of the logo carries intentional
+      meaning. The organic curves evoke modularity and adaptability, the
+      connected wings symbolize seamless connectivity, and the 20 degree
+      upward tilt signals evolution and forward momentum.
+    </p>
+    <p className="mt-4">
+      The creative challenge was to make AI feel both desirable and
+      reassuring as a physical everyday object. Not too technical, not too
+      generic, a premium brand capable of owning a space that barely existed
+      yet.
+    </p>
+  </Fragment>
+);
+
+const faqItems = [
+  {
+    question: "What does the Bee logo represent?",
+    answer:
+      "Each element is intentional. The curves evoke modularity and adaptability, the connected wings symbolize connectivity, and the 20 degree upward tilt signals evolution and progress.",
+  },
+  {
+    question: "What did anagram deliver for Bee?",
+    answer: "Logo, full brand identity, website, and photography direction.",
+  },
+  {
+    question: "How do you brand a wearable AI product for mainstream appeal?",
+    answer:
+      "By centering the identity on daily use and personal adaptation rather than the underlying technology, making AI feel tangible, comfortable, and emotionally desirable rather than intimidating.",
+  },
+];
 
 export default function BeeCasePage() {
   return (
@@ -98,6 +128,10 @@ export default function BeeCasePage() {
               <Frame01 src="/works/Bee/19.avif" alt="Bee 19" />
               <Frame01 src="/works/Bee/20.avif" alt="Bee 20" />
               <Frame01 src="/works/Bee/21.avif" alt="Bee 21" />
+              <ProjectInfoFaq
+                projectDescription={projectDescription}
+                faq={<Faq key="bee-faq" items={faqItems} />}
+              />
             </div>
           }
         />

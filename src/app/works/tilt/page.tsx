@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -8,11 +9,14 @@ import SplitTextImage from "@/components/cases-frame/SplitTextImage";
 import VimeoTwoCards from "@/components/cases-frame/VimeoTwoCards";
 import VimeoImageCards from "@/components/cases-frame/VimeoImageCards";
 import NextCase from "@/components/cases-frame/NextCase";
+import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Tilt Branding — Energy Startup Brand Identity by Anagram Club",
+  title:
+    "Tilt Branding | Brand Identity for Cleantech Energy Startup | anagram",
   description:
-    "Discover how Anagram Club built the brand identity and website for Tilt, the energy startup assembling tomorrow's energy puzzle with bold, forward-thinking design.",
+    "anagram created the brand identity for Tilt, a startup orchestrating real-time energy flow optimization. Logo, brand design and website for a cleantech deeptech",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -21,25 +25,50 @@ export const metadata: Metadata = {
 const navData: CaseNavData = {
   title: "Tilt",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+    "Tilt is the startup orchestrating energy consumption to match available supply in real time, bringing balance and resilience to an increasingly complex grid. We partnered with Tilt to create a brand identity and website capable of expressing that system: a logo built as an evolving, interconnected network of energy flows.",
   liveUrl: "https://tilt-energy.com/",
-  release: {
-    sections: [
-      {
-        id: "objectives",
-        label: "Objectives",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-      {
-        id: "strategy",
-        label: "Strategy",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-    ],
-  },
 };
+
+const projectDescription = (
+  <Fragment key="tilt-project-description">
+    <p>
+      Tilt is the startup orchestrating energy consumption to match available
+      supply in real time, bringing balance, efficiency, and resilience to an
+      increasingly complex grid. A deeptech player operating at the intersection
+      of engineering and environmental impact.
+    </p>
+    <p className="mt-4">
+      anagram created the brand identity and website for Tilt with the goal of
+      making an invisible, highly technical system immediately legible. The logo
+      is conceived as an evolving system: its pattern of points and blocks
+      evokes an interconnected network representing the management and
+      optimization of energy flows.
+    </p>
+    <p className="mt-4">
+      The visual identity is designed as a flexible system, structured to adapt
+      and work across multiple applications and formats. A brand that embodies
+      the idea of an intelligent, coherent, and constantly evolving energy
+      network, precisely the technological promise Tilt delivers.
+    </p>
+  </Fragment>
+);
+
+const faqItems = [
+  {
+    question: "What does the Tilt logo represent?",
+    answer:
+      "A pattern of points and blocks forming an interconnected network, symbolizing the management and optimization of electrical flows. A flexible and scalable visual system, like Tilt's own technology.",
+  },
+  {
+    question: "What did anagram deliver for Tilt?",
+    answer: "Brand identity and website.",
+  },
+  {
+    question: "How do you brand a cleantech deeptech startup to stand out?",
+    answer:
+      "By anchoring the identity in the metaphor of the system, network, flow, interconnection, rather than generic green sector codes. For Tilt, this creates a distinctive, technical, and aspirational brand.",
+  },
+];
 
 export default function TiltCasePage() {
   return (
@@ -110,6 +139,10 @@ export default function TiltCasePage() {
                 alt="poster 5"
                 dataSrc="1172158350"
                 dataRatio="1920/1080"
+              />
+              <ProjectInfoFaq
+                projectDescription={projectDescription}
+                faq={<Faq key="tilt-faq" items={faqItems} />}
               />
             </div>
           }

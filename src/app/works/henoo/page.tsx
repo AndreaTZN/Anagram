@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -9,6 +10,8 @@ import Vimeo169 from "@/components/cases-frame/Vimeo169";
 import VimeoImageCards from "@/components/cases-frame/VimeoImageCards";
 import Frame02 from "@/components/cases-frame/Frame02";
 import VimeoTwoCards from "@/components/cases-frame/VimeoTwoCards";
+import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
   title: "Henoo Branding — Activity Discovery App Brand Identity",
@@ -22,24 +25,49 @@ export const metadata: Metadata = {
 const navData: CaseNavData = {
   title: "Henoo",
   description:
-    "What to do? Where to go? Where to look? Is it really cool? Will I have a good time there? Faced with the multitude of choices, sources, and information; the struggle to find interesting things to do; the laziness of always doing the same thing; the hyperconnectivity that leads to withdrawal... people may tend to prefer staying at home. And gradually isolate themselves.",
-  release: {
-    sections: [
-      {
-        id: "objectives",
-        label: "Objectives",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-      {
-        id: "strategy",
-        label: "Strategy",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-    ],
-  },
+    "Henoo helps people fight isolation and hyperconnectivity by combining smart recommendations, custom activities, and friend sharing to get them out the door. We partnered with Henoo to build a brand universe, including its mascot Noo, capable of expressing that promise: the friend who always convinces you to go out.",
 };
+
+const projectDescription = (
+  <Fragment key="henoo-project-description">
+    <p>
+      Henoo was born out of a simple but powerful observation: faced with
+      information overload and hyperconnectivity, people tend to stay home
+      and gradually isolate. The app responds with a mix of a smart guide and
+      social media codes, combining search and recommendations with custom
+      activities, friend sharing, and moment collections.
+    </p>
+    <p className="mt-4">
+      anagram built the full brand universe: logo, brand identity, design
+      system, and website. The studio also created Noo, Henoo&apos;s mascot
+      and brand spokesperson. Noo embodies the ideal friend who knows your
+      tastes, motivates you, and always convinces you to go out. He was
+      designed to create strong emotional attachment and become synonymous
+      with going out.
+    </p>
+    <p className="mt-4">
+      In a lifestyle app, a mascot is not decoration. It&apos;s a retention
+      and virality lever. Noo is the personification of Henoo&apos;s promise.
+    </p>
+  </Fragment>
+);
+
+const faqItems = [
+  {
+    question: "Who is Noo, Henoo's mascot?",
+    answer:
+      "Noo is Henoo's spokesperson, the explorer friend who knows your tastes and always convinces you to go out. He was designed to build emotional attachment and become the face users associate with discovering new experiences.",
+  },
+  {
+    question: "What did anagram deliver for Henoo?",
+    answer: "Logo, brand identity, design system, mascot creation, and website.",
+  },
+  {
+    question: "Why does a lifestyle app need a mascot?",
+    answer:
+      "A mascot creates a unique emotional connection with users, personalizes the brand, and drives memorability. For Henoo, Noo is a retention and virality tool as much as a communication asset.",
+  },
+];
 
 export default function HenooCasePage() {
   return (
@@ -50,10 +78,10 @@ export default function HenooCasePage() {
           release={
             <div className="flex flex-col gap-4">
               <Frame01 src="/works/Henoo/1.avif" alt="Henoo 1" priority />
-              <DarkTextCard
+              {/* <DarkTextCard
                 title="Here for you"
                 text="Henoo was born out of the desire to reduce loneliness. The app has the content of a guide: it allows you to find, through search or recommendation, a place to have a good time. Because there are as many ways to discover the world as there are people exploring it, Henoo offers a range of activities in line with users' tastes and desires. The app suggests activities and experiences that go with it by integrating codes close to social media: creating custom activities, sharing them with friends, collecting moments, designing or enriching guides, following recommendations, etc."
-              />
+              /> */}
               <Vimeo169
                 src="/works/Henoo/2.avif"
                 alt="poster 2"
@@ -66,7 +94,7 @@ export default function HenooCasePage() {
                 dataSrc="1172136117"
                 dataRatio="1920/1080"
               />
-              <DarkTextCard text="By carefully selecting colors, typography, and graphic elements, we created a cohesive visual identity that exuded expertise, and approachability. In designing Inbolt's visual language, our goal was to balance innovation and simplicity. For that reason, we opted to choose 3D and animations to create a sensation of real-life usage of the product. " />
+              {/* <DarkTextCard text="By carefully selecting colors, typography, and graphic elements, we created a cohesive visual identity that exuded expertise, and approachability. In designing Inbolt's visual language, our goal was to balance innovation and simplicity. For that reason, we opted to choose 3D and animations to create a sensation of real-life usage of the product. " /> */}
               <VimeoImageCards
                 imagePosition="left"
                 video={{
@@ -80,7 +108,7 @@ export default function HenooCasePage() {
                   alt: "Henoo 4",
                 }}
               />
-              <DarkTextCard text="Disconnecting to reconnect with oneself, loved ones, hobbies, and interests, fostering curiosity, and pursuing learning opportunities" />
+              {/* <DarkTextCard text="Disconnecting to reconnect with oneself, loved ones, hobbies, and interests, fostering curiosity, and pursuing learning opportunities" /> */}
               <Frame02
                 img1={{ src: "/works/Henoo/6.avif", alt: "Henoo 6" }}
                 img2={{ src: "/works/Henoo/7.avif", alt: "Henoo 7" }}
@@ -89,7 +117,7 @@ export default function HenooCasePage() {
                 img1={{ src: "/works/Henoo/8.avif", alt: "Henoo 8" }}
                 img2={{ src: "/works/Henoo/9.avif", alt: "Henoo 9" }}
               />
-              <DarkTextCard text="Henoo is an invitation to go out. To see life as a playground to explore, traverse, and discover in order to enjoy everything it has to offer us." />
+              {/* <DarkTextCard text="Henoo is an invitation to go out. To see life as a playground to explore, traverse, and discover in order to enjoy everything it has to offer us." /> */}
               <Vimeo169
                 src="/works/Henoo/10.avif"
                 alt="poster 10"
@@ -102,14 +130,14 @@ export default function HenooCasePage() {
                 dataSrc="1172136239"
                 dataRatio="1920/1080"
               />
-              <DarkTextCard text="Henoo is the ideal companion for exploration. It's that good friend who can suggest everything without imposing anything. This friend who knows our tastes, desires, affinities, and interests by heart. He knows how to speak to us, motivate us, and convince us to go. He always has great tips, ideas, and recommendations. He always suggests the right activity. He always introduces new things and new places. He unites, inspires, shares, drives, and leads. He is fearless, adventurous, curious, passionate, spontaneous, and social. One can only adore him." />
+              {/* <DarkTextCard text="Henoo is the ideal companion for exploration. It's that good friend who can suggest everything without imposing anything. This friend who knows our tastes, desires, affinities, and interests by heart. He knows how to speak to us, motivate us, and convince us to go. He always has great tips, ideas, and recommendations. He always suggests the right activity. He always introduces new things and new places. He unites, inspires, shares, drives, and leads. He is fearless, adventurous, curious, passionate, spontaneous, and social. One can only adore him." /> */}
               <Vimeo169
                 src="/works/Henoo/12.avif"
                 alt="poster 12"
                 dataSrc="1172136260"
                 dataRatio="1920/1080"
               />
-              <DarkTextCard text="Noo is the spokesperson for Henoo. He embodies the good friend, this explorer uncovering hidden gems. He facilitates the transmission of messages and carries the values ​​of your brand: authentic, passionate, and helpful. He is this reliable partner and becomes the reference when it comes to going out: we no longer just open the Henoo application, we consult Noo. He is the ambassador of your brand, with whom your users will develop an emotional attachment." />
+              {/* <DarkTextCard text="Noo is the spokesperson for Henoo. He embodies the good friend, this explorer uncovering hidden gems. He facilitates the transmission of messages and carries the values ​​of your brand: authentic, passionate, and helpful. He is this reliable partner and becomes the reference when it comes to going out: we no longer just open the Henoo application, we consult Noo. He is the ambassador of your brand, with whom your users will develop an emotional attachment." /> */}
               <Vimeo169
                 src="/works/Henoo/13.avif"
                 alt="poster 13"
@@ -142,6 +170,10 @@ export default function HenooCasePage() {
               <Frame02
                 img1={{ src: "/works/Henoo/20.avif", alt: "Henoo 20" }}
                 img2={{ src: "/works/Henoo/21.avif", alt: "Henoo 21" }}
+              />
+              <ProjectInfoFaq
+                projectDescription={projectDescription}
+                faq={<Faq key="henoo-faq" items={faqItems} />}
               />
             </div>
           }

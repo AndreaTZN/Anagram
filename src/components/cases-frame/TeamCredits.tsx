@@ -96,7 +96,7 @@ export default function TeamCredits({
             ))}
           </div>
         )}
-        {faq}
+        {faq && <div className="teamcredits_faq pt-8">{faq}</div>}
       </div>
     </div>
   );

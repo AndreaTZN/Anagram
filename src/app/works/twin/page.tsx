@@ -23,22 +23,6 @@ const navData: CaseNavData = {
   description:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
   liveUrl: "https://twin.so/",
-  release: {
-    sections: [
-      {
-        id: "objectives",
-        label: "Objectives",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-      {
-        id: "strategy",
-        label: "Strategy",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-    ],
-  },
 };
 
 export default function TwinCasePage() {
@@ -49,16 +33,16 @@ export default function TwinCasePage() {
         <CaseTabContent
           release={
             <div className="flex flex-col gap-4">
-              <Frame01 src="/works/Twin/1.avif" alt="Twin 1" priority />
+              <Frame01 src="/works/twin/1.avif" alt="Twin 1" priority />
               <Frame02
-                img1={{ src: "/works/Twin/2.avif", alt: "Twin 2" }}
-                img2={{ src: "/works/Twin/3.avif", alt: "Twin 3" }}
+                img1={{ src: "/works/twin/2.avif", alt: "Twin 2" }}
+                img2={{ src: "/works/twin/3.avif", alt: "Twin 3" }}
               />
-              <Frame01 src="/works/Twin/4.avif" alt="Twin 4" />
-              <Frame01 src="/works/Twin/5.avif" alt="Twin 5" />
-              <Frame01 src="/works/Twin/6.avif" alt="Twin 6" />
+              <Frame01 src="/works/twin/4.avif" alt="Twin 4" />
+              <Frame01 src="/works/twin/5.avif" alt="Twin 5" />
+              <Frame01 src="/works/twin/6.avif" alt="Twin 6" />
               <Vimeo169
-                src="/works/Twin/7.avif"
+                src="/works/twin/7.avif"
                 alt="poster 7"
                 dataSrc="1172541302"
                 dataRatio="1920/1080"
@@ -67,29 +51,29 @@ export default function TwinCasePage() {
                 video={{
                   dataSrc: "1172541326",
                   dataRatio: "1094/1254",
-                  src: "/works/Twin/8.avif",
+                  src: "/works/twin/8.avif",
                   alt: "Poster 8",
                 }}
                 image={{
-                  src: "/works/Twin/9.avif",
+                  src: "/works/twin/9.avif",
                   alt: "Twin 9",
                 }}
               />
               <VimeoTwoCards
                 card1={{
-                  src: "/works/Twin/10.avif",
+                  src: "/works/twin/10.avif",
                   alt: "Twin 10",
                   dataSrc: "1172541340",
                   dataRatio: "1094/1254",
                 }}
                 card2={{
-                  src: "/works/Twin/11.avif",
+                  src: "/works/twin/11.avif",
                   alt: "Twin 11",
                   dataSrc: "1172541372",
                   dataRatio: "1094/1254",
                 }}
               />
-              <Frame01 src="/works/Twin/12.avif" alt="Twin 12" />
+              <Frame01 src="/works/twin/12.avif" alt="Twin 12" />
             </div>
           }
         />

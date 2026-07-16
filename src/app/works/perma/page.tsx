@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -9,11 +10,13 @@ import NextCase from "@/components/cases-frame/NextCase";
 import type { CaseNavData } from "@/contexts/CaseNavContext";
 import SplitTextImage from "@/components/cases-frame/SplitTextImage";
 import VimeoTwoCards from "@/components/cases-frame/VimeoTwoCards";
+import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Perma Branding — Photo Sharing App Brand Identity by Anagram",
+  title: "Perma Branding | Brand Identity for Social Photo App | anagram",
   description:
-    " Discover Anagram Club's branding for Perma, the social photo-sharing app — a brand identity and logo system built around community exchange and user recognition.",
+    "anagram created the logo and brand identity for Perma, the photo sharing app built around community and exchange. Consumer brand design by anagram Paris.",
   openGraph: { images: ["/opengraph.webp"] },
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
@@ -21,36 +24,50 @@ export const metadata: Metadata = {
 
 const navData: CaseNavData = {
   title: "Perma",
-  description: "A social networking app for sharing photos",
-  release: {
-    sections: [
-      {
-        id: "context",
-        label: "Context",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-      {
-        id: "objectives",
-        label: "Objectives",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-      {
-        id: "strategy",
-        label: "Strategy",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-      {
-        id: "application",
-        label: "Application",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
-      },
-    ],
-  },
+  description:
+    "Perma is a social networking app for sharing photos, built around authentic exchange and community connection rather than competing on the scale of the giants dominating the category. We partnered with Perma to create a logo and brand identity capable of expressing that intimacy: a visual signature users wear as much as they see.",
 };
+
+const projectDescription = (
+  <Fragment key="perma-project-description">
+    <p>
+      Perma is a social networking app for sharing photos, built around
+      authentic exchange and community connection. In a landscape dominated
+      by a handful of giants, Perma bets on intimacy and real connection to
+      create a more meaningful sharing experience.
+    </p>
+    <p className="mt-4">
+      anagram created the logo and brand identity for Perma with two guiding
+      principles: exchange as the core value, and community unification as
+      the brand&apos;s ambition. The logo integrates the letter
+      &ldquo;P&rdquo; in a way that invites users to make it their own, a
+      visual signature they wear as much as they see.
+    </p>
+    <p className="mt-4">
+      For a consumer app, the logo is often the first and sometimes the only
+      touchpoint before a download decision. It needs to communicate
+      belonging instantly and create a pull toward the community it
+      represents.
+    </p>
+  </Fragment>
+);
+
+const faqItems = [
+  {
+    question: "What does the Perma logo represent?",
+    answer:
+      "The letter “P” is integrated into the logo to invite user ownership and identification, a visual signature built around the values of exchange and community belonging.",
+  },
+  {
+    question: "What did anagram deliver for Perma?",
+    answer: "Logo and full brand identity.",
+  },
+  {
+    question: "Why is a strong logo critical for a consumer social app?",
+    answer:
+      "The logo is often the only brand signal before a download decision. It needs to communicate community belonging instantly, making users feel like they want to be part of what it represents.",
+  },
+];
 
 export default function PermaCasePage() {
   return (
@@ -111,6 +128,10 @@ export default function PermaCasePage() {
               <Frame01 src="/works/Perma/15.avif" alt="Perma 15" />
               <Frame01 src="/works/Perma/16.avif" alt="Perma 16" />
               <Frame01 src="/works/Perma/17.avif" alt="Perma 17" />
+              <ProjectInfoFaq
+                projectDescription={projectDescription}
+                faq={<Faq key="perma-faq" items={faqItems} />}
+              />
             </div>
           }
         />
