@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -71,7 +72,7 @@ const navData: CaseNavData = {
 };
 
 const projectDescription = (
-  <>
+  <Fragment key="planity-project-description">
     <p>
       As France&apos;s market leader in beauty booking, Planity was entering a
       pivotal growth phase: accelerating adoption and preparing for European
@@ -95,7 +96,7 @@ const projectDescription = (
       Three years of iterative work. Measured result: +50% appointment bookings
       per second.
     </p>
-  </>
+  </Fragment>
 );
 
 const faqItems = [
@@ -271,7 +272,7 @@ export default function PlanityPage() {
                   },
                 ]}
                 projectDescription={projectDescription}
-                faq={<Faq items={faqItems} />}
+                faq={<Faq key="planity-faq-release" items={faqItems} />}
               />
             </div>
           }
@@ -416,7 +417,7 @@ export default function PlanityPage() {
                   },
                 ]}
                 projectDescription={projectDescription}
-                faq={<Faq items={faqItems} />}
+                faq={<Faq key="planity-faq-backstage" items={faqItems} />}
               />
             </div>
           }

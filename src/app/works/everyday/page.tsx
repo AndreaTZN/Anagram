@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -59,7 +60,7 @@ const navData: CaseNavData = {
 };
 
 const projectDescription = (
-  <>
+  <Fragment key="everyday-project-description">
     <p>
       Everyday is a mobile game studio exploring how AI can reshape play
       experiences. In a saturated market, it focuses on games players return to
@@ -80,7 +81,7 @@ const projectDescription = (
       engaging over time. anagram delivered the full creative scope: strategy,
       identity, design system, motion, illustration, website, and development.
     </p>
-  </>
+  </Fragment>
 );
 
 const faqItems = [
@@ -264,7 +265,7 @@ export default function EverydayCasePage() {
               <TeamCredits
                 rows={releaseTeamRows}
                 projectDescription={projectDescription}
-                faq={<Faq items={faqItems} />}
+                faq={<Faq key="everyday-faq-release" items={faqItems} />}
               />
             </div>
           }
@@ -290,7 +291,7 @@ export default function EverydayCasePage() {
               <TeamCredits
                 rows={backstageTeamRows}
                 projectDescription={projectDescription}
-                faq={<Faq items={faqItems} />}
+                faq={<Faq key="everyday-faq-backstage" items={faqItems} />}
               />
             </div>
           }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -67,7 +68,7 @@ const navData: CaseNavData = {
 };
 
 const projectDescription = (
-  <>
+  <Fragment key="fortuneo-project-description">
     <p>
       Fortuneo, a profitable French online bank, needed to attract younger users
       with the Fosfo card and increase upgrades to the Black Card. Its outdated
@@ -91,7 +92,7 @@ const projectDescription = (
       prospects starting a project, +63% growth in documents submitted, and a
       77% increase in awareness, consideration, and account openings.
     </p>
-  </>
+  </Fragment>
 );
 
 const faqItems = [
@@ -287,7 +288,7 @@ export default function FortuneoCasePage() {
                   },
                 ]}
                 projectDescription={projectDescription}
-                faq={<Faq items={faqItems} />}
+                faq={<Faq key="fortuneo-faq-release" items={faqItems} />}
               />
             </div>
           }
@@ -418,7 +419,7 @@ export default function FortuneoCasePage() {
                   },
                 ]}
                 projectDescription={projectDescription}
-                faq={<Faq items={faqItems} />}
+                faq={<Faq key="fortuneo-faq-backstage" items={faqItems} />}
               />
             </div>
           }

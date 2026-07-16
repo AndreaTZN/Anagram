@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import Image from "next/image";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
@@ -55,7 +56,7 @@ const navData: CaseNavData = {
 };
 
 const projectDescription = (
-  <>
+  <Fragment key="amo-project-description">
     <p>
       amo is bringing friendship back to the center of the online experience.
       While most social platforms have evolved toward endless entertainment
@@ -76,7 +77,7 @@ const projectDescription = (
       and reinforce amo&apos;s emotional identity, playful, intimate, and
       distinctly its own.
     </p>
-  </>
+  </Fragment>
 );
 
 const faqItems = [
@@ -184,7 +185,7 @@ export default function AmoCasePage() {
                   },
                 ]}
                 projectDescription={projectDescription}
-                faq={<Faq items={faqItems} />}
+                faq={<Faq key="amo-faq" items={faqItems} />}
               />
             </div>
           }

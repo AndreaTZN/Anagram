@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -46,7 +47,7 @@ const navData: CaseNavData = {
 };
 
 const projectDescription = (
-  <>
+  <Fragment key="wastetide-project-description">
     <p>
       The scope covered brand strategy, identity, motion design, UX/UI,
       product design, 3D, website, sound design, and development. A complete
@@ -85,7 +86,7 @@ const projectDescription = (
       immediately legible to decision-makers who have no patience for
       abstraction.
     </p>
-  </>
+  </Fragment>
 );
 
 const faqItems = [
@@ -292,39 +293,32 @@ export default function WastetidePage() {
               <Frame01 src="/works/Wastetide/26.webp" alt="Wastetide 26" />
               <TeamCredits
                 rows={[
+                  { role: "Creative direction", names: "Lou Bontemps" },
                   { role: "Global direction", names: "Rémy Godet" },
                   { role: "Project management", names: "Valentin Salmon" },
-                  { role: "Strategy", names: "Rémy Godet, Lou Bontemps" },
-                  { role: "Creative direction", names: "Lou Bontemps" },
                   { role: "3D Design", names: "Rémy Godet" },
+                  {
+                    role: "UX/UI",
+                    names: "Rémy Godet, Vincenzo Tilleul, Lou Bontemps",
+                  },
                   {
                     role: "Motion Design",
                     names: "Rémy Godet, Bérengère Morel",
                   },
                   {
-                    role: "Interactive Design",
-                    names: "Rémy Godet, Valentin Salmon, Vincenzo Tilleul",
-                  },
-                  {
-                    role: "UX/UI",
-                    names:
-                      "Rémy Godet, Vincenzo Tilleul, Lou Bontemps, Valentin Salmon",
-                  },
-                  { role: "Copywriting", names: "Lou Bontemps" },
-                  { role: "Sound Design", names: "Tanguy Drobniewski" },
-                  {
-                    role: "Integration",
+                    role: "Development",
                     names: "Andrea Tuysuzian, Alexandre Tuysuzian",
                   },
-                  { role: "Photography", names: "Sébastien Marchand" },
-                  { role: "Photography assistant", names: "Gurvann Touzé" },
-                  { role: "Video", names: "Gurvann Touzé" },
-                  { role: "Set design", names: "Pénélope Torres" },
-                  { role: "Lighting", names: "Gurvann Touzé" },
-                  { role: "Client", names: "Nicolas Brien" },
+                  { role: "Product Design", names: "Valentin Salmon" },
+                  { role: "Sound Design", names: "Tanguy Drobniewski" },
+                  { role: "Copy", names: "Lou Bontemps" },
+                  {
+                    role: "Production",
+                    names: "Gurvann Touzé, Sébastien Marchand",
+                  },
                 ]}
                 projectDescription={projectDescription}
-                faq={<Faq items={faqItems} />}
+                faq={<Faq key="wastetide-faq" items={faqItems} />}
               />
             </div>
           }

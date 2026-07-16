@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -59,7 +60,7 @@ const navData: CaseNavData = {
 };
 
 const projectDescription = (
-  <>
+  <Fragment key="founders-future-project-description">
     <p>
       Founders Future is an investment platform built by entrepreneurs,
       supporting tech companies across Europe and the United States with both
@@ -81,7 +82,7 @@ const projectDescription = (
       momentum, a premium brand capable of resonating with demanding founders
       internationally.
     </p>
-  </>
+  </Fragment>
 );
 
 const faqItems = [
@@ -252,7 +253,7 @@ export default function FoundersFuturePage() {
                   },
                 ]}
                 projectDescription={projectDescription}
-                faq={<Faq items={faqItems} />}
+                faq={<Faq key="founders-future-faq-release" items={faqItems} />}
               />
             </div>
           }
@@ -322,7 +323,7 @@ export default function FoundersFuturePage() {
                   },
                 ]}
                 projectDescription={projectDescription}
-                faq={<Faq items={faqItems} />}
+                faq={<Faq key="founders-future-faq-backstage" items={faqItems} />}
               />
             </div>
           }
