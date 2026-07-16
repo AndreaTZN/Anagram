@@ -108,7 +108,7 @@ export default function PoliticoCasePage() {
           href="/works/twin"
           media={{
             type: "image",
-            src: "/works/Twin/1.avif",
+            src: "/works/twin/1.avif",
             alt: "Twin",
           }}
         />

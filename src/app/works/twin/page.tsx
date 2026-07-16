@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
@@ -8,6 +9,8 @@ import Frame02 from "@/components/cases-frame/Frame02";
 import Vimeo169 from "@/components/cases-frame/Vimeo169";
 import VimeoImageCards from "@/components/cases-frame/VimeoImageCards";
 import VimeoTwoCards from "@/components/cases-frame/VimeoTwoCards";
+import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
+import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
   title: "Twin — Anagram Club",
@@ -24,6 +27,55 @@ const navData: CaseNavData = {
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
   liveUrl: "https://twin.so/",
 };
+
+const projectDescription = (
+  <Fragment key="twin-project-description">
+    <p>
+      Twin is the wearable AI that understands you. Branding and website design
+      by Anagram Club.
+    </p>
+    <p className="mt-4">
+      anagram created the brand identity and website for Twin with the goal of
+      making an invisible, highly technical system immediately legible. The logo
+      is conceived as an evolving system: its pattern of points and blocks
+      evokes an interconnected network representing the management and
+      optimization of energy flows.
+    </p>
+    <p className="mt-4">
+      The visual identity is designed as a flexible system, structured to adapt
+    </p>
+    <p className="mt-4">
+      anagram created the brand identity and website for Tilt with the goal of
+      making an invisible, highly technical system immediately legible. The logo
+      is conceived as an evolving system: its pattern of points and blocks
+      evokes an interconnected network representing the management and
+      optimization of energy flows.
+    </p>
+    <p className="mt-4">
+      The visual identity is designed as a flexible system, structured to adapt
+      and work across multiple applications and formats. A brand that embodies
+      the idea of an intelligent, coherent, and constantly evolving energy
+      network, precisely the technological promise Tilt delivers.
+    </p>
+  </Fragment>
+);
+
+const faqItems = [
+  {
+    question: "What does the Tilt logo represent?",
+    answer:
+      "A pattern of points and blocks forming an interconnected network, symbolizing the management and optimization of electrical flows. A flexible and scalable visual system, like Tilt's own technology.",
+  },
+  {
+    question: "What did anagram deliver for Tilt?",
+    answer: "Brand identity and website.",
+  },
+  {
+    question: "How do you brand a cleantech deeptech startup to stand out?",
+    answer:
+      "By anchoring the identity in the metaphor of the system, network, flow, interconnection, rather than generic green sector codes. For Tilt, this creates a distinctive, technical, and aspirational brand.",
+  },
+];
 
 export default function TwinCasePage() {
   return (
@@ -74,6 +126,10 @@ export default function TwinCasePage() {
                 }}
               />
               <Frame01 src="/works/twin/12.avif" alt="Twin 12" />
+              <ProjectInfoFaq
+                projectDescription={projectDescription}
+                faq={<Faq key="twin-faq" items={faqItems} />}
+              />
             </div>
           }
         />
