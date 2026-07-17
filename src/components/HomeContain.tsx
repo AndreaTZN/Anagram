@@ -32,7 +32,7 @@ const works: Work[] = [
     href: "/works/wastetide",
     tag: "Works",
     description:
-      "Wastetide reframes waste as untapped value. Built on the belief that nothing is truly discarded, the brand positions industrial waste as a resource. A hidden asset waiting to be captured, optimized, and monetized.",
+      "Build a brand and digital experience capable of reframing industrial waste as a source of value, translating Wastetide's AI-driven shift in perspective into a clear, credible identity.",
     media: {
       type: "image",
       src: "/works/Wastetide/1.webp",
@@ -43,7 +43,7 @@ const works: Work[] = [
     name: "Incard",
     tag: "Coming project",
     description:
-      "Wastetide reframes waste as untapped value.\nBuilt on the belief that nothing is truly discarded,",
+      "Design a trophy system that transforms key milestones into meaningful, shareable rewards, turning business growth into something Incard's community can proudly earn and display.",
     media: {
       type: "image",
       src: "/works/incard/thumbnail-incard.webp",
@@ -53,8 +53,7 @@ const works: Work[] = [
   {
     name: "Symbl",
     tag: "Tools",
-    description:
-      "Test your logo before the world does.\nDesigners are already using it",
+    description: "Stress-test your logo before the world does.",
     externalLink: "https://www.symbl.space/",
     media: {
       type: "image",
@@ -68,7 +67,7 @@ const works: Work[] = [
     href: "/works/fortuneo",
     tag: "Works",
     description:
-      "Anagram Club rebuilt Fortuneo's brand strategy and product design, helping France's most affordable online bank achieve a 45% increase in subscriptions.",
+      "Transform Fortuneo into a more desirable, premium brand while preserving what makes it unique: France's most affordable, always-free online bank that stays competitive yet human.",
     media: {
       type: "image",
       src: "/works/Fortuneo/thumbnail-fortuneo.webp",
@@ -80,7 +79,7 @@ const works: Work[] = [
     href: "/works/founders-future",
     tag: "Works",
     description:
-      "Discover how Anagram Club built Founders Future's brand identity around the carabiner symbol — a bold brand strategy for Europe's leading tech investment platform.",
+      "Clarify the brand’s positioning in a competitive global investment landscape, strengthen credibility with founders and stakeholders, and build a visual and narrative system capable of supporting international growth.",
     media: {
       type: "image",
       src: "/works/FoundersFuture/thumbnail-ff.webp",
@@ -92,7 +91,7 @@ const works: Work[] = [
     href: "/works/planity",
     tag: "Works",
     description:
-      "See how Anagram Club rebuilt Planity's brand — from strategy and identity to product design and photography for France's top beauty booking platform.",
+      "Simplify the booking experience by reducing friction and improving conversion, while evolving the product beyond a purely functional interface.",
     media: {
       type: "image",
       src: "/works/Planity/release/1.webp",
@@ -104,7 +103,7 @@ const works: Work[] = [
     href: "/works/amo",
     tag: "Works",
     description:
-      "Anagram Club produced core 3D visual assets and animations for Amo, the social platform bringing real friendship back to the center of the digital experience.",
+      "Produce keys graphics elements required for the app while remaining fully aligned with the visual direction defined by the amo team.",
     media: {
       type: "image",
       src: "/works/Amo/thumbnail-amo.webp",
