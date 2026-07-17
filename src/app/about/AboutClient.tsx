@@ -63,10 +63,10 @@ const team = [
 function DotDivider() {
   return (
     <div className="flex items-center justify-between w-full">
-      {Array.from({ length: 100 }).map((_, i) => (
+      {Array.from({ length: 50 }).map((_, i) => (
         <div
           key={i}
-          className="bg-[#0c0c0c] opacity-30 rounded-full shrink-0 size-[1.5px]"
+          className="bg-[#0c0c0c] opacity-10 rounded-full shrink-0 size-0.75"
         />
       ))}
     </div>
@@ -93,7 +93,7 @@ function DotDividerVertical() {
   return (
     <div
       ref={ref}
-      className="flex flex-col items-center justify-between self-stretch"
+      className="flex flex-col items-center justify-between self-stretch max-[766px]:hidden"
     >
       {Array.from({ length: count }).map((_, i) => (
         <div
@@ -194,11 +194,11 @@ export default function AboutPage({
     <main className="pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12">
       {/* Hero */}
 
-      <div className="flex flex-col gap-6 flex-1">
+      <div className="flex flex-col gap-6 flex-1 max-[766px]:gap-8">
         {/* colonne droite */}
-        <section className="flex gap-8 mb-8">
+        <section className="flex gap-8 mb-8 max-[766px]:contents">
           {/* Manifesto text */}
-          <div className="max-w-141.75">
+          <div className="max-w-141.75 max-[766px]:order-1">
             <p
               id="about-manifesto"
               className="text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem] text-2xl"
@@ -208,7 +208,7 @@ export default function AboutPage({
           </div>
 
           {/* Clocks */}
-          <div id="about-clocks" className="w-full">
+          <div id="about-clocks" className="w-full max-[766px]:order-7">
             {/* Desktop */}
             <div className="flex gap-8 justify-center w-full max-[766px]:hidden">
               {clocks.map((clock) => (
@@ -278,12 +278,11 @@ export default function AboutPage({
           </div>
         </section>
         {/* colonne gauche */}
-        <section className="grid grid-cols-12 gap-4">
+        <section className="grid grid-cols-12 gap-4 max-[766px]:contents">
           {/* Hero image */}
           <div
             id="about-hero"
-            className="col-span-8 relative bg-[#f4f4f4] overflow-hidden"
-            style={{ aspectRatio: "800 / 500" }}
+            className="col-span-8 relative bg-[#f4f4f4] overflow-hidden aspect-800/500 max-[766px]:order-2 max-[766px]:aspect-square max-[766px]:rounded"
           >
             <Swiper
               loop
@@ -331,13 +330,16 @@ export default function AboutPage({
           {/* Merch — T-shirt */}
           <div
             id="about-merch"
-            className="col-span-4 relative bg-[#f4f4f4] overflow-hidden flex justify-center items-start"
+            className="col-span-4 relative bg-[#f4f4f4] overflow-hidden flex justify-center items-start max-[766px]:order-14 max-[766px]:flex-col max-[766px]:items-center max-[766px]:rounded"
           >
-            <ShirtRotation />
-            <div className="absolute bottom-8 left-4 right-4 flex gap-2">
+            <div className="w-full h-full max-[766px]:h-auto max-[766px]:aspect-square">
+              <ShirtRotation />
+            </div>
+            <div className="absolute bottom-8 left-4 right-4 flex gap-2 max-[766px]:static max-[766px]:w-full max-[766px]:px-4 max-[766px]:pb-4">
               <div className="flex flex-1 items-center justify-between px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">
                 <span className="text-white text-sm font-medium opacity-50 whitespace-nowrap">
-                  Anagram 30g Teeshirt
+                  <span className="max-[766px]:hidden">Anagram 30g </span>
+                  Teeshirt
                 </span>
                 <span className="text-white text-sm font-medium whitespace-nowrap">
                   39.99$
@@ -354,21 +356,21 @@ export default function AboutPage({
 
         <section
           id="about-col-contain"
-          className="flex gap-4 flex-1 max-[766px]:flex-col"
+          className="flex gap-4 flex-1 max-[766px]:contents"
         >
           {/* Left column */}
           <div
             id="about-col-left"
-            className="flex flex-col gap-8 w-[50%] max-[766px]:w-full shrink-0 flex-none"
+            className="flex flex-col gap-8 w-[50%] shrink-0 flex-none max-[766px]:contents"
           >
             <div
               id="about-our-studio"
-              className="flex flex-col gap-6 mt-auto max-[766px]:hidden"
+              className="flex flex-col gap-6 mt-auto max-[766px]:order-3"
             >
-              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem]">
+              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:text-2xl">
                 {ourStudio.title}
               </h2>
-              <p className="text-[#7e7e7e] text-sm leading-[1.3]">
+              <p className="text-[#7e7e7e] text-sm leading-[1.3] max-[766px]:text-base">
                 {ourStudio.description}
               </p>
             </div>
@@ -376,15 +378,16 @@ export default function AboutPage({
             {/* Offerings */}
             <div
               id="about-offerings"
-              className="flex flex-col gap-6 text-[#0c0c0c]"
+              className="flex flex-col gap-6 text-[#0c0c0c] max-[766px]:order-5"
             >
-              <h2 className="text-lg leading-[1.1] tracking-[-0.0075rem]">
+              <h2 className="text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:text-2xl">
                 Offerings
               </h2>
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-3 gap-6 max-[766px]:grid-cols-2 max-[766px]:gap-8">
                 {[
                   {
                     category: "Strategy",
+                    mobileOrder: "max-[766px]:order-1",
                     items: [
                       "Brand Architecture",
                       "Brand Positioning",
@@ -397,6 +400,7 @@ export default function AboutPage({
                   },
                   {
                     category: "Visual Identity",
+                    mobileOrder: "max-[766px]:order-2",
                     items: [
                       "Logo Design",
                       "Art Direction",
@@ -408,6 +412,7 @@ export default function AboutPage({
                   },
                   {
                     category: "Digital Experience",
+                    mobileOrder: "max-[766px]:order-4",
                     items: [
                       "UI/UX Design",
                       "Product design",
@@ -418,6 +423,7 @@ export default function AboutPage({
 
                   {
                     category: "Production",
+                    mobileOrder: "max-[766px]:order-5",
                     items: [
                       "Photography",
                       "Video Production",
@@ -426,6 +432,7 @@ export default function AboutPage({
                   },
                   {
                     category: "Marketing & Activation",
+                    mobileOrder: "max-[766px]:order-3",
                     items: [
                       "TV & Display Campaigns",
                       "Brand Launch",
@@ -436,15 +443,15 @@ export default function AboutPage({
                 ].map((col) => (
                   <div
                     key={col.category}
-                    className="flex flex-col max-[766px]:w-auto"
+                    className={`flex flex-col max-[766px]:w-auto ${col.mobileOrder}`}
                   >
-                    <span className="text-[#0C0C0C] text-sm leading-[1.6]">
+                    <span className="text-[#0C0C0C] text-sm leading-[1.6] max-[766px]:text-base max-[766px]:text-[#7e7e7e]">
                       {col.category}
                     </span>
                     {col.items.map((item) => (
                       <span
                         key={item}
-                        className="text-sm leading-[1.6] text-[#7e7e7e]"
+                        className="text-sm leading-[1.6] text-[#7e7e7e] max-[766px]:text-base max-[766px]:text-[#0c0c0c]"
                       >
                         {item}
                       </span>
@@ -455,11 +462,14 @@ export default function AboutPage({
             </div>
 
             {/* We worked for */}
-            <div id="about-worked-for" className="flex flex-col gap-6">
-              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem]">
+            <div
+              id="about-worked-for"
+              className="flex flex-col gap-6 max-[766px]:order-12"
+            >
+              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:text-2xl">
                 We worked for
               </h2>
-              <div className="flex gap-8 items-start text-[#7e7e7e] text-sm leading-[1.6] max-[766px]:grid max-[766px]:grid-cols-2 max-[766px]:gap-x-4 max-[766px]:gap-y-0">
+              <div className="flex gap-8 items-start text-[#7e7e7e] text-sm leading-[1.6] max-[766px]:grid max-[766px]:grid-cols-2 max-[766px]:gap-x-4 max-[766px]:gap-y-0 max-[766px]:text-base">
                 <div className="flex-1 flex flex-col">
                   {[
                     "Everyday",
@@ -534,12 +544,35 @@ export default function AboutPage({
 
           <DotDividerVertical />
 
+          {/* Mobile — dot dividers */}
+          <div className="hidden max-[766px]:block max-[766px]:order-4">
+            <DotDivider />
+          </div>
+          <div className="hidden max-[766px]:block max-[766px]:order-6">
+            <DotDivider />
+          </div>
+          <div className="hidden max-[766px]:block max-[766px]:order-9">
+            <DotDivider />
+          </div>
+          <div className="hidden max-[766px]:block max-[766px]:order-11">
+            <DotDivider />
+          </div>
+          <div className="hidden max-[766px]:block max-[766px]:order-13">
+            <DotDivider />
+          </div>
+
           {/* Right — content */}
-          <div id="about-col-right" className="flex flex-col gap-8 flex-1">
+          <div
+            id="about-col-right"
+            className="flex flex-col gap-8 flex-1 max-[766px]:contents"
+          >
             {/* Open roles */}
             {openRoles.length > 0 && (
-              <div id="about-open-roles" className="flex flex-col gap-6">
-                <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem]">
+              <div
+                id="about-open-roles"
+                className="flex flex-col gap-6 max-[766px]:order-8"
+              >
+                <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:text-2xl">
                   Open roles
                 </h2>
                 <OpenRoles roles={openRoles} />
@@ -547,8 +580,11 @@ export default function AboutPage({
             )}
 
             {/* Meet the team */}
-            <div id="about-meet-the-team" className="flex flex-col gap-6">
-              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem]">
+            <div
+              id="about-meet-the-team"
+              className="flex flex-col gap-6 max-[766px]:order-10"
+            >
+              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:text-2xl">
                 Meet the team
               </h2>
               {/* Desktop */}
@@ -598,8 +634,8 @@ export default function AboutPage({
               {/* Mobile */}
               <div className="hidden max-[766px]:block relative">
                 {/* Photo — centered, floating over text */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                  <div className="relative size-37.5 overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="relative size-37.5 overflow-hidden rounded">
                     <img
                       ref={baseMobileRef}
                       src={team[0].image!}
