@@ -20,17 +20,20 @@ export default function VimeoTextImage({
   layout = "video-left",
 }: Props) {
   const embedRef = useRef<HTMLDivElement>(null);
-  useVimeoPlayer({ embedRef, dataSrc: video.dataSrc, dataRatio: video.dataRatio });
+  useVimeoPlayer({
+    embedRef,
+    dataSrc: video.dataSrc,
+    dataRatio: video.dataRatio,
+  });
 
   const vl = layout === "video-left";
 
   return (
     <div className="vimeotextimage_component w-full">
       <div className="vimeotextimage_wrapper aspect-video grid grid-cols-2 grid-rows-2 gap-4 w-full max-[992px]:aspect-auto max-[992px]:flex max-[992px]:flex-col">
-
         {/* Text — mobile: 1st (DOM order) */}
         <div
-          className={`vimeotextimage_text flex flex-col gap-4 px-4 py-6 overflow-hidden max-[992px]:overflow-visible ${vl ? "col-start-2 row-start-1" : "col-start-1 row-start-1"}`}
+          className={`vimeotextimage_text flex flex-col gap-4 md:px-4 md:py-6 overflow-hidden max-[992px]:overflow-visible ${vl ? "col-start-2 row-start-1" : "col-start-1 row-start-1"}`}
         >
           <p className="text-[#0c0c0c] text-[1.125rem] leading-[1.1] tracking-[-0.09px]">
             {title}
@@ -43,7 +46,9 @@ export default function VimeoTextImage({
         {/* Video — mobile: 2nd (DOM order) */}
         <div
           className={`vimeotextimage_video relative overflow-hidden max-[992px]:aspect-(--vt-ratio) ${vl ? "col-start-1 row-start-1 row-span-2" : "col-start-1 row-start-2"}`}
-          style={{ "--vt-ratio": video.dataRatio ?? "16/9" } as React.CSSProperties}
+          style={
+            { "--vt-ratio": video.dataRatio ?? "16/9" } as React.CSSProperties
+          }
         >
           <div
             ref={embedRef}
@@ -75,7 +80,6 @@ export default function VimeoTextImage({
             className="object-cover"
           />
         </div>
-
       </div>
     </div>
   );

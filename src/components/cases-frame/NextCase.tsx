@@ -91,8 +91,8 @@ export default function NextCase({ projectName, href, media }: Props) {
         ))}
       </div>
 
-      <div className="nextcase_cta flex items-center justify-between w-full">
-        <div className="flex flex-col gap-1">
+      <div className="nextcase_cta flex items-center justify-between w-full max-[992px]:flex-col max-[992px]:gap-6">
+        <div className="flex flex-col gap-1 max-[992px]:items-center max-[992px]:text-center">
           <p className="text-[#0c0c0c] text-[1.25rem] leading-[1.1] tracking-[-0.1px]">
             Feel like working together?
           </p>

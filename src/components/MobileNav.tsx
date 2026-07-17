@@ -23,18 +23,27 @@ export default function MobileNav() {
   const menuRef = useRef<HTMLDivElement>(null);
   const tl = useRef<gsap.core.Timeline | null>(null);
 
-  useGSAP(() => {
-    if (!menuRef.current) return;
-    gsap.set(menuRef.current, { y: -16, opacity: 0, pointerEvents: "none" });
+  const isCasePage = /^\/works\/.+/.test(pathname);
 
-    tl.current = gsap.timeline({ paused: true }).to(menuRef.current, {
-      y: 0,
-      opacity: 1,
-      pointerEvents: "auto",
-      duration: 0.4,
-      ease: "power3.out",
-    });
-  }, []);
+  // The nav unmounts on case pages, so the timeline must be rebuilt on the
+  // fresh menu element every time it reappears.
+  useGSAP(
+    () => {
+      tl.current = null;
+      setOpen(false);
+      if (!menuRef.current) return;
+      gsap.set(menuRef.current, { y: -16, opacity: 0, pointerEvents: "none" });
+
+      tl.current = gsap.timeline({ paused: true }).to(menuRef.current, {
+        y: 0,
+        opacity: 1,
+        pointerEvents: "auto",
+        duration: 0.4,
+        ease: "power3.out",
+      });
+    },
+    { dependencies: [isCasePage] },
+  );
 
   function lockBody(lock: boolean) {
     document.body.style.position = lock ? "fixed" : "";
@@ -84,6 +93,8 @@ export default function MobileNav() {
     setOpen(false);
   }
 
+  if (isCasePage) return null;
+
   return (
     <div
       id="mobile-nav"
@@ -108,12 +119,18 @@ export default function MobileNav() {
       {/* Menu button */}
       <button
         onClick={toggle}
-        className="relative z-50 flex items-center gap-2 bg-[#0c0c0c] rounded-full px-4 py-3 cursor-pointer"
+        className="relative z-50 flex items-center gap-2 rounded-full px-4 py-3 cursor-pointer bg-[#0c0c0c]"
       >
-        <span className="text-white text-base leading-[0.9] tracking-[-0.08px]">
+        <span className="text-base leading-[0.9] tracking-[-0.08px] text-white">
           {open ? "Close" : "Menu"}
         </span>
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          fill="none"
+          stroke="#ffffff"
+        >
           {open ? (
             <>
               <line
@@ -121,7 +138,6 @@ export default function MobileNav() {
                 y1="1"
                 x2="9"
                 y2="9"
-                stroke="white"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
@@ -130,7 +146,6 @@ export default function MobileNav() {
                 y1="1"
                 x2="1"
                 y2="9"
-                stroke="white"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
@@ -142,7 +157,6 @@ export default function MobileNav() {
                 y1="3"
                 x2="10"
                 y2="3"
-                stroke="white"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
@@ -151,7 +165,6 @@ export default function MobileNav() {
                 y1="7"
                 x2="10"
                 y2="7"
-                stroke="white"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />

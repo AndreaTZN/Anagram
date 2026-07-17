@@ -5,6 +5,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import PageTheme from "@/components/PageTheme";
 import { CaseNavProvider } from "@/contexts/CaseNavContext";
 import MobileNav from "@/components/MobileNav";
+import CaseOriginTracker from "@/components/CaseOriginTracker";
 import type { Metadata } from "next";
 import FadeIn from "@/components/FadeIn";
 
@@ -30,6 +31,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://player.vimeo.com" />
         <link rel="preconnect" href="https://f.vimeocdn.com" />
         <CaseNavProvider isCasePage={isCasePage}>
+          <CaseOriginTracker />
           <PageTheme>
             <FadeIn id="home-main" className="opacity-0">
               <div className="sticky top-0 h-screen shrink-0 max-[992px]:hidden">

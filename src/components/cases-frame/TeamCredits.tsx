@@ -57,7 +57,7 @@ export default function TeamCredits({
   return (
     <div
       ref={containerRef}
-      className="teamcredits_component flex gap-4 items-start w-full max-[992px]:flex-col max-[992px]:gap-8"
+      className="teamcredits_component flex gap-4 items-start w-full max-[992px]:flex-col max-[992px]:gap-8 max-[992px]:p-4"
     >
       <div className="teamcredits_team flex flex-1 flex-col gap-4 px-4 py-6 min-w-0 max-[992px]:p-0">
         <p className="tc-primary text-[#0c0c0c] text-[1.125rem] leading-[1.1] tracking-[-0.09px]">
@@ -87,7 +87,7 @@ export default function TeamCredits({
           </div>
         )}
         {faq && (
-          <div className="teamcredits_divider flex items-center justify-between w-full mt-6">
+          <div className="teamcredits_divider flex items-center justify-between w-full md:mt-6 max-[992px]:mt-4 max-[992px]:mb-4">
             {Array.from({ length: 80 }).map((_, i) => (
               <div
                 key={i}
@@ -96,7 +96,7 @@ export default function TeamCredits({
             ))}
           </div>
         )}
-        {faq && <div className="teamcredits_faq pt-8">{faq}</div>}
+        {faq && <div className="teamcredits_faq md:pt-8">{faq}</div>}
       </div>
     </div>
   );

@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useCaseNav } from "@/contexts/CaseNavContext";
+import { getCaseOrigin } from "@/lib/case-origin";
 
 export default function CaseNavigation() {
+  const router = useRouter();
   const { data, activeTab, setActiveTab } = useCaseNav();
   const [activeSection, setActiveSection] = useState<string>("");
   const activeSectionRef = useRef<string>("");
@@ -47,7 +50,11 @@ export default function CaseNavigation() {
     });
     const sectionDescs = Array.from(nav.querySelectorAll(".section-desc"));
     if (sectionDescs.length > 0) {
-      gsap.to(sectionDescs, { color: "#7e7e7e", duration, ease: "power2.inOut" });
+      gsap.to(sectionDescs, {
+        color: "#7e7e7e",
+        duration,
+        ease: "power2.inOut",
+      });
     }
     gsap.to(nav.querySelectorAll("path"), {
       attr: { stroke: textColor },
@@ -84,15 +91,29 @@ export default function CaseNavigation() {
       gsap.set(prevEl, { height: prevEl.scrollHeight });
       const prevText = prevEl.querySelector("p");
       if (prevText) gsap.set(prevText, { opacity: 0, y: 6 });
-      gsap.to(prevEl, { height: 0, opacity: 0, duration: 0.5, ease: "power3.out" });
+      gsap.to(prevEl, {
+        height: 0,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power3.out",
+      });
     }
 
     if (nextEl) {
       const nextText = nextEl.querySelector("p");
       gsap.set(nextEl, { height: 0, opacity: 0 });
-      gsap.to(nextEl, { height: "auto", opacity: 1, duration: 0.65, ease: "power4.out" });
+      gsap.to(nextEl, {
+        height: "auto",
+        opacity: 1,
+        duration: 0.65,
+        ease: "power4.out",
+      });
       if (nextText) {
-        gsap.fromTo(nextText, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.65, ease: "power4.out" });
+        gsap.fromTo(
+          nextText,
+          { opacity: 0, y: 6 },
+          { opacity: 1, y: 0, duration: 0.65, ease: "power4.out" },
+        );
       }
     }
 
@@ -114,6 +135,10 @@ export default function CaseNavigation() {
           id="case-nav-close"
           href="/works"
           className="flex items-center gap-2 opacity-50 w-fit"
+          onClick={(e) => {
+            e.preventDefault();
+            router.push(getCaseOrigin());
+          }}
           onMouseEnter={() =>
             gsap.to(closeIconRef.current, {
               rotation: 90,
@@ -152,12 +177,12 @@ export default function CaseNavigation() {
         {data && (
           <div id="case-nav-content" className="flex flex-col gap-10">
             <div id="case-nav-header" className="flex flex-col gap-4">
-              <h1
+              <p
                 id="case-nav-title"
                 className="text-[#0c0c0c] text-xl leading-[1.1] tracking-[-0.1px]"
               >
                 {data.title}
-              </h1>
+              </p>
               <p
                 id="case-nav-description"
                 className="text-[#0c0c0c] text-sm leading-[1.3]"
@@ -170,14 +195,14 @@ export default function CaseNavigation() {
                   href={data.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#0c0c0c] text-sm leading-[0.9] tracking-[-0.07px] w-fit"
+                  className="text-[#0c0c0c] text-sm font-medium leading-[0.9] tracking-[-0.07px] w-fit underline"
                 >
                   See it live
                 </a>
               )}
             </div>
 
-            {(data.release && data.backstage) && (
+            {data.release && data.backstage && (
               <div id="case-nav-tabs" className="flex gap-2">
                 {data.release && (
                   <button

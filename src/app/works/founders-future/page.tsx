@@ -107,7 +107,7 @@ export default function FoundersFuturePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
-      <div id="case-page" className="flex flex-col gap-10 max-[992px]:mt-12">
+      <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
           release={
             <div className="flex flex-col gap-4">
@@ -134,12 +134,12 @@ export default function FoundersFuturePage() {
                 alt="Founders Future release 4"
               />
 
-              <PortraitQuote
+              {/* <PortraitQuote
                 avatarSrc="/works/FoundersFuture/release/5.jpg"
                 avatarAlt="Portrait"
                 title="F-frame"
                 description="In addition to the carabiner, the central element of our visual language and a symbol of connection, trust, and strength between entrepreneurs and Founders Future, we introduced the letter F, the brand’s emblematic signature, as a structural principle within our compositions. The carabiner itself is derived from this letter, as is the broader graphic system. This approach establishes a natural continuity between symbol, typography, and brand storytelling, reinforcing the coherence and distinctiveness of the Founders Future identity."
-              />
+              /> */}
               <Frame01
                 src="/works/FoundersFuture/release/6.webp"
                 alt="Founders Future release 6"
@@ -323,7 +323,9 @@ export default function FoundersFuturePage() {
                   },
                 ]}
                 projectDescription={projectDescription}
-                faq={<Faq key="founders-future-faq-backstage" items={faqItems} />}
+                faq={
+                  <Faq key="founders-future-faq-backstage" items={faqItems} />
+                }
               />
             </div>
           }
