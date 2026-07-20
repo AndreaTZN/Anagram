@@ -115,7 +115,12 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
       <div
         ref={panelRef}
         id="home-widgets-panel"
-        className="absolute z-20 top-32 left-1/2 -translate-x-1/2 w-188 pointer-events-none opacity-0"
+        // Swiper (effect-fade) force `pointer-events: auto` sur sa slide active,
+        // ce qui perce le pointer-events:none du panel fermé. On neutralise tous
+        // les descendants tant que le widget est fermé.
+        className={`absolute z-20 top-32 left-1/2 -translate-x-1/2 w-188 opacity-0 ${
+          open ? "" : "**:pointer-events-none!"
+        }`}
         onClick={(e) => e.stopPropagation()}
         style={{ pointerEvents: open ? "auto" : "none" }}
       >
