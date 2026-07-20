@@ -10,7 +10,7 @@ import VisitorsWidget from "./VisitorsWidget";
 import MusicWidget from "./MusicWidget";
 import RolesStackWidget from "./RolesStackWidget";
 import type { OpenRole } from "../OpenRoles";
-import { globalLenisRef } from "@/lib/lenis";
+import { scrollLockRef } from "@/lib/lenis";
 
 gsap.registerPlugin(useGSAP);
 
@@ -80,10 +80,10 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
     if (!tl.current) return;
     if (!open) {
       tl.current.play();
-      globalLenisRef.current?.stop();
+      scrollLockRef.current = true;
     } else {
       tl.current.reverse();
-      globalLenisRef.current?.start();
+      scrollLockRef.current = false;
     }
     setOpen((v) => !v);
   }
@@ -93,7 +93,10 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
   }
 
   return (
-    <>
+    <div
+      id="home-widgets-layer"
+      className="fixed inset-y-0 right-0 left-(--nav-w) z-50 pointer-events-none max-[992px]:hidden"
+    >
       {/* CTA Button */}
       <WidgetToggleButton
         buttonRef={buttonRef}
@@ -104,12 +107,14 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
       {/* Overlay + Panel */}
       <div
         ref={overlayRef}
-        className="absolute -inset-6 z-20 backdrop-blur-2xl bg-[rgba(12,12,12,0.15)] opacity-0 pointer-events-none"
+        id="home-widgets-overlay"
+        className="absolute inset-0 z-20 backdrop-blur-2xl bg-[rgba(12,12,12,0.15)] opacity-0 pointer-events-none"
         onClick={toggle}
       />
 
       <div
         ref={panelRef}
+        id="home-widgets-panel"
         className="absolute z-20 top-32 left-1/2 -translate-x-1/2 w-188 pointer-events-none opacity-0"
         onClick={(e) => e.stopPropagation()}
         style={{ pointerEvents: open ? "auto" : "none" }}
@@ -138,6 +143,6 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

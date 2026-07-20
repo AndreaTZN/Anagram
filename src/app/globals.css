@@ -102,6 +102,9 @@ body {
 }
 
 :root {
+  /* Largeur de la nav desktop (= w-62.5 sur #nav-wrapper). Sert à recentrer
+     les éléments fixed du widget sur la zone <main>, à droite de la nav. */
+  --nav-w: 15.625rem;
   --font-from: 18;
   --font-to: 20;
   --vw-from: calc(1920 / 100);

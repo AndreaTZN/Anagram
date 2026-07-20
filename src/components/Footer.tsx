@@ -134,7 +134,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div id="footer-desktop-bottom" className="flex gap-6 items-end pb-6">
+        <div id="footer-desktop-bottom" className="flex gap-6 items-end">
           <p className="w-125 shrink-0 leading-[1.1]">
             © Anagram Brand design studio {year}
           </p>

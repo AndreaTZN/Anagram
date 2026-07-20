@@ -4,7 +4,7 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
-import { globalLenisRef } from "@/lib/lenis";
+import { globalLenisRef, scrollLockRef } from "@/lib/lenis";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -30,6 +30,7 @@ export default function SmoothScroll({
       content,
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      prevent: () => scrollLockRef.current,
     });
     lenisRef.current = lenis;
     globalLenisRef.current = lenis;
