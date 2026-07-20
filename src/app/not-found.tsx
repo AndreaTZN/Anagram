@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CaseNavReset from "@/components/CaseNavReset";
 
 export default function NotFound() {
   return (
@@ -6,6 +7,7 @@ export default function NotFound() {
       id="not-found-root"
       className="flex flex-col items-center justify-center flex-1 gap-6 text-center min-h-screen"
     >
+      <CaseNavReset />
       <p className="text-[#7e7e7e] text-sm leading-[0.9]">404</p>
 
       <h1
