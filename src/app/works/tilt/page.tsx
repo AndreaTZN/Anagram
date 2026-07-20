@@ -74,6 +74,9 @@ export default function TiltCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
+      <h1 id="case-tilt-seo-title" className="sr-only">
+        Tilt Branding: brand identity and website for the startup balancing the energy grid in real time
+      </h1>
       <div id="case-page" className="flex flex-col gap-4">
         <CaseTabContent
           release={

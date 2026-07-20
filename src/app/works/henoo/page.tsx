@@ -73,6 +73,9 @@ export default function HenooCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
+      <h1 id="case-henoo-seo-title" className="sr-only">
+        Henoo Branding: brand identity, mascot, and design system for the app reinventing outing discovery
+      </h1>
       <div id="case-page" className="flex flex-col gap-4">
         <CaseTabContent
           release={

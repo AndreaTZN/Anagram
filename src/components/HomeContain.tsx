@@ -21,6 +21,7 @@ type Work = {
   media: {
     type: "image" | "video";
     src: string;
+    poster?: string;
     aspect: string;
     bg?: string;
   };
@@ -69,8 +70,9 @@ const works: Work[] = [
     description:
       "Transform Fortuneo into a more desirable, premium brand while preserving what makes it unique: France's most affordable, always-free online bank that stays competitive yet human.",
     media: {
-      type: "image",
-      src: "/works/Fortuneo/thumbnail-fortuneo.webp",
+      type: "video",
+      src: "/works/Fortuneo/Fortuneo-grid.mp4",
+      poster: "/works/Fortuneo/fortuneo-grid-poster.webp",
       aspect: "aspect-[280/300]",
     },
   },
@@ -93,8 +95,9 @@ const works: Work[] = [
     description:
       "Simplify the booking experience by reducing friction and improving conversion, while evolving the product beyond a purely functional interface.",
     media: {
-      type: "image",
-      src: "/works/Planity/release/1.webp",
+      type: "video",
+      src: "/works/Planity/Planity-grid.mp4",
+      poster: "/works/Planity/planity-grid-poster.webp",
       aspect: "aspect-[280/300]",
     },
   },
@@ -188,6 +191,7 @@ function WorkCard({ work }: { work: Work }) {
               loop
               playsInline
               muted
+              poster={work.media.poster}
               className="absolute inset-0 w-full h-full object-cover"
             >
               <source src={work.media.src} />

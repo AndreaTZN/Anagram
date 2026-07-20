@@ -75,6 +75,9 @@ export default function BeeCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
+      <h1 id="case-bee-seo-title" className="sr-only">
+        Bee Branding: brand identity for the wearable AI assistant that understands you
+      </h1>
       <div id="case-page" className="flex flex-col gap-4">
         <CaseTabContent
           release={

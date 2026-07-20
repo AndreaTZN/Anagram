@@ -73,6 +73,9 @@ export default function PermaCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
+      <h1 id="case-perma-seo-title" className="sr-only">
+        Perma Branding: brand identity and logo for the photo sharing application
+      </h1>
       <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
           release={

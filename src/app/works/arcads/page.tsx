@@ -72,6 +72,9 @@ export default function ArcadsCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
+      <h1 id="case-arcads-seo-title" className="sr-only">
+        Arcads Branding: brand identity for the platform turning text into AI video ads
+      </h1>
       <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
           release={

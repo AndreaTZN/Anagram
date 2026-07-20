@@ -67,6 +67,9 @@ export default function AlloCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
+      <h1 id="case-allo-seo-title" className="sr-only">
+        Allo Branding: brand identity and website for the AI phone system that handles your calls for you
+      </h1>
       <div id="case-page" className="flex flex-col gap-4">
         <CaseTabContent
           release={

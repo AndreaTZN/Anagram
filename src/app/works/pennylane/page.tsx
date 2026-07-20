@@ -72,6 +72,9 @@ export default function PennylaneCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
+      <h1 id="case-pennylane-seo-title" className="sr-only">
+        Pennylane Branding: brand identity and website redesign for the French Tech 120 accounting platform
+      </h1>
       <div id="case-page" className="flex flex-col gap-4">
         <CaseTabContent
           release={

@@ -72,6 +72,9 @@ export default function SempliceCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
+      <h1 id="case-semplice-seo-title" className="sr-only">
+        Semplice Branding: brand identity and website by anagram, SaaS branding agency Paris
+      </h1>
       <div id="case-page" className="flex flex-col gap-4">
         <CaseTabContent
           release={

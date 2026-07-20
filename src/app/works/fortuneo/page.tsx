@@ -123,6 +123,9 @@ export default function FortuneoCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
+      <h1 id="case-fortuneo-seo-title" className="sr-only">
+        Fortuneo Rebranding: brand strategy and visual identity for France&apos;s most competitive online bank
+      </h1>
       <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
           release={

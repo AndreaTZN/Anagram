@@ -107,6 +107,9 @@ export default function FoundersFuturePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
+      <h1 id="case-founders-future-seo-title" className="sr-only">
+        Founders Future Branding: brand identity and strategy for a tech investment platform with international ambition
+      </h1>
       <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
           release={
