@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -242,6 +242,17 @@ export default function HomeContain() {
   const labelRef = useRef<HTMLSpanElement>(null);
   const labelWidth = useRef(0);
   const labelHidden = useRef(false);
+  const [isWide, setIsWide] = useState(false);
+
+  // Mirrors the 2xl breakpoint below so the row before the Wastetide video
+  // always fills the grid instead of leaving a trailing empty column.
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1536px)");
+    const update = () => setIsWide(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   function handlePillsScroll(e: React.UIEvent<HTMLDivElement>) {
     const label = labelRef.current;
@@ -265,6 +276,8 @@ export default function HomeContain() {
     activeFilter === "All"
       ? works
       : works.filter((w) => w.tag === activeFilter);
+
+  const firstRowCount = isWide ? 5 : 4;
 
   return (
     <div className="flex flex-col gap-4">
@@ -298,12 +311,12 @@ export default function HomeContain() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-start">
-        {filtered.slice(0, 4).map((work) => (
+      <div className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-3 items-start">
+        {filtered.slice(0, firstRowCount).map((work) => (
           <WorkCard key={work.name} work={work} />
         ))}
-        {filtered.length > 4 && (
-          <div className="relative col-span-1 md:col-span-4 overflow-hidden aspect-video my-8">
+        {filtered.length > firstRowCount && (
+          <div className="relative col-span-1 md:col-span-4 2xl:col-span-5 overflow-hidden aspect-video my-8">
             <video
               loop
               autoPlay
@@ -326,7 +339,7 @@ export default function HomeContain() {
             </Link>
           </div>
         )}
-        {filtered.slice(4).map((work) => (
+        {filtered.slice(firstRowCount).map((work) => (
           <WorkCard key={work.name} work={work} />
         ))}
       </div>

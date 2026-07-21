@@ -15,7 +15,6 @@ const navLinks = [
   { label: "Works", href: "/works" },
   { label: "Studio", href: "/about" },
   { label: "Lab", href: "/lab" },
-  { label: "Store", href: "/store" },
 ];
 
 export default function Navigation() {
@@ -154,7 +153,7 @@ export default function Navigation() {
 
       {/* Works list + Show all works */}
       <div
-        className="relative flex flex-col flex-1 overflow-hidden"
+        className="relative flex flex-col justify-end flex-1 overflow-hidden"
         style={{
           maskImage:
             "linear-gradient(to bottom, transparent 0, #000 5rem, #000 calc(100% - 1.5rem), transparent 100%)",

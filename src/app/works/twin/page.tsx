@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 const navData: CaseNavData = {
   title: "Twin",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius tristique suscipit. Sed ornare ex sed nulla bibendum lobortis. Maecenas auctor facilisis ornare.",
+    "Twin is the wearable AI built to understand its user, an invisible and highly technical system that needed to become immediately legible. We partnered with Twin to create a brand identity and website capable of expressing that system: a logo conceived as an evolving pattern of points and blocks, evoking an interconnected network.",
   liveUrl: "https://twin.so/",
 };
 
