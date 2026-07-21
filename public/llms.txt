@@ -1,0 +1,49 @@
+# Anagram Club
+
+> Anagram Club is a creative branding studio based in Paris. We shape market-defining brands through brand strategy, visual identity, product design, web design, motion, and 3D — for tech startups, scale-ups, and established companies.
+
+Contact: hello@anagram.club
+Site: https://anagram.club
+Languages: French, English
+
+## Pages
+
+- [Home](https://anagram.club): Studio overview, selected work, and approach.
+- [Works](https://anagram.club/works): Full index of client case studies.
+- [About](https://anagram.club/about): Studio, team, and creative process.
+- [Lab](https://anagram.club/lab): Experiments and side explorations.
+
+## Case studies
+
+- [Fortuneo](https://anagram.club/works/fortuneo): Rebranding of a profitable French online bank targeting younger users, turning the "0" of free banking into a premium brand asset. +45% funnel entry, +63% documents submitted.
+- [Pennylane](https://anagram.club/works/pennylane): Brand identity and full website redesign for the French Tech 120 accounting and financial management software. -13.5pt bounce rate, +15% conversion (per Pennylane's own data).
+- [Planity](https://anagram.club/works/planity): Brand identity and product design system for France's leading beauty and wellness booking platform, built for European expansion. +50% bookings per second.
+- [Politico](https://anagram.club/works/politico): Mobile-first design system and UX for Politico.eu, supporting the merger of Politico.com and Politico.eu into one modular international experience.
+- [Founders Future](https://anagram.club/works/founders-future): Brand strategy and identity for an entrepreneur-built investment platform backing tech companies in Europe and the US — the carabiner as a secure connection point.
+- [Bee](https://anagram.club/works/bee): Brand identity, website, and photography direction for a wearable AI assistant, making AI feel desirable as an everyday physical object.
+- [Inbolt](https://anagram.club/works/inbolt): Branding and website for a deeptech startup pioneering AI-powered 3D vision for industrial robots in unconstrained environments.
+- [Vizzia](https://anagram.club/works/vizzia): Brand identity and website for a deeptech company building legally robust mobile systems for ground-level accountability.
+- [Wastetide](https://anagram.club/works/wastetide): Full brand and digital experience for an AI platform helping industrial companies value and monetize materials hidden in their waste streams.
+- [Tilt](https://anagram.club/works/tilt): Brand identity and website for a cleantech startup orchestrating real-time energy flow optimization — a logo built as an interconnected network.
+- [Arcads](https://anagram.club/works/arcads): Brand identity and website for an adtech platform turning text into high-quality video ads with AI actors.
+- [Allo](https://anagram.club/works/allo): Brand identity and website for an AI phone system handling inbound calls and qualification for small teams.
+- [Everyday](https://anagram.club/works/everyday): Brand strategy and identity for an AI-powered mobile game studio — the sun as a symbol of daily rhythm and renewal.
+- [amo](https://anagram.club/works/amo): 3D, motion, and emoji asset production for a suite of connected social apps (ID, Bump, Sugar) built around real friendship.
+- [Semplice](https://anagram.club/works/semplice): Brand identity and website for a SaaS product co-founded by Tobias Van Schneider, built to convert and build credibility.
+- [Henoo](https://anagram.club/works/henoo): Brand universe and website for an activity discovery app, including its mascot Noo.
+- [Perma](https://anagram.club/works/perma): Logo and brand identity for a photo-sharing social app built around authentic exchange and community.
+- [Twin](https://anagram.club/works/twin): Brand identity and website for a wearable AI, turning an invisible technical system into a legible interconnected-network logo.
+
+## Services
+
+- Brand strategy and positioning
+- Visual identity and logo design
+- Design systems
+- Product design (UI/UX)
+- Web design and development
+- Art direction, motion design, and 3D
+
+## Notes
+
+- Sitemap: https://anagram.club/sitemap.xml
+- Case study pages are the canonical source for project details; each links to the client's live site where available.
