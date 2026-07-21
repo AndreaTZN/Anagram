@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   description:
     "anagram created the brand identity for Bee, the wearable AI assistant that adapts to you. Logo, brand design and website for a hardware AI startup.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

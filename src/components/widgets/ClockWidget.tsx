@@ -85,11 +85,13 @@ export default function ClockWidget() {
 
       {/* Dots with GSAP progress bar */}
       <div className="flex items-center gap-2 mt-4">
-        {CITIES.map((_, i) => (
+        {CITIES.map((c, i) => (
           <button
             key={i}
             onClick={() => swiperRef.current?.slideToLoop(i)}
             className="cursor-pointer"
+            aria-label={`Show time in ${c.label}`}
+            aria-current={i === active}
           >
             <span
               className={`relative rounded-full shrink-0 overflow-hidden block transition-[width] duration-300 ${

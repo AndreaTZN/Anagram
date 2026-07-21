@@ -16,7 +16,6 @@ export const metadata: Metadata = {
   description:
     "anagram created the branding and website for Inbolt, pioneer of 3D vision-guided industrial robotics. Accessible deeptech B2B brand design.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

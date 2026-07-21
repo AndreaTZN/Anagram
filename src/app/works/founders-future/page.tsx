@@ -16,7 +16,6 @@ export const metadata: Metadata = {
   description:
     "anagram redefined the identity of Founders Future, an entrepreneur-built tech investment platform. Brand strategy, design system and website for an international VC.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

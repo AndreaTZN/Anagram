@@ -16,7 +16,6 @@ export const metadata: Metadata = {
   description:
     "anagram redesigned Pennylane's website: -13.5pt bounce rate, +15% conversion. Brand design and UX for the French Tech 120 accounting software.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

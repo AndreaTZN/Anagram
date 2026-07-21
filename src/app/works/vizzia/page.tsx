@@ -16,7 +16,6 @@ export const metadata: Metadata = {
   description:
     "anagram created the brand identity and website for Vizzia, a deeptech startup building legally robust mobile systems for ground-level action",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

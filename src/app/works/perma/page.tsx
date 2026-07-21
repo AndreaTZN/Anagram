@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   description:
     "anagram created the logo and brand identity for Perma, the photo sharing app built around community and exchange. Consumer brand design by anagram Paris.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

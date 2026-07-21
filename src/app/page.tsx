@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: "Anagram Club — Shaping brands that need no introduction",
     description:
       "Anagram Club shapes market-defining brands through bold branding, product design, and a sharp creative process. Built for companies that want to stand out.",
-    url: "https://anagramclub.com",
+    url: "https://anagram.club",
     siteName: "Anagram Club",
     locale: "fr_FR",
     type: "website",
@@ -31,7 +31,6 @@ export const metadata: Metadata = {
     description:
       "Anagram Club shapes market-defining brands through bold branding, product design, and a sharp creative process. Built for companies that want to stand out.",
   },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: {
     index: true,
     follow: true,

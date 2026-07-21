@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   description:
     "anagram rebranded Fortuneo: +45% funnel entry, +63% documents submitted. Online bank rebranding, brand strategy and product design.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

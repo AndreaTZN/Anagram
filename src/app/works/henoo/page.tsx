@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   description:
     "Explore how Anagram Club designed the brand identity and website for Henoo, the app helping people discover activities, outings, and experiences around them.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

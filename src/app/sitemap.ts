@@ -1,22 +1,29 @@
 import type { MetadataRoute } from "next";
-import { client } from "@/sanity/client";
 
-const BASE_URL = "https://anagram.studio";
+const BASE_URL = "https://anagram.club";
 
-async function getWorkSlugs(): Promise<string[]> {
-  try {
-    const slugs = await client.fetch<{ slug: { current: string } }[]>(
-      `*[_type == "work" && defined(slug.current)] { slug }`,
-      {},
-      { next: { revalidate: 3600 } },
-    );
-    return slugs.map((s) => s.slug.current);
-  } catch {
-    return [];
-  }
-}
+const workSlugs = [
+  "allo",
+  "amo",
+  "arcads",
+  "bee",
+  "everyday",
+  "fortuneo",
+  "founders-future",
+  "henoo",
+  "inbolt",
+  "pennylane",
+  "perma",
+  "planity",
+  "politico",
+  "semplice",
+  "tilt",
+  "twin",
+  "vizzia",
+  "wastetide",
+];
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${BASE_URL}/works`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
@@ -24,7 +31,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/lab`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
   ];
 
-  const workSlugs = await getWorkSlugs();
   const workRoutes: MetadataRoute.Sitemap = workSlugs.map((slug) => ({
     url: `${BASE_URL}/works/${slug}`,
     lastModified: new Date(),

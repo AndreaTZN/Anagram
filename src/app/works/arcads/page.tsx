@@ -17,7 +17,6 @@ export const metadata: Metadata = {
   description:
     "anagram created the branding for Arcads, the platform generating high-quality AI video ads. Brand design and logo for an adtech SaaS startup.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

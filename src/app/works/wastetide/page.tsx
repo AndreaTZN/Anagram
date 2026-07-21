@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   description:
     "anagram built the full brand and digital experience for Wastetide, an AI platform turning industrial waste into measurable financial value. Identity, strategy, and concept.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

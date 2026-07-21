@@ -16,7 +16,6 @@ export const metadata: Metadata = {
   description:
     "anagram designed the key visual assets for amo social app: animated 3D hand, custom emoji system, and opening animation. Premium consumer product design.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

@@ -138,7 +138,9 @@ function WorkCard({ work }: { work: Work }) {
 
   const MediaWrapper = work.href
     ? ({ children }: { children: React.ReactNode }) => (
-        <Link href={work.href!}>{children}</Link>
+        <Link href={work.href!} aria-label={work.name}>
+          {children}
+        </Link>
       )
     : ({ children }: { children: React.ReactNode }) => <>{children}</>;
 

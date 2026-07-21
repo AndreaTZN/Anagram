@@ -55,6 +55,8 @@ export default function PhotoCarouselWidget() {
             key={i}
             onClick={() => swiperRef.current?.slideToLoop(i)}
             className="cursor-pointer"
+            aria-label={`Go to photo ${i + 1}`}
+            aria-current={i === activeSlide}
           >
             <span
               className={`relative rounded-full shrink-0 overflow-hidden block transition-[width] duration-300 ${

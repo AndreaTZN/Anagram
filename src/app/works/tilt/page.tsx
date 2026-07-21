@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   description:
     "anagram created the brand identity for Tilt, a startup orchestrating real-time energy flow optimization. Logo, brand design and website for a cleantech deeptech",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

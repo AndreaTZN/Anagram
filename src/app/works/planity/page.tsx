@@ -16,7 +16,6 @@ export const metadata: Metadata = {
   description:
     "How anagram redesigned Planity's brand for European expansion: brand strategy, design system, product design. +50% bookings per second.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

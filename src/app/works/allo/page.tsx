@@ -13,7 +13,6 @@ export const metadata: Metadata = {
   description:
     "anagram created the brand identity for Allo, the AI phone system for small teams. Brand design and website for a SaaS startup freeing entrepreneurs from their phones.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 

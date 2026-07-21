@@ -17,7 +17,6 @@ export const metadata: Metadata = {
   description:
     "Explore Twin, the wearable AI that understands you. Branding and website design by Anagram Club. View the complete project showcase.",
   openGraph: { images: ["/opengraph.webp"] },
-  metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
 
