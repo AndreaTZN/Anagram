@@ -125,11 +125,13 @@ export default async function RootLayout({
   const isCasePage = /^\/works\/.+/.test(pathname);
 
   return (
-    <html lang="fr">
+    <html lang="en">
       <body className="antialiased overflow-hidden">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd),
+          }}
         />
         <script
           type="application/ld+json"
