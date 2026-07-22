@@ -277,6 +277,11 @@ export default function HomeContain() {
       ? works
       : works.filter((w) => w.tag === activeFilter);
 
+  // Hide filters that no work is tagged with; "All" always stays.
+  const visibleFilters = FILTERS.filter(
+    (filter) => filter === "All" || works.some((w) => w.tag === filter)
+  );
+
   const firstRowCount = isWide ? 5 : 4;
 
   return (
@@ -294,11 +299,11 @@ export default function HomeContain() {
           onScroll={handlePillsScroll}
           className="flex gap-2 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden -mx-4 px-4 md:mx-0 md:px-0"
         >
-          {FILTERS.map((filter) => (
+          {visibleFilters.map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
-              className={`px-4 py-4 rounded-full text-sm leading-[0.8] cursor-pointer transition-colors shrink-0 whitespace-nowrap ${
+              className={`min-w-16 px-4 py-4 rounded-full text-sm leading-[0.8] cursor-pointer transition-colors shrink-0 whitespace-nowrap ${
                 activeFilter === filter
                   ? "bg-[#0c0c0c] text-white"
                   : "bg-[#f5f5f5] text-[#7C7C7C]"

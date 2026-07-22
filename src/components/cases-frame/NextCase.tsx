@@ -4,8 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
 import { useCaseNav } from "@/contexts/CaseNavContext";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type MediaImage = { type: "image"; src: string; alt?: string };
 type MediaVimeo = {
@@ -26,6 +29,7 @@ type Props = {
 export default function NextCase({ projectName, href, media }: Props) {
   const { activeTab } = useCaseNav();
   const containerRef = useRef<HTMLDivElement>(null);
+  const mediaRef = useRef(null);
   const embedRef = useRef<HTMLDivElement>(null);
   const arrow1Ref = useRef<SVGSVGElement>(null);
   const arrow2Ref = useRef<SVGSVGElement>(null);
@@ -72,6 +76,39 @@ export default function NextCase({ projectName, href, media }: Props) {
       ease: "power2.inOut",
     });
   }, [activeTab]);
+
+  useLayoutEffect(() => {
+    const el = mediaRef.current;
+    const trigger = containerRef.current;
+    if (!el || !trigger) return;
+
+    // Lenis scrolls this wrapper, not window — ScrollTrigger never fires without it.
+    const scroller = document.getElementById("smooth-scroll-container");
+
+    // The whole component drives the scroll window; only the media scales.
+    // Anchored right so it grows leftward out of the right edge instead of
+    // expanding from its own centre.
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        el,
+        { scale: 0.3, transformOrigin: "right center" },
+        {
+          scale: 1,
+          transformOrigin: "right center",
+          ease: "none",
+          scrollTrigger: {
+            trigger,
+            scroller: scroller ?? undefined,
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: true,
+          },
+        },
+      );
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   const posterSrc = media.type === "image" ? media.src : media.posterSrc;
   const posterAlt =
@@ -177,32 +214,34 @@ export default function NextCase({ projectName, href, media }: Props) {
         </a>
       </div>
 
-      <Link
-        href={href}
-        className="nextcase_media relative w-full aspect-video overflow-hidden"
-      >
-        <div
-          ref={embedRef}
-          className="projet-card_embed-vimeo-contain relative w-full h-full overflow-hidden"
+      <div className="w-full aspect-video" ref={mediaRef}>
+        <Link
+          href={href}
+          className="nextcase_media block relative w-full h-full overflow-hidden"
         >
-          <Image
-            src={posterSrc}
-            alt={posterAlt}
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
+          <div
+            ref={embedRef}
+            className="projet-card_embed-vimeo-contain relative w-full h-full overflow-hidden"
+          >
+            <Image
+              src={posterSrc}
+              alt={posterAlt}
+              fill
+              sizes="100vw"
+              className="object-cover"
+            />
+          </div>
 
-        <div className="absolute top-4 left-4 z-10 flex items-center gap-4 backdrop-blur-[17px] bg-[rgba(12,12,12,0.2)] px-4 py-3 rounded-full">
-          <span className="text-white text-base font-medium leading-[0.9]">
-            {projectName}
-          </span>
-          <span className="text-white/75 text-[0.875rem] leading-[0.9]">
-            Next project
-          </span>
-        </div>
-      </Link>
+          <div className="absolute top-4 left-4 z-10 flex items-center gap-4 backdrop-blur-[17px] bg-[rgba(12,12,12,0.2)] px-4 py-3 rounded-full">
+            <span className="text-white text-base font-medium leading-[0.9]">
+              {projectName}
+            </span>
+            <span className="text-white/75 text-[0.875rem] leading-[0.9]">
+              Next project
+            </span>
+          </div>
+        </Link>
+      </div>
     </div>
   );
 }
