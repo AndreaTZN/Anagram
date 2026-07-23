@@ -78,34 +78,47 @@ export default function NextCase({ projectName, href, media }: Props) {
   }, [activeTab]);
 
   useLayoutEffect(() => {
-    const el = mediaRef.current;
-    const trigger = containerRef.current;
-    if (!el || !trigger) return;
+    const pinEl = mediaRef.current;
+    const root = containerRef.current;
+    if (!pinEl || !root) return;
 
     // Lenis scrolls this wrapper, not window — ScrollTrigger never fires without it.
     const scroller = document.getElementById("smooth-scroll-container");
 
-    // The whole component drives the scroll window; only the media scales.
-    // Anchored right so it grows leftward out of the right edge instead of
-    // expanding from its own centre.
+    // Scoped so selectors resolve inside this component and cleanup is automatic.
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        el,
-        { scale: 0.3, transformOrigin: "right center" },
-        {
-          scale: 1,
-          transformOrigin: "right center",
-          ease: "none",
-          scrollTrigger: {
-            trigger,
-            scroller: scroller ?? undefined,
-            start: "top bottom",
-            end: "bottom bottom",
-            scrub: true,
-          },
+      // Reveal the media as it scrolls up: a bottom-to-top clip wipe plus a slow
+      // Ken Burns zoom on the poster. No pin — ScrollTrigger pinning conflicts
+      // with Lenis owning this scroller (would need a scrollerProxy).
+      const tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: pinEl,
+          scroller: scroller ?? undefined,
+          start: "top bottom",
+          end: "bottom center",
+          scrub: true,
         },
-      );
-    });
+      });
+
+      tl.fromTo(
+        ".nextcase_media",
+        { clipPath: "inset(100% 0% 0% 0%)" },
+        { clipPath: "inset(0% 0% 0% 0%)" },
+        0,
+      )
+        .fromTo(
+          ".projet-card_embed-vimeo-contain",
+          { scale: 1.15 },
+          { scale: 1 },
+          0.5,
+        )
+        .from(
+          ".nextcase_badge",
+          { yPercent: 60, opacity: 0, ease: "power2.out" },
+          0.5,
+        );
+    }, root);
 
     return () => ctx.revert();
   }, []);
@@ -232,7 +245,7 @@ export default function NextCase({ projectName, href, media }: Props) {
             />
           </div>
 
-          <div className="absolute top-4 left-4 z-10 flex items-center gap-4 backdrop-blur-[17px] bg-[rgba(12,12,12,0.2)] px-4 py-3 rounded-full">
+          <div className="nextcase_badge absolute top-4 left-4 z-10 flex items-center gap-4 backdrop-blur-[17px] bg-[rgba(12,12,12,0.2)] px-4 py-3 rounded-full">
             <span className="text-white text-base font-medium leading-[0.9]">
               {projectName}
             </span>

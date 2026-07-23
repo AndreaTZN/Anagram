@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 
 type CardVariant = "landscape" | "square" | "portrait" | "wide";
@@ -19,44 +20,35 @@ const ASPECT_RATIO: Record<CardVariant, number> = {
 
 const COLUMNS: CardData[][] = [
   [
-    { variant: "landscape", src: "/works/Planity/release/1.webp" },
-    { variant: "portrait", src: "/works/Allo/3.webp" },
-    { variant: "wide", src: "/works/Everyday/release/4.webp" },
-    { variant: "square", src: "/works/Arcads/4.webp" },
-    { variant: "landscape", src: "/works/Planity/release/5.webp" },
+    { variant: "square", src: "/lab/1/1.jpg" },
+    { variant: "portrait", src: "/lab/1/2.mp4" },
+    { variant: "portrait", src: "/lab/1/3.mp4" },
   ],
   [
-    { variant: "square", src: "/works/Fortuneo/backstage/25.webp" },
-    { variant: "landscape", src: "/works/FoundersFuture/release/1.webp" },
-    { variant: "portrait", src: "/works/Planity/backstage/25.webp" },
-    { variant: "wide", src: "/works/Arcads/2.webp" },
-    { variant: "square", src: "/works/Fortuneo/release/6.webp" },
-    { variant: "landscape", src: "/works/FoundersFuture/release/7.webp" },
+    { variant: "portrait", src: "/lab/2/1.jpg" },
+    { variant: "square", src: "/lab/2/2.mp4" },
+    { variant: "portrait", src: "/lab/2/3.jpg" },
   ],
   [
-    { variant: "wide", src: "/works/Planity/release/8.webp" },
-    { variant: "square", src: "/works/Fortuneo/release/9.webp" },
-    { variant: "landscape", src: "/works/FoundersFuture/release/10.webp" },
-    { variant: "portrait", src: "/works/Arcads/9.webp" },
-    { variant: "wide", src: "/works/Planity/release/10.webp" },
-    { variant: "square", src: "/works/Fortuneo/backstage/27.webp" },
+    { variant: "square", src: "/lab/3/1.jpg" },
+    { variant: "portrait", src: "/lab/3/2.jpg" },
+    { variant: "portrait", src: "/lab/3/3.mp4" },
   ],
   [
-    { variant: "portrait", src: "/works/FoundersFuture/release/11.webp" },
-    { variant: "wide", src: "/works/Planity/release/11.webp" },
-    { variant: "square", src: "/works/Arcads/6.webp" },
-    { variant: "landscape", src: "/works/Fortuneo/release/12.webp" },
-    { variant: "portrait", src: "/works/FoundersFuture/backstage/20.webp" },
+    { variant: "portrait", src: "/lab/4/1.jpg" },
+    { variant: "portrait", src: "/lab/4/2.jpg" },
+    { variant: "landscape", src: "/lab/4/3.jpg" },
+    { variant: "portrait", src: "/lab/4/4.jpg" },
   ],
   [
-    { variant: "landscape", src: "/works/Planity/release/12.webp" },
-    { variant: "square", src: "/works/Fortuneo/release/4.webp" },
-    { variant: "portrait", src: "/works/FoundersFuture/release/4.webp" },
-    { variant: "wide", src: "/works/Arcads/5.webp" },
-    { variant: "landscape", src: "/works/Planity/backstage/26.webp" },
-    { variant: "square", src: "/works/Fortuneo/backstage/29.webp" },
+    { variant: "portrait", src: "/lab/5/1.mp4" },
+    { variant: "landscape", src: "/lab/5/2.mp4" },
+    { variant: "portrait", src: "/lab/5/3.jpg" },
   ],
 ];
+
+// Videos and images share the same card layout; the extension picks the tag.
+const isVideo = (src: string) => src.endsWith(".mp4");
 
 // quickTo duration per column — different durations = different scroll velocities
 const DURATIONS = [0.5, 0.8, 0.6, 0.3, 0.7];
@@ -65,15 +57,29 @@ function Card({ card, colWidth }: { card: CardData; colWidth: number }) {
   const height = colWidth / ASPECT_RATIO[card.variant];
   return (
     <div
-      className="shrink-0 w-full overflow-hidden"
+      className="relative shrink-0 w-full overflow-hidden"
       style={{ height: `${height}px` }}
     >
-      <img
-        src={card.src}
-        alt=""
-        className="w-full h-full object-cover"
-        draggable={false}
-      />
+      {isVideo(card.src) ? (
+        <video
+          src={card.src}
+          className="w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        />
+      ) : (
+        <Image
+          src={card.src}
+          alt=""
+          fill
+          sizes="20vw"
+          className="object-cover"
+          draggable={false}
+        />
+      )}
     </div>
   );
 }

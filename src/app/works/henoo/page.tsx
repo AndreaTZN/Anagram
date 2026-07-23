@@ -14,9 +14,9 @@ import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
 import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Henoo Branding — Activity Discovery App Brand Identity",
+  title: "Henoo Branding | Brand Identity & Mascot for Leisure App",
   description:
-    "Explore how Anagram Club designed the brand identity and website for Henoo, the app helping people discover activities, outings, and experiences around them.",
+    "anagram created the full brand universe for Henoo, the app fighting isolation through personalized activities. Branding, mascot Noo, and design system.",
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };
