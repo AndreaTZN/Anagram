@@ -90,34 +90,37 @@ export default function NextCase({ projectName, href, media }: Props) {
       // Reveal the media as it scrolls up: a bottom-to-top clip wipe plus a slow
       // Ken Burns zoom on the poster. No pin — ScrollTrigger pinning conflicts
       // with Lenis owning this scroller (would need a scrollerProxy).
+      // Hidden until the scrubbed reveal finishes, then played on its own.
+      gsap.set(".nextcase_badge", { yPercent: 60, opacity: 0 });
+
       const tl = gsap.timeline({
-        defaults: { ease: "none" },
+        defaults: { ease: "power2.out" },
         scrollTrigger: {
           trigger: pinEl,
           scroller: scroller ?? undefined,
           start: "top bottom",
-          end: "bottom center",
-          scrub: true,
+          end: "bottom bottom",
         },
       });
 
       tl.fromTo(
         ".nextcase_media",
         { clipPath: "inset(100% 0% 0% 0%)" },
-        { clipPath: "inset(0% 0% 0% 0%)" },
+        { clipPath: "inset(0% 0% 0% 0%)", duration: 1 },
         0,
-      )
-        .fromTo(
-          ".projet-card_embed-vimeo-contain",
-          { scale: 1.15 },
-          { scale: 1 },
-          0.5,
-        )
-        .from(
-          ".nextcase_badge",
-          { yPercent: 60, opacity: 0, ease: "power2.out" },
-          0.5,
-        );
+      ).fromTo(
+        ".projet-card_embed-vimeo-contain",
+        { scale: 1.15 },
+        { scale: 1, duration: 1 },
+        0,
+      );
+
+      tl.fromTo(
+        ".nextcase_badge",
+        { yPercent: 60, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        0.5,
+      );
     }, root);
 
     return () => ctx.revert();
