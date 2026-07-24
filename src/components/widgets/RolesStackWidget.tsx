@@ -15,18 +15,31 @@ export default function RolesStackWidget({ roles }: { roles: OpenRole[] }) {
   const [maxHeight, setMaxHeight] = useState<number>();
   const stackRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<HTMLDivElement[]>([]);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useGSAP(
     () => {
       if (roles.length <= 1) return;
-      const id = setInterval(
+      intervalRef.current = setInterval(
         () => setFront((f) => (f + 1) % roles.length),
         ROTATE_DELAY * 1000,
       );
-      return () => clearInterval(id);
+      return () => {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+      };
     },
     { scope: stackRef, dependencies: [roles.length] },
   );
+
+  function handleAdvance() {
+    if (roles.length <= 1) return;
+    setFront((f) => (f + 1) % roles.length);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(
+      () => setFront((f) => (f + 1) % roles.length),
+      ROTATE_DELAY * 1000,
+    );
+  }
 
   useGSAP(
     () => {
@@ -54,7 +67,8 @@ export default function RolesStackWidget({ roles }: { roles: OpenRole[] }) {
     <div
       id="widget-roles"
       ref={stackRef}
-      className="relative w-full"
+      onClick={handleAdvance}
+      className="relative w-full cursor-pointer"
       style={{ height: maxHeight }}
     >
       {roles.map((role, i) => {
@@ -111,7 +125,7 @@ function RoleCard({
         localRef.current = el;
         ref?.(el);
       }}
-      className={`absolute inset-x-0 ${stretch ? "inset-y-0" : "top-0"} flex items-start p-4 rounded-lg bg-white drop-shadow-[0_0.25rem_5rem_rgba(0,0,0,0.1)]`}
+      className={`absolute inset-x-0 ${stretch ? "inset-y-0" : "top-0"} flex items-start p-4 rounded-lg bg-white drop-shadow-[0_0.25rem_5rem_rgba(0,0,0,0.1)] will-change-transform`}
       style={{ zIndex: 10 - depth }}
     >
       <div className="flex flex-1 flex-col gap-2 items-center justify-center min-w-0">

@@ -13,7 +13,9 @@ export type Work = {
   description: string;
   href?: string;
   badge?: string;
+  type?: "image" | "video";
   image: string;
+  poster?: string;
   aspect: string;
 };
 
@@ -39,7 +41,9 @@ export const allWorks: Work[] = [
     description:
       "Transform Fortuneo into a more desirable, premium brand while preserving what makes it unique: France's most affordable, always-free online bank that stays competitive yet human.",
     href: "/works/fortuneo",
-    image: "/works/Fortuneo/release/1.webp",
+    type: "video",
+    image: "/works/Fortuneo/Fortuneo-grid.mp4",
+    poster: "/works/Fortuneo/fortuneo-grid-poster.webp",
     aspect: "aspect-[387/300]",
   },
   {
@@ -47,7 +51,9 @@ export const allWorks: Work[] = [
     description:
       "Simplify the booking experience by reducing friction and improving conversion, while evolving the product beyond a purely functional interface.",
     href: "/works/planity",
-    image: "/works/Planity/release/1.webp",
+    type: "video",
+    image: "/works/Planity/Planity-grid.mp4",
+    poster: "/works/Planity/planity-grid-poster.webp",
     aspect: "aspect-[387/300]",
   },
   {
@@ -184,11 +190,24 @@ function WorkCard({ work }: { work: Work }) {
           onMouseEnter={handleEnter}
           onMouseLeave={handleLeave}
         >
-          <img
-            src={work.image}
-            alt={work.name}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+          {work.type === "video" ? (
+            <video
+              autoPlay
+              loop
+              playsInline
+              muted
+              poster={work.poster}
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={work.image} />
+            </video>
+          ) : (
+            <img
+              src={work.image}
+              alt={work.name}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          )}
           <div
             ref={overlayRef}
             className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
