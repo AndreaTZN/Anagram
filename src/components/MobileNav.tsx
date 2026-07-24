@@ -11,6 +11,7 @@ import { navWorks } from "@/lib/nav-works";
 gsap.registerPlugin(useGSAP);
 
 const navLinks = [
+  { label: "Home", href: "/" },
   { label: "Works", href: "/works" },
   { label: "Studio", href: "/about" },
   { label: "Lab", href: "/lab" },

@@ -1,275 +1,222 @@
 "use client";
 
-import { useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import Badge from "./Badge";
-import MerchCard from "./MerchCard";
-import ToolCard from "./ToolCard";
 
-type Work = {
+gsap.registerPlugin(useGSAP);
+
+export type Work = {
   name: string;
-  description?: string;
-  price?: string;
-  badge?: string;
-  externalLink?: string;
+  description: string;
   href?: string;
-  tag?: string;
-  media: {
-    type: "image" | "video";
-    src: string;
-    aspect: string;
-    bg?: string;
-  };
+  badge?: string;
+  image: string;
+  aspect: string;
 };
 
-const works: Work[] = [
-  {
-    name: "Matis",
-    tag: "All",
-    description:
-      "The art market is shaped by networks, timing, and a body of implicit knowledge. It remains largely accessible to those who know how to navigate its subtleties and grasp the mechanisms that drive value. Matis operates within this reality, not aiming to disrupt it, but rather to integrate seamlessly into it.",
-    media: {
-      type: "image",
-      src: "/works/matis/1.jpg",
-      aspect: "aspect-[1/1.1]",
-    },
-  },
+export const allWorks: Work[] = [
   {
     name: "Incard",
-    tag: "All",
     description:
-      "Wastetide reframes waste as untapped value.\nBuilt on the belief that nothing is truly discarded,",
-    media: {
-      type: "image",
-      src: "/works/incard/1.jpg",
-      aspect: "aspect-[1581/1799]",
-    },
+      "To celebrate the achievements of its community, Incard set out to create a trophy system that transforms key milestones into meaningful rewards turning business growth into something users can proudly earn and display.",
+    badge: "Coming soon",
+    image: "/works/incard/1.jpg",
+    aspect: "aspect-[378/300]",
   },
   {
     name: "Wastetide",
+    description:
+      "Build a brand and digital experience capable of reframing industrial waste as a source of value, translating Wastetide's AI-driven shift in perspective into a clear, credible identity.",
     href: "/works/wastetide",
-    tag: "Coming project",
-    description:
-      "Wastetide reframes waste as untapped value. Built on the belief that nothing is truly discarded, the brand positions industrial waste as a resource. A hidden asset waiting to be captured, optimized, and monetized.",
-    media: {
-      type: "image",
-      src: "/works/Wastetide/1.webp",
-      aspect: "aspect-[582/351]",
-    },
+    image: "/works/Wastetide/1.webp",
+    aspect: "aspect-[378/250]",
   },
   {
-    name: "Symbl",
-    tag: "Tools",
+    name: "Fortuneo",
     description:
-      "Test your logo before the world does.\nDesigners are already using it",
-    externalLink: "https://www.symbl.space/",
-    media: {
-      type: "image",
-      src: "/works/symbl/1.jpg",
-      aspect: "aspect-[432/324]",
-      bg: "#f5f5f5",
-    },
+      "Transform Fortuneo into a more desirable, premium brand while preserving what makes it unique: France's most affordable, always-free online bank that stays competitive yet human.",
+    href: "/works/fortuneo",
+    image: "/works/Fortuneo/release/1.webp",
+    aspect: "aspect-[387/300]",
   },
   {
-    name: "Casquette Anagram",
-    tag: "Merch",
-    price: "$30.00",
-    media: {
-      type: "image",
-      src: "/works/anagram/casquette.jpg",
-      aspect: "aspect-[1/1.45]",
-      bg: "#f5f5f5",
-    },
+    name: "Planity",
+    description:
+      "Simplify the booking experience by reducing friction and improving conversion, while evolving the product beyond a purely functional interface.",
+    href: "/works/planity",
+    image: "/works/Planity/release/1.webp",
+    aspect: "aspect-[387/300]",
   },
   {
-    name: "Omnia",
-    tag: "All",
+    name: "Amo",
     description:
-      "Position Arcads as a new standard for AI-powered advertising. The challenge was to clarify a complex and emerging offering, helping brands understand they can create high-performing ads using AI-generated talent.",
-    media: { type: "image", src: "/works/Omnia/1.jpg", aspect: "aspect-video" },
+      "Produce keys graphics elements required for the app while remaining fully aligned with the visual direction defined by the amo team.",
+    href: "/works/amo",
+    image: "/works/Amo/1.avif",
+    aspect: "aspect-[387/200]",
   },
   {
-    name: "Bitstack",
-    tag: "All",
+    name: "Founders Future",
     description:
-      "Redefine industrial automation through real-time vision-guided robotics. Inbolt enables robots to see.",
-    media: {
-      type: "image",
-      src: "/works/bitstack/1.jpg",
-      aspect: "aspect-[3/4]",
-    },
+      "Discover how we reimagined the identity of Arcads, the AI platform that turns text into high-quality video ads with virtual actors. A full rebrand blending technology, emotion, and performance.",
+    href: "/works/founders-future",
+    image: "/works/FoundersFuture/release/15.avif",
+    aspect: "aspect-[387/250]",
+  },
+  {
+    name: "Pennylane",
+    description:
+      "Pennylane, part of the French Tech 120 as one of the country's most promising startups, set out to position itself as a leading financial platform within a highly competitive ecosystem, where a complex all-in-one offering needed to feel simple and trustworthy at first glance.",
+    href: "/works/pennylane",
+    image: "/works/Pennylane/1.avif",
+    aspect: "aspect-[387/200]",
+  },
+  {
+    name: "Everyday",
+    description:
+      "Everyday is an AI-first entertainment company. They merge creativity and artificial intelligence to craft experiences people love, starting with mobile games and expanding toward the next generation of interactive entertainment.",
+    href: "/works/everyday",
+    image: "/works/Everyday/release/1.webp",
+    aspect: "aspect-[387/300]",
   },
   {
     name: "Arcads",
-    tag: "All",
     description:
-      "They help brands quickly turn text into high-quality video ads using AI actors and automation.",
-    media: {
-      type: "image",
-      src: "/works/Arcads/2.webp",
-      aspect: "aspect-[16/9]",
-    },
+      "Discover how we reimagined the identity of Arcads, the AI platform that turns text into high-quality video ads with virtual actors. A full rebrand blending technology, emotion, and performance.",
+    href: "/works/arcads",
+    image: "/works/Arcads/9.webp",
+    aspect: "aspect-[387/250]",
+  },
+  {
+    name: "Perma",
+    description:
+      "Municipal teams face daily, concrete problems, illegal dumping, nuisances, and incivility, but traditional public safety and surveillance solutions often feel heavy, costly, and disconnected from the realities of small and mid-sized towns.",
+    href: "/works/perma",
+    image: "/works/Perma/perma-work.webp",
+    aspect: "aspect-[387/300]",
+  },
+  {
+    name: "Vizzia",
+    description:
+      "Municipal teams face daily, concrete problems, illegal dumping, nuisances, and incivility, but traditional public safety and surveillance solutions often feel heavy, costly, and disconnected from the realities of small and mid-sized towns.",
+    href: "/works/vizzia",
+    image: "/works/Vizzia/1.avif",
+    aspect: "aspect-[387/250]",
+  },
+  {
+    name: "Semplice",
+    description:
+      "Present a mature product with one clear message: complete creative control, no code required.",
+    href: "/works/semplice",
+    image: "/works/Semplice/1.avif",
+    aspect: "aspect-[387/200]",
   },
 ];
 
-const FILTERS = ["All", "Merch", "News", "Coming project", "Tools"];
+export const archiveWorks: Work[] = [
+  {
+    name: "Tilt",
+    description:
+      "Tilt is the startup orchestrating energy consumption to match available supply in real time, bringing balance and resilience to an increasingly complex grid. We partnered with Tilt to create a brand identity and website capable of expressing that system: a logo built as an evolving, interconnected network of energy flows.",
+    href: "/works/tilt",
+    image: "/works/Tilt/1.avif",
+    aspect: "aspect-[387/300]",
+  },
+  {
+    name: "Politico",
+    description:
+      "Politico is renowned for the accuracy and speed of its political and institutional coverage, and needed a unified experience to support the merger of Politico.com and Politico.eu. We partnered with Politico to build a mobile-first design system and UX capable of expressing that merger: one consistent, modular experience across international markets.",
+    href: "/works/politico",
+    image: "/works/Politico/1.avif",
+    aspect: "aspect-[387/250]",
+  },
+  {
+    name: "Twin",
+    description:
+      "Twin is the wearable AI built to understand its user, an invisible and highly technical system that needed to become immediately legible. We partnered with Twin to create a brand identity and website capable of expressing that system: a logo conceived as an evolving pattern of points and blocks, evoking an interconnected network.",
+    href: "/works/twin",
+    image: "/works/Twin/1.avif",
+    aspect: "aspect-[387/300]",
+  },
+];
 
 function WorkCard({ work }: { work: Work }) {
-  if (work.tag === "Merch" && work.price) {
-    return (
-      <MerchCard name={work.name} price={work.price} src={work.media.src} />
-    );
-  }
-
-  if (work.tag === "Tools") {
-    return (
-      <ToolCard
-        name={work.name}
-        description={work.description}
-        src={work.media.src}
-        href={work.externalLink}
-        aspect={work.media.aspect}
-      />
-    );
-  }
-
-  const MediaWrapper = work.href
+  const CardWrapper = work.href
     ? ({ children }: { children: React.ReactNode }) => (
-        <Link href={work.href!}>{children}</Link>
+        <Link href={work.href!} aria-label={work.name}>
+          {children}
+        </Link>
       )
     : ({ children }: { children: React.ReactNode }) => <>{children}</>;
 
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.set(overlayRef.current, { opacity: 0 });
+  }, []);
+
+  function handleEnter() {
+    if (!work.href) return;
+    gsap.to(overlayRef.current, {
+      opacity: 0.08,
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  }
+
+  function handleLeave() {
+    if (!work.href) return;
+    gsap.to(overlayRef.current, {
+      opacity: 0,
+      duration: 0.3,
+      ease: "power2.in",
+    });
+  }
+
   return (
-    <div className="flex flex-col gap-3">
-      <MediaWrapper>
+    <div className="flex flex-col gap-2">
+      <CardWrapper>
         <div
-          className={`relative ${work.media.aspect} overflow-hidden w-full`}
-          style={{ backgroundColor: work.media.bg }}
+          className={`relative ${work.aspect} w-full overflow-hidden`}
+          onMouseEnter={handleEnter}
+          onMouseLeave={handleLeave}
         >
-          {work.media.type === "image" ? (
-            <img
-              src={work.media.src}
-              alt={work.name}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          ) : (
-            <video
-              autoPlay
-              loop
-              playsInline
-              muted
-              className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src={work.media.src} />
-            </video>
-          )}
-          {work.badge && <Badge label={work.badge} />}
+          <img
+            src={work.image}
+            alt={work.name}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div
+            ref={overlayRef}
+            className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
+          />
+          {work.badge && <Badge label={work.badge} position="top-left" />}
         </div>
-      </MediaWrapper>
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between w-full">
-          <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
-            {work.name}
-          </span>
-          {work.price && (
-            <span className="text-[#7e7e7e] leading-[1.3] text-sm">
-              {work.price}
-            </span>
-          )}
-          {work.externalLink && (
-            <a
-              href={work.externalLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#0c0c0c] leading-[0.9] text-sm"
-            >
-              Try now ↗
-            </a>
-          )}
-        </div>
-        {work.description && (
-          <p className="text-[#7e7e7e] leading-[1.3] text-sm">
-            {work.description}
-          </p>
-        )}
+      </CardWrapper>
+      <div className="flex flex-col gap-1">
+        <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
+          {work.name}
+        </span>
+        <p className="text-[#7c7c7c] leading-[1.2] text-sm">
+          {work.description}
+        </p>
       </div>
     </div>
   );
 }
 
-export default function WorksGrid() {
-  const [activeFilter, setActiveFilter] = useState("All");
-
-  const filtered =
-    activeFilter === "All"
-      ? works
-      : works.filter((w) => w.tag === activeFilter);
-
+export default function WorksGrid({ works }: { works: Work[] }) {
   return (
-    <div className="flex flex-col gap-4">
-      {/* Filters — pills on desktop, dropdown on tablet/mobile */}
-      <div className="flex items-center gap-4">
-        <span className="text-[#7e7e7e] text-base leading-[0.8]">Filters</span>
-
-        {/* Desktop pills */}
-        <div className="hidden md:flex flex-wrap gap-2">
-          {FILTERS.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className={`px-4 py-4 rounded-full text-sm leading-[0.8] cursor-pointer transition-colors ${
-                activeFilter === filter
-                  ? "bg-[#0c0c0c] text-white"
-                  : "bg-[#f5f5f5] text-[#7C7C7C]"
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
-
-        {/* Tablet/mobile dropdown */}
-        <select
-          value={activeFilter}
-          onChange={(e) => setActiveFilter(e.target.value)}
-          className="md:hidden px-4 py-3 rounded-full text-sm bg-[#f5f5f5] text-[#0c0c0c] cursor-pointer border-none outline-none appearance-none pr-8"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%230c0c0c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "right 0.75rem center",
-          }}
-        >
-          {FILTERS.map((filter) => (
-            <option key={filter} value={filter}>
-              {filter}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-start">
-        {filtered.slice(0, 4).map((work) => (
-          <WorkCard key={work.name} work={work} />
-        ))}
-        {filtered.length > 4 && (
-          <div className="col-span-1 md:col-span-4 overflow-hidden aspect-video my-8">
-            <video
-              loop
-              autoPlay
-              playsInline
-              muted
-              className="w-full h-full object-cover"
-            >
-              <source src="/home/videos/wastetide.mp4" />
-            </video>
-          </div>
-        )}
-        {filtered.slice(4).map((work) => (
-          <WorkCard key={work.name} work={work} />
-        ))}
-      </div>
+    <div
+      id="works-grid"
+      className="grid grid-cols-1 md:grid-cols-3 min-[90rem]:grid-cols-4 gap-4"
+    >
+      {works.map((work) => (
+        <WorkCard key={work.name} work={work} />
+      ))}
     </div>
   );
 }

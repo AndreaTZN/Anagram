@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import WorksGrid from "@/components/WorksGrid";
+import WorksPageClient from "./WorksPageClient";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -20,9 +20,7 @@ export const metadata: Metadata = {
 export default function WorksPage() {
   return (
     <main className=" flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12">
-      <section>
-        <WorksGrid />
-      </section>
+      <WorksPageClient />
       <Footer />
     </main>
   );
