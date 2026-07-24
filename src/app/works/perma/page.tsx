@@ -14,7 +14,7 @@ import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
 import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Perma Branding | Brand Identity for Social Photo App | anagram",
+  title: "Perma Branding | Brand Identity for Social Photo App",
   description:
     "anagram created the logo and brand identity for Perma, the photo sharing app built around community and exchange. Consumer brand design by anagram Paris.",
   openGraph: { images: ["/opengraph.webp"] },

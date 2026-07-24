@@ -14,7 +14,7 @@ import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
   title:
-    "Tilt Branding | Brand Identity for Cleantech Energy Startup | anagram",
+    "Tilt Branding | Brand Identity for Cleantech Energy Startup",
   description:
     "anagram created the brand identity for Tilt, a startup orchestrating real-time energy flow optimization. Logo, brand design and website for a cleantech deeptech",
   openGraph: { images: ["/opengraph.webp"] },

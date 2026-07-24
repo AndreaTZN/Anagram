@@ -12,7 +12,7 @@ import TeamCredits from "@/components/cases-frame/TeamCredits";
 import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Everyday Branding | Brand Identity for AI Game Studio | anagram",
+  title: "Everyday Branding | Brand Identity for AI Game Studio",
   description:
     "anagram created the brand identity for Everyday, an AI-powered mobile game studio. Brand strategy, sun logo, and design system for daily engagement gaming.",
   openGraph: { images: ["/opengraph.webp"] },

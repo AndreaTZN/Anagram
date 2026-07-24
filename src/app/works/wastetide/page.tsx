@@ -15,7 +15,7 @@ import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
   title:
-    "Wastetide | Brand Identity for Industrial Waste Intelligence | anagram",
+    "Wastetide | Brand Identity for Industrial Waste Intelligence",
   description:
     "anagram built the full brand and digital experience for Wastetide, an AI platform turning industrial waste into measurable financial value. Identity, strategy, and concept.",
   openGraph: { images: ["/opengraph.webp"] },

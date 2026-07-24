@@ -12,7 +12,7 @@ import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
 import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Inbolt Branding | Brand Identity for AI Robotics Startup | anagram",
+  title: "Inbolt Branding | Brand Identity for AI Robotics Startup",
   description:
     "anagram created the branding and website for Inbolt, pioneer of 3D vision-guided industrial robotics. Accessible deeptech B2B brand design.",
   openGraph: { images: ["/opengraph.webp"] },

@@ -11,7 +11,7 @@ import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
 import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Politico.eu Redesign | Design System & UX for Media | anagram",
+  title: "Politico.eu Redesign | Design System & UX for Media",
   description:
     "anagram redesigned the UX and design system for Politico.eu to support the .com/.eu merger. Result: improved UX, better discoverability, and significant traffic gains.",
   openGraph: { images: ["/opengraph.webp"] },

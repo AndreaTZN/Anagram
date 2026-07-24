@@ -13,7 +13,7 @@ import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
 import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Arcads Branding | Brand Identity for AI Video Ad Platform | anagram",
+  title: "Arcads Branding | Brand Identity for AI Video Ad Platform",
   description:
     "anagram created the branding for Arcads, the platform generating high-quality AI video ads. Brand design and logo for an adtech SaaS startup.",
   openGraph: { images: ["/opengraph.webp"] },

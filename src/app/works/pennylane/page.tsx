@@ -12,7 +12,7 @@ import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
 import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Pennylane Branding | Fintech Visual Identity Redesign | anagram",
+  title: "Pennylane Branding | Fintech Visual Identity Redesign",
   description:
     "anagram redesigned Pennylane's website: -13.5pt bounce rate, +15% conversion. Brand design and UX for the French Tech 120 accounting software.",
   openGraph: { images: ["/opengraph.webp"] },

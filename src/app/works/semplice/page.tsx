@@ -11,7 +11,7 @@ import ProjectInfoFaq from "@/components/cases-frame/ProjectInfoFaq";
 import Faq from "@/components/cases-frame/Faq";
 
 export const metadata: Metadata = {
-  title: "Semplice Branding | Brand Identity & Website for SaaS | anagram",
+  title: "Semplice Branding | Brand Identity & Website for SaaS",
   description:
     "anagram created the brand identity and website for Semplice. Brand design for a SaaS startup by the Paris branding agency specializing in tech scale-ups.",
   openGraph: { images: ["/opengraph.webp"] },
