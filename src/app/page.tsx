@@ -24,12 +24,14 @@ export const metadata: Metadata = {
     siteName: "Anagram Club",
     locale: "fr_FR",
     type: "website",
+    images: ["/opengraph.webp"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Anagram Club — Shaping brands that need no introduction",
     description:
       "Anagram Club shapes market-defining brands through bold branding, product design, and a sharp creative process. Built for companies that want to stand out.",
+    images: ["/opengraph.webp"],
   },
   robots: {
     index: true,

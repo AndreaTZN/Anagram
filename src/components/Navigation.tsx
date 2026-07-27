@@ -118,9 +118,9 @@ export default function Navigation() {
         <div className="flex flex-col gap-8">
           {/* CTA card */}
           <div className="flex flex-col gap-6">
-            <p className="text-[#0c0c0c] leading-[1.1] text-xl tracking-[-0.12px]">
+            <h1 className="text-[#0c0c0c] leading-[1.1] text-xl tracking-[-0.12px]">
               We shape brands that need no introduction.
-            </p>
+            </h1>
 
             <a
               href="mailto:hello@anagram.club"
