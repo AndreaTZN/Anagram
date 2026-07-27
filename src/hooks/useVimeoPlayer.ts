@@ -14,6 +14,15 @@ function enqueueInjection(fn: () => Promise<void>): Promise<void> {
   return injectionQueue;
 }
 
+// Debounced ScrollTrigger.refresh() — batches refreshes from multiple videos
+// injecting in quick succession into a single layout recalculation, instead
+// of one expensive refresh per video (which caused scroll jank on Safari).
+let refreshTimeout: ReturnType<typeof setTimeout> | null = null;
+function scheduleRefresh() {
+  if (refreshTimeout) clearTimeout(refreshTimeout);
+  refreshTimeout = setTimeout(() => ScrollTrigger.refresh(), 200);
+}
+
 // SDK singleton — loaded once across all instances
 let sdkPromise: Promise<void> | null = null;
 function loadVimeoSDK(): Promise<void> {
@@ -137,7 +146,7 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
         onLeaveBack: () => player?.pause().catch(() => {}),
       });
 
-      ScrollTrigger.refresh();
+      scheduleRefresh();
 
       // On ready: play if already in viewport, pause otherwise
       player.ready().then(() => {

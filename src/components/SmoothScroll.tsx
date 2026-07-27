@@ -9,6 +9,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// TEMP EXPERIMENT: desktop Safari only. Confirmed disabling Lenis entirely
+// fixes the scroll jank around Vimeo videos — now trying to keep Lenis wired
+// while fixing the jank, before falling back to removing it on this browser.
+function isDesktopSafari() {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent;
+  return /^((?!chrome|android|crios|fxios|mobile).)*safari/i.test(ua);
+}
+
 export default function SmoothScroll({
   children,
 }: {
@@ -25,12 +34,18 @@ export default function SmoothScroll({
     const content = contentRef.current;
     if (!wrapper || !content) return;
 
+    // Trial 1: keep Lenis wired (API, ScrollTrigger sync) but stop it from
+    // JS-driving wheel scroll on desktop Safari — native wheel scroll takes
+    // over instead, Lenis picks it back up via onNativeScroll.
+    const safariTrial = isDesktopSafari();
+
     const lenis = new Lenis({
       wrapper,
       content,
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       prevent: () => scrollLockRef.current,
+      ...(safariTrial ? { smoothWheel: false } : {}),
     });
     lenisRef.current = lenis;
     globalLenisRef.current = lenis;
