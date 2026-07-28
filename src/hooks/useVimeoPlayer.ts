@@ -66,9 +66,10 @@ type Options = {
   embedRef: RefObject<HTMLDivElement | null>;
   dataSrc: string;
   dataRatio?: string;
+  title?: string;
 };
 
-export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
+export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title }: Options) {
   const playerRef = useRef<any>(null);
 
   useEffect(() => {
@@ -105,6 +106,7 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio }: Options) {
       iframe.src = `https://player.vimeo.com/video/${dataSrc}?muted=1&autopause=0&controls=0&loop=1&background=1&quality=${quality}`;
       iframe.setAttribute("frameborder", "0");
       iframe.setAttribute("allow", "autoplay; fullscreen; picture-in-picture; encrypted-media");
+      iframe.setAttribute("title", title || "Vimeo video player");
       iframe.style.cssText = "position:absolute; top:0; left:0; width:100%; height:100%;";
 
       wrapper.appendChild(iframe);

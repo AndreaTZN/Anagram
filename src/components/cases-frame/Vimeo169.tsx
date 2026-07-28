@@ -15,7 +15,7 @@ type Props = {
 export default function Vimeo169({ dataSrc, dataRatio, src, alt = "", priority = false }: Props) {
   const embedRef = useRef<HTMLDivElement>(null);
 
-  useVimeoPlayer({ embedRef, dataSrc, dataRatio });
+  useVimeoPlayer({ embedRef, dataSrc, dataRatio, title: alt });
 
   return (
     <div className="framevideo16-9_component overflow-hidden">

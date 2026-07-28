@@ -21,7 +21,7 @@ export default function VimeoSound({ dataSrc, dataRatio, src, alt = "", priority
   const barRefs = useRef<(HTMLDivElement | null)[]>([]);
   const tweensRef = useRef<gsap.core.Tween[]>([]);
 
-  const { playerRef } = useVimeoPlayer({ embedRef, dataSrc, dataRatio });
+  const { playerRef } = useVimeoPlayer({ embedRef, dataSrc, dataRatio, title: alt });
 
   useLayoutEffect(() => {
     barRefs.current.forEach((bar) => {

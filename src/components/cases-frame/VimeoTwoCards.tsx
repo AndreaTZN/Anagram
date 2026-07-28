@@ -20,8 +20,8 @@ export default function VimeoTwoCards({ card1, card2 }: Props) {
   const embedRef1 = useRef<HTMLDivElement>(null);
   const embedRef2 = useRef<HTMLDivElement>(null);
 
-  useVimeoPlayer({ embedRef: embedRef1, dataSrc: card1.dataSrc, dataRatio: card1.dataRatio });
-  useVimeoPlayer({ embedRef: embedRef2, dataSrc: card2.dataSrc, dataRatio: card2.dataRatio });
+  useVimeoPlayer({ embedRef: embedRef1, dataSrc: card1.dataSrc, dataRatio: card1.dataRatio, title: card1.alt });
+  useVimeoPlayer({ embedRef: embedRef2, dataSrc: card2.dataSrc, dataRatio: card2.dataRatio, title: card2.alt });
 
   return (
     <div className="video-vimeo-two_component">

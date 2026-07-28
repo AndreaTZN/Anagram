@@ -90,7 +90,7 @@ export default function TiltCasePage() {
               <SplitTextImage
                 title="Logo"
                 description={`A Flexible Visual Identity\nThe dotted and block pattern evokes an interconnected network, representing the management and optimization of electricity flows.\nThe icon is designed as an evolving system: its structure allows it to adapt and be used across various applications and media.`}
-                imageSrc="/works/tilt/3.avif"
+                imageSrc="/works/Tilt/3.avif"
                 bgColor="#fff"
                 imageFit="contain"
               />

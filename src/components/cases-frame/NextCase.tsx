@@ -39,6 +39,7 @@ export default function NextCase({ projectName, href, media }: Props) {
     embedRef,
     dataSrc: media.type === "vimeo" ? media.dataSrc : "",
     dataRatio: media.type === "vimeo" ? media.dataRatio : undefined,
+    title: projectName,
   });
 
   useLayoutEffect(() => {

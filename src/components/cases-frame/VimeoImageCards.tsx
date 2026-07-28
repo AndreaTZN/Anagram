@@ -21,7 +21,7 @@ type Props = {
 export default function VimeoImageCards({ video, image, imagePosition = "right" }: Props) {
   const embedRef = useRef<HTMLDivElement>(null);
 
-  useVimeoPlayer({ embedRef, dataSrc: video.dataSrc, dataRatio: video.dataRatio });
+  useVimeoPlayer({ embedRef, dataSrc: video.dataSrc, dataRatio: video.dataRatio, title: video.alt });
 
   return (
     <div className="vimeo-image-cards_component">

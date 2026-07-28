@@ -24,6 +24,7 @@ export default function VimeoTextImage({
     embedRef,
     dataSrc: video.dataSrc,
     dataRatio: video.dataRatio,
+    title,
   });
 
   const vl = layout === "video-left";
