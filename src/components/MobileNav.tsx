@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { globalLenisRef } from "@/lib/lenis";
+import { scrollLockRef } from "@/lib/lenis";
 import { navWorks } from "@/lib/nav-works";
 
 gsap.registerPlugin(useGSAP);
@@ -73,12 +73,12 @@ export default function MobileNav() {
     if (!open) {
       resetMenuScroll();
       tl.current.play();
-      globalLenisRef.current?.stop();
+      scrollLockRef.current = true;
       lockBody(true);
       playVideos();
     } else {
       tl.current.reverse();
-      globalLenisRef.current?.start();
+      scrollLockRef.current = false;
       lockBody(false);
       resetVideos();
     }
@@ -88,7 +88,7 @@ export default function MobileNav() {
   function close() {
     if (!open) return;
     tl.current?.reverse();
-    globalLenisRef.current?.start();
+    scrollLockRef.current = false;
     lockBody(false);
     resetVideos();
     setOpen(false);
