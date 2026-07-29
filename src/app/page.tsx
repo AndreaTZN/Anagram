@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Vimeo169 from "@/components/cases-frame/Vimeo169";
 import WidgetPanel from "@/components/widgets/WidgetPanel";
 import HomeContain from "@/components/HomeContain";
 import Footer from "@/components/Footer";
@@ -44,18 +44,13 @@ export default async function HomePage() {
 
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12">
-      <section
-        className="relative bg-[#a6f1e4] w-full overflow-hidden"
-        style={{ aspectRatio: "16 / 9" }}
-      >
-        <Image
-          src="/home/hero.jpg"
-          alt="Anagram Club — Hero"
-          fill
-          priority
-          className="object-cover"
-        />
-      </section>
+      <Vimeo169
+        src="/home/poster-hero.webp"
+        alt="Anagram Club — Hero"
+        dataSrc="1213947103"
+        dataRatio="16/9"
+        priority
+      />
       <div className="hidden md:block">
         <WidgetPanel openRoles={openRoles} />
       </div>
