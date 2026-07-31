@@ -25,7 +25,7 @@ export default function PageTheme({ children }: { children: React.ReactNode }) {
   }, [activeTab]);
 
   return (
-    <div id="page-theme" ref={ref} className="flex flex-1 overflow-hidden h-screen bg-white">
+    <div id="page-theme" ref={ref} className="flex flex-1 overflow-hidden h-dvh bg-white">
       {children}
     </div>
   );

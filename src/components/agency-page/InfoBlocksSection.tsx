@@ -30,7 +30,7 @@ export default function InfoBlocksSection({
           {intro}
         </p>
       )}
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 pl-8 max-[766px]:pl-0">
         {blocks.map((block) => (
           <div
             key={block.id}

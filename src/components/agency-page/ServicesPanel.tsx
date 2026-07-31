@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import SectionHeader from "./SectionHeader";
 
 gsap.registerPlugin(useGSAP);
 
@@ -164,31 +165,47 @@ export default function ServicesPanel({
       id={idPrefix}
       className="sticky top-4 flex flex-col gap-8 self-start max-[992px]:static"
     >
-      <div className="flex flex-col gap-4">
-        <div className="flex items-baseline justify-between gap-6">
-          <span className="text-[#7e7e7e] text-sm leading-[0.9] shrink-0">
-            {eyebrow}
-          </span>
-          <h2 className="text-[#0c0c0c] text-xl leading-[1.1] tracking-[-0.02em] text-right">
-            {heading}
-          </h2>
-        </div>
+      <div className="flex flex-col gap-2">
+        <SectionHeader eyebrow={eyebrow} heading={heading} />
+
         {subtitle && (
-          <p className="text-[#7e7e7e] text-sm leading-[1.4] text-right">
-            {subtitle}
-          </p>
+          <p className="text-[#7e7e7e] text-sm leading-[1.4]">{subtitle}</p>
         )}
       </div>
 
-      {useAccordion ? (
-        <>
-          <div className="max-[992px]:hidden">
-            <ServicesAccordion idPrefix={idPrefix} items={items} />
-          </div>
-          <div className="hidden max-[992px]:flex max-[992px]:flex-col">
+      <div className="flex flex-col gap-8 pl-8 max-[766px]:pl-0">
+        {useAccordion ? (
+          <>
+            <div className="max-[992px]:hidden">
+              <ServicesAccordion idPrefix={idPrefix} items={items} />
+            </div>
+            <div className="hidden max-[992px]:flex max-[992px]:flex-col">
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex flex-col gap-2 py-4 border-t border-[#0c0c0c]/10 first:border-t-0"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <h3 className="text-[#0c0c0c] text-sm font-medium leading-[1.1]">
+                      {item.name}
+                    </h3>
+                    <span className="text-[#7e7e7e] text-xs leading-[1.1] shrink-0">
+                      {item.tag}
+                    </span>
+                  </div>
+                  <p className="text-[#7e7e7e] text-sm leading-[1.4]">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col">
             {items.map((item) => (
               <div
                 key={item.id}
+                id={`${idPrefix}-${item.id}`}
                 className="flex flex-col gap-2 py-4 border-t border-[#0c0c0c]/10 first:border-t-0"
               >
                 <div className="flex items-center justify-between gap-4">
@@ -205,30 +222,8 @@ export default function ServicesPanel({
               </div>
             ))}
           </div>
-        </>
-      ) : (
-        <div className="flex flex-col">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              id={`${idPrefix}-${item.id}`}
-              className="flex flex-col gap-2 py-4 border-t border-[#0c0c0c]/10 first:border-t-0"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <h3 className="text-[#0c0c0c] text-sm font-medium leading-[1.1]">
-                  {item.name}
-                </h3>
-                <span className="text-[#7e7e7e] text-xs leading-[1.1] shrink-0">
-                  {item.tag}
-                </span>
-              </div>
-              <p className="text-[#7e7e7e] text-sm leading-[1.4]">
-                {item.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+        )}
+      </div>
     </aside>
   );
 }

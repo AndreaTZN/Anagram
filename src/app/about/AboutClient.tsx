@@ -10,7 +10,7 @@ import "swiper/css/effect-fade";
 import AnalogClock from "@/components/AnalogClock";
 import ClockLabel from "@/components/ClockLabel";
 import Footer from "@/components/Footer";
-import ShirtRotation from "@/components/ShirtRotation";
+import ArpeRotation from "@/components/ArpeRotation";
 import OpenRoles, { type OpenRole } from "@/components/OpenRoles";
 
 const studioImages = ["/studio/1.webp", "/studio/2.webp", "/studio/3.webp"];
@@ -282,7 +282,7 @@ export default function AboutPage({
           {/* Hero image */}
           <div
             id="about-hero"
-            className="col-span-8 relative bg-[#f4f4f4] overflow-hidden aspect-800/500 max-[766px]:order-2 max-[766px]:aspect-square max-[766px]:rounded"
+            className="col-span-8 relative bg-[#f4f4f4] overflow-hidden aspect-800/490 max-[766px]:order-2 max-[766px]:aspect-square max-[766px]:rounded"
           >
             <Swiper
               loop
@@ -333,7 +333,7 @@ export default function AboutPage({
             className="col-span-4 relative bg-[#f4f4f4] overflow-hidden flex justify-center items-start max-[766px]:order-14 max-[766px]:flex-col max-[766px]:items-center max-[766px]:rounded"
           >
             <div className="w-full h-full max-[766px]:h-auto max-[766px]:aspect-square">
-              <ShirtRotation />
+              <ArpeRotation />
             </div>
             <div className="absolute bottom-8 left-4 right-4 flex gap-2 max-[766px]:static max-[766px]:w-full max-[766px]:px-4 max-[766px]:pb-4">
               <div className="flex flex-1 items-center justify-between px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">

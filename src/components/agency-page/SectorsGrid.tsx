@@ -23,14 +23,14 @@ export default function SectorsGrid({
   return (
     <section id={idPrefix} className="flex flex-col gap-8">
       <SectionHeader eyebrow={eyebrow} heading={heading} />
-      <div className="flex flex-col">
+      <div className="flex flex-col pl-8 max-[766px]:pl-0">
         {items.map((item) => {
           const Title = item.href ? "a" : "span";
           return (
             <div
               key={item.id}
               id={`${idPrefix}-${item.id}`}
-              className="flex flex-col gap-2 py-6 border-t border-[#0c0c0c]/10 first:border-t-0"
+              className="flex flex-col gap-2 py-6 border-t border-[#0c0c0c]/10 first:border-t-0 first:pt-0"
             >
               <h3 className="text-[#0c0c0c] text-base leading-[1.1] w-fit">
                 <Title

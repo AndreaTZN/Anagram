@@ -177,7 +177,7 @@ export default function AgencyPageTemplate({
 
       <div
         id={`${idPrefix}-intro`}
-        className="grid grid-cols-[1fr_auto_1fr] gap-16 max-[992px]:grid-cols-1 max-[992px]:gap-12"
+        className="grid grid-cols-[1fr_auto_1fr] gap-10 max-[992px]:grid-cols-1 max-[992px]:gap-12"
       >
         <div className="flex flex-col gap-16">
           {[
@@ -218,61 +218,63 @@ export default function AgencyPageTemplate({
                     {results.intro}
                   </p>
                 )}
-                {results.stats.length > 0 && (
-                  <StatsRow
-                    idPrefix={`${idPrefix}-results-stats`}
-                    stats={results.stats}
-                  />
-                )}
-                <div className="flex flex-col gap-10">
-                  {results.cases.map((item) => (
-                    <CaseHighlightCard
-                      key={item.id}
-                      idPrefix={`${idPrefix}-results-case-${item.id}`}
-                      image={item.image}
-                      title={item.title}
-                      industry={item.industry}
-                      description={item.description}
-                      metrics={item.metrics}
+                <div className="flex flex-col gap-6 pl-8 max-[766px]:pl-0">
+                  {results.stats.length > 0 && (
+                    <StatsRow
+                      idPrefix={`${idPrefix}-results-stats`}
+                      stats={results.stats}
                     />
-                  ))}
-                </div>
-                {results.note && (
-                  <div
-                    id={`${idPrefix}-results-note`}
-                    className="flex flex-col gap-4"
-                  >
-                    <div className="flex flex-col gap-2">
-                      <h3 className="text-[#0c0c0c] text-xl leading-[1.1] tracking-[-0.01em]">
-                        {results.note.title}
-                      </h3>
-                      <p className="text-[#7e7e7e] text-sm leading-[1.4]">
-                        {results.note.description}
-                      </p>
-                    </div>
-                    {results.note.columns && (
-                      <div
-                        className="grid gap-4 max-[766px]:grid-cols-2"
-                        style={{
-                          gridTemplateColumns: `repeat(${results.note.columns.length}, 1fr)`,
-                        }}
-                      >
-                        {results.note.columns.map((column, i) => (
-                          <div key={i} className="flex flex-col gap-3">
-                            {column.map((name, j) => (
-                              <span
-                                key={`${name}-${j}`}
-                                className="text-[#7e7e7e] text-sm leading-[1.3]"
-                              >
-                                {name}
-                              </span>
-                            ))}
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                  )}
+                  <div className="flex flex-col gap-10">
+                    {results.cases.map((item) => (
+                      <CaseHighlightCard
+                        key={item.id}
+                        idPrefix={`${idPrefix}-results-case-${item.id}`}
+                        image={item.image}
+                        title={item.title}
+                        industry={item.industry}
+                        description={item.description}
+                        metrics={item.metrics}
+                      />
+                    ))}
                   </div>
-                )}
+                  {results.note && (
+                    <div
+                      id={`${idPrefix}-results-note`}
+                      className="flex flex-col gap-4"
+                    >
+                      <div className="flex flex-col gap-2">
+                        <h3 className="text-[#0c0c0c] text-xl leading-[1.1] tracking-[-0.01em]">
+                          {results.note.title}
+                        </h3>
+                        <p className="text-[#7e7e7e] text-sm leading-[1.4]">
+                          {results.note.description}
+                        </p>
+                      </div>
+                      {results.note.columns && (
+                        <div
+                          className="grid gap-4 max-[766px]:grid-cols-2"
+                          style={{
+                            gridTemplateColumns: `repeat(${results.note.columns.length}, 1fr)`,
+                          }}
+                        >
+                          {results.note.columns.map((column, i) => (
+                            <div key={i} className="flex flex-col gap-3">
+                              {column.map((name, j) => (
+                                <span
+                                  key={`${name}-${j}`}
+                                  className="text-[#7e7e7e] text-sm leading-[1.3]"
+                                >
+                                  {name}
+                                </span>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </section>
             ),
 
