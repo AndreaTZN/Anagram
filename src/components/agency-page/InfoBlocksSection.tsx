@@ -23,10 +23,10 @@ export default function InfoBlocksSection({
   blocks,
 }: Props) {
   return (
-    <section id={idPrefix} className="flex flex-col gap-8">
+    <section id={idPrefix} className="flex flex-col gap-4">
       <SectionHeader eyebrow={eyebrow} heading={heading} />
       {intro && (
-        <p className="text-[#7e7e7e] text-sm leading-[1.4] max-w-xl">
+        <p className="text-[#7e7e7e] text-sm leading-[1.4] max-w-xl pl-8 max-[766px]:pl-0">
           {intro}
         </p>
       )}

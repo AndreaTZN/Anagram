@@ -207,14 +207,14 @@ export default function AgencyPageTemplate({
               <section
                 key="results"
                 id={`${idPrefix}-results`}
-                className="flex flex-col gap-8"
+                className="flex flex-col gap-4"
               >
                 <SectionHeader
                   eyebrow={results.eyebrow}
                   heading={results.heading}
                 />
                 {results.intro && (
-                  <p className="text-[#7e7e7e] text-sm leading-[1.4] max-w-xl">
+                  <p className="text-[#7e7e7e] text-sm leading-[1.4] max-w-xl pl-8 max-[766px]:pl-0">
                     {results.intro}
                   </p>
                 )}

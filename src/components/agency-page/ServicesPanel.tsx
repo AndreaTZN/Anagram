@@ -169,7 +169,9 @@ export default function ServicesPanel({
         <SectionHeader eyebrow={eyebrow} heading={heading} />
 
         {subtitle && (
-          <p className="text-[#7e7e7e] text-sm leading-[1.4]">{subtitle}</p>
+          <p className="text-[#7e7e7e] text-sm leading-[1.4] pl-8 max-[766px]:pl-0">
+            {subtitle}
+          </p>
         )}
       </div>
 
