@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import WorksGrid, { allWorks, archiveWorks } from "@/components/WorksGrid";
+import WorksArchiveList from "@/components/WorksArchiveList";
 
 gsap.registerPlugin(useGSAP);
 
@@ -73,7 +74,11 @@ export default function WorksPageClient() {
       </section>
       <section>
         <div ref={gridRef}>
-          <WorksGrid works={activeTab === "all" ? allWorks : archiveWorks} />
+          <WorksGrid
+            works={activeTab === "all" ? allWorks : archiveWorks}
+            maxThreeColumns={activeTab === "archives"}
+          />
+          {activeTab === "archives" && <WorksArchiveList />}
         </div>
       </section>
     </>

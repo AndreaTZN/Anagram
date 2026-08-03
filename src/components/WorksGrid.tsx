@@ -144,7 +144,7 @@ export const archiveWorks: Work[] = [
     description:
       "Twin is the wearable AI built to understand its user, an invisible and highly technical system that needed to become immediately legible. We partnered with Twin to create a brand identity and website capable of expressing that system: a logo conceived as an evolving pattern of points and blocks, evoking an interconnected network.",
     href: "/works/twin",
-    image: "/works/Twin/1.avif",
+    image: "/works/twin/1.avif",
     aspect: "aspect-[387/300]",
   },
 ];
@@ -227,11 +227,17 @@ function WorkCard({ work }: { work: Work }) {
   );
 }
 
-export default function WorksGrid({ works }: { works: Work[] }) {
+export default function WorksGrid({
+  works,
+  maxThreeColumns = false,
+}: {
+  works: Work[];
+  maxThreeColumns?: boolean;
+}) {
   return (
     <div
       id="works-grid"
-      className="grid grid-cols-1 md:grid-cols-3 min-[90rem]:grid-cols-4 gap-4"
+      className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${maxThreeColumns ? "" : "min-[90rem]:grid-cols-4"}`}
     >
       {works.map((work) => (
         <WorkCard key={work.name} work={work} />
