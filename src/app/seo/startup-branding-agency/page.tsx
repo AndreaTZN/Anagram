@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import AgencyPageTemplate from "@/components/agency-page/AgencyPageTemplate";
 
 export const metadata: Metadata = {
-  title: "Startup Branding Agency — Anagram Studio",
+  title: "Startup Branding Agency: Anagram Studio",
   description:
-    "Anagram builds startup brands that are built to last — from zero-to-one identity to scalable design systems. Strategy, design, motion, and web under one roof",
+    "Anagram builds startup brands that are built to last: from zero-to-one identity to scalable design systems. Strategy, design, motion, and web under one roof",
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
@@ -14,12 +14,12 @@ export default function StartupBrandingAgencyPage() {
     <AgencyPageTemplate
       idPrefix="startup-branding-agency"
       title="Startup Branding Agency for Companies Ready to Make Their Mark"
-      description="Anagram is a startup branding agency that builds brands from the ground up — combining brand strategy, visual identity, design systems, motion, and web development into one unified creative system from day one. Since 2020, we've partnered with ambitious startups across tech, fintech, SaaS, and consumer industries to create brands designed not only to launch, but to scale. From early-stage companies to category leaders, we've shaped more than 50 brands built to grow into names people recognize instantly. Brands that need no introduction."
+      description="Anagram is a startup branding agency that builds brands from the ground up, combining brand strategy, visual identity, design systems, motion, and web development into one unified creative system from day one. Since 2020, we've partnered with ambitious startups across tech, fintech, SaaS, and consumer industries to create brands designed not only to launch, but to scale. From early-stage companies to category leaders, we've shaped more than 50 brands built to grow into names people recognize instantly. Brands that need no introduction."
       vision={{
         eyebrow: "Approach",
         heading: "The Anagram Approach to Startup Branding",
         intro:
-          "Great startup brands are not built overnight. They are designed with the future in mind from the very beginning. At Anagram, branding starts with strategy rather than aesthetics — defining positioning, audience, and differentiation before moving into visual execution. The goal is not to create something temporarily attractive, but to build a scalable identity system capable of supporting long-term growth across products, markets, and communication channels.",
+          "Great startup brands are not built overnight. They are designed with the future in mind from the very beginning. At Anagram, branding starts with strategy rather than aesthetics, defining positioning, audience, and differentiation before moving into visual execution. The goal is not to create something temporarily attractive, but to build a scalable identity system capable of supporting long-term growth across products, markets, and communication channels.",
         blocks: [
           {
             id: "strategy-before-design",
@@ -31,7 +31,7 @@ export default function StartupBrandingAgencyPage() {
             id: "identity-systems-built-to-scale",
             title: "Identity Systems Built to Scale",
             description:
-              "We build scalable identity systems — logo, typography, color palette, iconography, and design systems — designed to work equally well at seed stage and Series B. Documentation and usage guidelines ensure internal teams can deploy the identity consistently without relying on the studio for every implementation.",
+              "We build scalable identity systems, logo, typography, color palette, iconography, and design systems, designed to work equally well at seed stage and Series B. Documentation and usage guidelines ensure internal teams can deploy the identity consistently without relying on the studio for every implementation.",
           },
           {
             id: "speed-without-compromising-craft",
@@ -45,49 +45,49 @@ export default function StartupBrandingAgencyPage() {
         eyebrow: "Services",
         heading: "Startup Branding Services",
         subtitle:
-          "From early-stage positioning to scalable digital experiences, Anagram delivers comprehensive branding services for startups under one roof — strategy, identity, motion, content, and web development built as one cohesive system from day one.",
+          "From early-stage positioning to scalable digital experiences, Anagram delivers comprehensive branding services for startups under one roof: strategy, identity, motion, content, and web development built as one cohesive system from day one.",
         items: [
           {
             id: "brand-strategy-positioning",
             name: "Brand Strategy and Positioning",
             tag: "Foundation",
             description:
-              "Market positioning, messaging platforms, competitive analysis, brand architecture, and tone of voice — strategic foundations designed to help startups launch with clarity and differentiate themselves within crowded markets.",
+              "Market positioning, messaging platforms, competitive analysis, brand architecture, and tone of voice: strategic foundations designed to help startups launch with clarity and differentiate themselves within crowded markets.",
           },
           {
             id: "visual-identity-design-system",
             name: "Visual Identity and Design System",
             tag: "Core",
             description:
-              "Logo design, typography, color systems, iconography, illustration, and scalable design systems — identities built to support growth from launch phase through future expansion.",
+              "Logo design, typography, color systems, iconography, illustration, and scalable design systems: identities built to support growth from launch phase through future expansion.",
           },
           {
             id: "product-design-digital-experience",
             name: "Product Design and Digital Experience",
             tag: "Digital",
             description:
-              "UI/UX systems, onboarding flows, dashboards, and product interfaces — connecting the brand identity directly to the digital experience and making the product itself part of the brand.",
+              "UI/UX systems, onboarding flows, dashboards, and product interfaces, connecting the brand identity directly to the digital experience and making the product itself part of the brand.",
           },
           {
             id: "motion-design-brand-assets",
             name: "Motion Design and Brand Assets",
             tag: "Alive",
             description:
-              "Animated logos, motion systems, launch visuals, social assets, brand films, and digital content — transforming static identities into dynamic brand experiences adapted for modern platforms.",
+              "Animated logos, motion systems, launch visuals, social assets, brand films, and digital content, transforming static identities into dynamic brand experiences adapted for modern platforms.",
           },
           {
             id: "photography-art-direction",
             name: "Photography and Art Direction",
             tag: "Visual",
             description:
-              "Lifestyle photography, studio shoots, casting, styling, and visual direction — building a recognizable visual world around the startup and giving the brand a strong human presence.",
+              "Lifestyle photography, studio shoots, casting, styling, and visual direction, building a recognizable visual world around the startup and giving the brand a strong human presence.",
           },
           {
             id: "website-design-development",
             name: "Website Design and Development",
             tag: "Platform",
             description:
-              "Custom web design, front-end and back-end development, UX/UI design, and performance optimization — websites built to reflect the startup's positioning while supporting conversion and long-term scalability.",
+              "Custom web design, front-end and back-end development, UX/UI design, and performance optimization, websites built to reflect the startup's positioning while supporting conversion and long-term scalability.",
           },
         ],
       }}
@@ -178,7 +178,7 @@ export default function StartupBrandingAgencyPage() {
             id: "fintech-financial-services",
             name: "Fintech and Financial Services",
             description:
-              "Financial brands require trust, modernity, and accessibility simultaneously — one of the most demanding branding challenges for startups today.",
+              "Financial brands require trust, modernity, and accessibility simultaneously, one of the most demanding branding challenges for startups today.",
           },
           {
             id: "consumer-d2c",
@@ -220,7 +220,7 @@ export default function StartupBrandingAgencyPage() {
             id: "evolve",
             title: "Evolve",
             description:
-              "As the company grows, the brand evolves alongside it — new product launches, campaigns, market expansion, and updated systems become part of a long-term collaboration.",
+              "As the company grows, the brand evolves alongside it: new product launches, campaigns, market expansion, and updated systems become part of a long-term collaboration.",
           },
         ],
       }}
@@ -268,7 +268,7 @@ export default function StartupBrandingAgencyPage() {
             question:
               "What makes Anagram different from a freelancer or a generic design agency?",
             answer:
-              "Anagram combines strategy, identity, motion, photography, product design, and development under one roof with a proven track record of delivering measurable business results — not only visual deliverables.",
+              "Anagram combines strategy, identity, motion, photography, product design, and development under one roof with a proven track record of delivering measurable business results, not only visual deliverables.",
           },
         ],
       }}

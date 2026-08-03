@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import AgencyPageTemplate from "@/components/agency-page/AgencyPageTemplate";
 
 export const metadata: Metadata = {
-  title: "Business Branding Agency — Anagram Studio",
+  title: "Business Branding Agency: Anagram Studio",
   description:
-    "Anagram is the business branding agency that turns ambitious companies into brands people remember — strategy, identity, motion, and web built to drive growth.",
+    "Anagram is the business branding agency that turns ambitious companies into brands people remember: strategy, identity, motion, and web built to drive growth.",
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
@@ -15,7 +15,7 @@ export default function BusinessBrandingAgencyPage() {
       idPrefix="business-branding-agency"
       verticalDividerDots={350}
       title="Business Branding Agency for Companies That Refuse to Blend In"
-      description="Anagram is a Paris-based business branding agency building brands designed to stand apart — not just through logos or color palettes, but through complete identity systems that work across every touchpoint. Founded in 2020, the studio has shaped more than 50 brands across technology, fintech, SaaS, and consumer industries, working with companies ranging from early-stage startups to established market leaders. Through strategy, identity, motion, photography, and web development, we create brands designed to grow with the businesses behind them."
+      description="Anagram is a Paris-based business branding agency building brands designed to stand apart, not just through logos or color palettes, but through complete identity systems that work across every touchpoint. Founded in 2020, the studio has shaped more than 50 brands across technology, fintech, SaaS, and consumer industries, working with companies ranging from early-stage startups to established market leaders. Through strategy, identity, motion, photography, and web development, we create brands designed to grow with the businesses behind them."
       services={{
         eyebrow: "Services",
         heading: "Business Branding Services",
@@ -61,7 +61,7 @@ export default function BusinessBrandingAgencyPage() {
             name: "Website Design and Development",
             tag: "Platform",
             description:
-              "Custom front-end and back-end development produces websites designed specifically around the brand itself — not templates retrofitted with a logo, but digital platforms built for conversion and scalability.",
+              "Custom front-end and back-end development produces websites designed specifically around the brand itself, not templates retrofitted with a logo, but digital platforms built for conversion and scalability.",
           },
         ],
       }}
@@ -79,7 +79,7 @@ export default function BusinessBrandingAgencyPage() {
             id: "results-that-justify-the-investment",
             title: "Results That Justify the Investment",
             description:
-              "Strong branding creates measurable business impact. Following its rebrand, Fortuneo experienced a 45% increase in subscription funnel entry, a 27% increase in prospects starting a project, and a 63% increase in submitted documents. Planity achieved a 50% increase in appointment bookings per second after its brand evolution. Branding is not a cost center — it is a growth lever.",
+              "Strong branding creates measurable business impact. Following its rebrand, Fortuneo experienced a 45% increase in subscription funnel entry, a 27% increase in prospects starting a project, and a 63% increase in submitted documents. Planity achieved a 50% increase in appointment bookings per second after its brand evolution. Branding is not a cost center. It is a growth lever.",
           },
           {
             id: "long-term-creative-partnership",
@@ -91,7 +91,7 @@ export default function BusinessBrandingAgencyPage() {
             id: "boutique-studio-senior-talent",
             title: "Boutique Studio, Senior Talent",
             description:
-              "Our smaller structure allows every project to receive senior-level attention from strategy through execution. No junior handoffs, no black-box production — direct collaboration with the people building the work.",
+              "Our smaller structure allows every project to receive senior-level attention from strategy through execution. No junior handoffs, no black-box production, direct collaboration with the people building the work.",
           },
         ],
       }}
@@ -129,7 +129,7 @@ export default function BusinessBrandingAgencyPage() {
         note: {
           title: "50 Brands and Counting",
           description:
-            "Qonto, Spendesk, Pennylane, Ringover, Nabla, Bonsai, Gorgias — and many more. From early-stage startups to category leaders, every brand Anagram shapes is designed to remain memorable as it grows.",
+            "Qonto, Spendesk, Pennylane, Ringover, Nabla, Bonsai, Gorgias, and many more. From early-stage startups to category leaders, every brand Anagram shapes is designed to remain memorable as it grows.",
           columns: [
             ["Qonto", "Ringover", "Gorgias", "Frequentiel"],
             ["Spendesk", "Nabla", "Arcads", "Gigi"],
@@ -159,7 +159,7 @@ export default function BusinessBrandingAgencyPage() {
             id: "consumer-lifestyle",
             name: "Consumer and Lifestyle",
             description:
-              "We create brands designed to live inside culture — brands that earn attention and emotional connection across physical and digital touchpoints.",
+              "We create brands designed to live inside culture, brands that earn attention and emotional connection across physical and digital touchpoints.",
           },
           {
             id: "b2b-professional-services",
@@ -195,7 +195,7 @@ export default function BusinessBrandingAgencyPage() {
             id: "build",
             title: "Build",
             description:
-              "Motion systems, photography, websites, and rollout assets are produced internally — ensuring every touchpoint remains aligned with the original strategy.",
+              "Motion systems, photography, websites, and rollout assets are produced internally, ensuring every touchpoint remains aligned with the original strategy.",
           },
           {
             id: "evolve",
@@ -209,7 +209,7 @@ export default function BusinessBrandingAgencyPage() {
         faqTitle: "Frequently Asked Questions About Business Branding",
         ctaHeading: "Build the Brand Your Business Deserves",
         ctaDescription:
-          "The right branding agency is not necessarily the biggest — it is the one that remains invested in the success of the brand long after launch. Through strategy, identity, motion, photography, and web development, Anagram builds brands designed to stay relevant as businesses evolve. Brands that need no introduction.",
+          "The right branding agency is not necessarily the biggest. It is the one that remains invested in the success of the brand long after launch. Through strategy, identity, motion, photography, and web development, Anagram builds brands designed to stay relevant as businesses evolve. Brands that need no introduction.",
         ctaButtons: [
           { label: "Start a project", href: "mailto:hello@anagram.club" },
           { label: "See our work", href: "/works" },
@@ -218,7 +218,7 @@ export default function BusinessBrandingAgencyPage() {
           {
             question: "What does a business branding agency do?",
             answer:
-              "A business branding agency defines positioning, messaging, and visual identity systems while producing the broader ecosystem surrounding the brand — motion assets, photography, websites, and product experiences.",
+              "A business branding agency defines positioning, messaging, and visual identity systems while producing the broader ecosystem surrounding the brand: motion assets, photography, websites, and product experiences.",
           },
           {
             question:

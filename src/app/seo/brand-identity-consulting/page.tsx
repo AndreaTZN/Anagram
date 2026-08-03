@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import AgencyPageTemplate from "@/components/agency-page/AgencyPageTemplate";
 
 export const metadata: Metadata = {
-  title: "Brand Identity Consulting — Anagram Studio",
+  title: "Brand Identity Consulting: Anagram Studio",
   description:
-    "Anagram offers brand identity consulting and design — from logo and identity to full design systems, with the strategy and craft to make brands memorable.",
+    "Anagram offers brand identity consulting and design: from logo and identity to full design systems, with the strategy and craft to make brands memorable.",
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
@@ -15,7 +15,7 @@ export default function BrandIdentityConsultingPage() {
       idPrefix="brand-identity-consulting"
       verticalDividerDots={150}
       title="Brand Identity Consulting for Brands That Want to Stand Out"
-      description="Anagram is a studio and brand identity consultant that approaches identity design as a strategic discipline rather than a purely visual one. Every identity system begins with positioning, messaging, and audience understanding before any aesthetic direction is explored. Founded in 2020, our multidisciplinary team has developed more than 50 brand identities across technology, fintech, SaaS, and consumer industries — building systems designed to remain coherent, scalable, and recognizable as businesses grow."
+      description="Anagram is a studio and brand identity consultant that approaches identity design as a strategic discipline rather than a purely visual one. Every identity system begins with positioning, messaging, and audience understanding before any aesthetic direction is explored. Founded in 2020, our multidisciplinary team has developed more than 50 brand identities across technology, fintech, SaaS, and consumer industries, building systems designed to remain coherent, scalable, and recognizable as businesses grow."
       vision={{
         eyebrow: "Approach",
         heading: "Working With Anagram",
@@ -44,14 +44,14 @@ export default function BrandIdentityConsultingPage() {
         eyebrow: "Services",
         heading: "Brand Identity Services",
         subtitle:
-          "Anagram's identity practice covers the full process — from strategic positioning and messaging through to scalable visual systems and operational brand guidelines.",
+          "Anagram's identity practice covers the full process: from strategic positioning and messaging through to scalable visual systems and operational brand guidelines.",
         items: [
           {
             id: "brand-positioning-strategy",
             name: "Brand Positioning and Strategy",
             tag: "Foundation",
             description:
-              "Market positioning, competitive analysis, audience understanding, and messaging systems define the strategic foundations of the identity — ensuring the brand communicates the right ideas to the right people.",
+              "Market positioning, competitive analysis, audience understanding, and messaging systems define the strategic foundations of the identity, ensuring the brand communicates the right ideas to the right people.",
           },
           {
             id: "visual-identity-design",
@@ -96,7 +96,7 @@ export default function BrandIdentityConsultingPage() {
             },
             title: "Fortuneo",
             description:
-              "For Fortuneo, Anagram transformed the “0” into a living brand asset — building a strategic identity system that turned the idea of free banking into something premium and emotionally engaging. The project included strategy, identity systems, product design, motion, photography, and web development.",
+              "For Fortuneo, Anagram transformed the “0” into a living brand asset, building a strategic identity system that turned the idea of free banking into something premium and emotionally engaging. The project included strategy, identity systems, product design, motion, photography, and web development.",
             metrics: [
               "+45% subscription funnel entry",
               "+77% awareness and consideration",
@@ -117,14 +117,14 @@ export default function BrandIdentityConsultingPage() {
         note: {
           title: "50 Identities and Counting",
           description:
-            "From early-stage startups to established market leaders, every identity Anagram creates is conceived as a scalable system — not simply a logo, but a long-term strategic asset.",
+            "From early-stage startups to established market leaders, every identity Anagram creates is conceived as a scalable system, not simply a logo, but a long-term strategic asset.",
         },
       }}
       faqCta={{
         faqTitle: "Frequently Asked Questions About Brand Identity",
         ctaHeading: "Build an Identity Worth Remembering",
         ctaDescription:
-          "The strongest identities are not simply beautiful — they are strategically true. True to the positioning, true to the audience, and designed to remain coherent as the business grows and evolves. Brands that need no introduction.",
+          "The strongest identities are not simply beautiful. They are strategically true. True to the positioning, true to the audience, and designed to remain coherent as the business grows and evolves. Brands that need no introduction.",
         ctaButtons: [
           { label: "Start a project", href: "mailto:hello@anagram.club" },
           { label: "See our work", href: "/works" },
@@ -133,13 +133,13 @@ export default function BrandIdentityConsultingPage() {
           {
             question: "What does a brand identity consultant do?",
             answer:
-              "A brand identity consultant defines the visual identity system of a company — logo, typography, color palette, iconography, and design systems — grounded in strategic positioning and audience understanding.",
+              "A brand identity consultant defines the visual identity system of a company: logo, typography, color palette, iconography, and design systems, grounded in strategic positioning and audience understanding.",
           },
           {
             question:
               "What is the difference between a brand identity consultant and a graphic designer?",
             answer:
-              "A graphic designer executes visual assets. A brand identity consultant develops the strategic and visual system behind those assets — defining the rules, positioning, and logic guiding the brand.",
+              "A graphic designer executes visual assets. A brand identity consultant develops the strategic and visual system behind those assets, defining the rules, positioning, and logic guiding the brand.",
           },
           {
             question: "What is included in a brand identity project?",

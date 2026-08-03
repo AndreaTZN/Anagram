@@ -13,19 +13,19 @@ export default function BrandingAndCreativeAgencyPage() {
   return (
     <AgencyPageTemplate
       idPrefix="branding-and-creative-agency"
-      title="Branding and Creative Agency — Anagram Studio"
-      description="Anagram is a branding and creative agency that combines strategic thinking with world-class execution — identity, motion, photography, and web built to last."
+      title="Branding and Creative Agency: Anagram Studio"
+      description="Anagram is a branding and creative agency that combines strategic thinking with world-class execution: identity, motion, photography, and web built to last."
       vision={{
         eyebrow: "Approach",
         heading: "Brand Strategy and Creative Direction, Combined",
         intro:
-          "A branding and creative agency should deliver more than visuals or presentations alone. Strategy without execution remains theoretical. Execution without strategy becomes decoration. At Anagram, positioning, messaging, identity, motion, photography, and web experiences are developed together — creating brands that feel strategically grounded and creatively consistent from launch onward.",
+          "A branding and creative agency should deliver more than visuals or presentations alone. Strategy without execution remains theoretical. Execution without strategy becomes decoration. At Anagram, positioning, messaging, identity, motion, photography, and web experiences are developed together, creating brands that feel strategically grounded and creatively consistent from launch onward.",
         blocks: [
           {
             id: "brand-strategy",
             title: "Brand Strategy",
             description:
-              "Positioning, messaging systems, brand architecture, and tone of voice define the strategic layer behind every creative decision — ensuring the brand communicates with clarity and purpose across every audience and platform.",
+              "Positioning, messaging systems, brand architecture, and tone of voice define the strategic layer behind every creative decision, ensuring the brand communicates with clarity and purpose across every audience and platform.",
           },
           {
             id: "brand-identity",
@@ -37,7 +37,7 @@ export default function BrandingAndCreativeAgencyPage() {
             id: "creative-direction-motion",
             title: "Creative Direction and Motion",
             description:
-              "Art direction, motion systems, brand films, photography, and animated assets bring the identity to life — transforming static branding into a living experience across digital and physical touchpoints.",
+              "Art direction, motion systems, brand films, photography, and animated assets bring the identity to life, transforming static branding into a living experience across digital and physical touchpoints.",
           },
           {
             id: "website-design-development",
@@ -99,14 +99,14 @@ export default function BrandingAndCreativeAgencyPage() {
             title: "Craft at Every Touchpoint",
 
             description:
-              "Our multidisciplinary team is driven by craft, iteration, and attention to detail. Every touchpoint — from typography and motion to photography and development — is considered as part of one cohesive creative system rather than assembled from templates.",
+              "Our multidisciplinary team is driven by craft, iteration, and attention to detail. Every touchpoint, from typography and motion to photography and development, is considered as part of one cohesive creative system rather than assembled from templates.",
           },
           {
             id: "results-behind-the-work",
             title: "Results Behind the Work",
 
             description:
-              "Creative quality should create measurable business impact. Following its rebrand, Fortuneo saw a 45% increase in subscription funnel entry. After Planity's brand evolution, the platform experienced a 50% increase in appointment bookings per second — proof that strong creative execution supports real business growth.",
+              "Creative quality should create measurable business impact. Following its rebrand, Fortuneo saw a 45% increase in subscription funnel entry. After Planity's brand evolution, the platform experienced a 50% increase in appointment bookings per second, proof that strong creative execution supports real business growth.",
           },
           {
             id: "one-team-one-vision",
@@ -150,7 +150,7 @@ export default function BrandingAndCreativeAgencyPage() {
         note: {
           title: "The Portfolio",
           description:
-            "More than 50 brands shaped — from ambitious startups to established market leaders. Selected collaborations include Qonto, Spendesk, Pennylane, Ringover, Nabla, Bonsai, and Gorgias.",
+            "More than 50 brands shaped: from ambitious startups to established market leaders. Selected collaborations include Qonto, Spendesk, Pennylane, Ringover, Nabla, Bonsai, and Gorgias.",
           columns: [
             ["Qonto", "Ringover", "Gorgias", "Frequentiel"],
             ["Spendesk", "Nabla", "Arcads", "Gigi"],
@@ -180,7 +180,7 @@ export default function BrandingAndCreativeAgencyPage() {
             id: "consumer-lifestyle",
             name: "Consumer and Lifestyle",
             description:
-              "We create brands designed to live within culture — earning attention across e-commerce, beauty, lifestyle, food, and digital-first consumer products.",
+              "We create brands designed to live within culture, earning attention across e-commerce, beauty, lifestyle, food, and digital-first consumer products.",
           },
           {
             id: "startups-scale-ups",
@@ -204,7 +204,7 @@ export default function BrandingAndCreativeAgencyPage() {
           {
             question: "What is a branding and creative agency?",
             answer:
-              "A branding and creative agency combines strategic thinking and creative execution under one team — covering positioning, identity systems, motion design, photography, and web experiences through one cohesive direction.",
+              "A branding and creative agency combines strategic thinking and creative execution under one team, covering positioning, identity systems, motion design, photography, and web experiences through one cohesive direction.",
           },
           {
             question: "What services does Anagram offer?",

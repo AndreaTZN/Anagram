@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import AgencyPageTemplate from "@/components/agency-page/AgencyPageTemplate";
 
 export const metadata: Metadata = {
-  title: "Branding Agency Services — Anagram Studio ",
+  title: "Branding Agency Services: Anagram Studio ",
   description:
-    "Anagram offers end-to-end branding agency services — brand strategy, visual identity, design systems, motion, photography, and web development, all in-house.",
+    "Anagram offers end-to-end branding agency services: brand strategy, visual identity, design systems, motion, photography, and web development, all in-house.",
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
@@ -14,7 +14,7 @@ export default function BrandingAgencyServicesPage() {
     <AgencyPageTemplate
       idPrefix="branding-agency-services"
       title="Branding Agency Services That Build Brands Worth Remembering"
-      description="Anagram is a full-service branding studio delivering branding agency services through one connected creative system. Strategy, identity, motion, photography, product design, and web development are all produced internally by the same multidisciplinary team. We believe branding services should never function as isolated deliverables — every discipline strengthens the others. By connecting strategic thinking with creative execution under one direction, we build brands designed to remain coherent, scalable, and memorable across every touchpoint. Brands that need no introduction."
+      description="Anagram is a full-service branding studio delivering branding agency services through one connected creative system. Strategy, identity, motion, photography, product design, and web development are all produced internally by the same multidisciplinary team. We believe branding services should never function as isolated deliverables. Every discipline strengthens the others. By connecting strategic thinking with creative execution under one direction, we build brands designed to remain coherent, scalable, and memorable across every touchpoint. Brands that need no introduction."
       vision={{
         eyebrow: "Integration",
         heading: "How These Services Work Together",
@@ -33,14 +33,14 @@ export default function BrandingAgencyServicesPage() {
             name: "Brand Strategy",
             tag: "Foundation",
             description:
-              "Market positioning, competitive analysis, messaging platforms, brand architecture, and tone of voice systems define how the company should be perceived within its market. The outcome is a strategic brand platform document — the foundation guiding every future creative and communication decision.",
+              "Market positioning, competitive analysis, messaging platforms, brand architecture, and tone of voice systems define how the company should be perceived within its market. The outcome is a strategic brand platform document, the foundation guiding every future creative and communication decision.",
           },
           {
             id: "brand-identity-design",
             name: "Brand Identity Design",
             tag: "Core",
             description:
-              "Logo systems, typography, color palettes, iconography, and brand guidelines create the visual face of the company. Every identity is designed to scale — working equally well at launch stage and as the business grows into larger markets and more complex ecosystems.",
+              "Logo systems, typography, color palettes, iconography, and brand guidelines create the visual face of the company. Every identity is designed to scale, working equally well at launch stage and as the business grows into larger markets and more complex ecosystems.",
           },
           {
             id: "design-system-brand-guidelines",
@@ -54,7 +54,7 @@ export default function BrandingAgencyServicesPage() {
             name: "Illustration and Visual Language",
             tag: "Distinctive",
             description:
-              "Custom illustration systems — including 2D, 3D, and AI-generated visuals — create a recognizable visual language extending beyond the logo itself. These systems help brands develop stronger memorability and a more distinctive creative presence.",
+              "Custom illustration systems, including 2D, 3D, and AI-generated visuals, create a recognizable visual language extending beyond the logo itself. These systems help brands develop stronger memorability and a more distinctive creative presence.",
           },
           {
             id: "product-design-ui",
@@ -82,7 +82,7 @@ export default function BrandingAgencyServicesPage() {
             name: "Website Design and Development",
             tag: "Platform",
             description:
-              "Custom web design combined with front-end and back-end development creates digital platforms fully aligned with the brand identity. Every website is conceived as an extension of the brand itself — never as a template adapted afterward.",
+              "Custom web design combined with front-end and back-end development creates digital platforms fully aligned with the brand identity. Every website is conceived as an extension of the brand itself, never as a template adapted afterward.",
           },
         ],
       }}
@@ -106,7 +106,7 @@ export default function BrandingAgencyServicesPage() {
             id: "established-brands-seeking-reinvention",
             title: "Established Brands Seeking Reinvention",
             description:
-              "Rebranding is not about abandoning existing equity — it is about refining what still matters while removing what no longer reflects the business. Strategic repositioning, identity redesign, and full system rollouts allow established companies to evolve intentionally.",
+              "Rebranding is not about abandoning existing equity. It is about refining what still matters while removing what no longer reflects the business. Strategic repositioning, identity redesign, and full system rollouts allow established companies to evolve intentionally.",
           },
         ],
       }}
@@ -194,7 +194,7 @@ export default function BrandingAgencyServicesPage() {
             id: "build",
             title: "Build",
             description:
-              "Motion systems, photography, product design, web development, and rollout assets are produced internally — bringing the entire brand ecosystem to life through one coordinated workflow.",
+              "Motion systems, photography, product design, web development, and rollout assets are produced internally, bringing the entire brand ecosystem to life through one coordinated workflow.",
           },
           {
             id: "evolve",
@@ -208,7 +208,7 @@ export default function BrandingAgencyServicesPage() {
         faqTitle: "Frequently Asked Questions About Branding Agency Services",
         ctaHeading: "Work With Anagram",
         ctaDescription:
-          "Strategy, identity, motion, photography, product design, and web development — all branding agency services produced internally through one connected creative vision. Anagram builds brands designed for clarity, scalability, and long-term recognition. Brands that need no introduction.",
+          "Strategy, identity, motion, photography, product design, and web development: all branding agency services produced internally through one connected creative vision. Anagram builds brands designed for clarity, scalability, and long-term recognition. Brands that need no introduction.",
         ctaButtons: [
           { label: "Start a project", href: "mailto:hello@anagram.club" },
           { label: "See our portfolio", href: "/works" },
@@ -217,7 +217,7 @@ export default function BrandingAgencyServicesPage() {
           {
             question: "What branding services does Anagram offer?",
             answer:
-              "Anagram provides brand strategy, visual identity design, design systems, illustration, product design, motion design, photography, video production, and website design and development — all produced internally.",
+              "Anagram provides brand strategy, visual identity design, design systems, illustration, product design, motion design, photography, video production, and website design and development, all produced internally.",
           },
           {
             question: "What is included in a brand identity package?",
@@ -247,7 +247,7 @@ export default function BrandingAgencyServicesPage() {
           {
             question: "What industries do you specialize in?",
             answer:
-              "We primarily work across technology, SaaS, fintech, consumer, and B2B sectors — although we collaborate with any ambitious company looking to build a differentiated brand.",
+              "We primarily work across technology, SaaS, fintech, consumer, and B2B sectors, although we collaborate with any ambitious company looking to build a differentiated brand.",
           },
         ],
       }}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import AgencyPageTemplate from "@/components/agency-page/AgencyPageTemplate";
 
 export const metadata: Metadata = {
-  title: "Rebranding Agency — Anagram Creative Studio",
+  title: "Rebranding Agency: Anagram Creative Studio",
   description:
     "Anagram is a rebranding agency that helps ambitious companies shed what no longer fits and build the brand they actually deserve. Strategy through full rollout",
   metadataBase: new URL("https://anagramclub.com"),
@@ -14,18 +14,18 @@ export default function RebrandingAgencyPage() {
     <AgencyPageTemplate
       idPrefix="rebranding-agency"
       title="Rebranding Agency for Companies Ready for Their Next Chapter"
-      description="Anagram is a Paris-based rebranding agency helping ambitious companies redefine how they are perceived — from strategic audit through full rollout. A rebrand is never just a new logo. It is a complete rethink of what a brand stands for, how it positions itself in the market, and how that identity is expressed across every touchpoint. We work with companies that have outgrown their original identity: businesses entering new markets, preparing for scale, repositioning after growth, or simply realizing their brand no longer reflects the quality of the company behind it. The hardest part of a rebrand is rarely the design itself — it is knowing what to preserve, what to evolve, and what to leave behind. For Fortuneo, our rebrand helped drive +45% subscription funnel entry while repositioning the bank for a younger, more premium audience."
+      description="Anagram is a Paris-based rebranding agency helping ambitious companies redefine how they are perceived: from strategic audit through full rollout. A rebrand is never just a new logo. It is a complete rethink of what a brand stands for, how it positions itself in the market, and how that identity is expressed across every touchpoint. We work with companies that have outgrown their original identity: businesses entering new markets, preparing for scale, repositioning after growth, or simply realizing their brand no longer reflects the quality of the company behind it. The hardest part of a rebrand is rarely the design itself. It is knowing what to preserve, what to evolve, and what to leave behind. For Fortuneo, our rebrand helped drive +45% subscription funnel entry while repositioning the bank for a younger, more premium audience."
       vision={{
         eyebrow: "Approach",
         heading: "What a Rebrand Actually Involves",
         intro:
-          "A rebranding agency does far more than redesign a logo. A full rebrand combines strategic thinking, positioning, messaging, visual identity, and deployment across every customer touchpoint. The goal is not to look different for the sake of it — it is to build a brand that better reflects the business and supports where it is going next.",
+          "A rebranding agency does far more than redesign a logo. A full rebrand combines strategic thinking, positioning, messaging, visual identity, and deployment across every customer touchpoint. The goal is not to look different for the sake of it. It is to build a brand that better reflects the business and supports where it is going next.",
         blocks: [
           {
             id: "strategic-audit",
             title: "Strategic Audit of the Existing Brand",
             description:
-              "Before redesigning anything, we map the existing brand ecosystem: what equity is worth preserving, what is holding the business back, how customers perceive the company, and how competitors position themselves. The outcome is a strategic brief grounded in reality — not assumptions.",
+              "Before redesigning anything, we map the existing brand ecosystem: what equity is worth preserving, what is holding the business back, how customers perceive the company, and how competitors position themselves. The outcome is a strategic brief grounded in reality, not assumptions.",
           },
           {
             id: "new-positioning-messaging",
@@ -37,13 +37,13 @@ export default function RebrandingAgencyPage() {
             id: "new-visual-identity",
             title: "New Visual Identity",
             description:
-              "Logo, typography, color palette, iconography, illustration, and motion language — a complete visual system designed to express the new positioning consistently across every platform, campaign, product, and physical touchpoint.",
+              "Logo, typography, color palette, iconography, illustration, and motion language: a complete visual system designed to express the new positioning consistently across every platform, campaign, product, and physical touchpoint.",
           },
           {
             id: "full-rollout",
             title: "Full Rollout Across Every Touchpoint",
             description:
-              "Design systems, photography, motion, product design, website redesign, brand guidelines, and content production — everything required to bring the new brand into the market as a coherent system, not a disconnected collection of assets.",
+              "Design systems, photography, motion, product design, website redesign, brand guidelines, and content production: everything required to bring the new brand into the market as a coherent system, not a disconnected collection of assets.",
           },
         ],
       }}
@@ -51,7 +51,7 @@ export default function RebrandingAgencyPage() {
         eyebrow: "Timing",
         heading: "When to Rebrand",
         intro:
-          "Not every company needs a rebrand — but some signals are impossible to ignore.",
+          "Not every company needs a rebrand, but some signals are impossible to ignore.",
         blocks: [
           {
             id: "before-funding-round-market-expansion",
@@ -63,7 +63,7 @@ export default function RebrandingAgencyPage() {
             id: "brand-no-longer-reflects-business",
             title: "When the Brand No Longer Reflects the Business",
             description:
-              "Many businesses evolve faster than their identity. New products, new services, new audiences, new ambitions — yet the brand still reflects the company as it existed years ago. That disconnect creates friction internally and externally.",
+              "Many businesses evolve faster than their identity. New products, new services, new audiences, new ambitions, yet the brand still reflects the company as it existed years ago. That disconnect creates friction internally and externally.",
           },
           {
             id: "after-merger-acquisition",
@@ -83,7 +83,7 @@ export default function RebrandingAgencyPage() {
         eyebrow: "Case Study",
         heading: "The Fortuneo Rebrand",
         intro:
-          "Fortuneo is one of France's leading online banks — profitable, established, and widely recognized. The challenge was not awareness. The challenge was perception. The launch of the Fosfo card created an opportunity to attract a younger audience, while the Black card needed stronger premium positioning. But the existing identity no longer reflected the ambition of the business.",
+          "Fortuneo is one of France's leading online banks, profitable, established, and widely recognized. The challenge was not awareness. The challenge was perception. The launch of the Fosfo card created an opportunity to attract a younger audience, while the Black card needed stronger premium positioning. But the existing identity no longer reflected the ambition of the business.",
         stats: [],
         cases: [
           {
@@ -94,7 +94,7 @@ export default function RebrandingAgencyPage() {
             },
             title: "Fortuneo",
             description:
-              "The brand felt functional when it needed to feel desirable. Anagram built the rebrand around Fortuneo's most distinctive strategic asset: the “0” symbolizing free banking. Instead of treating it as a simple feature, we transformed it into a core brand element — fluid, dynamic, scalable, and recognizable across every touchpoint. The rebrand covered strategy, copywriting, visual identity, design system, product design, motion, illustration, photography, video, and web development. Even the physical credit cards became part of the brand experience, produced with premium Pantone inks and tactile varnish finishes designed to reinforce the repositioning physically as well as visually.",
+              "The brand felt functional when it needed to feel desirable. Anagram built the rebrand around Fortuneo's most distinctive strategic asset: the “0” symbolizing free banking. Instead of treating it as a simple feature, we transformed it into a core brand element, fluid, dynamic, scalable, and recognizable across every touchpoint. The rebrand covered strategy, copywriting, visual identity, design system, product design, motion, illustration, photography, video, and web development. Even the physical credit cards became part of the brand experience, produced with premium Pantone inks and tactile varnish finishes designed to reinforce the repositioning physically as well as visually.",
             metrics: [
               "+45% subscription funnel entry",
               "+27% prospects starting a project",
@@ -113,35 +113,35 @@ export default function RebrandingAgencyPage() {
             name: "Brand Strategy and Positioning",
             tag: "Foundation",
             description:
-              "Market audit, competitive analysis, messaging platform, positioning strategy, and brand architecture — the strategic foundation that gives the rebrand direction before design begins.",
+              "Market audit, competitive analysis, messaging platform, positioning strategy, and brand architecture: the strategic foundation that gives the rebrand direction before design begins.",
           },
           {
             id: "visual-identity",
             name: "Visual Identity",
             tag: "Core",
             description:
-              "Logo design, typography, color systems, iconography, and brand guidelines — a scalable visual identity designed to express the repositioned brand consistently across every format.",
+              "Logo design, typography, color systems, iconography, and brand guidelines: a scalable visual identity designed to express the repositioned brand consistently across every format.",
           },
           {
             id: "design-system",
             name: "Design System",
             tag: "Scale",
             description:
-              "Component libraries, usage rules, UI frameworks, and documentation — operational systems that allow the new identity to scale internally without losing coherence.",
+              "Component libraries, usage rules, UI frameworks, and documentation: operational systems that allow the new identity to scale internally without losing coherence.",
           },
           {
             id: "motion-content",
             name: "Motion and Content",
             tag: "Alive",
             description:
-              "Motion systems, animated assets, photography direction, brand films, and social content — the new identity translated into dynamic media built for digital environments.",
+              "Motion systems, animated assets, photography direction, brand films, and social content: the new identity translated into dynamic media built for digital environments.",
           },
           {
             id: "website-redesign-development",
             name: "Website Redesign and Development",
             tag: "Platform",
             description:
-              "Custom website design and development built from the ground up — creating a digital platform that reflects the new positioning and supports future growth.",
+              "Custom website design and development built from the ground up, creating a digital platform that reflects the new positioning and supports future growth.",
           },
         ],
       }}
@@ -153,7 +153,7 @@ export default function RebrandingAgencyPage() {
             id: "strategy-before-design",
             name: "Strategy Before Design",
             description:
-              "The strongest rebrands are not cosmetic exercises. They are strategic decisions about perception, positioning, and growth. We define the strategy first — then build the identity around it.",
+              "The strongest rebrands are not cosmetic exercises. They are strategic decisions about perception, positioning, and growth. We define the strategy first, then build the identity around it.",
           },
           {
             id: "built-for-scale",
@@ -165,7 +165,7 @@ export default function RebrandingAgencyPage() {
             id: "one-team-strategy-to-rollout",
             name: "One Team From Strategy to Rollout",
             description:
-              "Brand strategy, visual identity, motion, photography, product design, and development — all handled internally by one creative studio carrying the same vision across the entire project.",
+              "Brand strategy, visual identity, motion, photography, product design, and development: all handled internally by one creative studio carrying the same vision across the entire project.",
           },
           {
             id: "proven-business-impact",
@@ -201,7 +201,7 @@ export default function RebrandingAgencyPage() {
             id: "full-deployment",
             title: "Full Deployment",
             description:
-              "Motion, photography, digital product design, website development, and rollout across every touchpoint — ensuring the rebrand launches as one coherent ecosystem rather than fragmented deliverables.",
+              "Motion, photography, digital product design, website development, and rollout across every touchpoint, ensuring the rebrand launches as one coherent ecosystem rather than fragmented deliverables.",
           },
         ],
       }}
@@ -209,7 +209,7 @@ export default function RebrandingAgencyPage() {
         faqTitle: "Frequently Asked Questions About Rebranding",
         ctaHeading: "Start Your Rebrand With Anagram",
         ctaDescription:
-          "A rebrand is one of the highest-leverage decisions a company can make. The right identity changes perception, attracts better opportunities, aligns teams internally, and creates momentum externally. Choose a studio that understands both the strategic and creative side of transformation — and can prove the results. Brands that need no introduction.",
+          "A rebrand is one of the highest-leverage decisions a company can make. The right identity changes perception, attracts better opportunities, aligns teams internally, and creates momentum externally. Choose a studio that understands both the strategic and creative side of transformation, and can prove the results. Brands that need no introduction.",
         ctaButtons: [
           { label: "Start your rebrand", href: "mailto:hello@anagram.club" },
           { label: "See our work", href: "/works" },
@@ -234,7 +234,7 @@ export default function RebrandingAgencyPage() {
             question:
               "Is it possible to rebrand without losing existing brand equity?",
             answer:
-              "Yes — and preserving valuable equity is one of the main goals of a strategic rebrand. The audit phase identifies what should evolve and what should remain recognizable.",
+              "Yes, and preserving valuable equity is one of the main goals of a strategic rebrand. The audit phase identifies what should evolve and what should remain recognizable.",
           },
           {
             question: "When is the right time to rebrand?",
@@ -244,13 +244,13 @@ export default function RebrandingAgencyPage() {
           {
             question: "Do you handle the full rebrand, or just the design?",
             answer:
-              "The full process: strategy, positioning, visual identity, design systems, motion, photography, website design, and development — all produced internally by the Anagram team.",
+              "The full process: strategy, positioning, visual identity, design systems, motion, photography, website design, and development, all produced internally by the Anagram team.",
           },
           {
             question:
               "Can you rebrand a company that already has strong brand awareness?",
             answer:
-              "Yes. Rebranding an established company is about evolving perception without destroying recognition. The goal is not to erase the past — it is to make the brand stronger for what comes next.",
+              "Yes. Rebranding an established company is about evolving perception without destroying recognition. The goal is not to erase the past. It is to make the brand stronger for what comes next.",
           },
         ],
       }}

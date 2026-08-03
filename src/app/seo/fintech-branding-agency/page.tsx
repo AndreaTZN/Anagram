@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import AgencyPageTemplate from "@/components/agency-page/AgencyPageTemplate";
 
 export const metadata: Metadata = {
-  title: "Fintech Branding Agency — Anagram Studio",
+  title: "Fintech Branding Agency: Anagram Studio",
   description:
-    "Anagram is a fintech branding agency with a proven track record — Fortuneo, Qonto, Spendesk, Pennylane. Strategy, identity, and web built for financial brands.",
+    "Anagram is a fintech branding agency with a proven track record: Fortuneo, Qonto, Spendesk, Pennylane. Strategy, identity, and web built for financial brands.",
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
@@ -15,7 +15,7 @@ export default function FintechBrandingAgencyPage() {
       idPrefix="fintech-branding-agency"
       title="Fintech Branding Agency for Companies Rewriting Financial Services"
       verticalDividerDots={280}
-      description="Anagram is a fintech branding agency with one of the deepest financial brand portfolios in the market — from Fortuneo and Qonto to Spendesk, Pennylane, Nabla, Rauva, Fi, and others. We help fintech companies build brands that earn trust quickly, feel modern without appearing reckless, and remain human without feeling naive. Across banking, payments, investment platforms, and B2B financial SaaS, Anagram creates strategic brand systems designed to scale across products, markets, and audiences while maintaining clarity and credibility at every touchpoint."
+      description="Anagram is a fintech branding agency with one of the deepest financial brand portfolios in the market: from Fortuneo and Qonto to Spendesk, Pennylane, Nabla, Rauva, Fi, and others. We help fintech companies build brands that earn trust quickly, feel modern without appearing reckless, and remain human without feeling naive. Across banking, payments, investment platforms, and B2B financial SaaS, Anagram creates strategic brand systems designed to scale across products, markets, and audiences while maintaining clarity and credibility at every touchpoint."
       vision={{
         eyebrow: "Approach",
         heading: "What Makes Fintech Branding Specific",
@@ -38,7 +38,7 @@ export default function FintechBrandingAgencyPage() {
             id: "a-brand-system-built-for-compliance",
             title: "A Brand System Built for Compliance",
             description:
-              "Fintech brands operate within regulated environments where consistency matters operationally as much as creatively. Every execution — from a legal document to a product onboarding flow — needs to remain aligned with the broader brand system while respecting regulatory expectations.",
+              "Fintech brands operate within regulated environments where consistency matters operationally as much as creatively. Every execution, from a legal document to a product onboarding flow, needs to remain aligned with the broader brand system while respecting regulatory expectations.",
           },
         ],
       }}
@@ -46,21 +46,21 @@ export default function FintechBrandingAgencyPage() {
         eyebrow: "Translation",
         heading: "How positioning translates into design",
         intro:
-          "Every visual decision is ultimately a positioning decision. Typography signals who the brand is for. The color palette communicates emotional territory. Photography direction reflects values and aspiration. Positioning is not a strategic document left untouched after workshops — it becomes the creative brief that every design decision is measured against. At Anagram, positioning directly informs identity systems, motion language, photography, product interfaces, and web experiences so the strategy remains visible everywhere the audience interacts with the brand.",
+          "Every visual decision is ultimately a positioning decision. Typography signals who the brand is for. The color palette communicates emotional territory. Photography direction reflects values and aspiration. Positioning is not a strategic document left untouched after workshops. It becomes the creative brief that every design decision is measured against. At Anagram, positioning directly informs identity systems, motion language, photography, product interfaces, and web experiences so the strategy remains visible everywhere the audience interacts with the brand.",
         blocks: [
           {
             id: "from-positioning-to-visual-identity",
             title: "From Positioning to Visual Identity",
             quote: "The strategy becomes the symbol.",
             description:
-              "The positioning claim informs the visual concept, which shapes the logo, typography, motion systems, and color palette. Fortuneo's “0” functioned simultaneously as a positioning idea — free banking — and as a scalable visual asset integrated across the entire brand ecosystem.",
+              "The positioning claim informs the visual concept, which shapes the logo, typography, motion systems, and color palette. Fortuneo's “0” functioned simultaneously as a positioning idea, free banking, and as a scalable visual asset integrated across the entire brand ecosystem.",
           },
           {
             id: "consistency-across-every-touchpoint",
             title: "Consistency Across Every Touchpoint",
             quote: "Positioning is only real when it appears everywhere.",
             description:
-              "Positioning only becomes real when it appears consistently everywhere — product experiences, websites, photography, motion systems, campaigns, and social assets. Because Anagram handles strategy, identity, motion, product design, and web internally, the positioning remains coherent throughout the entire customer experience.",
+              "Positioning only becomes real when it appears consistently everywhere: product experiences, websites, photography, motion systems, campaigns, and social assets. Because Anagram handles strategy, identity, motion, product design, and web internally, the positioning remains coherent throughout the entire customer experience.",
           },
         ],
       }}
@@ -68,7 +68,7 @@ export default function FintechBrandingAgencyPage() {
         eyebrow: "Services",
         heading: "Fintech Branding Services",
         subtitle:
-          "Anagram delivers full-scope fintech branding services internally — strategy, identity, product design, motion, photography, and web development built under one connected creative direction.",
+          "Anagram delivers full-scope fintech branding services internally: strategy, identity, product design, motion, photography, and web development built under one connected creative direction.",
         items: [
           {
             id: "brand-strategy-for-fintech",
@@ -129,7 +129,7 @@ export default function FintechBrandingAgencyPage() {
             },
             title: "Fortuneo",
             description:
-              "Anagram rebuilt the brand around the “0” — the symbol of free banking — transforming it from a pricing feature into a strategic and visual brand asset. Motion systems, typography, illustration, product interfaces, and photography all revolved around this positioning concept, reframing “free” as something premium rather than purely economical. The collaboration included strategy, copywriting, identity systems, product design, motion, photography, video production, illustration, and web development. Even the physical credit cards became expressions of the positioning through premium print finishes, Pantone inks, and tactile varnishes designed to reinforce the perception of value.",
+              "Anagram rebuilt the brand around the “0”, the symbol of free banking, transforming it from a pricing feature into a strategic and visual brand asset. Motion systems, typography, illustration, product interfaces, and photography all revolved around this positioning concept, reframing “free” as something premium rather than purely economical. The collaboration included strategy, copywriting, identity systems, product design, motion, photography, video production, illustration, and web development. Even the physical credit cards became expressions of the positioning through premium print finishes, Pantone inks, and tactile varnishes designed to reinforce the perception of value.",
             metrics: [
               "+45% subscription funnel entry",
               "+27% prospects starting a project",
@@ -172,7 +172,7 @@ export default function FintechBrandingAgencyPage() {
             id: "investment-wealth-management",
             name: "Investment and Wealth Management",
             description:
-              "Brands balancing sophistication with accessibility — making wealth management feel understandable and relevant to a new generation of investors.",
+              "Brands balancing sophistication with accessibility, making wealth management feel understandable and relevant to a new generation of investors.",
           },
           {
             id: "payments-infrastructure",
@@ -216,7 +216,7 @@ export default function FintechBrandingAgencyPage() {
         faqTitle: "Frequently Asked Questions About Fintech Branding",
         ctaHeading: "Build the Fintech Brand That Earns Trust",
         ctaDescription:
-          "In financial services, the brand is not secondary to the product — it is often the customer's first interaction with it. Through strategy, identity, motion, product design, and web development, Anagram creates fintech brands designed to feel credible, modern, and impossible to ignore. Brands that need no introduction.",
+          "In financial services, the brand is not secondary to the product. It is often the customer's first interaction with it. Through strategy, identity, motion, product design, and web development, Anagram creates fintech brands designed to feel credible, modern, and impossible to ignore. Brands that need no introduction.",
         ctaButtons: [
           { label: "Start a project", href: "mailto:hello@anagram.club" },
           { label: "See our work", href: "/works" },
@@ -231,7 +231,7 @@ export default function FintechBrandingAgencyPage() {
             question:
               "Why does a fintech company need a specialized branding agency?",
             answer:
-              "Fintech branding involves strategic tensions that generic studios rarely navigate effectively — balancing credibility, accessibility, compliance expectations, and premium perception simultaneously.",
+              "Fintech branding involves strategic tensions that generic studios rarely navigate effectively, balancing credibility, accessibility, compliance expectations, and premium perception simultaneously.",
           },
           {
             question: "How much does fintech branding cost?",

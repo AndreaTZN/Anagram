@@ -4,7 +4,7 @@ import AgencyPageTemplate from "@/components/agency-page/AgencyPageTemplate";
 export const metadata: Metadata = {
   title: "Brand Design Agency | anagram",
   description:
-    "Anagram is a Paris-based brand design agency founded in 2020. We've shaped 50+ brands across tech, fintech, and consumer — from strategy and visual identity to motion, photography, and web.",
+    "Anagram is a Paris-based brand design agency founded in 2020. We've shaped 50+ brands across tech, fintech, and consumer: from strategy and visual identity to motion, photography, and web.",
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
@@ -13,8 +13,8 @@ export default function BrandDesignAgencyPage() {
   return (
     <AgencyPageTemplate
       idPrefix="brand-design-agency"
-      title="Brand Design Agency — Anagram Studio"
-      description="Anagram is a Paris-based brand design agency crafting bold, scalable identities for ambitious companies — from strategy and visual identity to motion and web."
+      title="Brand Design Agency: Anagram Studio"
+      description="Anagram is a Paris-based brand design agency crafting bold, scalable identities for ambitious companies: from strategy and visual identity to motion and web."
       vision={{
         eyebrow: "Vision",
         heading: "What is our vision of brand design?",
@@ -24,12 +24,12 @@ export default function BrandDesignAgencyPage() {
             title: "Brand Design Is More Than a Logo",
             quote: "The logo is a starting point,",
             description:
-              "A brand identity is built from typography, color palette, iconography, illustration, photography direction, motion design, and design system — all working in concert across every touchpoint. What we design isn't a mark; it's a recognizable world.",
+              "A brand identity is built from typography, color palette, iconography, illustration, photography direction, motion design, and design system, all working in concert across every touchpoint. What we design isn't a mark; it's a recognizable world.",
           },
           {
             id: "business-outcomes",
             title: "Why Brand Design Determines Business Outcomes",
-            quote: "Design isn't a cost center — it's a growth lever.",
+            quote: "Design isn't a cost center. It's a growth lever.",
             description:
               "A strong identity reduces acquisition costs, builds trust before the first conversation, and improves conversion at every stage of the funnel. After Fortuneo's rebrand, subscription funnel entry increased by 45%. The numbers are real.",
           },
@@ -43,28 +43,28 @@ export default function BrandDesignAgencyPage() {
             id: "business-outcomes",
             title: "Why Brand Design Determines Business Outcomes",
             description:
-              "A boutique studio of multidisciplinary talents driven by a shared ambition to craft unique experiences through iteration, creativity, and an eye for detail. Not a factory — each project gets our full focus.",
+              "A boutique studio of multidisciplinary talents driven by a shared ambition to craft unique experiences through iteration, creativity, and an eye for detail. Not a factory, each project gets our full focus.",
           },
           {
             id: "real-business-results",
             title: "Design That Drives Real Business Results",
-            quote: "Design isn't a cost center — it's a growth lever.",
+            quote: "Design isn't a cost center. It's a growth lever.",
             description:
-              "Fortuneo: +45% subscription funnel entry, +27% prospects starting a project, +63% documents sent. Planity: +50% appointment bookings per second. Design is a growth strategy — not an aesthetic choice.",
+              "Fortuneo: +45% subscription funnel entry, +27% prospects starting a project, +63% documents sent. Planity: +50% appointment bookings per second. Design is a growth strategy, not an aesthetic choice.",
           },
           {
             id: "end-to-end",
             title: "End-to-End: Strategy to Launch, Under One Roof",
-            quote: "Design isn't a cost center — it's a growth lever.",
+            quote: "Design isn't a cost center. It's a growth lever.",
             description:
-              "Fortuneo: +45% subscription funnel entry, +27% prospects starting a project, +63% documents sent. Planity: +50% appointment bookings per second. Design is a growth strategy — not an aesthetic choice.",
+              "Fortuneo: +45% subscription funnel entry, +27% prospects starting a project, +63% documents sent. Planity: +50% appointment bookings per second. Design is a growth strategy, not an aesthetic choice.",
           },
           {
             id: "long-term-partnership",
             title: "Long-Term Creative Partnership",
-            quote: "Design isn't a cost center — it's a growth lever.",
+            quote: "Design isn't a cost center. It's a growth lever.",
             description:
-              "Fortuneo: +45% subscription funnel entry, +27% prospects starting a project, +63% documents sent. Planity: +50% appointment bookings per second. Design is a growth strategy — not an aesthetic choice.",
+              "Fortuneo: +45% subscription funnel entry, +27% prospects starting a project, +63% documents sent. Planity: +50% appointment bookings per second. Design is a growth strategy, not an aesthetic choice.",
           },
         ],
       }}
@@ -152,10 +152,10 @@ export default function BrandDesignAgencyPage() {
               src: "/works/Fortuneo/release/1.webp",
               alt: "Fortuneo",
             },
-            title: "Fortuneo — Making Finance Feel Desirable",
+            title: "Fortuneo: Making Finance Feel Desirable",
             industry: "Fintech, French Online Bank",
             description:
-              "France's most affordable online bank needed to become its most desirable. Full transformation: brand strategy, identity, design system, product design, motion, photography, and web — to attract younger users and increase premium adoption, while keeping the price-leadership that made Fortuneo unique.",
+              "France's most affordable online bank needed to become its most desirable. Full transformation: brand strategy, identity, design system, product design, motion, photography, and web, to attract younger users and increase premium adoption, while keeping the price-leadership that made Fortuneo unique.",
             metrics: [
               "+45% subscription funnel entry",
               "+77% awareness consideration",
@@ -168,10 +168,10 @@ export default function BrandDesignAgencyPage() {
               src: "/works/Planity/backstage/1.webp",
               alt: "Planity",
             },
-            title: "Planity — A System Built to Scale",
+            title: "Planity: A System Built to Scale",
             industry: "B2B SaaS, Europe",
             description:
-              "France's leading salon booking platform, expanding across Europe, needed a brand system built to scale. Over three years we built the full identity — design system, B2C and B2B touchpoints, product design, and photography direction — creating coherence across markets without losing distinctiveness.",
+              "France's leading salon booking platform, expanding across Europe, needed a brand system built to scale. Over three years we built the full identity, design system, B2C and B2B touchpoints, product design, and photography direction, creating coherence across markets without losing distinctiveness.",
             metrics: [
               "+50% appointment bookings per second",
               "3-year partnership",
@@ -245,19 +245,19 @@ export default function BrandDesignAgencyPage() {
             id: "technology-saas",
             name: "Technology & SaaS",
             description:
-              "Transforming complex products into clear, desirable, memorable identities — where technology becomes culture.",
+              "Transforming complex products into clear, desirable, memorable identities, where technology becomes culture.",
           },
           {
             id: "fintech-financial",
             name: "Fintech & Financial",
             description:
-              "Making financial brands premium, human, and trustworthy — design that builds credibility before the first meeting.",
+              "Making financial brands premium, human, and trustworthy, design that builds credibility before the first meeting.",
           },
           {
             id: "consumer-lifestyle",
             name: "Consumer & Lifestyle",
             description:
-              "Brands that live in culture — e-commerce, D2C, beauty, food and beverage. We build identity people want to belong to.",
+              "Brands that live in culture: e-commerce, D2C, beauty, food and beverage. We build identity people want to belong to.",
           },
           {
             id: "startups-scale-ups",
@@ -275,25 +275,25 @@ export default function BrandDesignAgencyPage() {
             id: "discovery-strategy",
             title: "Discovery & Strategy",
             description:
-              "Every project begins with a deep immersion — competitive audit, brand positioning, messaging platform, naming when relevant. We understand before we create. The strategy becomes the creative brief that guides every decision that follows.",
+              "Every project begins with a deep immersion: competitive audit, brand positioning, messaging platform, naming when relevant. We understand before we create. The strategy becomes the creative brief that guides every decision that follows.",
           },
           {
             id: "creative-direction-identity-design",
             title: "Creative Direction & Identity Design",
             description:
-              "Moodboards, visual concepts, logo design, typography, color palette, design system — exploration and iteration, co-constructed with the client rather than imposed. The creative direction is a conversation, not a dictate.",
+              "Moodboards, visual concepts, logo design, typography, color palette, design system, exploration and iteration, co-constructed with the client rather than imposed. The creative direction is a conversation, not a dictate.",
           },
           {
             id: "build-launch",
             title: "Build & Launch",
             description:
-              "Motion design, photography, web development, brand rollout across all touchpoints — from strategy to pixel, everything comes out of the same vision, one team, no handoffs. The brand launches with total coherence.",
+              "Motion design, photography, web development, brand rollout across all touchpoints, from strategy to pixel, everything comes out of the same vision, one team, no handoffs. The brand launches with total coherence.",
           },
           {
             id: "evolve-grow",
             title: "Evolve & Grow",
             description:
-              "Brand updates, new product lines, new markets, campaign assets — the best brands are never finished, they evolve. We stay close through growth phases, ensuring the identity scales without losing what makes it distinctive.",
+              "Brand updates, new product lines, new markets, campaign assets, the best brands are never finished, they evolve. We stay close through growth phases, ensuring the identity scales without losing what makes it distinctive.",
           },
         ],
       }}
@@ -301,24 +301,24 @@ export default function BrandDesignAgencyPage() {
         faqTitle: "Frequently Asked Questions About Brand Design",
         ctaHeading: "Ready to Work With a Brand Design Agency That Delivers?",
         ctaDescription:
-          "If you're building something that deserves to be seen, Anagram is the brand design agency that will make it impossible to ignore. From strategy to launch, under one roof, we craft brands that need no introduction — and the results to prove it. Let's talk about your project.",
+          "If you're building something that deserves to be seen, Anagram is the brand design agency that will make it impossible to ignore. From strategy to launch, under one roof, we craft brands that need no introduction, and the results to prove it. Let's talk about your project.",
         ctaEmail: "hello@anagram.club",
         faqItems: [
           {
             question: "What does a brand design agency do?",
             answer:
-              "A brand design agency defines brand strategy, designs the visual identity — logo, typography, colors, design system — and deploys the brand across every digital and physical touchpoint. It's the difference between making something look good and building something that works at scale.",
+              "A brand design agency defines brand strategy, designs the visual identity, logo, typography, colors, design system, and deploys the brand across every digital and physical touchpoint. It's the difference between making something look good and building something that works at scale.",
           },
           {
             question:
               "What is the difference between a brand design agency and a graphic design studio?",
             answer:
-              "A graphic design studio executes visuals on demand. A brand design agency starts from strategy — positioning, audience, competitive landscape — then builds a coherent, scalable, and differentiated identity around it. One produces assets; the other builds a system.",
+              "A graphic design studio executes visuals on demand. A brand design agency starts from strategy, positioning, audience, competitive landscape, then builds a coherent, scalable, and differentiated identity around it. One produces assets; the other builds a system.",
           },
           {
             question: "How long does a brand design project take?",
             answer:
-              "A brand identity typically takes 6 to 12 weeks. A full rebrand — including design system and website development — usually runs 4 to 6 months, depending on scope.",
+              "A brand identity typically takes 6 to 12 weeks. A full rebrand, including design system and website development, usually runs 4 to 6 months, depending on scope.",
           },
           {
             question: "What is included in a brand identity design?",
@@ -333,13 +333,13 @@ export default function BrandDesignAgencyPage() {
           {
             question: "Can you help us rebrand an existing company?",
             answer:
-              "Yes — Anagram handles full rebrands end to end: auditing the existing brand, defining a new strategy, designing a new identity, and rolling it out across every touchpoint. Fortuneo is a good example of this process in practice.",
+              "Yes, Anagram handles full rebrands end to end: auditing the existing brand, defining a new strategy, designing a new identity, and rolling it out across every touchpoint. Fortuneo is a good example of this process in practice.",
           },
           {
             question:
               "Do you work with startups or only established companies?",
             answer:
-              "Both — Anagram works with early-stage startups as well as scale-ups and established brands. What matters is ambition, not company size.",
+              "Both, Anagram works with early-stage startups as well as scale-ups and established brands. What matters is ambition, not company size.",
           },
         ],
       }}

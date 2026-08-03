@@ -14,8 +14,8 @@ export default function BrandStrategyConsultingPage() {
     <AgencyPageTemplate
       idPrefix="brand-strategy-consulting"
       verticalDividerDots={150}
-      title="Brand Strategy Consulting — Anagram Studio"
-      description="Anagram offers brand strategy consulting that defines how your market sees you — positioning, messaging, and brand architecture built for growth."
+      title="Brand Strategy Consulting: Anagram Studio"
+      description="Anagram offers brand strategy consulting that defines how your market sees you: positioning, messaging, and brand architecture built for growth."
       vision={{
         eyebrow: "Approach",
         heading: "Brand Strategy Approach",
@@ -26,7 +26,7 @@ export default function BrandStrategyConsultingPage() {
             id: "positioning-before-execution",
             title: "Positioning Before Execution",
             description:
-              "A strong brand strategy creates alignment across every future touchpoint — product, communication, marketing, and design. The objective is not simply to look different, but to become strategically distinct in the eyes of the audience.",
+              "A strong brand strategy creates alignment across every future touchpoint: product, communication, marketing, and design. The objective is not simply to look different, but to become strategically distinct in the eyes of the audience.",
           },
         ],
       }}
@@ -41,7 +41,7 @@ export default function BrandStrategyConsultingPage() {
             name: "Brand Positioning and Differentiation",
             tag: "Positioning",
             description:
-              "We define the market position the brand should own — identifying target audiences, competitive opportunities, and strategic differentiation. Deliverables include positioning statements, competitive mapping, and value propositions designed to clarify why the brand wins against alternatives.",
+              "We define the market position the brand should own, identifying target audiences, competitive opportunities, and strategic differentiation. Deliverables include positioning statements, competitive mapping, and value propositions designed to clarify why the brand wins against alternatives.",
           },
           {
             id: "messaging-architecture",
@@ -55,7 +55,7 @@ export default function BrandStrategyConsultingPage() {
             name: "Brand Platform",
             tag: "Platform",
             description:
-              "Mission, vision, values, positioning, and messaging are consolidated into one strategic platform — the foundational document guiding every creative and communication decision that follows.",
+              "Mission, vision, values, positioning, and messaging are consolidated into one strategic platform, the foundational document guiding every creative and communication decision that follows.",
           },
           {
             id: "audience-market-analysis",
@@ -89,7 +89,7 @@ export default function BrandStrategyConsultingPage() {
             title: "Fortuneo",
             industry: "Online Banking · France",
             description:
-              "The strategic insight: transform the concept of “free banking” into something desirable and premium. The “0” became a recognizable emotional and visual brand asset — a feature turned into a strategic anchor that unified positioning, identity, and communication.",
+              "The strategic insight: transform the concept of “free banking” into something desirable and premium. The “0” became a recognizable emotional and visual brand asset, a feature turned into a strategic anchor that unified positioning, identity, and communication.",
             metrics: [
               "Strategic positioning",
               "“0” as brand asset",
@@ -105,7 +105,7 @@ export default function BrandStrategyConsultingPage() {
             title: "Planity",
             industry: "B2B SaaS · Europe",
             description:
-              "The “P as a door” positioning became a scalable strategic concept representing entry, transformation, and accessibility — flexible enough to carry both B2C and B2B markets across Europe, coherent enough to remain instantly recognizable everywhere.",
+              "The “P as a door” positioning became a scalable strategic concept representing entry, transformation, and accessibility, flexible enough to carry both B2C and B2B markets across Europe, coherent enough to remain instantly recognizable everywhere.",
             metrics: [
               "“P as a door” concept",
               "B2C & B2B alignment",
@@ -130,12 +130,12 @@ export default function BrandStrategyConsultingPage() {
           {
             question: "What does a brand strategy consultant do?",
             answer:
-              "A brand strategy consultant defines the positioning, messaging, and differentiation strategy behind a company — creating the strategic foundation that guides future design, communication, and marketing decisions.",
+              "A brand strategy consultant defines the positioning, messaging, and differentiation strategy behind a company, creating the strategic foundation that guides future design, communication, and marketing decisions.",
           },
           {
             question: "When does a company need brand strategy consulting?",
             answer:
-              "Companies generally invest in strategy at launch, before a rebrand, ahead of fundraising, or when entering new markets — any moment where the brand needs to evolve intentionally and coherently.",
+              "Companies generally invest in strategy at launch, before a rebrand, ahead of fundraising, or when entering new markets, any moment where the brand needs to evolve intentionally and coherently.",
           },
           {
             question: "Can brand strategy be a standalone engagement?",

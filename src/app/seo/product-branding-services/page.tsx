@@ -4,7 +4,7 @@ import AgencyPageTemplate from "@/components/agency-page/AgencyPageTemplate";
 export const metadata: Metadata = {
   title: "Product Branding Services | anagram",
   description:
-    "Anagram delivers product branding services bridging brand identity and product design — strategy, visual identity, UI/UX, and motion, all in-house.",
+    "Anagram delivers product branding services bridging brand identity and product design: strategy, visual identity, UI/UX, and motion, all in-house.",
   metadataBase: new URL("https://anagramclub.com"),
   robots: { index: true, follow: true },
 };
@@ -15,7 +15,7 @@ export default function ProductBrandingServicesPage() {
       idPrefix="product-branding-services"
       verticalDividerDots={60}
       title="Product Branding Services That Connect Identity to Experience"
-      description="Anagram delivers product branding services that bridge brand identity and product design into one coherent system. We believe a product brand should not only exist on a homepage or within marketing assets, but directly inside the user experience itself. Strategy, visual identity, product design, UI/UX, and motion are all developed internally by the same team — creating products that feel consistent across every interaction, from first impression to product usage."
+      description="Anagram delivers product branding services that bridge brand identity and product design into one coherent system. We believe a product brand should not only exist on a homepage or within marketing assets, but directly inside the user experience itself. Strategy, visual identity, product design, UI/UX, and motion are all developed internally by the same team, creating products that feel consistent across every interaction, from first impression to product usage."
       services={{
         eyebrow: "Services",
         heading: "Product Branding Services at Anagram",
@@ -34,7 +34,7 @@ export default function ProductBrandingServicesPage() {
             name: "Product Design and UI",
             tag: "Digital",
             description:
-              "UI/UX design and product systems translate the brand identity directly into the product experience — creating interfaces that feel intuitive, coherent, and aligned with the broader positioning of the brand.",
+              "UI/UX design and product systems translate the brand identity directly into the product experience, creating interfaces that feel intuitive, coherent, and aligned with the broader positioning of the brand.",
           },
           {
             id: "motion-brand-assets",
@@ -58,7 +58,7 @@ export default function ProductBrandingServicesPage() {
           {
             question: "What are product branding services?",
             answer:
-              "Product branding services create the visual identity, design systems, and product experience surrounding a specific product — ensuring the brand remains coherent from the homepage to the final screen inside the application itself.",
+              "Product branding services create the visual identity, design systems, and product experience surrounding a specific product, ensuring the brand remains coherent from the homepage to the final screen inside the application itself.",
           },
           {
             question: "How much do product branding services cost?",
