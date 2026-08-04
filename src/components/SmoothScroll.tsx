@@ -103,7 +103,7 @@ export default function SmoothScroll({
     <div
       ref={wrapperRef}
       id="smooth-scroll-container"
-      className="flex-1  overflow-y-auto overflow-x-hidden"
+      className="flex-1  overflow-y-auto overflow-x-hidden touch-pan-y overscroll-x-none"
     >
       <div ref={contentRef}>{children}</div>
     </div>

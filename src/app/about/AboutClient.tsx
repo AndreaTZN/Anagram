@@ -149,6 +149,7 @@ export default function AboutPage({
   const topMobileRef = useRef<HTMLImageElement>(null);
   const isAnimating = useRef(false);
   const currentImage = useRef(team[0].image);
+  const settleTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function animatePair(
     top: HTMLImageElement,
@@ -170,24 +171,30 @@ export default function AboutPage({
     });
   }
 
-  function handleNameHover(index: number) {
-    setHoveredIndex(index);
-    const member = team[index];
-    if (
-      !member.image ||
-      member.image === currentImage.current ||
-      isAnimating.current
-    )
-      return;
+  function swapImage(src: string) {
+    if (!src || src === currentImage.current || isAnimating.current) return;
 
     isAnimating.current = true;
     if (topRef.current && baseRef.current)
-      animatePair(topRef.current, baseRef.current, member.image, () => {
-        currentImage.current = member.image;
+      animatePair(topRef.current, baseRef.current, src, () => {
+        currentImage.current = src;
         isAnimating.current = false;
       });
     if (topMobileRef.current && baseMobileRef.current)
-      animatePair(topMobileRef.current, baseMobileRef.current, member.image);
+      animatePair(topMobileRef.current, baseMobileRef.current, src);
+  }
+
+  function handleNameHover(index: number) {
+    setHoveredIndex(index);
+    const member = team[index];
+    if (!member.image) return;
+
+    // Only crossfade once the hover "settles" on a member, instead of on
+    // every mouseenter — sweeping across several names in quick succession
+    // would otherwise flash through each intermediate photo before landing
+    // on the final one.
+    if (settleTimeout.current) clearTimeout(settleTimeout.current);
+    settleTimeout.current = setTimeout(() => swapImage(member.image!), 80);
   }
 
   return (
@@ -208,7 +215,7 @@ export default function AboutPage({
           </div>
 
           {/* Clocks */}
-          <div id="about-clocks" className="w-full max-[766px]:order-7">
+          <div id="about-clocks" className="flex-1 max-[766px]:order-7">
             {/* Desktop */}
             <div className="flex gap-8 justify-center w-full max-[766px]:hidden">
               {clocks.map((clock) => (
@@ -593,7 +600,7 @@ export default function AboutPage({
                   {team.map((member, i) => (
                     <div
                       key={member.name}
-                      className="flex gap-14 items-baseline cursor-default transition-opacity duration-200"
+                      className="flex gap-14 items-baseline cursor-default"
                       style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
                       onMouseEnter={() => handleNameHover(i)}
                     >
@@ -651,13 +658,13 @@ export default function AboutPage({
                   </div>
                 </div>
 
-                {/* Text list — mix-blend-difference */}
-                <div className="mix-blend-difference flex justify-between text-white text-base leading-[1.3]">
+                {/* Text list */}
+                <div className="flex justify-between text-base leading-[1.3]">
                   <div className="flex flex-col gap-2">
                     {team.map((member, i) => (
                       <p
                         key={member.name}
-                        className="whitespace-nowrap transition-opacity duration-200 cursor-pointer"
+                        className="text-[#0c0c0c] whitespace-nowrap transition-opacity duration-200 cursor-pointer"
                         style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
                         onClick={() => handleNameHover(i)}
                       >
@@ -669,7 +676,7 @@ export default function AboutPage({
                     {team.map((member, i) => (
                       <p
                         key={member.name}
-                        className="whitespace-nowrap transition-opacity duration-200 cursor-pointer"
+                        className="text-[#7e7e7e] whitespace-nowrap transition-opacity duration-200 cursor-pointer"
                         style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
                         onClick={() => handleNameHover(i)}
                       >

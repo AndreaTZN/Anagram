@@ -103,7 +103,8 @@ export default function AmoCasePage() {
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
       <h1 id="case-amo-seo-title" className="sr-only">
-        amo Brand Design: 3D product design and motion for the app putting friendship back at the center
+        amo Brand Design: 3D product design and motion for the app putting
+        friendship back at the center
       </h1>
       <div id="case-page" className="flex flex-col gap-4">
         <CaseTabContent
@@ -142,8 +143,8 @@ export default function AmoCasePage() {
               <Image
                 src="/works/Amo/15.avif"
                 alt="Amo 15"
-                width={0}
-                height={0}
+                width={2592}
+                height={5619}
                 sizes="100vw"
                 className="w-full h-auto"
               />

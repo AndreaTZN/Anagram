@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Badge from "./Badge";
+import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
 
 gsap.registerPlugin(useGSAP);
 
@@ -14,8 +15,10 @@ export type Work = {
   href?: string;
   badge?: string;
   type?: "image" | "video";
-  image: string;
+  image?: string;
   poster?: string;
+  dataSrc?: string;
+  dataRatio?: string;
   aspect: string;
 };
 
@@ -25,7 +28,7 @@ export const allWorks: Work[] = [
     description:
       "To celebrate the achievements of its community, Incard set out to create a trophy system that transforms key milestones into meaningful rewards turning business growth into something users can proudly earn and display.",
     badge: "Coming soon",
-    image: "/works/incard/1.jpg",
+    image: "/works/incard/thumbnail-incard.webp",
     aspect: "aspect-[378/300]",
   },
   {
@@ -42,7 +45,8 @@ export const allWorks: Work[] = [
       "Transform Fortuneo into a more desirable, premium brand while preserving what makes it unique: France's most affordable, always-free online bank that stays competitive yet human.",
     href: "/works/fortuneo",
     type: "video",
-    image: "/works/Fortuneo/Fortuneo-grid.mp4",
+    dataSrc: "1215461019",
+    dataRatio: "932/1000",
     poster: "/works/Fortuneo/fortuneo-grid-poster.webp",
     aspect: "aspect-[387/300]",
   },
@@ -52,7 +56,8 @@ export const allWorks: Work[] = [
       "Simplify the booking experience by reducing friction and improving conversion, while evolving the product beyond a purely functional interface.",
     href: "/works/planity",
     type: "video",
-    image: "/works/Planity/Planity-grid.mp4",
+    dataSrc: "1215461052",
+    dataRatio: "932/1000",
     poster: "/works/Planity/planity-grid-poster.webp",
     aspect: "aspect-[387/300]",
   },
@@ -77,7 +82,10 @@ export const allWorks: Work[] = [
     description:
       "Pennylane, part of the French Tech 120 as one of the country's most promising startups, set out to position itself as a leading financial platform within a highly competitive ecosystem, where a complex all-in-one offering needed to feel simple and trustworthy at first glance.",
     href: "/works/pennylane",
-    image: "/works/Pennylane/1.avif",
+    type: "video",
+    dataSrc: "1215462528",
+    dataRatio: "1890/1000",
+    poster: "/works/Pennylane/pennylane-grid-poster.webp",
     aspect: "aspect-[387/200]",
   },
   {
@@ -85,7 +93,10 @@ export const allWorks: Work[] = [
     description:
       "Everyday is an AI-first entertainment company. They merge creativity and artificial intelligence to craft experiences people love, starting with mobile games and expanding toward the next generation of interactive entertainment.",
     href: "/works/everyday",
-    image: "/works/Everyday/release/1.webp",
+    type: "video",
+    dataSrc: "1215462530",
+    dataRatio: "1890/1500",
+    poster: "/works/Everyday/everyday-grid-poster.webp",
     aspect: "aspect-[387/300]",
   },
   {
@@ -109,7 +120,10 @@ export const allWorks: Work[] = [
     description:
       "Municipal teams face daily, concrete problems, illegal dumping, nuisances, and incivility, but traditional public safety and surveillance solutions often feel heavy, costly, and disconnected from the realities of small and mid-sized towns.",
     href: "/works/vizzia",
-    image: "/works/Vizzia/1.avif",
+    type: "video",
+    dataSrc: "1172566718",
+    dataRatio: "2000/1124",
+    poster: "/works/Vizzia/1.avif",
     aspect: "aspect-[387/250]",
   },
   {
@@ -159,6 +173,14 @@ function WorkCard({ work }: { work: Work }) {
     : ({ children }: { children: React.ReactNode }) => <>{children}</>;
 
   const overlayRef = useRef<HTMLDivElement>(null);
+  const embedRef = useRef<HTMLDivElement>(null);
+
+  useVimeoPlayer({
+    embedRef,
+    dataSrc: work.dataSrc ?? "",
+    dataRatio: work.dataRatio,
+    title: work.name,
+  });
 
   useGSAP(() => {
     gsap.set(overlayRef.current, { opacity: 0 });
@@ -191,16 +213,16 @@ function WorkCard({ work }: { work: Work }) {
           onMouseLeave={handleLeave}
         >
           {work.type === "video" ? (
-            <video
-              autoPlay
-              loop
-              playsInline
-              muted
-              poster={work.poster}
-              className="absolute inset-0 w-full h-full object-cover"
+            <div
+              ref={embedRef}
+              className="absolute inset-0 w-full h-full overflow-hidden"
             >
-              <source src={work.image} />
-            </video>
+              <img
+                src={work.poster}
+                alt={work.name}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
           ) : (
             <img
               src={work.image}

@@ -51,19 +51,6 @@ export default function MobileNav() {
     document.body.style.inset = lock ? "0" : "";
   }
 
-  function playVideos() {
-    menuRef.current?.querySelectorAll("video").forEach((video) => {
-      video.play().catch(() => {});
-    });
-  }
-
-  function resetVideos() {
-    menuRef.current?.querySelectorAll("video").forEach((video) => {
-      video.pause();
-      video.currentTime = 0;
-    });
-  }
-
   function resetMenuScroll() {
     if (menuRef.current) menuRef.current.scrollTop = 0;
   }
@@ -75,12 +62,10 @@ export default function MobileNav() {
       tl.current.play();
       scrollLockRef.current = true;
       lockBody(true);
-      playVideos();
     } else {
       tl.current.reverse();
       scrollLockRef.current = false;
       lockBody(false);
-      resetVideos();
     }
     setOpen((v) => !v);
   }
@@ -90,7 +75,6 @@ export default function MobileNav() {
     tl.current?.reverse();
     scrollLockRef.current = false;
     lockBody(false);
-    resetVideos();
     setOpen(false);
   }
 
@@ -215,15 +199,27 @@ export default function MobileNav() {
             <Link key={work.name} href={work.href} onClick={close}>
               <div className="flex items-center gap-4 p-2 bg-[#f9f9f9] rounded-sm">
                 <div className="relative shrink-0 overflow-hidden w-32.5 h-20">
-                  <video
-                    src={work.video}
-                    poster={work.poster}
-                    muted
-                    loop
-                    playsInline
-                    preload="none"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
+                  {/* TEMP EXPERIMENT: mount/unmount the <video> with the menu
+                      (instead of keeping it mounted and play/pause it) to test
+                      whether that avoids the mobile scroll-lock bug */}
+                  {open ? (
+                    <video
+                      src={work.video}
+                      poster={work.poster}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="none"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={work.poster}
+                      alt={work.name}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
                 </div>
                 <div className="flex flex-col gap-2">
                   <span className="text-[#7c7c7c] text-sm leading-[0.9]">

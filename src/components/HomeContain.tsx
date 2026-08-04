@@ -7,6 +7,8 @@ import gsap from "gsap";
 import Badge from "./Badge";
 import MerchCard from "./MerchCard";
 import ToolCard from "./ToolCard";
+import Vimeo169 from "./cases-frame/Vimeo169";
+import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
 
 gsap.registerPlugin(useGSAP);
 
@@ -20,8 +22,10 @@ type Work = {
   tag?: string;
   media: {
     type: "image" | "video";
-    src: string;
+    src?: string;
     poster?: string;
+    dataSrc?: string;
+    dataRatio?: string;
     aspect: string;
     bg?: string;
   };
@@ -58,9 +62,21 @@ const works: Work[] = [
     externalLink: "https://www.symbl.space/",
     media: {
       type: "image",
-      src: "/works/symbl/1.jpg",
+      src: "/works/symbl/card.jpg",
       aspect: "aspect-[280/250]",
       bg: "#f5f5f5",
+    },
+  },
+  {
+    name: "Planity takes over Germany",
+    tag: "News",
+    description:
+      "Planity's latest campaign brings the photography created by Anagram to the streets of Germany. Rolled out across Cologne, Frankfurt, Hamburg, Munich and Nuremberg, the campaign brings the brand's photography into the public space.",
+    externalLink: "https://www.instagram.com/p/DY2HO9noNYw/",
+    media: {
+      type: "image",
+      src: "/news/planity-news.webp",
+      aspect: "aspect-[280/200]",
     },
   },
   {
@@ -71,9 +87,22 @@ const works: Work[] = [
       "Transform Fortuneo into a more desirable, premium brand while preserving what makes it unique: France's most affordable, always-free online bank that stays competitive yet human.",
     media: {
       type: "video",
-      src: "/works/Fortuneo/Fortuneo-grid.mp4",
+      dataSrc: "1215461019",
+      dataRatio: "932/1000",
       poster: "/works/Fortuneo/fortuneo-grid-poster.webp",
       aspect: "aspect-[280/300]",
+    },
+  },
+  {
+    name: "Amazon acquires Bee",
+    tag: "News",
+    description:
+      "Amazon has acquired Bee, the AI wearable startup behind a personal assistant designed to capture conversations and memories throughout the day. Read the full story on TechCrunch.",
+    externalLink: "https://techcrunch.com/2025/07/22/amazon-acquires-bee-the-ai-wearable-that-records-everything-you-say/",
+    media: {
+      type: "image",
+      src: "/news/bee-news.webp",
+      aspect: "aspect-[280/250]",
     },
   },
   {
@@ -96,7 +125,8 @@ const works: Work[] = [
       "Simplify the booking experience by reducing friction and improving conversion, while evolving the product beyond a purely functional interface.",
     media: {
       type: "video",
-      src: "/works/Planity/Planity-grid.mp4",
+      dataSrc: "1215461052",
+      dataRatio: "932/1000",
       poster: "/works/Planity/planity-grid-poster.webp",
       aspect: "aspect-[280/300]",
     },
@@ -120,7 +150,7 @@ const FILTERS = ["All", "Works", "Merch", "News", "Coming project", "Tools"];
 function WorkCard({ work }: { work: Work }) {
   if (work.tag === "Merch" && work.price) {
     return (
-      <MerchCard name={work.name} price={work.price} src={work.media.src} />
+      <MerchCard name={work.name} price={work.price} src={work.media.src!} />
     );
   }
 
@@ -129,7 +159,7 @@ function WorkCard({ work }: { work: Work }) {
       <ToolCard
         name={work.name}
         description={work.description}
-        src={work.media.src}
+        src={work.media.src!}
         href={work.externalLink}
         aspect={work.media.aspect}
       />
@@ -142,13 +172,32 @@ function WorkCard({ work }: { work: Work }) {
           {children}
         </Link>
       )
-    : ({ children }: { children: React.ReactNode }) => <>{children}</>;
+    : work.externalLink
+      ? ({ children }: { children: React.ReactNode }) => (
+          <a
+            href={work.externalLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={work.name}
+          >
+            {children}
+          </a>
+        )
+      : ({ children }: { children: React.ReactNode }) => <>{children}</>;
 
   const badgeLabel =
     work.badge ?? (work.tag === "Coming project" ? "Coming soon" : undefined);
 
   const isClickable = Boolean(work.href) || Boolean(work.externalLink);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const embedRef = useRef<HTMLDivElement>(null);
+
+  useVimeoPlayer({
+    embedRef,
+    dataSrc: work.media.dataSrc ?? "",
+    dataRatio: work.media.dataRatio,
+    title: work.name,
+  });
 
   useGSAP(() => {
     gsap.set(overlayRef.current, { opacity: 0 });
@@ -188,16 +237,16 @@ function WorkCard({ work }: { work: Work }) {
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : (
-            <video
-              autoPlay
-              loop
-              playsInline
-              muted
-              poster={work.media.poster}
-              className="absolute inset-0 w-full h-full object-cover"
+            <div
+              ref={embedRef}
+              className="absolute inset-0 w-full h-full overflow-hidden"
             >
-              <source src={work.media.src} />
-            </video>
+              <img
+                src={work.media.poster}
+                alt={work.name}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
           )}
           <div
             ref={overlayRef}
@@ -223,7 +272,7 @@ function WorkCard({ work }: { work: Work }) {
               rel="noopener noreferrer"
               className="text-[#0c0c0c] leading-[0.9] text-sm"
             >
-              Try now ↗
+              ↗
             </a>
           )}
         </div>
@@ -279,7 +328,7 @@ export default function HomeContain() {
 
   // Hide filters that no work is tagged with; "All" always stays.
   const visibleFilters = FILTERS.filter(
-    (filter) => filter === "All" || works.some((w) => w.tag === filter)
+    (filter) => filter === "All" || works.some((w) => w.tag === filter),
   );
 
   const firstRowCount = isWide ? 5 : 4;
@@ -322,15 +371,12 @@ export default function HomeContain() {
         ))}
         {filtered.length > firstRowCount && (
           <div className="relative col-span-1 md:col-span-4 2xl:col-span-5 overflow-hidden aspect-video my-8">
-            <video
-              loop
-              autoPlay
-              playsInline
-              muted
-              className="w-full h-full object-cover"
-            >
-              <source src="/home/videos/wastetide.mp4" />
-            </video>
+            <Vimeo169
+              dataSrc="1199785516"
+              dataRatio="1920/1080"
+              src="/works/Wastetide/2.webp"
+              alt="Wastetide video"
+            />
             <Link
               href="/works/wastetide"
               className="group absolute bottom-4 left-4 z-10 flex items-center gap-4 backdrop-blur-[17px] bg-[rgba(12,12,12,0.2)] px-4 py-3 rounded-full"

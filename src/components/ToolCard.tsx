@@ -81,7 +81,7 @@ export default function ToolCard({
             src={src}
             alt={name}
             fill
-            sizes="25vw"
+            sizes="(max-width: 767px) 100vw, (max-width: 1535px) 25vw, 20vw"
             className="w-full h-full object-cover"
           />
         </div>
