@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { globalLenisRef } from "@/lib/lenis";
+import { useCookieConsent } from "@/components/cmp";
 
 const Logo = () => (
   <svg
@@ -57,6 +58,7 @@ function handleBackToTop() {
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const { setOpen } = useCookieConsent();
 
   return (
     <footer className="text-[#0c0c0c] text-sm">
@@ -141,6 +143,16 @@ export default function Footer() {
           <Link href="/privacy" className="flex-1 leading-[1.1]">
             Privacy Policy
           </Link>
+
+          <button
+            id="footer-desktop-cookie-settings"
+            type="button"
+            onClick={() => setOpen(true)}
+            className="flex-1 text-left leading-[1.1] cursor-pointer"
+          >
+            Cookie settings
+          </button>
+
           <button
             type="button"
             onClick={handleBackToTop}
@@ -168,6 +180,14 @@ export default function Footer() {
             <Link href="/terms" className="leading-[1.1] underline">
               Terms & Conditions
             </Link>
+            <button
+              id="footer-mobile-cookie-settings"
+              type="button"
+              onClick={() => setOpen(true)}
+              className="text-left leading-[1.1] underline cursor-pointer"
+            >
+              Cookie settings
+            </button>
             <span className="leading-[1.1]">Website by Anagram</span>
             <span className="leading-[1.1] opacity-50">© {year} Anagram</span>
           </div>
