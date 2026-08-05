@@ -6,7 +6,7 @@ import gsap from "gsap";
 const FRAME_COUNT = 91;
 const FRAMES = Array.from(
   { length: FRAME_COUNT },
-  (_, i) => `/arpe-rotation/arpe-${String(i + 1).padStart(2, "0")}.webp`,
+  (_, i) => `/arpe-rotation/arpe_Main_${String(i).padStart(5, "0")}.webp`,
 );
 
 export default function ArpeRotation() {

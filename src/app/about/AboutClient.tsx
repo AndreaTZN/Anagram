@@ -285,11 +285,11 @@ export default function AboutPage({
           </div>
         </section>
         {/* colonne gauche */}
-        <section className="grid grid-cols-12 gap-4 max-[766px]:contents">
+        <section className="flex gap-4 max-[766px]:contents">
           {/* Hero image */}
           <div
             id="about-hero"
-            className="col-span-8 relative bg-[#f4f4f4] overflow-hidden aspect-800/490 max-[766px]:order-2 max-[766px]:aspect-square max-[766px]:rounded"
+            className="grow-2 shrink-0 basis-0 self-start relative bg-[#f4f4f4] overflow-hidden aspect-800/490 max-[766px]:order-2 max-[766px]:grow-0 max-[766px]:shrink max-[766px]:basis-auto max-[766px]:self-auto max-[766px]:aspect-square max-[766px]:rounded"
           >
             <Swiper
               loop
@@ -337,26 +337,18 @@ export default function AboutPage({
           {/* Merch — T-shirt */}
           <div
             id="about-merch"
-            className="col-span-4 relative bg-[#f4f4f4] overflow-hidden flex justify-center items-start max-[766px]:order-14 max-[766px]:flex-col max-[766px]:items-center max-[766px]:rounded"
+            className="grow shrink-0 basis-0 relative bg-[#f4f4f4] overflow-hidden flex justify-center items-start max-[766px]:order-14 max-[766px]:grow-0 max-[766px]:shrink max-[766px]:basis-auto max-[766px]:flex-col max-[766px]:items-center max-[766px]:rounded max-[766px]:aspect-100/100"
           >
-            <div className="w-full h-full max-[766px]:h-auto max-[766px]:aspect-square">
+            <div className="absolute inset-0">
               <ArpeRotation />
             </div>
-            <div className="absolute bottom-8 left-4 right-4 flex gap-2 max-[766px]:static max-[766px]:w-full max-[766px]:px-4 max-[766px]:pb-4">
-              <div className="flex flex-1 items-center justify-between px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">
-                <span className="text-white text-sm font-medium opacity-50 whitespace-nowrap">
-                  <span className="max-[766px]:hidden">Anagram 30g </span>
-                  Teeshirt
-                </span>
-                <span className="text-white text-sm font-medium whitespace-nowrap">
-                  39.99$
-                </span>
-              </div>
-              <button className="flex items-center justify-center px-4 py-4 rounded-full bg-white shrink-0">
-                <span className="text-[#0c0c0c] text-sm font-medium whitespace-nowrap">
-                  Add to bag
-                </span>
-              </button>
+            <div className="absolute bottom-8 left-4 right-4 flex items-center justify-between px-4 py-3 rounded-full bg-[#c4c4c4]">
+              <span className="text-white text-sm font-medium whitespace-nowrap">
+                Available soon
+              </span>
+              <span className="text-white text-sm  whitespace-nowrap">
+                2027
+              </span>
             </div>
           </div>
         </section>
