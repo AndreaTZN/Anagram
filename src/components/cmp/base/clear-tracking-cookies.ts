@@ -14,6 +14,8 @@ const TRACKED_COOKIE_PREFIXES: { prefix: string; category: CookieCategory }[] = 
   { prefix: "_gid", category: "analytics" },
   { prefix: "_gat", category: "analytics" },
   { prefix: "mp_", category: "analytics" }, // Mixpanel
+  { prefix: "_clck", category: "analytics" }, // Clarity: user id, 1 year
+  { prefix: "_clsk", category: "analytics" }, // Clarity: session id, 1 day
   { prefix: "_fbp", category: "marketing" }, // Meta Pixel
   { prefix: "_fbc", category: "marketing" },
 ];
@@ -71,6 +73,8 @@ function expire(name: string) {
 const TRACKED_STORAGE_PREFIXES: { prefix: string; category: CookieCategory }[] =
   [
     { prefix: "mp_", category: "analytics" }, // Mixpanel: mp_<token>_mixpanel
+    { prefix: "_clck", category: "analytics" }, // Clarity mirrors its ids here
+    { prefix: "clarity", category: "analytics" },
     { prefix: "_gcl_ls", category: "marketing" }, // Google Ads link storage
   ];
 

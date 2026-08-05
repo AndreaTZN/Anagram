@@ -8,8 +8,8 @@ import { CookieService } from "@/components/cmp";
  * dialog can name the third parties each category covers.
  *
  * GA4 reads Consent Mode signals itself, so it carries `consentMode` and stays
- * loaded while Google gates the data. Mixpanel and Meta Pixel don't understand
- * Consent Mode at all, so they are blocked in GTM: Mixpanel on
+ * loaded while Google gates the data. Mixpanel, Clarity and Meta Pixel don't
+ * understand Consent Mode at all, so they are blocked in GTM: the first two on
  * `analytics_storage`, Meta Pixel on `ad_storage`.
  */
 export function CookieServices() {
@@ -22,6 +22,7 @@ export function CookieServices() {
         consentMode
       />
       <CookieService id="mixpanel" name="Mixpanel" category="analytics" />
+      <CookieService id="clarity" name="Microsoft Clarity" category="analytics" />
       <CookieService id="meta-pixel" name="Meta Pixel" category="marketing" />
     </>
   );
