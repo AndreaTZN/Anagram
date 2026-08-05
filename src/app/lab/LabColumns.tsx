@@ -67,29 +67,41 @@ const MOBILE_DURATIONS = [0.5, 0.75];
 
 function Card({ card, colWidth }: { card: CardData; colWidth: number }) {
   const height = colWidth / ASPECT_RATIO[card.variant];
+  const mediaRef = useRef<HTMLVideoElement | HTMLImageElement>(null);
+
+  function fadeIn() {
+    if (mediaRef.current) gsap.to(mediaRef.current, { opacity: 1, duration: 0.4, ease: "power2.out" });
+  }
+
   return (
     <div
-      className="relative shrink-0 w-full overflow-hidden"
+      className="relative shrink-0 w-full overflow-hidden bg-[#e5e5e5]"
       style={{ height: `${height}px` }}
     >
       {isVideo(card.src) ? (
         <video
+          ref={mediaRef as React.RefObject<HTMLVideoElement>}
           src={card.src}
           className="w-full h-full object-cover"
+          style={{ opacity: 0 }}
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
+          onLoadedData={fadeIn}
         />
       ) : (
         <Image
+          ref={mediaRef as React.RefObject<HTMLImageElement>}
           src={card.src}
           alt=""
           fill
           sizes="20vw"
           className="object-cover"
+          style={{ opacity: 0 }}
           draggable={false}
+          onLoad={fadeIn}
         />
       )}
     </div>
@@ -192,19 +204,63 @@ export default function LabColumns() {
       incrRef.current -= e.deltaY / 2;
     };
 
+    // Touch has no native momentum like a wheel/trackpad does, so we track
+    // velocity during the drag and keep coasting (with friction) after the
+    // finger lifts, instead of stopping dead on touchend.
+    const TOUCH_SENSITIVITY = 1;
+    const FRICTION = 0.97;
+    const MIN_VELOCITY = 0.05;
+
     let lastTouchY: number | null = null;
+    let lastTouchTime = 0;
+    let velocity = 0;
+    let momentumRaf: number | null = null;
+
+    const stopMomentum = () => {
+      if (momentumRaf !== null) {
+        cancelAnimationFrame(momentumRaf);
+        momentumRaf = null;
+      }
+    };
+
+    const runMomentum = () => {
+      velocity *= FRICTION;
+      if (Math.abs(velocity) < MIN_VELOCITY) {
+        momentumRaf = null;
+        return;
+      }
+      incrRef.current -= velocity;
+      momentumRaf = requestAnimationFrame(runMomentum);
+    };
+
     const onTouchStart = (e: TouchEvent) => {
+      stopMomentum();
       lastTouchY = e.touches[0].clientY;
+      lastTouchTime = performance.now();
+      velocity = 0;
     };
     const onTouchMove = (e: TouchEvent) => {
       if (lastTouchY === null) return;
       e.preventDefault();
       const y = e.touches[0].clientY;
-      incrRef.current -= (lastTouchY - y) / 2;
+      const now = performance.now();
+      const dt = Math.max(1, now - lastTouchTime);
+      const dy = (lastTouchY - y) * TOUCH_SENSITIVITY;
+
+      incrRef.current -= dy;
+      // Smooth the instantaneous velocity so a single jittery frame doesn't
+      // dictate the whole coast.
+      velocity = velocity * 0.7 + (dy / dt) * 16 * 0.3;
+
       lastTouchY = y;
+      lastTouchTime = now;
     };
     const onTouchEnd = () => {
       lastTouchY = null;
+      if (Math.abs(velocity) > MIN_VELOCITY) {
+        stopMomentum();
+        momentumRaf = requestAnimationFrame(runMomentum);
+      }
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });
@@ -214,6 +270,7 @@ export default function LabColumns() {
 
     return () => {
       ro.disconnect();
+      stopMomentum();
       el.removeEventListener("wheel", onWheel);
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchmove", onTouchMove);
