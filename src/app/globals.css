@@ -4,6 +4,32 @@ body {
   font-family: "Aeonik", sans-serif;
 }
 
+/* The accordion markup expects these from tw-animate-css, which this project
+   never imports — without them the panel jumps open. Base UI supplies the
+   measured height as --accordion-panel-height. */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--accordion-panel-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--accordion-panel-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@theme {
+  --animate-accordion-down: accordion-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-accordion-up: accordion-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;

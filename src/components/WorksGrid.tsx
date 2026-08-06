@@ -2,12 +2,18 @@
 
 import { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Badge from "./Badge";
 import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
 
 gsap.registerPlugin(useGSAP);
+
+// Grid is 1 col, 3 cols from md, 4 cols from 90rem — keeps Next from serving
+// a full-width source for what renders as a quarter-width thumbnail.
+const CARD_SIZES =
+  "(min-width: 90rem) 25vw, (min-width: 768px) 33vw, 100vw";
 
 export type Work = {
   name: string;
@@ -163,7 +169,7 @@ export const archiveWorks: Work[] = [
   },
 ];
 
-function WorkCard({ work }: { work: Work }) {
+function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
   const CardWrapper = work.href
     ? ({ children }: { children: React.ReactNode }) => (
         <Link href={work.href!} aria-label={work.name}>
@@ -217,18 +223,28 @@ function WorkCard({ work }: { work: Work }) {
               ref={embedRef}
               className="absolute inset-0 w-full h-full overflow-hidden"
             >
-              <img
-                src={work.poster}
-                alt={work.name}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
+              {work.poster && (
+                <Image
+                  src={work.poster}
+                  alt={work.name}
+                  fill
+                  sizes={CARD_SIZES}
+                  priority={priority}
+                  className="object-cover"
+                />
+              )}
             </div>
           ) : (
-            <img
-              src={work.image}
-              alt={work.name}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+            work.image && (
+              <Image
+                src={work.image}
+                alt={work.name}
+                fill
+                sizes={CARD_SIZES}
+                priority={priority}
+                className="object-cover"
+              />
+            )
           )}
           <div
             ref={overlayRef}
@@ -261,8 +277,8 @@ export default function WorksGrid({
       id="works-grid"
       className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${maxThreeColumns ? "" : "min-[90rem]:grid-cols-4"}`}
     >
-      {works.map((work) => (
-        <WorkCard key={work.name} work={work} />
+      {works.map((work, i) => (
+        <WorkCard key={work.name} work={work} priority={i < 4} />
       ))}
     </div>
   );

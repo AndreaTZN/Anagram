@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -41,7 +40,6 @@ export default function ClockWidget() {
   const [times, setTimes] = useState<string[]>([]);
   const [offsets, setOffsets] = useState<string[]>([]);
   const swiperRef = useRef<SwiperType | null>(null);
-  const progressRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     function tick() {
@@ -52,16 +50,6 @@ export default function ClockWidget() {
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, []);
-
-  useEffect(() => {
-    if (!progressRef.current) return;
-    gsap.killTweensOf(progressRef.current);
-    gsap.fromTo(
-      progressRef.current,
-      { width: "0%" },
-      { width: "100%", duration: 4, ease: "none" },
-    );
-  }, [active]);
 
   const city = CITIES[active];
 
@@ -96,17 +84,10 @@ export default function ClockWidget() {
             <span
               className={`relative rounded-full shrink-0 overflow-hidden block transition-[width] duration-300 ${
                 i === active
-                  ? "h-1.25 w-5.25 bg-[#0c0c0c]/20"
+                  ? "h-1.25 w-5.25 bg-[#0c0c0c]"
                   : "size-1.25 bg-[#0c0c0c] opacity-30"
               }`}
-            >
-              {i === active && (
-                <span
-                  ref={progressRef}
-                  className="absolute inset-y-0 left-0 bg-[#0c0c0c] rounded-full w-0"
-                />
-              )}
-            </span>
+            />
           </button>
         ))}
       </div>

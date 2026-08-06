@@ -57,9 +57,11 @@ function AccordionContent({
       className="overflow-hidden text-sm data-open:animate-accordion-down data-closed:animate-accordion-up"
       {...props}
     >
+      {/* The height animation belongs to the Panel above (accordion-down/up
+          keyframes); giving this wrapper its own height made the two fight. */}
       <div
         className={cn(
-          "h-(--accordion-panel-height) pt-0 pb-2.5 data-ending-style:h-0 data-starting-style:h-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
+          "pt-0 pb-2.5 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
           className
         )}
       >

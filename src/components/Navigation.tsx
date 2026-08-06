@@ -140,7 +140,7 @@ export default function Navigation() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-[#0c0c0c] font-medium leading-[0.8] text-sm transition-opacity"
+                  className="self-start text-[#0c0c0c] font-medium leading-[0.8] text-sm transition-opacity"
                   style={{ opacity: isActive ? 1 : 0.3 }}
                 >
                   {link.label}

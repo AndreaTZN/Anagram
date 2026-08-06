@@ -672,6 +672,8 @@ function ExpertiseCell({ expertises }: { expertises: string[] }) {
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    // The tooltip node only renders when there are extra expertises to list.
+    if (!tooltipRef.current) return;
     gsap.set(tooltipRef.current, { opacity: 0, y: 4 });
   }, []);
 

@@ -6,7 +6,6 @@ import gsap from "gsap";
 import WidgetToggleButton from "./WidgetToggleButton";
 import PhotoCarouselWidget from "./PhotoCarouselWidget";
 import ClockWidget from "./ClockWidget";
-import VisitorsWidget from "./VisitorsWidget";
 import MusicWidget from "./MusicWidget";
 import RolesStackWidget from "./RolesStackWidget";
 import type { OpenRole } from "../OpenRoles";
@@ -131,13 +130,10 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
             className="flex flex-col gap-4 w-31 shrink-0"
           >
             <MusicWidget />
-            <div className="h-40 shrink-0">
-              <VisitorsWidget />
-            </div>
           </div>
           <div className="flex flex-col gap-4">
             <div ref={(el) => addWidget(el, 1)}>
-              <PhotoCarouselWidget />
+              <PhotoCarouselWidget active={open} />
             </div>
             <div ref={(el) => addWidget(el, 3)}>
               <RolesStackWidget roles={openRoles} />

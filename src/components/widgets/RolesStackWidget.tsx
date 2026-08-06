@@ -51,8 +51,7 @@ export default function RolesStackWidget({ roles }: { roles: OpenRole[] }) {
                 (c.firstElementChild as HTMLElement | null)?.offsetHeight ?? 0,
             ),
             0,
-          ) +
-            32, // p-4 top + bottom (2rem)
+          ) + 32, // p-4 top + bottom (2rem)
         );
       measure();
       window.addEventListener("resize", measure);

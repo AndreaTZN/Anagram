@@ -10,20 +10,39 @@ import "swiper/css/effect-fade";
 
 const photos = ["/studio/1.webp", "/studio/2.webp", "/studio/3.webp"];
 
-export default function PhotoCarouselWidget() {
+const DELAY = 4000;
+
+export default function PhotoCarouselWidget({ active }: { active: boolean }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
   const progressRef = useRef<HTMLSpanElement>(null);
 
+  // The panel stays mounted while closed, so the carousel would otherwise cycle
+  // and burn a GSAP tween per slide with nothing on screen.
+  useEffect(() => {
+    const swiper = swiperRef.current;
+    if (!swiper?.autoplay) return;
+    if (active) {
+      swiper.autoplay.start();
+    } else {
+      swiper.autoplay.stop();
+      swiper.slideToLoop(0, 0);
+    }
+  }, [active]);
+
   useEffect(() => {
     if (!progressRef.current) return;
     gsap.killTweensOf(progressRef.current);
+    if (!active) {
+      gsap.set(progressRef.current, { width: "0%" });
+      return;
+    }
     gsap.fromTo(
       progressRef.current,
       { width: "0%" },
-      { width: "100%", duration: 4, ease: "none" },
+      { width: "100%", duration: DELAY / 1000, ease: "none" },
     );
-  }, [activeSlide]);
+  }, [activeSlide, active]);
 
   return (
     <div className="relative w-80 aspect-square rounded-lg overflow-hidden bg-[#d9d9d9]">
@@ -31,9 +50,10 @@ export default function PhotoCarouselWidget() {
         loop
         effect="fade"
         modules={[EffectFade, Autoplay]}
-        autoplay={{ delay: 4000, disableOnInteraction: false }}
+        autoplay={{ delay: DELAY, disableOnInteraction: false }}
         onSwiper={(s) => {
           swiperRef.current = s;
+          if (!active) s.autoplay?.stop();
         }}
         onSlideChange={(s) => setActiveSlide(s.realIndex)}
         className="w-full h-full"
