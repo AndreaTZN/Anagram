@@ -177,9 +177,6 @@ export default function Footer() {
             <Link href="/privacy" className="leading-[1.1] underline">
               Privacy
             </Link>
-            <Link href="/terms" className="leading-[1.1] underline">
-              Terms & Conditions
-            </Link>
             <button
               id="footer-mobile-cookie-settings"
               type="button"
