@@ -12,6 +12,10 @@ const photos = ["/studio/1.webp", "/studio/2.webp", "/studio/3.webp"];
 
 const DELAY = 4000;
 
+// WidgetPanel's open timeline runs ~1.07s and closes with timeScale(1.8), so
+// the panel is gone after ~0.6s — plus a margin before the carousel rewinds.
+const CLOSE_DURATION = 700;
+
 export default function PhotoCarouselWidget({ active }: { active: boolean }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
@@ -22,20 +26,30 @@ export default function PhotoCarouselWidget({ active }: { active: boolean }) {
   useEffect(() => {
     const swiper = swiperRef.current;
     if (!swiper?.autoplay) return;
+
     if (active) {
       swiper.autoplay.start();
-    } else {
-      swiper.autoplay.stop();
-      swiper.slideToLoop(0, 0);
+      return;
     }
+
+    swiper.autoplay.stop();
+    // Rewinding straight away would show the jump back to slide 1 while the
+    // panel is still fading out, so it waits for the close to finish.
+    const id = setTimeout(() => swiper.slideToLoop(0, 0), CLOSE_DURATION);
+    return () => clearTimeout(id);
   }, [active]);
 
   useEffect(() => {
     if (!progressRef.current) return;
     gsap.killTweensOf(progressRef.current);
+    // Left where it stopped: resetting it now would be visible mid-close. The
+    // rewind below puts it back to 0 once the panel is gone.
     if (!active) {
-      gsap.set(progressRef.current, { width: "0%" });
-      return;
+      const id = setTimeout(
+        () => gsap.set(progressRef.current, { width: "0%" }),
+        CLOSE_DURATION,
+      );
+      return () => clearTimeout(id);
     }
     gsap.fromTo(
       progressRef.current,

@@ -14,6 +14,9 @@ const INITIAL_VOLUME = 0.35;
 
 export default function MusicWidget() {
   const [playing, setPlaying] = useState(false);
+  // Kept mounted past `playing` so the slider can animate out before React
+  // removes it.
+  const [sliderMounted, setSliderMounted] = useState(false);
   const [volume, setVolume] = useState(INITIAL_VOLUME);
   const discRef = useRef<HTMLButtonElement>(null);
   const vinylRef = useRef<HTMLDivElement>(null);
@@ -42,12 +45,42 @@ export default function MusicWidget() {
       spin.current?.play();
       if (audio) audio.volume = volume;
       audio?.play().catch(() => {});
+      setSliderMounted(true);
     } else {
       spin.current?.pause();
       audio?.pause();
     }
     setPlaying((v) => !v);
   }
+
+  useGSAP(
+    () => {
+      const slider = sliderRef.current;
+      if (!slider) return;
+
+      if (playing) {
+        gsap.fromTo(
+          slider,
+          { autoAlpha: 0, scale: 0.9 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 0.35,
+            ease: "back.out(1.7)",
+          },
+        );
+      } else {
+        gsap.to(slider, {
+          autoAlpha: 0,
+          scale: 0.9,
+          duration: 0.2,
+          ease: "power2.in",
+          onComplete: () => setSliderMounted(false),
+        });
+      }
+    },
+    { dependencies: [playing, sliderMounted] },
+  );
 
   function setVolumeFromPointer(clientX: number) {
     const slider = sliderRef.current;
@@ -107,7 +140,7 @@ export default function MusicWidget() {
       </button>
 
       {/* Volume slider */}
-      {playing && (
+      {sliderMounted && (
         <div
           ref={sliderRef}
           onPointerDown={onSliderPointerDown}

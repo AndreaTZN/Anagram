@@ -110,8 +110,11 @@ function RoleCard({
         y: depth * 11,
         scale: 1 - depth * 0.03,
         opacity: hidden ? 0 : 1 - depth * 0.15,
-        duration: 0.6,
-        ease: "power3.out",
+        duration: 1.1,
+        // Cards deeper in the stack lag slightly, so the pile settles in a
+        // cascade instead of every card landing at once.
+        delay: depth * 0.05,
+        ease: "expo.out",
         overwrite: "auto",
       });
     },
