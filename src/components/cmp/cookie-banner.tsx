@@ -120,10 +120,12 @@ function SideBanner() {
   if (!mounted) return null;
 
   return (
+    // Centred with left/right margins rather than -translate-x-1/2: GSAP
+    // animates y on this element and would overwrite the whole transform.
     <div
       ref={cardRef}
       id="cookie-banner-card"
-      className="fixed inset-x-4 bottom-4 z-50 overflow-hidden rounded-lg border border-[#0c0c0c]/10 bg-white p-6 text-[#0c0c0c] shadow-lg sm:inset-x-auto sm:right-4 sm:max-w-md w-full"
+      className="fixed bottom-4 left-3 right-3 z-50 overflow-hidden rounded-lg border border-[#0c0c0c]/10 bg-white p-6 text-[#0c0c0c] shadow-lg sm:left-auto sm:right-4 sm:w-full sm:max-w-md"
     >
       {/* The height tween runs on this wrapper, so the card's padding and
           border stay out of the animated value. */}
