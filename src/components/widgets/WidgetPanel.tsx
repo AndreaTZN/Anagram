@@ -42,46 +42,51 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
     });
 
     tl.current = gsap
-      .timeline({ paused: true })
+      .timeline({ paused: true, defaults: { ease: "power2.out" } })
+      // width drives layout, so a bouncy ease here would reflow on every
+      // oscillation — a light back.out gives the stretch without the cost.
       .to(buttonRef.current, {
         width: "36.1875rem",
-        duration: 0.5,
-        ease: "power3.out",
+        duration: 0.65,
+        ease: "back.out(1.4)",
       })
       .to(
         verticalPathRef.current,
-        { rotate: 90, duration: 0.4, ease: "power2.out" },
+        { rotate: 90, duration: 0.5, ease: "back.out(2)" },
         "<",
       )
-      .to(
-        overlayRef.current,
-        {
-          opacity: 1,
-          pointerEvents: "auto",
-          duration: 0.4,
-          ease: "power2.out",
-        },
-        "<0.1",
-      )
+      .to(overlayRef.current, { opacity: 1, duration: 0.5 }, "<0.05")
       .to(
         panelRef.current,
-        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out" },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.9,
+          ease: "power2.out",
+        },
         "<0.05",
       )
       .to(
         widgetsRef.current,
         { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", stagger: 0.06 },
-        "<0.15",
+
+        "<0.12",
       );
   }, []);
 
   function toggle() {
     if (!tl.current) return;
+    // pointerEvents isn't interpolatable, so it's set outright rather than
+    // tweened — the overlay must stop catching clicks the moment we close.
+    gsap.set(overlayRef.current, { pointerEvents: open ? "none" : "auto" });
     if (!open) {
-      tl.current.play();
+      tl.current.timeScale(1).play();
       scrollLockRef.current = true;
     } else {
-      tl.current.reverse();
+      // Played backwards, the elastic overshoot reads as sluggish — closing
+      // runs faster so the panel snaps away instead of wobbling out.
+      tl.current.timeScale(1.8).reverse();
       scrollLockRef.current = false;
     }
     setOpen((v) => !v);
