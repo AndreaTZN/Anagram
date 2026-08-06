@@ -23,20 +23,26 @@ const COLUMNS: CardData[][] = [
     { variant: "square", src: "/lab/1/1.jpg" },
     { variant: "portrait", src: "/lab/1/2.mp4" },
     { variant: "portrait", src: "/lab/1/3.mp4" },
+    { variant: "square", src: "/lab/1/4.jpg" },
+    { variant: "portrait", src: "/lab/1/5.jpg" },
   ],
   [
     { variant: "portrait", src: "/lab/2/1.jpg" },
     { variant: "square", src: "/lab/2/2.mp4" },
+    { variant: "square", src: "/lab/2/4.jpg" },
     { variant: "portrait", src: "/lab/2/3.jpg" },
+    { variant: "square", src: "/lab/2/5.jpg" },
   ],
   [
     { variant: "square", src: "/lab/3/1.jpg" },
+    { variant: "portrait", src: "/lab/3/4.mp4" },
     { variant: "portrait", src: "/lab/3/2.jpg" },
     { variant: "portrait", src: "/lab/3/3.mp4" },
   ],
   [
     { variant: "portrait", src: "/lab/4/1.jpg" },
     { variant: "portrait", src: "/lab/4/2.jpg" },
+    { variant: "landscape", src: "/lab/4/5.mp4" },
     { variant: "landscape", src: "/lab/4/3.jpg" },
     { variant: "portrait", src: "/lab/4/4.jpg" },
   ],
@@ -44,6 +50,7 @@ const COLUMNS: CardData[][] = [
     { variant: "portrait", src: "/lab/5/1.mp4" },
     { variant: "landscape", src: "/lab/5/2.mp4" },
     { variant: "portrait", src: "/lab/5/3.jpg" },
+    { variant: "portrait", src: "/lab/5/4.jpg" },
   ],
 ];
 
@@ -70,7 +77,12 @@ function Card({ card, colWidth }: { card: CardData; colWidth: number }) {
   const mediaRef = useRef<HTMLVideoElement | HTMLImageElement>(null);
 
   function fadeIn() {
-    if (mediaRef.current) gsap.to(mediaRef.current, { opacity: 1, duration: 0.4, ease: "power2.out" });
+    if (mediaRef.current)
+      gsap.to(mediaRef.current, {
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.out",
+      });
   }
 
   return (
