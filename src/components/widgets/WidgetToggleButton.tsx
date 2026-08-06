@@ -1,19 +1,65 @@
 "use client";
 
-import { RefObject } from "react";
+import { RefObject, useRef } from "react";
+import Image from "next/image";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import WorldClock from "./WorldClock";
+
+gsap.registerPlugin(useGSAP);
 
 interface WidgetToggleButtonProps {
   buttonRef: RefObject<HTMLButtonElement | null>;
   verticalPathRef: RefObject<SVGPathElement | null>;
   onClick: () => void;
+  /** True when music is playing and the panel is closed. */
+  showVinyl?: boolean;
 }
 
 export default function WidgetToggleButton({
   buttonRef,
   verticalPathRef,
   onClick,
+  showVinyl = false,
 }: WidgetToggleButtonProps) {
+  const vinylRef = useRef<HTMLDivElement>(null);
+  const clockRef = useRef<HTMLDivElement>(null);
+
+  // Scoped to the vinyl itself so nothing here can touch the button, which the
+  // panel animates separately.
+  useGSAP(
+    () => {
+      // The clock slides aside to make room for the vinyl, and back when the
+      // music stops.
+      gsap.to(clockRef.current, {
+        x: showVinyl ? "1rem" : 0,
+        duration: 0.4,
+        ease: "power3.out",
+      });
+
+      const vinyl = vinylRef.current;
+      if (!vinyl) return;
+
+      gsap.fromTo(
+        vinyl,
+        { autoAlpha: 0, scale: 0.5 },
+        { autoAlpha: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" },
+      );
+
+      const spin = gsap.to(vinyl, {
+        rotation: 360,
+        duration: 8,
+        ease: "none",
+        repeat: -1,
+      });
+
+      return () => {
+        spin.kill();
+      };
+    },
+    { dependencies: [showVinyl] },
+  );
+
   return (
     <button
       ref={buttonRef}
@@ -24,8 +70,27 @@ export default function WidgetToggleButton({
       onMouseDown={(e) => e.preventDefault()}
       className="absolute top-12 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex items-center justify-between gap-12 px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)] cursor-pointer overflow-hidden opacity-0"
     >
-      <div className="flex items-center gap-1.5">
-        <WorldClock />
+      {/* relative so the vinyl can sit out of the flow: the clock's 1rem shift
+          is what makes room for it, not the layout. */}
+      <div className="relative flex items-center">
+        {showVinyl && (
+          <div
+            ref={vinylRef}
+            className="relative size-4 overflow-hidden rounded-full"
+          >
+            <Image
+              src={"/widgets/music-cover.png"}
+              alt=""
+              fill
+              sizes="28px"
+              className="object-cover"
+            />
+            <span className="absolute left-1/2 top-1/2 size-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
+          </div>
+        )}
+        <div ref={clockRef} className="flex items-center gap-1.5">
+          <WorldClock />
+        </div>
       </div>
       <svg
         width="15"

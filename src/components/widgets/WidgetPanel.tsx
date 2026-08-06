@@ -15,6 +15,7 @@ gsap.registerPlugin(useGSAP);
 
 export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
   const [open, setOpen] = useState(false);
+  const [musicPlaying, setMusicPlaying] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const verticalPathRef = useRef<SVGPathElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -81,12 +82,19 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
     // tweened — the overlay must stop catching clicks the moment we close.
     gsap.set(overlayRef.current, { pointerEvents: open ? "none" : "auto" });
     if (!open) {
-      tl.current.timeScale(1).play();
+      // invalidate() drops the cached start width so the tween re-reads the
+      // button's current size — it differs depending on whether the vinyl is in.
+      tl.current.invalidate().timeScale(1).play();
       scrollLockRef.current = true;
     } else {
       // Played backwards, the elastic overshoot reads as sluggish — closing
       // runs faster so the panel snaps away instead of wobbling out.
       tl.current.timeScale(1.8).reverse();
+      // Reverse restores the width measured when the timeline was built, which
+      // predates the vinyl. Clearing it lets the button size to its content.
+      tl.current.eventCallback("onReverseComplete", () => {
+        gsap.set(buttonRef.current, { clearProps: "width" });
+      });
       scrollLockRef.current = false;
     }
     setOpen((v) => !v);
@@ -99,13 +107,14 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
   return (
     <div
       id="home-widgets-layer"
-      className="fixed inset-y-0 right-0 left-(--nav-w) z-50 pointer-events-none max-[992px]:hidden"
+      className="fixed inset-y-0 right-0 left-(--nav-w) z-50 pointer-events-none max-[62rem]:hidden"
     >
       {/* CTA Button */}
       <WidgetToggleButton
         buttonRef={buttonRef}
         verticalPathRef={verticalPathRef}
         onClick={toggle}
+        showVinyl={musicPlaying && !open}
       />
 
       {/* Overlay + Panel */}
@@ -134,7 +143,7 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
             ref={(el) => addWidget(el, 0)}
             className="flex flex-col gap-4 w-31 shrink-0"
           >
-            <MusicWidget />
+            <MusicWidget onPlayingChange={setMusicPlaying} />
           </div>
           <div className="flex flex-col gap-4">
             <div ref={(el) => addWidget(el, 1)}>

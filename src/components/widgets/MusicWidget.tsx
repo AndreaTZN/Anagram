@@ -12,7 +12,12 @@ const TRACK = "/widgets/music-track.mp3";
 
 const INITIAL_VOLUME = 0.35;
 
-export default function MusicWidget() {
+export default function MusicWidget({
+  onPlayingChange,
+}: {
+  /** Lets the collapsed toggle button mirror the playing state. */
+  onPlayingChange?: (playing: boolean) => void;
+}) {
   const [playing, setPlaying] = useState(false);
   // Kept mounted past `playing` so the slider can animate out before React
   // removes it.
@@ -51,6 +56,7 @@ export default function MusicWidget() {
       audio?.pause();
     }
     setPlaying((v) => !v);
+    onPlayingChange?.(!playing);
   }
 
   useGSAP(
