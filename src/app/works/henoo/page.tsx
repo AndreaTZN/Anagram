@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   title: "Henoo Branding | Brand Identity & Mascot for Leisure App",
   description:
     "anagram created the full brand universe for Henoo, the app fighting isolation through personalized activities. Branding, mascot Noo, and design system.",
+  alternates: { canonical: "/works/henoo" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

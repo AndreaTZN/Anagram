@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "Everyday Branding | Brand Identity for AI Game Studio",
   description:
     "anagram created the brand identity for Everyday, an AI-powered mobile game studio. Brand strategy, sun logo, and design system for daily engagement gaming.",
+  alternates: { canonical: "/works/everyday" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

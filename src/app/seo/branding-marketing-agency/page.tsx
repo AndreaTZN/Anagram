@@ -5,7 +5,13 @@ export const metadata: Metadata = {
   title: "Branding & Marketing Agency: Anagram Creative Studio",
   description:
     "Anagram is a creative studio that builds bold, lasting brands: from strategy and identity to motion and web. We shape brands that need no introduction.",
-  metadataBase: new URL("https://anagramclub.com"),
+  alternates: { canonical: "/seo/branding-marketing-agency" },
+  openGraph: {
+    title: "Branding & Marketing Agency: Anagram Creative Studio",
+    description: "Anagram is a creative studio that builds bold, lasting brands: from strategy and identity to motion and web. We shape brands that need no introduction.",
+    url: "/seo/branding-marketing-agency",
+    images: ["/opengraph.webp"],
+  },
   robots: { index: true, follow: true },
 };
 

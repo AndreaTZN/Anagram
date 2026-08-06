@@ -5,7 +5,13 @@ export const metadata: Metadata = {
   title: "Product Branding Services | anagram",
   description:
     "Anagram delivers product branding services bridging brand identity and product design: strategy, visual identity, UI/UX, and motion, all in-house.",
-  metadataBase: new URL("https://anagramclub.com"),
+  alternates: { canonical: "/seo/product-branding-services" },
+  openGraph: {
+    title: "Product Branding Services | anagram",
+    description: "Anagram delivers product branding services bridging brand identity and product design: strategy, visual identity, UI/UX, and motion, all in-house.",
+    url: "/seo/product-branding-services",
+    images: ["/opengraph.webp"],
+  },
   robots: { index: true, follow: true },
 };
 

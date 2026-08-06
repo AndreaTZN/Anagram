@@ -5,7 +5,13 @@ export const metadata: Metadata = {
   title: "Branding Agency Services: Anagram Studio ",
   description:
     "Anagram offers end-to-end branding agency services: brand strategy, visual identity, design systems, motion, photography, and web development, all in-house.",
-  metadataBase: new URL("https://anagramclub.com"),
+  alternates: { canonical: "/seo/branding-agency-services" },
+  openGraph: {
+    title: "Branding Agency Services: Anagram Studio ",
+    description: "Anagram offers end-to-end branding agency services: brand strategy, visual identity, design systems, motion, photography, and web development, all in-house.",
+    url: "/seo/branding-agency-services",
+    images: ["/opengraph.webp"],
+  },
   robots: { index: true, follow: true },
 };
 

@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     "Tilt Branding | Brand Identity for Cleantech Energy Startup",
   description:
     "anagram created the brand identity for Tilt, a startup orchestrating real-time energy flow optimization. Logo, brand design and website for a cleantech deeptech",
+  alternates: { canonical: "/works/tilt" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   title: "Twin — Anagram Club",
   description:
     "Explore Twin, the wearable AI that understands you. Branding and website design by Anagram Club. View the complete project showcase.",
+  alternates: { canonical: "/works/twin" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

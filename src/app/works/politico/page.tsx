@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "Politico.eu Redesign | Design System & UX for Media",
   description:
     "anagram redesigned the UX and design system for Politico.eu to support the .com/.eu merger. Result: improved UX, better discoverability, and significant traffic gains.",
+  alternates: { canonical: "/works/politico" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   title: "Fortuneo Rebranding | Online Bank Visual Identity | anagram",
   description:
     "anagram rebranded Fortuneo: +45% funnel entry, +63% documents submitted. Online bank rebranding, brand strategy and product design.",
+  alternates: { canonical: "/works/fortuneo" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

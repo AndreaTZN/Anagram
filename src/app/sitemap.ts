@@ -4,17 +4,15 @@ import type { MetadataRoute } from "next";
 
 const BASE_URL = "https://anagram.club";
 
-// Slugs derived from the filesystem so a new src/app/works/<slug>/page.tsx
+// Slugs derived from the filesystem so a new <segment>/<slug>/page.tsx
 // lands in the sitemap without editing this file.
-function getWorkSlugs(): string[] {
-  const worksDir = path.join(process.cwd(), "src", "app", "works");
+function getSlugs(segment: string): string[] {
+  const dir = path.join(process.cwd(), "src", "app", segment);
 
   return fs
-    .readdirSync(worksDir, { withFileTypes: true })
+    .readdirSync(dir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory() && !entry.name.startsWith("_"))
-    .filter((entry) =>
-      fs.existsSync(path.join(worksDir, entry.name, "page.tsx"))
-    )
+    .filter((entry) => fs.existsSync(path.join(dir, entry.name, "page.tsx")))
     .map((entry) => entry.name)
     .sort();
 }
@@ -28,12 +26,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
   ];
 
-  const workRoutes: MetadataRoute.Sitemap = getWorkSlugs().map((slug) => ({
+  const workRoutes: MetadataRoute.Sitemap = getSlugs("works").map((slug) => ({
     url: `${BASE_URL}/works/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...workRoutes];
+  // Acquisition landing pages — indexable, so they belong in the sitemap.
+  // There is no /seo index route, only the leaf pages.
+  const seoRoutes: MetadataRoute.Sitemap = getSlugs("seo").map((slug) => ({
+    url: `${BASE_URL}/seo/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...workRoutes, ...seoRoutes];
 }

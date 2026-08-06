@@ -18,6 +18,7 @@ export const metadata: Metadata = {
     "Wastetide | Brand Identity for Industrial Waste Intelligence",
   description:
     "anagram built the full brand and digital experience for Wastetide, an AI platform turning industrial waste into measurable financial value. Identity, strategy, and concept.",
+  alternates: { canonical: "/works/wastetide" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

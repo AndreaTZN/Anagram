@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   title: "Perma Branding | Brand Identity for Social Photo App",
   description:
     "anagram created the logo and brand identity for Perma, the photo sharing app built around community and exchange. Consumer brand design by anagram Paris.",
+  alternates: { canonical: "/works/perma" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

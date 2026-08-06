@@ -5,7 +5,13 @@ export const metadata: Metadata = {
   title: "Rebranding Agency: Anagram Creative Studio",
   description:
     "Anagram is a rebranding agency that helps ambitious companies shed what no longer fits and build the brand they actually deserve. Strategy through full rollout",
-  metadataBase: new URL("https://anagramclub.com"),
+  alternates: { canonical: "/seo/rebranding-agency" },
+  openGraph: {
+    title: "Rebranding Agency: Anagram Creative Studio",
+    description: "Anagram is a rebranding agency that helps ambitious companies shed what no longer fits and build the brand they actually deserve. Strategy through full rollout",
+    url: "/seo/rebranding-agency",
+    images: ["/opengraph.webp"],
+  },
   robots: { index: true, follow: true },
 };
 

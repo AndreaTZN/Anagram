@@ -5,7 +5,13 @@ export const metadata: Metadata = {
   title: "Business Branding Agency: Anagram Studio",
   description:
     "Anagram is the business branding agency that turns ambitious companies into brands people remember: strategy, identity, motion, and web built to drive growth.",
-  metadataBase: new URL("https://anagramclub.com"),
+  alternates: { canonical: "/seo/business-branding-agency" },
+  openGraph: {
+    title: "Business Branding Agency: Anagram Studio",
+    description: "Anagram is the business branding agency that turns ambitious companies into brands people remember: strategy, identity, motion, and web built to drive growth.",
+    url: "/seo/business-branding-agency",
+    images: ["/opengraph.webp"],
+  },
   robots: { index: true, follow: true },
 };
 

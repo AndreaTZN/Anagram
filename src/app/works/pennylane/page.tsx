@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "Pennylane Branding | Fintech Visual Identity Redesign",
   description:
     "anagram redesigned Pennylane's website: -13.5pt bounce rate, +15% conversion. Brand design and UX for the French Tech 120 accounting software.",
+  alternates: { canonical: "/works/pennylane" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

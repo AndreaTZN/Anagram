@@ -5,7 +5,13 @@ export const metadata: Metadata = {
   title: "Branding and Creative Agency | anagram",
   description:
     "Anagram is a Paris-based branding and creative agency combining strategy, identity, motion, photography, and web development under one roof since 2020.",
-  metadataBase: new URL("https://anagramclub.com"),
+  alternates: { canonical: "/seo/branding-and-creative-agency" },
+  openGraph: {
+    title: "Branding and Creative Agency | anagram",
+    description: "Anagram is a Paris-based branding and creative agency combining strategy, identity, motion, photography, and web development under one roof since 2020.",
+    url: "/seo/branding-and-creative-agency",
+    images: ["/opengraph.webp"],
+  },
   robots: { index: true, follow: true },
 };
 

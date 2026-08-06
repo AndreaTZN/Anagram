@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "Planity Branding | Brand Identity & Product Design | anagram",
   description:
     "How anagram redesigned Planity's brand for European expansion: brand strategy, design system, product design. +50% bookings per second.",
+  alternates: { canonical: "/works/planity" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

@@ -5,7 +5,13 @@ export const metadata: Metadata = {
   title: "Fintech Branding Agency: Anagram Studio",
   description:
     "Anagram is a fintech branding agency with a proven track record: Fortuneo, Qonto, Spendesk, Pennylane. Strategy, identity, and web built for financial brands.",
-  metadataBase: new URL("https://anagramclub.com"),
+  alternates: { canonical: "/seo/fintech-branding-agency" },
+  openGraph: {
+    title: "Fintech Branding Agency: Anagram Studio",
+    description: "Anagram is a fintech branding agency with a proven track record: Fortuneo, Qonto, Spendesk, Pennylane. Strategy, identity, and web built for financial brands.",
+    url: "/seo/fintech-branding-agency",
+    images: ["/opengraph.webp"],
+  },
   robots: { index: true, follow: true },
 };
 

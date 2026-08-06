@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "Semplice Branding | Brand Identity & Website for SaaS",
   description:
     "anagram created the brand identity and website for Semplice. Brand design for a SaaS startup by the Paris branding agency specializing in tech scale-ups.",
+  alternates: { canonical: "/works/semplice" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },
 };

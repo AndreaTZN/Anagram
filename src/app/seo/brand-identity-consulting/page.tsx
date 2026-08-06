@@ -5,7 +5,13 @@ export const metadata: Metadata = {
   title: "Brand Identity Consulting: Anagram Studio",
   description:
     "Anagram offers brand identity consulting and design: from logo and identity to full design systems, with the strategy and craft to make brands memorable.",
-  metadataBase: new URL("https://anagramclub.com"),
+  alternates: { canonical: "/seo/brand-identity-consulting" },
+  openGraph: {
+    title: "Brand Identity Consulting: Anagram Studio",
+    description: "Anagram offers brand identity consulting and design: from logo and identity to full design systems, with the strategy and craft to make brands memorable.",
+    url: "/seo/brand-identity-consulting",
+    images: ["/opengraph.webp"],
+  },
   robots: { index: true, follow: true },
 };
 
