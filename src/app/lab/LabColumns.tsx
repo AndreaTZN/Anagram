@@ -11,6 +11,9 @@ interface CardData {
   src: string;
   // Images only — videos are decorative and carry no alt.
   alt?: string;
+  // Set only when a WebM was actually smaller than the MP4. Some already
+  // low-res sources re-encode heavier in VP9, so they ship as MP4 only.
+  webm?: boolean;
 }
 
 const ASPECT_RATIO: Record<CardVariant, number> = {
@@ -20,99 +23,91 @@ const ASPECT_RATIO: Record<CardVariant, number> = {
   wide: 4 / 3,
 };
 
+// Column order = left-to-right on desktop. Each column maps to /public/lab/<n>/.
 const COLUMNS: CardData[][] = [
+  // ── Column 1 — /lab/1 ──
   [
     {
       variant: "square",
-      src: "/lab/1/1.jpg",
-      alt: "Two smartphone-sized glass panels floating on a black reflective surface",
+      src: "/lab/1/image01.jpg",
+      alt: "3D render of a mint green phone case with an inflated, puffy quilted surface",
     },
-    { variant: "portrait", src: "/lab/1/2.mp4" },
-    { variant: "portrait", src: "/lab/1/3.mp4" },
+    { variant: "portrait", src: "/lab/1/video01.mp4", webm: true },
+    { variant: "portrait", src: "/lab/1/video02.mp4" },
+  ],
+  // ── Column 2 — /lab/2 ──
+  [
     {
       variant: "square",
-      src: "/lab/1/4.jpg",
+      src: "/lab/2/image01.jpg",
+      alt: "Bold black ALL W logotype in a condensed stacked wordmark",
+    },
+    {
+      variant: "square",
+      src: "/lab/2/image02.jpg",
       alt: "Metal Business World Elite Mastercard engraved with two classical figures holding a star emblem",
+    },
+    { variant: "portrait", src: "/lab/2/video01.mp4" },
+    {
+      variant: "wide",
+      src: "/lab/2/image03.jpg",
+      alt: "Three dark posters with overlapping blue gradient circles and arcs",
+    },
+  ],
+  // ── Column 3 — /lab/3 ──
+  [
+    {
+      variant: "wide",
+      src: "/lab/3/image01.jpg",
+      alt: "Times Square billboard reading Your ad ops, on autopilot above the Adside logo",
     },
     {
       variant: "portrait",
-      src: "/lab/1/5.jpg",
+      src: "/lab/3/image02.jpg",
+      alt: "3D traffic light displaying DCA, BTC and EUR, wrapped in yellow and olive chrome blobs",
+    },
+
+    { variant: "portrait", src: "/lab/3/video02.mp4" },
+    {
+      variant: "portrait",
+      src: "/lab/3/image03.jpg",
+      alt: "Waste poster with red and black flags reading Choose To Be Wastivist and Trash Is Cash",
+    },
+  ],
+  // ── Column 4 — /lab/4 ──
+  [
+    {
+      variant: "square",
+      src: "/lab/4/image01.jpg",
+      alt: "Bundle of thin black metal blades crossing in a vase, shadows striping the beige wall behind",
+    },
+    {
+      variant: "wide",
+      src: "/lab/4/image02.jpg",
+      alt: "Symbl V3 brand toolkit box beside a grey panel of centred specimen text",
+    },
+    {
+      variant: "portrait",
+      src: "/lab/4/image03.jpg",
+      alt: "Painterly illustration of winding green and yellow hills against a bright blue sky",
+    },
+    {
+      variant: "portrait",
+      src: "/lab/4/image04.jpg",
       alt: "Gradium poster: a classical bust rendered as a thermal heat map above the line Expressive Real-Time Text-To-Speech",
     },
   ],
+  // ── Column 5 — /lab/5 ──
   [
+    { variant: "portrait", src: "/lab/5/video01.mp4" },
+    { variant: "portrait", src: "/lab/5/video02.mp4", webm: true },
     {
-      variant: "portrait",
-      src: "/lab/2/1.jpg",
-      alt: "Hand holding a yellow phone case marked with two black asterisks against a blue sky",
+      variant: "wide",
+      src: "/lab/5/image01.jpg",
+      alt: "Grid of Adside boxes in blue, brown and white reading Your AI Head of Paid",
     },
-    { variant: "square", src: "/lab/2/2.mp4" },
-    {
-      variant: "square",
-      src: "/lab/2/4.jpg",
-      alt: "3D render of a mint green phone case with an inflated, puffy quilted surface",
-    },
-    {
-      variant: "portrait",
-      src: "/lab/2/3.jpg",
-      alt: "Construction sketch of a logo mark, blue diagonal strokes over grey guidelines on a pale green ground",
-    },
-    {
-      variant: "square",
-      src: "/lab/2/5.jpg",
-      alt: "Bold black ALL W logotype in a condensed stacked wordmark",
-    },
-  ],
-  [
-    {
-      variant: "square",
-      src: "/lab/3/1.jpg",
-      alt: "Website layers exploded in 3D space, showing a dark homepage over a photo of a runner",
-    },
-    { variant: "portrait", src: "/lab/3/4.mp4" },
-    {
-      variant: "portrait",
-      src: "/lab/3/2.jpg",
-      alt: "Waste poster with red and black flags reading Choose To Be Wastivist and Trash Is Cash",
-    },
-    { variant: "portrait", src: "/lab/3/3.mp4" },
-  ],
-  [
-    {
-      variant: "portrait",
-      src: "/lab/4/1.jpg",
-      alt: "Frosted glass app icon with a wave symbol over icebergs lit orange at sunset",
-    },
-    {
-      variant: "portrait",
-      src: "/lab/4/2.jpg",
-      alt: "ORB logo with its circular mark shown below in vector construction curves and anchor points",
-    },
-    { variant: "landscape", src: "/lab/4/5.mp4" },
-    {
-      variant: "landscape",
-      src: "/lab/4/3.jpg",
-      alt: "Crypto app screen reading Buy Your First Bitcoin beside a red poster repeating It's Time!",
-    },
-    {
-      variant: "portrait",
-      src: "/lab/4/4.jpg",
-      alt: "Bundle of thin black metal blades crossing in a vase, shadows striping the beige wall behind",
-    },
-  ],
-  [
-    { variant: "portrait", src: "/lab/5/1.mp4" },
-    { variant: "landscape", src: "/lab/5/2.mp4" },
-    {
-      variant: "portrait",
-      src: "/lab/5/3.jpg",
-      alt: "Glossy grey sphere glowing against a black background",
-    },
-    {
-      variant: "portrait",
-      src: "/lab/5/4.jpg",
-      alt: "3D traffic light displaying DCA, BTC and EUR, wrapped in yellow and olive chrome blobs",
-    },
+    { variant: "landscape", src: "/lab/5/video03.mp4" },
+    { variant: "square", src: "/lab/5/video04.mp4", webm: true },
   ],
 ];
 
@@ -155,7 +150,6 @@ function Card({ card, colWidth }: { card: CardData; colWidth: number }) {
       {isVideo(card.src) ? (
         <video
           ref={mediaRef as React.RefObject<HTMLVideoElement>}
-          src={card.src}
           className="w-full h-full object-cover"
           style={{ opacity: 0 }}
           autoPlay
@@ -164,7 +158,15 @@ function Card({ card, colWidth }: { card: CardData; colWidth: number }) {
           playsInline
           preload="metadata"
           onLoadedData={fadeIn}
-        />
+        >
+          {card.webm && (
+            <source
+              src={card.src.replace(/\.mp4$/, ".webm")}
+              type="video/webm"
+            />
+          )}
+          <source src={card.src} type="video/mp4" />
+        </video>
       ) : (
         <Image
           ref={mediaRef as React.RefObject<HTMLImageElement>}

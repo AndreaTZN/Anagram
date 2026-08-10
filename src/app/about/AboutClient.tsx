@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper/modules";
@@ -143,46 +144,65 @@ export default function AboutPage({
       { width: "100%", duration: 4, ease: "none" },
     );
   }, [activeClockSlide]);
-  const baseRef = useRef<HTMLImageElement>(null);
-  const topRef = useRef<HTMLImageElement>(null);
-  const baseMobileRef = useRef<HTMLImageElement>(null);
-  const topMobileRef = useRef<HTMLImageElement>(null);
+  const topRef = useRef<HTMLDivElement>(null);
+  const topMobileRef = useRef<HTMLDivElement>(null);
   const isAnimating = useRef(false);
   const currentImage = useRef(team[0].image);
   const settleTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  function animatePair(
-    top: HTMLImageElement,
-    base: HTMLImageElement,
-    src: string,
-    onDone?: () => void,
-  ) {
-    top.src = src;
-    gsap.set(top, { opacity: 0 });
-    gsap.to(top, {
-      opacity: 1,
-      duration: 0.35,
-      ease: "power2.out",
-      onComplete: () => {
-        base.src = src;
-        gsap.set(top, { opacity: 0 });
-        onDone?.();
-      },
-    });
-  }
+  // next/image owns the <img> src, so the crossfade drives it through state and
+  // animates only the opacity of the wrapping layers.
+  const [baseMember, setBaseMember] = useState(team[0]);
+  const [topMember, setTopMember] = useState(team[0]);
 
-  function swapImage(src: string) {
-    if (!src || src === currentImage.current || isAnimating.current) return;
+  function swapImage(member: (typeof team)[number]) {
+    if (!member.image || member.image === currentImage.current) return;
+    if (isAnimating.current) return;
 
     isAnimating.current = true;
-    if (topRef.current && baseRef.current)
-      animatePair(topRef.current, baseRef.current, src, () => {
-        currentImage.current = src;
-        isAnimating.current = false;
-      });
-    if (topMobileRef.current && baseMobileRef.current)
-      animatePair(topMobileRef.current, baseMobileRef.current, src);
+    setTopMember(member);
   }
+
+  // The fade must start only once React has painted the new top image,
+  // otherwise the first frames would cross-fade to the previous photo.
+  useEffect(() => {
+    if (!isAnimating.current) return;
+
+    const layers = [topRef.current, topMobileRef.current].filter(
+      (el): el is HTMLDivElement => el !== null,
+    );
+    if (!layers.length) return;
+
+    const tween = gsap.fromTo(
+      layers,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 0.35,
+        ease: "power2.out",
+        onComplete: () => {
+          // Promote the faded-in photo to the base layer; the top layer is
+          // reset to transparent below, once that promotion has rendered.
+          setBaseMember(topMember);
+          currentImage.current = topMember.image;
+          isAnimating.current = false;
+        },
+      },
+    );
+
+    return () => {
+      tween.kill();
+    };
+  }, [topMember]);
+
+  // Base now shows the same photo as the top layer, so hiding it is invisible
+  // and leaves the pair ready for the next hover.
+  useEffect(() => {
+    const layers = [topRef.current, topMobileRef.current].filter(
+      (el): el is HTMLDivElement => el !== null,
+    );
+    if (layers.length) gsap.set(layers, { opacity: 0 });
+  }, [baseMember]);
 
   function handleNameHover(index: number) {
     setHoveredIndex(index);
@@ -194,7 +214,7 @@ export default function AboutPage({
     // would otherwise flash through each intermediate photo before landing
     // on the final one.
     if (settleTimeout.current) clearTimeout(settleTimeout.current);
-    settleTimeout.current = setTimeout(() => swapImage(member.image!), 80);
+    settleTimeout.current = setTimeout(() => swapImage(member), 80);
   }
 
   return (
@@ -304,10 +324,13 @@ export default function AboutPage({
             >
               {studioImages.map((src, i) => (
                 <SwiperSlide key={i}>
-                  <img
+                  <Image
                     src={src}
                     alt={`Studio ${i + 1}`}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 766px) 100vw, 55vw"
+                    priority={i === 0}
+                    className="object-cover"
                   />
                 </SwiperSlide>
               ))}
@@ -615,18 +638,24 @@ export default function AboutPage({
                     marginLeft: "auto",
                   }}
                 >
-                  <img
-                    ref={baseRef}
-                    src={team[0].image!}
-                    alt="Team member"
-                    className="absolute inset-0 w-full h-full object-cover"
+                  <Image
+                    key={baseMember.image}
+                    src={baseMember.image!}
+                    alt={baseMember.name}
+                    fill
+                    sizes="10rem"
+                    className="object-cover"
                   />
-                  <img
-                    ref={topRef}
-                    src={team[0].image!}
-                    alt="Team member"
-                    className="absolute inset-0 w-full h-full object-cover opacity-0"
-                  />
+                  <div ref={topRef} className="absolute inset-0 opacity-0">
+                    <Image
+                      key={topMember.image}
+                      src={topMember.image!}
+                      alt={topMember.name}
+                      fill
+                      sizes="10rem"
+                      className="object-cover"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -635,18 +664,27 @@ export default function AboutPage({
                 {/* Photo — centered, floating over text */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="relative size-37.5 overflow-hidden rounded">
-                    <img
-                      ref={baseMobileRef}
-                      src={team[0].image!}
-                      alt="Team member"
-                      className="absolute inset-0 w-full h-full object-cover"
+                    <Image
+                      key={baseMember.image}
+                      src={baseMember.image!}
+                      alt={baseMember.name}
+                      fill
+                      sizes="9.375rem"
+                      className="object-cover"
                     />
-                    <img
+                    <div
                       ref={topMobileRef}
-                      src={team[0].image!}
-                      alt="Team member"
-                      className="absolute inset-0 w-full h-full object-cover opacity-0"
-                    />
+                      className="absolute inset-0 opacity-0"
+                    >
+                      <Image
+                        key={topMember.image}
+                        src={topMember.image!}
+                        alt={topMember.name}
+                        fill
+                        sizes="9.375rem"
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
                 </div>
 
