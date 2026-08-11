@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import Image from "next/image";
 import Footer from "@/components/Footer";
 import InfoBlocksSection from "./InfoBlocksSection";
 import ServicesPanel from "./ServicesPanel";
@@ -11,15 +10,23 @@ import SectorsGrid from "./SectorsGrid";
 import Faq from "./Faq";
 import DotDivider from "./DotDivider";
 
-type HeroImage = {
-  src: string;
-  alt: string;
-};
+const HERO_VIDEOS = [
+  "/seo/video01.mp4",
+  "/seo/video02.mp4",
+  "/seo/video03.mp4",
+  "/seo/video04.mp4",
+  "/seo/video05.mp4",
+] as const;
 
-const DEFAULT_HERO_IMAGE: HeroImage = {
-  src: "/seo/seo-home.webp",
-  alt: "Anagram studio",
-};
+// Deterministic pick from idPrefix: every page keeps the same video across
+// renders and reloads, so SSR and hydration agree and the file stays cached.
+function heroVideoFor(idPrefix: string): string {
+  let hash = 0;
+  for (let i = 0; i < idPrefix.length; i++) {
+    hash = (hash * 31 + idPrefix.charCodeAt(i)) | 0;
+  }
+  return HERO_VIDEOS[Math.abs(hash) % HERO_VIDEOS.length];
+}
 
 type InfoBlock = {
   id: string;
@@ -121,7 +128,8 @@ type Props = {
   idPrefix: string;
   title: string;
   description: string;
-  heroImage?: HeroImage;
+  // Omit to use the video derived from idPrefix; pass a path to override.
+  heroVideo?: string;
   vision?: InfoBlocksData;
   whyAnagram?: InfoBlocksData;
   services: ServicesData;
@@ -137,7 +145,7 @@ export default function AgencyPageTemplate({
   idPrefix,
   title,
   description,
-  heroImage = DEFAULT_HERO_IMAGE,
+  heroVideo,
   vision,
   whyAnagram,
   services,
@@ -162,17 +170,18 @@ export default function AgencyPageTemplate({
             {description}
           </p>
         </div>
-        {heroImage && (
-          <div className="relative w-full aspect-1166/476 overflow-hidden">
-            <Image
-              src={heroImage.src}
-              alt={heroImage.alt}
-              fill
-              priority
-              className="object-cover"
-            />
-          </div>
-        )}
+        <div className="relative w-full aspect-1166/476 overflow-hidden">
+          <video
+            src={heroVideo ?? heroVideoFor(idPrefix)}
+            className="absolute inset-0 w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          />
+        </div>
       </section>
 
       <div
