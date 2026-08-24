@@ -75,7 +75,7 @@ export default function Footer() {
         <div className="flex gap-6 items-start">
           <div
             id="footer-desktop-contact"
-            className="flex flex-col gap-16 flex-3"
+            className="flex flex-col gap-16 flex-1"
           >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Contact</p>
             <div className="flex flex-col gap-8 font-medium text-sm">
@@ -124,7 +124,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div
+          {/* <div
             id="footer-desktop-brands"
             className="flex flex-1 flex-col gap-16 whitespace-nowrap"
           >
@@ -136,25 +136,25 @@ export default function Footer() {
                 </p>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div id="footer-desktop-bottom" className="flex gap-6 items-end mt-32">
-          <p className="flex-3 leading-[1.1]">
+          <p className="flex-1 leading-[1.1]">
             © Anagram Brand design studio {year}
           </p>
           <Link href="/privacy" className="flex-1 leading-[1.1]">
             Privacy Policy
           </Link>
 
-          <button
+          {/* <button
             id="footer-desktop-cookie-settings"
             type="button"
             onClick={() => setOpen(true)}
             className="flex-1 text-left leading-[1.1] cursor-pointer"
           >
             Cookie settings
-          </button>
+          </button> */}
 
           <button
             type="button"
@@ -221,7 +221,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <div
+            {/* <div
               id="footer-mobile-brands"
               className="flex flex-1 min-w-px flex-col gap-6 whitespace-nowrap"
             >
@@ -231,7 +231,7 @@ export default function Footer() {
                   <p key={brand}>{brand}</p>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div
@@ -242,14 +242,14 @@ export default function Footer() {
             <Link href="/privacy" className="flex-1 min-w-px">
               Privacy Policy
             </Link>
-            <button
+            {/* <button
               id="footer-mobile-cookie-settings"
               type="button"
               onClick={() => setOpen(true)}
               className="flex-1 min-w-px text-left cursor-pointer"
             >
               Cookie settings
-            </button>
+            </button> */}
             <button
               type="button"
               onClick={handleBackToTop}

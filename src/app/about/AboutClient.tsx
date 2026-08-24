@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { Fragment, useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,15 +12,14 @@ import AnalogClock from "@/components/AnalogClock";
 import ClockLabel from "@/components/ClockLabel";
 import Footer from "@/components/Footer";
 import ArpeRotation from "@/components/ArpeRotation";
-import OpenRoles, { type OpenRole } from "@/components/OpenRoles";
+import { type OpenRole } from "@/components/OpenRoles";
 
 const studioImages = ["/studio/1.webp", "/studio/2.webp", "/studio/3.webp"];
 
 const manifesto = (
   <>
-    <span className="uppercase">anagram </span>
-    was founded on the ambition to help companies define a distinct position and
-    express it with clarity, relevance, and impact.
+    Anagram was founded on the ambition to help companies define a distinct
+    position and express it with clarity, relevance, and impact.
     <br />
     <br />
     Through a balance of strategic thinking and refined design, we build
@@ -41,25 +40,77 @@ const clockBases = [
 ];
 
 const team = [
-  { name: "Valentin Salomon", role: "Co-founder", image: "/team/valentin.jpg" },
-  { name: "Emmanuel Julliot", role: "Co-founder", image: "/team/manu.jpg" },
+  {
+    name: "Valentin Salomon",
+    role: "Co-founder",
+    year: "2020",
+    image: "/team/valentin.jpg",
+  },
+  {
+    name: "Emmanuel Julliot",
+    role: "Co-founder",
+    year: "2020",
+    image: "/team/manu.jpg",
+  },
   {
     name: "Guillaume Berthonneau",
-    role: "Lead Designer",
+    role: "Brand designer",
+    year: "2021",
     image: "/team/guillaume.jpg",
   },
-  { name: "Andrea Tuysuzian", role: "Developer", image: "/team/andrea.jpg" },
-  { name: "Kevin Robin", role: "Motion Designer", image: "/team/kevin.jpg" },
-  { name: "Lou Bontemps", role: "Design Director", image: "/team/lou.jpg" },
+  {
+    name: "Andrea Tuysuzian",
+    role: "Developer",
+    year: "2024",
+    image: "/team/andrea.jpg",
+  },
+  {
+    name: "Kevin Robin",
+    role: "Motion Designer",
+    year: "2024",
+    image: "/team/kevin.jpg",
+  },
+  {
+    name: "Lou Bontemps",
+    role: "Design Director",
+    year: "2025",
+    image: "/team/lou.jpg",
+  },
   {
     name: "Alexandre Tuysuzian",
     role: "Developer",
+    year: "2025",
     image: "/team/alexandre.jpg",
   },
-  { name: "Rémy Godet", role: "Lead Designer", image: "/team/remy.jpg" },
-  { name: "Vicenzo Tilleul", role: "Web Designer", image: null },
-  { name: "Bérengère Morel", role: "Motion Designer", image: null },
+  {
+    name: "Rémy Godet",
+    role: "Lead Designer",
+    year: "2025",
+    image: "/team/remy.jpg",
+  },
+  {
+    name: "Vicenzo Tilleul",
+    role: "Web Designer",
+    year: "2025",
+    image: null,
+  },
+  {
+    name: "Bérengère Morel",
+    role: "Motion Designer",
+    year: "2026",
+    image: null,
+  },
+  {
+    name: "Quentin Belluc",
+    role: "Motion Designer",
+    year: "2026",
+    image: null,
+  },
 ];
+
+function LineDivider() {
+  return <div className="h-[0.5px] w-full bg-[#0c0c0c26] max-[766px]:hidden" />;
+}
 
 function DotDivider() {
   return (
@@ -74,34 +125,121 @@ function DotDivider() {
   );
 }
 
-function DotDividerVertical() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [count, setCount] = useState(60);
+const offeringsCategories: {
+  category: string;
+  mobileOrder: string;
+  items: (string | string[])[];
+}[] = [
+  {
+    category: "Strategy",
+    mobileOrder: "max-[766px]:order-1",
+    items: [
+      "Brand Architecture",
+      "Brand Positioning",
+      "Market & Consumer Analysis",
+      "Brand Narrative",
+      "Brand Pitch",
+      "Tone of Voice",
+    ],
+  },
+  {
+    category: "Visual Identity",
+    mobileOrder: "max-[766px]:order-2",
+    items: [
+      "Logo Design",
+      "Art Direction",
+      ["Brand Production", "Illustrations"],
+      "Graphic Guidelines",
+      "3D & Motion Design",
+    ],
+  },
+  {
+    category: "Digital",
+    mobileOrder: "max-[766px]:order-4",
+    items: [["UI/UX Design", "Product design"], "Web Design", "Development"],
+  },
+  {
+    category: "Marketing & Activation",
+    mobileOrder: "max-[766px]:order-3",
+    items: [
+      "TV & Display Campaigns",
+      "Brand Launch",
+      "Social Media Campaigns",
+      "Advertising Campaigns",
+    ],
+  },
+  {
+    category: "Production",
+    mobileOrder: "max-[766px]:order-5",
+    items: ["Photography", "Video Production", "Music & Sound Design"],
+  },
+];
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const update = () => {
-      // dot size 1.5px + gap 4px = 5.5px per dot
-      setCount(Math.floor(el.clientHeight / 5.5));
-    };
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
+function OfferingCategory({
+  category,
+  items,
+  mobileOrder,
+  className = "",
+}: {
+  category: string;
+  items: (string | string[])[];
+  mobileOrder: string;
+  className?: string;
+}) {
   return (
-    <div
-      ref={ref}
-      className="flex flex-col items-center justify-between self-stretch max-[766px]:hidden"
-    >
-      {Array.from({ length: count }).map((_, i) => (
-        <div
-          key={i}
-          className="bg-[#0c0c0c] opacity-30 rounded-full shrink-0 size-[1.5px]"
-        />
-      ))}
+    <div className={`flex flex-col gap-2 ${mobileOrder} ${className}`}>
+      <span className="text-[#0c0c0c] text-sm font-medium leading-[0.9] max-[766px]:text-base max-[766px]:font-normal max-[766px]:text-[#7e7e7e]">
+        {category}
+      </span>
+      <div className="flex flex-col">
+        {items.map((item, i) => (
+          <span
+            key={i}
+            className="text-sm leading-[1.3] text-[#7c7c7c] max-[766px]:text-base max-[766px]:leading-[1.6] max-[766px]:text-[#0c0c0c]"
+          >
+            {Array.isArray(item)
+              ? item.map((line, li) => (
+                  <span key={li}>
+                    {line}
+                    {li < item.length - 1 && <br />}
+                  </span>
+                ))
+              : item}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TeamPhotoStack({
+  displayedIndex,
+  className,
+  sizes,
+}: {
+  displayedIndex: number;
+  className: string;
+  sizes: string;
+}) {
+  return (
+    <div className={className}>
+      {team.map((member, i) =>
+        member.image ? (
+          <div
+            key={member.image}
+            className="absolute inset-0"
+            style={{ opacity: displayedIndex === i ? 1 : 0 }}
+          >
+            <Image
+              src={member.image}
+              alt={member.name}
+              fill
+              sizes={sizes}
+              className="object-cover"
+            />
+          </div>
+        ) : null,
+      )}
     </div>
   );
 }
@@ -144,77 +282,13 @@ export default function AboutPage({
       { width: "100%", duration: 4, ease: "none" },
     );
   }, [activeClockSlide]);
-  const topRef = useRef<HTMLDivElement>(null);
-  const topMobileRef = useRef<HTMLDivElement>(null);
-  const isAnimating = useRef(false);
-  const currentImage = useRef(team[0].image);
-  const settleTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // next/image owns the <img> src, so the crossfade drives it through state and
-  // animates only the opacity of the wrapping layers.
-  const [baseMember, setBaseMember] = useState(team[0]);
-  const [topMember, setTopMember] = useState(team[0]);
-
-  function swapImage(member: (typeof team)[number]) {
-    if (!member.image || member.image === currentImage.current) return;
-    if (isAnimating.current) return;
-
-    isAnimating.current = true;
-    setTopMember(member);
-  }
-
-  // The fade must start only once React has painted the new top image,
-  // otherwise the first frames would cross-fade to the previous photo.
-  useEffect(() => {
-    if (!isAnimating.current) return;
-
-    const layers = [topRef.current, topMobileRef.current].filter(
-      (el): el is HTMLDivElement => el !== null,
-    );
-    if (!layers.length) return;
-
-    const tween = gsap.fromTo(
-      layers,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 0.35,
-        ease: "power2.out",
-        onComplete: () => {
-          // Promote the faded-in photo to the base layer; the top layer is
-          // reset to transparent below, once that promotion has rendered.
-          setBaseMember(topMember);
-          currentImage.current = topMember.image;
-          isAnimating.current = false;
-        },
-      },
-    );
-
-    return () => {
-      tween.kill();
-    };
-  }, [topMember]);
-
-  // Base now shows the same photo as the top layer, so hiding it is invisible
-  // and leaves the pair ready for the next hover.
-  useEffect(() => {
-    const layers = [topRef.current, topMobileRef.current].filter(
-      (el): el is HTMLDivElement => el !== null,
-    );
-    if (layers.length) gsap.set(layers, { opacity: 0 });
-  }, [baseMember]);
+  // All team photos are stacked on top of each other; only the displayed
+  // one is switched to opacity 1, instantly.
+  const [displayedIndex, setDisplayedIndex] = useState(0);
 
   function handleNameHover(index: number) {
     setHoveredIndex(index);
-    const member = team[index];
-    if (!member.image) return;
-
-    // Only crossfade once the hover "settles" on a member, instead of on
-    // every mouseenter — sweeping across several names in quick succession
-    // would otherwise flash through each intermediate photo before landing
-    // on the final one.
-    if (settleTimeout.current) clearTimeout(settleTimeout.current);
-    settleTimeout.current = setTimeout(() => swapImage(member), 80);
+    if (team[index].image) setDisplayedIndex(index);
   }
 
   return (
@@ -306,61 +380,362 @@ export default function AboutPage({
         </section>
         {/* colonne gauche */}
         <section className="flex gap-4 max-[766px]:contents">
-          {/* Hero image */}
+          {/* Swiper + content column */}
           <div
-            id="about-hero"
-            className="grow-2 shrink-0 basis-0 self-start relative bg-[#f4f4f4] overflow-hidden aspect-800/490 max-[766px]:order-2 max-[766px]:grow-0 max-[766px]:shrink max-[766px]:basis-auto max-[766px]:self-auto max-[766px]:aspect-square max-[766px]:rounded"
+            id="about-content-col"
+            className="grow-2 shrink-0 basis-0 min-w-0 flex flex-col gap-8 max-[766px]:contents"
           >
-            <Swiper
-              loop
-              effect="fade"
-              modules={[EffectFade, Autoplay]}
-              autoplay={{ delay: 4000, disableOnInteraction: false }}
-              onSwiper={(s) => {
-                swiperRef.current = s;
-              }}
-              onSlideChange={(s) => setActiveSlide(s.realIndex)}
-              className="h-full"
+            {/* Hero image */}
+            <div
+              id="about-hero"
+              className="relative bg-[#f4f4f4] overflow-hidden aspect-800/490 max-[766px]:order-2 max-[766px]:aspect-square max-[766px]:rounded"
             >
-              {studioImages.map((src, i) => (
-                <SwiperSlide key={i}>
-                  <Image
-                    src={src}
-                    alt={`Studio ${i + 1}`}
-                    fill
-                    sizes="(max-width: 766px) 100vw, 55vw"
-                    priority={i === 0}
-                    className="object-cover"
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center rounded-full backdrop-blur-xl bg-[rgba(12,12,12,0.2)] px-2">
-              {studioImages.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => swiperRef.current?.slideToLoop(i)}
-                  className="flex items-center justify-center px-1 py-3 cursor-pointer"
-                >
-                  <span
-                    className={`relative rounded-full shrink-0 overflow-hidden transition-[width,opacity] duration-300 ${i === activeSlide ? "h-1.25 w-5.25 bg-white/30 opacity-100" : "h-1.25 w-1.25 bg-white opacity-30"}`}
+              <Swiper
+                loop
+                effect="fade"
+                modules={[EffectFade, Autoplay]}
+                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                onSwiper={(s) => {
+                  swiperRef.current = s;
+                }}
+                onSlideChange={(s) => setActiveSlide(s.realIndex)}
+                className="h-full"
+              >
+                {studioImages.map((src, i) => (
+                  <SwiperSlide key={i}>
+                    <Image
+                      src={src}
+                      alt={`Studio ${i + 1}`}
+                      fill
+                      sizes="(max-width: 766px) 100vw, 55vw"
+                      priority={i === 0}
+                      className="object-cover"
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center rounded-full backdrop-blur-xl bg-[rgba(12,12,12,0.2)] px-2">
+                {studioImages.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => swiperRef.current?.slideToLoop(i)}
+                    className="flex items-center justify-center px-1 py-3 cursor-pointer"
                   >
-                    {i === activeSlide && (
+                    <span
+                      className={`relative rounded-full shrink-0 overflow-hidden transition-[width,opacity] duration-300 ${i === activeSlide ? "h-1.25 w-5.25 bg-white/30 opacity-100" : "h-1.25 w-1.25 bg-white opacity-30"}`}
+                    >
+                      {i === activeSlide && (
+                        <span
+                          ref={progressRef}
+                          className="absolute inset-y-0 left-0 bg-white rounded-full w-0"
+                        />
+                      )}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-10 max-[766px]:contents">
+              {/* Offerings */}
+              <div
+                id="about-offerings"
+                className="flex gap-4 text-[#0c0c0c] max-[766px]:order-5 max-[766px]:flex-col max-[766px]:gap-6"
+              >
+                <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:w-auto max-[766px]:text-2xl">
+                  Informations
+                </h2>
+                <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-8 max-[766px]:gap-x-8 max-[766px]:gap-y-8">
+                  <OfferingCategory
+                    category={offeringsCategories[0].category}
+                    mobileOrder={offeringsCategories[0].mobileOrder}
+                    items={offeringsCategories[0].items}
+                  />
+                  <OfferingCategory
+                    category={offeringsCategories[1].category}
+                    mobileOrder={offeringsCategories[1].mobileOrder}
+                    items={offeringsCategories[1].items}
+                  />
+                  <div className="col-span-2 h-[0.5px] bg-[#0c0c0c]/15 max-[766px]:hidden" />
+                  <OfferingCategory
+                    category={offeringsCategories[2].category}
+                    mobileOrder={offeringsCategories[2].mobileOrder}
+                    items={offeringsCategories[2].items}
+                  />
+                  <OfferingCategory
+                    category={offeringsCategories[3].category}
+                    mobileOrder={offeringsCategories[3].mobileOrder}
+                    items={offeringsCategories[3].items}
+                  />
+                  <div className="col-span-2 h-[0.5px] bg-[#0c0c0c]/15 max-[766px]:hidden" />
+                  <OfferingCategory
+                    category={offeringsCategories[4].category}
+                    mobileOrder={offeringsCategories[4].mobileOrder}
+                    items={offeringsCategories[4].items}
+                    className="col-span-2 max-[766px]:col-span-1"
+                  />
+                </div>
+              </div>
+
+              <LineDivider />
+
+              <div
+                id="about-our-studio"
+                className="flex gap-4 text-[#0c0c0c] max-[766px]:order-3 max-[766px]:flex-col max-[766px]:gap-6"
+              >
+                <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:w-auto max-[766px]:text-2xl">
+                  {ourStudio.title}
+                </h2>
+                <div className="flex-1 flex gap-4 max-[766px]:flex-col max-[766px]:gap-6">
+                  <div className="flex-1 flex flex-col gap-4">
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium leading-[0.9] text-[#0c0c0c] max-[766px]:text-base">
+                        New Business
+                      </span>
+                      <a
+                        href="mailto:hello@anagram.club"
+                        className="text-sm leading-[1.3] text-[#7c7c7c] max-[766px]:text-base"
+                      >
+                        hello@anagram.club
+                      </a>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium leading-[0.9] text-[#0c0c0c] max-[766px]:text-base">
+                        Careers
+                      </span>
+                      <a
+                        href="mailto:careers@anagram.club"
+                        className="text-sm leading-[1.3] text-[#7c7c7c] max-[766px]:text-base"
+                      >
+                        careers@anagram.club
+                      </a>
+                    </div>
+                  </div>
+                  <p className="flex-1 text-sm leading-[1.3] text-[#7c7c7c] max-[766px]:text-base">
+                    {ourStudio.description}
+                  </p>
+                </div>
+              </div>
+
+              <LineDivider />
+
+              {/* We worked for */}
+              <div
+                id="about-worked-for"
+                className="flex gap-4 text-[#0c0c0c] max-[766px]:order-12 max-[766px]:flex-col max-[766px]:gap-6"
+              >
+                <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:w-auto max-[766px]:text-2xl">
+                  We worked for
+                </h2>
+                <div className="flex-1 flex gap-4 items-start text-[#7c7c7c] text-sm leading-[1.3] max-[766px]:grid max-[766px]:grid-cols-2 max-[766px]:gap-x-4 max-[766px]:gap-y-0 max-[766px]:text-base">
+                  <div className="flex-1 flex flex-col">
+                    {[
+                      "Everyday",
+                      "Peeps",
+                      "Incard",
+                      "Frequentiel",
+                      "Fortuneo",
+                      "Planiti",
+                      "Omnia",
+                      "Wastetide",
+                      "Bonsai",
+                      "Buybox",
+                      "Rauva",
+                    ].map((n) => (
+                      <span key={n}>{n}</span>
+                    ))}
+                  </div>
+                  <div className="flex-1 flex flex-col">
+                    {[
+                      "Twin",
+                      "Nabla",
+                      "Rauva",
+                      "Gigi",
+                      "Aiup",
+                      "Drop",
+                      "Swaive",
+                      "Omi",
+                      "Trezy",
+                      "Evy",
+                      "Vizzia",
+                    ].map((n) => (
+                      <span key={n}>{n}</span>
+                    ))}
+                  </div>
+                  <div className="flex-1 flex flex-col">
+                    {[
+                      "RockFi",
+                      "Electra",
+                      "Pearl",
+                      "Nijta",
+                      "Shift",
+                      "TMFC",
+                      "Gorgias",
+                      "Spendesk",
+                      "Wave",
+                      "Qonto",
+                      "Vybe",
+                    ].map((n) => (
+                      <span key={n}>{n}</span>
+                    ))}
+                  </div>
+                  <div className="flex-1 flex flex-col">
+                    {[
+                      "Perma",
+                      "Allô",
+                      "Tilt Energy",
+                      "Adagio",
+                      "Pimento",
+                      "Homaio",
+                      "May",
+                      "Eplaque",
+                      "QSTNMRK",
+                      "Ringover",
+                    ].map((n) => (
+                      <span key={n}>{n}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Open roles */}
+              {openRoles.length > 0 && (
+                <>
+                  <LineDivider />
+                  <div
+                    id="about-open-roles"
+                    className="flex gap-4 text-[#0c0c0c] max-[766px]:order-8 max-[766px]:flex-col max-[766px]:gap-6"
+                  >
+                    <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:w-auto max-[766px]:text-2xl">
+                      Open roles
+                    </h2>
+                    <div className="flex-1 flex gap-4 max-[766px]:flex-col max-[766px]:gap-6">
+                      <div className="flex-1 flex flex-col gap-2">
+                        {openRoles.map((role) => (
+                          <span
+                            key={role._id}
+                            className="text-sm font-medium leading-[0.9] text-[#0c0c0c] max-[766px]:text-base"
+                          >
+                            {role.title}
+                          </span>
+                        ))}
+                      </div>
+                      <p className="flex-1 text-sm leading-[1.3] text-[#7c7c7c] max-[766px]:text-base">
+                        All of these roles are fully remote. Please send all
+                        resumes and work examples to{" "}
+                        <a href="mailto:careers@anagram.club">
+                          careers@anagram.club
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Meet the team */}
+            <div
+              id="about-meet-the-team"
+              className="flex flex-col gap-6 max-[766px]:order-10"
+            >
+              <LineDivider />
+              {/* Desktop */}
+              <div className="flex gap-4 items-stretch max-[766px]:hidden">
+                <div className="flex w-62.5 shrink-0 flex-col items-start justify-between">
+                  <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem]">
+                    Meet the team
+                  </h2>
+
+                  <TeamPhotoStack
+                    displayedIndex={displayedIndex}
+                    className="relative h-50 w-37.5 overflow-hidden"
+                    sizes="9.375rem"
+                  />
+                </div>
+
+                <div className="grid flex-1 grid-cols-[1fr_auto_auto] items-baseline gap-x-8 gap-y-4">
+                  {team.map((member, i) => (
+                    <Fragment key={member.name}>
                       <span
-                        ref={progressRef}
-                        className="absolute inset-y-0 left-0 bg-white rounded-full w-0"
-                      />
-                    )}
-                  </span>
-                </button>
-              ))}
+                        className="text-[#0c0c0c] text-sm leading-[1.3] whitespace-nowrap cursor-default"
+                        style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
+                        onMouseEnter={() => handleNameHover(i)}
+                      >
+                        {member.name}
+                      </span>
+                      <span
+                        className="text-[#7c7c7c] text-sm leading-[1.3] whitespace-nowrap text-right cursor-default"
+                        style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
+                        onMouseEnter={() => handleNameHover(i)}
+                      >
+                        {member.role}
+                      </span>
+                      <span
+                        className="text-[#7c7c7c] text-sm leading-[1.3] whitespace-nowrap text-right cursor-default"
+                        style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
+                        onMouseEnter={() => handleNameHover(i)}
+                      >
+                        {member.year}
+                      </span>
+                    </Fragment>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile */}
+              <div className="hidden max-[766px]:block">
+                <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem] mb-6">
+                  Meet the team
+                </h2>
+
+                <div className="relative">
+                  {/* Photo — centered, floating over text */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <TeamPhotoStack
+                      displayedIndex={displayedIndex}
+                      className="relative size-37.5 overflow-hidden rounded"
+                      sizes="9.375rem"
+                    />
+                  </div>
+
+                  {/* Text list */}
+                  <div className="grid grid-cols-[1fr_auto_auto] gap-x-4 gap-y-2 text-base leading-[1.3]">
+                    {team.map((member, i) => (
+                      <Fragment key={member.name}>
+                        <p
+                          className="text-[#0c0c0c] whitespace-nowrap transition-opacity duration-200 cursor-pointer"
+                          style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
+                          onClick={() => handleNameHover(i)}
+                        >
+                          {member.name}
+                        </p>
+                        <p
+                          className="text-[#7e7e7e] whitespace-nowrap text-right transition-opacity duration-200 cursor-pointer"
+                          style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
+                          onClick={() => handleNameHover(i)}
+                        >
+                          {member.role}
+                        </p>
+                        <p
+                          className="text-[#7e7e7e] whitespace-nowrap text-right transition-opacity duration-200 cursor-pointer"
+                          style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
+                          onClick={() => handleNameHover(i)}
+                        >
+                          {member.year}
+                        </p>
+                      </Fragment>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Merch — T-shirt */}
           <div
             id="about-merch"
-            className="grow shrink-0 basis-0 relative bg-[#f4f4f4] overflow-hidden flex justify-center items-start max-[766px]:order-14 max-[766px]:grow-0 max-[766px]:shrink max-[766px]:basis-auto max-[766px]:flex-col max-[766px]:items-center max-[766px]:rounded max-[766px]:aspect-100/100"
+            className="grow shrink-0 basis-0 self-start sticky top-4 bg-[#f4f4f4] overflow-hidden flex justify-center items-start aspect-40/49 max-[766px]:relative max-[766px]:top-0 max-[766px]:self-auto max-[766px]:order-14 max-[766px]:grow-0 max-[766px]:shrink max-[766px]:basis-auto max-[766px]:flex-col max-[766px]:items-center max-[766px]:rounded max-[766px]:aspect-100/100 max-[766px]:mb-2"
           >
             <div className="absolute inset-0 blur-[20px]">
               <ArpeRotation />
@@ -374,197 +749,6 @@ export default function AboutPage({
               </span>
             </div>
           </div>
-        </section>
-
-        <section
-          id="about-col-contain"
-          className="flex gap-4 flex-1 max-[766px]:contents"
-        >
-          {/* Left column */}
-          <div
-            id="about-col-left"
-            className="flex flex-col gap-8 w-[50%] shrink-0 flex-none max-[766px]:contents"
-          >
-            <div
-              id="about-our-studio"
-              className="flex flex-col gap-6 mt-auto max-[766px]:order-3"
-            >
-              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:text-2xl">
-                {ourStudio.title}
-              </h2>
-              <p className="text-[#7e7e7e] text-sm leading-[1.3] max-[766px]:text-base">
-                {ourStudio.description}
-              </p>
-            </div>
-
-            {/* Offerings */}
-            <div
-              id="about-offerings"
-              className="flex flex-col gap-6 text-[#0c0c0c] max-[766px]:order-5"
-            >
-              <h2 className="text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:text-2xl">
-                Offerings
-              </h2>
-              <div className="grid grid-cols-3 gap-6 max-[766px]:grid-cols-2 max-[766px]:gap-8">
-                {[
-                  {
-                    category: "Strategy",
-                    mobileOrder: "max-[766px]:order-1",
-                    items: [
-                      "Brand Architecture",
-                      "Brand Positioning",
-                      "Market & Consumer",
-                      "Analysis",
-                      "Brand Narrative",
-                      "Brand Pitch",
-                      "Tone of Voice",
-                    ],
-                  },
-                  {
-                    category: "Visual Identity",
-                    mobileOrder: "max-[766px]:order-2",
-                    items: [
-                      "Logo Design",
-                      "Art Direction",
-                      "Brand Production",
-                      "Illustrations",
-                      "Graphic Guidelines",
-                      "3D & Motion Design",
-                    ],
-                  },
-                  {
-                    category: "Digital Experience",
-                    mobileOrder: "max-[766px]:order-4",
-                    items: [
-                      "UI/UX Design",
-                      "Product design",
-                      "Web Design",
-                      "Development",
-                    ],
-                  },
-
-                  {
-                    category: "Production",
-                    mobileOrder: "max-[766px]:order-5",
-                    items: [
-                      "Photography",
-                      "Video Production",
-                      "Music & Sound Design",
-                    ],
-                  },
-                  {
-                    category: "Marketing & Activation",
-                    mobileOrder: "max-[766px]:order-3",
-                    items: [
-                      "TV & Display Campaigns",
-                      "Brand Launch",
-                      "Social Media Campaigns",
-                      "Advertising Campaigns",
-                    ],
-                  },
-                ].map((col) => (
-                  <div
-                    key={col.category}
-                    className={`flex flex-col max-[766px]:w-auto ${col.mobileOrder}`}
-                  >
-                    <span className="text-[#0C0C0C] text-sm leading-[1.6] max-[766px]:text-base max-[766px]:text-[#7e7e7e]">
-                      {col.category}
-                    </span>
-                    {col.items.map((item) => (
-                      <span
-                        key={item}
-                        className="text-sm leading-[1.6] text-[#7e7e7e] max-[766px]:text-base max-[766px]:text-[#0c0c0c]"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* We worked for */}
-            <div
-              id="about-worked-for"
-              className="flex flex-col gap-6 max-[766px]:order-12"
-            >
-              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:text-2xl">
-                We worked for
-              </h2>
-              <div className="flex gap-8 items-start text-[#7e7e7e] text-sm leading-[1.6] max-[766px]:grid max-[766px]:grid-cols-2 max-[766px]:gap-x-4 max-[766px]:gap-y-0 max-[766px]:text-base">
-                <div className="flex-1 flex flex-col">
-                  {[
-                    "Everyday",
-                    "Peeps",
-                    "Incard",
-                    "Frequentiel",
-                    "Fortuneo",
-                    "Planiti",
-                    "Omnia",
-                    "Wastetide",
-                    "Bonsai",
-                    "Buybox",
-                    "Rauva",
-                  ].map((n) => (
-                    <span key={n}>{n}</span>
-                  ))}
-                </div>
-                <div className="flex-1 flex flex-col">
-                  {[
-                    "Twin",
-                    "Nabla",
-                    "Rauva",
-                    "Gigi",
-                    "Aiup",
-                    "Drop",
-                    "Swaive",
-                    "Omi",
-                    "Trezy",
-                    "Evy",
-                    "Vizzia",
-                  ].map((n) => (
-                    <span key={n}>{n}</span>
-                  ))}
-                </div>
-                <div className="flex-1 flex flex-col">
-                  {[
-                    "RockFi",
-                    "Electra",
-                    "Madomiciliation",
-                    "Nijta",
-                    "Shift",
-                    "TMFC",
-                    "Gorgias",
-                    "Spendesk",
-                    "Wave",
-                    "Qonto",
-                    "Vybe",
-                  ].map((n) => (
-                    <span key={n}>{n}</span>
-                  ))}
-                </div>
-                <div className="flex-1 flex flex-col">
-                  {[
-                    "Perma",
-                    "Allô",
-                    "Tilt Energy",
-                    "Adagio",
-                    "Pimento",
-                    "Homaio",
-                    "May",
-                    "Eplaque",
-                    "QSTNMRK",
-                    "Ringover",
-                    "Pearl",
-                  ].map((n) => (
-                    <span key={n}>{n}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <DotDividerVertical />
 
           {/* Mobile — dot dividers */}
           <div className="hidden max-[766px]:block max-[766px]:order-4">
@@ -581,142 +765,6 @@ export default function AboutPage({
           </div>
           <div className="hidden max-[766px]:block max-[766px]:order-13">
             <DotDivider />
-          </div>
-
-          {/* Right — content */}
-          <div
-            id="about-col-right"
-            className="flex flex-col gap-8 flex-1 max-[766px]:contents"
-          >
-            {/* Open roles */}
-            {openRoles.length > 0 && (
-              <div
-                id="about-open-roles"
-                className="flex flex-col gap-6 max-[766px]:order-8"
-              >
-                <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:text-2xl">
-                  Open roles
-                </h2>
-                <OpenRoles roles={openRoles} />
-              </div>
-            )}
-
-            {/* Meet the team */}
-            <div
-              id="about-meet-the-team"
-              className="flex flex-col gap-6 max-[766px]:order-10"
-            >
-              <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:text-2xl">
-                Meet the team
-              </h2>
-              {/* Desktop */}
-              <div className="flex gap-8 items-start max-[766px]:hidden">
-                <div className="flex flex-col gap-4">
-                  {team.map((member, i) => (
-                    <div
-                      key={member.name}
-                      className="flex gap-14 items-baseline cursor-default"
-                      style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
-                      onMouseEnter={() => handleNameHover(i)}
-                    >
-                      <span className="text-[#0c0c0c] text-sm leading-[1.3] whitespace-nowrap w-48 shrink-0">
-                        {member.name}
-                      </span>
-                      <span className="text-[#7e7e7e] text-sm leading-[1.3] whitespace-nowrap">
-                        {member.role}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Photo desktop — double-buffered crossfade */}
-                <div
-                  className="relative overflow-hidden flex-1"
-                  style={{
-                    aspectRatio: "1.7 / 1.9",
-                    maxWidth: "10rem",
-                    marginLeft: "auto",
-                  }}
-                >
-                  <Image
-                    key={baseMember.image}
-                    src={baseMember.image!}
-                    alt={baseMember.name}
-                    fill
-                    sizes="10rem"
-                    className="object-cover"
-                  />
-                  <div ref={topRef} className="absolute inset-0 opacity-0">
-                    <Image
-                      key={topMember.image}
-                      src={topMember.image!}
-                      alt={topMember.name}
-                      fill
-                      sizes="10rem"
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Mobile */}
-              <div className="hidden max-[766px]:block relative">
-                {/* Photo — centered, floating over text */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="relative size-37.5 overflow-hidden rounded">
-                    <Image
-                      key={baseMember.image}
-                      src={baseMember.image!}
-                      alt={baseMember.name}
-                      fill
-                      sizes="9.375rem"
-                      className="object-cover"
-                    />
-                    <div
-                      ref={topMobileRef}
-                      className="absolute inset-0 opacity-0"
-                    >
-                      <Image
-                        key={topMember.image}
-                        src={topMember.image!}
-                        alt={topMember.name}
-                        fill
-                        sizes="9.375rem"
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Text list */}
-                <div className="flex justify-between text-base leading-[1.3]">
-                  <div className="flex flex-col gap-2">
-                    {team.map((member, i) => (
-                      <p
-                        key={member.name}
-                        className="text-[#0c0c0c] whitespace-nowrap transition-opacity duration-200 cursor-pointer"
-                        style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
-                        onClick={() => handleNameHover(i)}
-                      >
-                        {member.name}
-                      </p>
-                    ))}
-                  </div>
-                  <div className="flex flex-col gap-2 items-end">
-                    {team.map((member, i) => (
-                      <p
-                        key={member.name}
-                        className="text-[#7e7e7e] whitespace-nowrap transition-opacity duration-200 cursor-pointer"
-                        style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
-                        onClick={() => handleNameHover(i)}
-                      >
-                        {member.role}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
       </div>

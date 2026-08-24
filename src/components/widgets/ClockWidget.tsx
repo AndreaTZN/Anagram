@@ -2,10 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade, Autoplay } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
-import "swiper/css/effect-fade";
 import AnalogClock from "../AnalogClock";
 
 const CITIES = [
@@ -54,22 +53,25 @@ export default function ClockWidget() {
   const city = CITIES[active];
 
   return (
-    <div className="w-46 flex flex-col items-center rounded-lg bg-[#f5f5f5] pt-4 px-4 overflow-hidden">
-      <Swiper
-        effect="fade"
-        modules={[EffectFade, Autoplay]}
-        onSwiper={(s) => {
-          swiperRef.current = s;
-        }}
-        onSlideChange={(s) => setActive(s.realIndex)}
-        className="w-full"
-      >
-        {CITIES.map((c) => (
-          <SwiperSlide key={c.timezone}>
-            <AnalogClock timezone={c.timezone} color={c.color} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+    <div className="w-46 flex flex-col items-center rounded-lg bg-[#f5f5f5] pt-4 overflow-hidden">
+      <div className="w-[80%] overflow-visible">
+        <Swiper
+          modules={[Autoplay]}
+          spaceBetween={8}
+          grabCursor
+          onSwiper={(s) => {
+            swiperRef.current = s;
+          }}
+          onSlideChange={(s) => setActive(s.realIndex)}
+          className="w-full overflow-visible!"
+        >
+          {CITIES.map((c) => (
+            <SwiperSlide key={c.timezone}>
+              <AnalogClock timezone={c.timezone} color={c.color} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
 
       {/* Dots with GSAP progress bar */}
       <div className="flex items-center gap-2 mt-4">
