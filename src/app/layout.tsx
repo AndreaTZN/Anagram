@@ -4,6 +4,7 @@ import NavWrapper from "@/components/NavWrapper";
 import SmoothScroll from "@/components/SmoothScroll";
 import PageTheme from "@/components/PageTheme";
 import { CaseNavProvider } from "@/contexts/CaseNavContext";
+import { MusicProvider } from "@/contexts/MusicContext";
 import MobileNav from "@/components/MobileNav";
 import CaseOriginTracker from "@/components/CaseOriginTracker";
 import type { Metadata } from "next";
@@ -160,18 +161,20 @@ export default async function RootLayout({
         <CookieConsentProvider privacyPolicyUrl="/privacy" reloadOnRevoke>
           <CookieServices />
           <GtmPageView />
-          <CaseNavProvider isCasePage={isCasePage}>
-            <CaseOriginTracker />
-            <PageTheme>
-              <FadeIn id="home-main" className="opacity-0">
-                <div className="sticky top-0 h-screen shrink-0 max-[992px]:hidden">
-                  <NavWrapper />
-                </div>
-              </FadeIn>
-              <MobileNav />
-              <SmoothScroll>{children}</SmoothScroll>
-            </PageTheme>
-          </CaseNavProvider>
+          <MusicProvider>
+            <CaseNavProvider isCasePage={isCasePage}>
+              <CaseOriginTracker />
+              <PageTheme>
+                <FadeIn id="home-main" className="opacity-0">
+                  <div className="sticky top-0 h-screen shrink-0 max-[992px]:hidden">
+                    <NavWrapper />
+                  </div>
+                </FadeIn>
+                <MobileNav />
+                <SmoothScroll>{children}</SmoothScroll>
+              </PageTheme>
+            </CaseNavProvider>
+          </MusicProvider>
           <CookieBanner />
         </CookieConsentProvider>
         <GoogleTagManagerNoScript />

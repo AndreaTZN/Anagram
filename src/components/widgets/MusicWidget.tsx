@@ -4,30 +4,21 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
+import { useMusicPlayer } from "@/contexts/MusicContext";
 
 gsap.registerPlugin(useGSAP);
 
 const COVER = "/widgets/music-cover.png";
-const TRACK = "/widgets/music-track.mp3";
 
-const INITIAL_VOLUME = 0.35;
-
-export default function MusicWidget({
-  onPlayingChange,
-}: {
-  /** Lets the collapsed toggle button mirror the playing state. */
-  onPlayingChange?: (playing: boolean) => void;
-}) {
-  const [playing, setPlaying] = useState(false);
+export default function MusicWidget() {
+  const { playing, volume, toggle, setVolume } = useMusicPlayer();
   // Kept mounted past `playing` so the slider can animate out before React
   // removes it.
   const [sliderMounted, setSliderMounted] = useState(false);
-  const [volume, setVolume] = useState(INITIAL_VOLUME);
   const discRef = useRef<HTMLButtonElement>(null);
   const vinylRef = useRef<HTMLDivElement>(null);
   const volumeRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
   const spin = useRef<gsap.core.Tween | null>(null);
 
   useGSAP(
@@ -44,20 +35,17 @@ export default function MusicWidget({
     { scope: discRef },
   );
 
-  function toggle() {
-    const audio = audioRef.current;
-    if (!playing) {
-      spin.current?.play();
-      if (audio) audio.volume = volume;
-      audio?.play().catch(() => {});
-      setSliderMounted(true);
-    } else {
-      spin.current?.pause();
-      audio?.pause();
-    }
-    setPlaying((v) => !v);
-    onPlayingChange?.(!playing);
-  }
+  useGSAP(
+    () => {
+      if (playing) {
+        spin.current?.play();
+        setSliderMounted(true);
+      } else {
+        spin.current?.pause();
+      }
+    },
+    { dependencies: [playing] },
+  );
 
   useGSAP(
     () => {
@@ -94,7 +82,6 @@ export default function MusicWidget({
     const rect = slider.getBoundingClientRect();
     const next = gsap.utils.clamp(0, 1, (clientX - rect.left) / rect.width);
     setVolume(next);
-    if (audioRef.current) audioRef.current.volume = next;
     gsap.to(volumeRef.current, {
       scaleX: next,
       transformOrigin: "left center",
@@ -187,8 +174,6 @@ export default function MusicWidget({
           </div>
         </div>
       )}
-
-      <audio ref={audioRef} src={TRACK} loop preload="none" />
     </div>
   );
 }

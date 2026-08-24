@@ -10,12 +10,13 @@ import MusicWidget from "./MusicWidget";
 import RolesStackWidget from "./RolesStackWidget";
 import type { OpenRole } from "../OpenRoles";
 import { scrollLockRef } from "@/lib/lenis";
+import { useMusicPlayer } from "@/contexts/MusicContext";
 
 gsap.registerPlugin(useGSAP);
 
 export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
   const [open, setOpen] = useState(false);
-  const [musicPlaying, setMusicPlaying] = useState(false);
+  const { playing: musicPlaying } = useMusicPlayer();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const verticalPathRef = useRef<SVGPathElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -143,7 +144,7 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
             ref={(el) => addWidget(el, 0)}
             className="flex flex-col gap-4 w-31 shrink-0"
           >
-            <MusicWidget onPlayingChange={setMusicPlaying} />
+            <MusicWidget />
           </div>
           <div className="flex flex-col gap-4">
             <div ref={(el) => addWidget(el, 1)}>
