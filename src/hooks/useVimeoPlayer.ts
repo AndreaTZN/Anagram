@@ -6,6 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Injection queue — serializes all iframe injections with 180ms stagger to avoid buffer contention
 const STAGGER_MS = 180;
+const VOLUME_FADE_DURATION = 0.6;
 let injectionQueue: Promise<void> = Promise.resolve();
 function enqueueInjection(fn: () => Promise<void>): Promise<void> {
   injectionQueue = injectionQueue.then(fn).then(
@@ -80,6 +81,7 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title }: Options)
     let st: InstanceType<typeof ScrollTrigger> | null = null;
     let iframeWrapper: HTMLDivElement | null = null;
     let destroyed = false;
+    let fadeTween: gsap.core.Tween | null = null;
 
     const ratio = dataRatio || "16/9";
     const quality = isMobile() ? "720p" : "auto";
@@ -134,6 +136,74 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title }: Options)
         return;
       }
 
+      // Muted and volume are independent in the Vimeo SDK — getVolume()
+      // stays at its default even while muted, so mute state must be
+      // checked first or every silent background video would "fade".
+      function readUnmutedVolume(p: any): Promise<number | null> {
+        return p
+          .getMuted()
+          .then((muted: boolean) => {
+            if (destroyed || playerRef.current !== p || muted) return null;
+            return p.getVolume().then((vol: number) => (vol > 0 ? vol : null));
+          })
+          .catch(() => null);
+      }
+
+      // Leaving the viewport pauses the video outright — if the viewer had
+      // turned sound on, that's an abrupt cut. Duck the volume to 0 first,
+      // then pause, and restore it so playback resumes at the same level.
+      function fadeOutAndPause() {
+        fadeTween?.kill();
+        const p = player;
+        if (!p) return;
+        readUnmutedVolume(p).then((vol) => {
+          if (destroyed || playerRef.current !== p) return;
+          if (vol === null) {
+            p.pause().catch(() => {});
+            return;
+          }
+          const proxy = { v: vol };
+          fadeTween = gsap.to(proxy, {
+            v: 0,
+            duration: VOLUME_FADE_DURATION,
+            ease: "power1.out",
+            onUpdate: () => p.setVolume(proxy.v).catch(() => {}),
+            onComplete: () => {
+              p.pause().catch(() => {});
+              p.setVolume(vol).catch(() => {});
+            },
+          });
+        });
+      }
+
+      // Mirrors fadeOutAndPause: ramp back up from 0 instead of resuming at
+      // full volume the instant the video re-enters the viewport.
+      function play() {
+        fadeTween?.kill();
+        fadeTween = null;
+        const p = player;
+        if (!p) return;
+        setTimeout(() => {
+          if (destroyed || playerRef.current !== p) return;
+          readUnmutedVolume(p).then((vol) => {
+            if (destroyed || playerRef.current !== p) return;
+            if (vol === null) {
+              p.play().catch(() => {});
+              return;
+            }
+            p.setVolume(0).catch(() => {});
+            p.play().catch(() => {});
+            const proxy = { v: 0 };
+            fadeTween = gsap.to(proxy, {
+              v: vol,
+              duration: VOLUME_FADE_DURATION,
+              ease: "power1.out",
+              onUpdate: () => p.setVolume(proxy.v).catch(() => {}),
+            });
+          });
+        }, 120);
+      }
+
       const scroller = document.getElementById("smooth-scroll-container");
 
       st = ScrollTrigger.create({
@@ -142,10 +212,10 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title }: Options)
         start: "top bottom",
         end: "bottom top",
         markers: false,
-        onEnter: () => setTimeout(() => player?.play().catch(() => {}), 120),
-        onEnterBack: () => setTimeout(() => player?.play().catch(() => {}), 120),
-        onLeave: () => player?.pause().catch(() => {}),
-        onLeaveBack: () => player?.pause().catch(() => {}),
+        onEnter: play,
+        onEnterBack: play,
+        onLeave: fadeOutAndPause,
+        onLeaveBack: fadeOutAndPause,
       });
 
       scheduleRefresh();
@@ -173,6 +243,7 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title }: Options)
       destroyed = true;
       playerRef.current = null;
       st?.kill();
+      fadeTween?.kill();
       if (player) {
         player.pause().catch(() => {});
         activePlayers.delete(player);
