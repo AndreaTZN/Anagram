@@ -20,6 +20,7 @@ const navLinks = [
 export default function Navigation() {
   const pathname = usePathname();
   const listRef = useRef<HTMLDivElement>(null);
+  const meetingTooltipRef = useRef<HTMLSpanElement>(null);
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
@@ -29,6 +30,30 @@ export default function Navigation() {
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
+
+  useGSAP(() => {
+    gsap.set(meetingTooltipRef.current, { opacity: 0, y: 4, xPercent: -50 });
+  }, []);
+
+  function handleMeetingEnter() {
+    gsap.to(meetingTooltipRef.current, {
+      opacity: 1,
+      y: 0,
+      xPercent: -50,
+      duration: 0.25,
+      ease: "power2.out",
+    });
+  }
+
+  function handleMeetingLeave() {
+    gsap.to(meetingTooltipRef.current, {
+      opacity: 0,
+      y: 4,
+      xPercent: -50,
+      duration: 0.2,
+      ease: "power2.in",
+    });
+  }
 
   useGSAP(
     () => {
@@ -122,14 +147,67 @@ export default function Navigation() {
               We shape brands that need no introduction.
             </h1>
 
-            <a
-              href="mailto:hello@anagram.club"
-              className="flex items-center bg-[#f5f5f5] rounded-full px-4 py-3 self-start"
-            >
-              <span className="text-[#0c0c0c] leading-[0.9] text-sm tracking-[-0.07px]">
-                hello@anagram.club
-              </span>
-            </a>
+            <div className="flex items-start gap-2 self-start">
+              <a
+                href="mailto:hello@anagram.club"
+                className="flex items-center bg-[#f5f5f5] rounded-full px-4 py-3"
+              >
+                <span className="text-[#0c0c0c] leading-[0.9] text-sm tracking-[-0.07px]">
+                  hello@anagram.club
+                </span>
+              </a>
+
+              <a
+                id="nav-cta-meeting"
+                href="https://cal.com/anagram/hello"
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={handleMeetingEnter}
+                onMouseLeave={handleMeetingLeave}
+                className="relative flex items-center justify-center size-9.25 shrink-0 rounded-full bg-[#03c8ff]"
+              >
+                <svg
+                  width="37"
+                  height="37"
+                  viewBox="0 0 37 37"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12.3372 17.9801C12.3372 15.4597 12.3372 14.1995 13.1202 13.4164C13.9032 12.6334 15.1634 12.6334 17.6839 12.6334H20.3572C22.8776 12.6334 24.1379 12.6334 24.9209 13.4164C25.7039 14.1995 25.7039 15.4597 25.7039 17.9801V19.3168C25.7039 21.8372 25.7039 23.0975 24.9209 23.8805C24.1379 24.6635 22.8776 24.6635 20.3572 24.6635H17.6839C15.1634 24.6635 13.9032 24.6635 13.1202 23.8805C12.3372 23.0975 12.3372 21.8372 12.3372 19.3168V17.9801Z"
+                    stroke="white"
+                    strokeWidth="1.3337"
+                  />
+                  <path
+                    d="M15.6779 12.6335V11.631"
+                    stroke="white"
+                    strokeWidth="1.3337"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M22.3621 12.6335V11.631"
+                    stroke="white"
+                    strokeWidth="1.3337"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M12.6706 15.9751H25.369"
+                    stroke="white"
+                    strokeWidth="1.3337"
+                    strokeLinecap="round"
+                  />
+                </svg>
+
+                <span
+                  ref={meetingTooltipRef}
+                  id="nav-cta-meeting-tooltip"
+                  className="absolute bottom-full left-1/2 mb-2 whitespace-nowrap rounded-full bg-[#0c0c0c] px-3 py-1.5 text-xs leading-[0.9] text-white opacity-0 pointer-events-none"
+                >
+                  Book a meeting
+                </span>
+              </a>
+            </div>
           </div>
 
           {/* Nav links */}
