@@ -200,7 +200,7 @@ export default function MobileNav() {
             href="https://cal.com/anagram/hello"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center size-9.25 shrink-0 rounded-full bg-[#03c8ff]"
+            className="flex items-center justify-center size-9.25 shrink-0 rounded-full bg-[#0c0c0c]"
           >
             <svg
               width="37"

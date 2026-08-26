@@ -164,7 +164,7 @@ export default function Navigation() {
                 rel="noopener noreferrer"
                 onMouseEnter={handleMeetingEnter}
                 onMouseLeave={handleMeetingLeave}
-                className="relative flex items-center justify-center size-9.25 shrink-0 rounded-full bg-[#03c8ff]"
+                className="relative flex items-center justify-center size-9.25 shrink-0 rounded-full bg-[#0c0c0c]"
               >
                 <svg
                   width="37"
