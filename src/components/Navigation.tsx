@@ -42,6 +42,7 @@ export default function Navigation() {
       xPercent: -50,
       duration: 0.25,
       ease: "power2.out",
+      overwrite: true,
     });
   }
 
@@ -52,6 +53,7 @@ export default function Navigation() {
       xPercent: -50,
       duration: 0.2,
       ease: "power2.in",
+      overwrite: true,
     });
   }
 

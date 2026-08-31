@@ -1,42 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { globalLenisRef } from "@/lib/lenis";
 import { useCookieConsent } from "@/components/cmp";
 
-// dot 1.5px + gap 4px = 5.5px of pitch, so the count follows the container
-// width instead of a hardcoded length that over- or underflows on resize.
-const DOT_PITCH = 5.5;
-
-const DotDivider = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const update = () => setCount(Math.floor(el.clientWidth / DOT_PITCH));
-    update();
-
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
+const Divider = () => {
   return (
-    <div
-      ref={ref}
-      className="nextcase_separator flex items-center justify-between w-full"
-    >
-      {Array.from({ length: count }).map((_, i) => (
-        <div
-          key={i}
-          className="nextcase_dot bg-[#0c0c0c] opacity-30 rounded-full shrink-0 size-[1.5px]"
-        />
-      ))}
-    </div>
+    <div className="nextcase_separator bg-[#0c0c0c]/15 w-full h-[0.5px]"></div>
   );
 };
 
@@ -70,7 +40,7 @@ export default function Footer() {
         id="footer-desktop"
         className="hidden min-[767px]:flex flex-col gap-6 pt-6"
       >
-        <DotDivider />
+        <Divider />
 
         <div className="flex gap-6 items-start">
           <div
@@ -85,7 +55,10 @@ export default function Footer() {
               </div>
               <div className="flex flex-col gap-1">
                 <p className="leading-[1.1]">Book a call</p>
-                <a href="mailto:hello@anagram.club" className="leading-[1.1]">
+                <a
+                  href="mailto:hello@anagram.club"
+                  className="leading-[1.1]  hover:text-[#0c0c0c]/70 transition-colors duration-300 ease-linear"
+                >
                   hello@anagram.club
                 </a>
               </div>
@@ -97,12 +70,12 @@ export default function Footer() {
             className="flex flex-1 flex-col gap-16"
           >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Sitemap</p>
-            <div className="flex flex-col gap-1 font-medium text-sm whitespace-nowrap">
+            <div className="flex flex-col items-start gap-1 whitespace-nowrap has-[:hover]:[&>*:not(:hover)]:text-[#0c0c0c]/30">
               {sitemapLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="leading-[1.1]"
+                  className="leading-[1.1] font-medium text-sm transition-colors duration-300 ease-linear"
                 >
                   {link.label}
                 </Link>
@@ -115,9 +88,13 @@ export default function Footer() {
             className="flex flex-1 flex-col gap-16"
           >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Links</p>
-            <div className="flex flex-col gap-1 font-medium text-sm whitespace-nowrap">
+            <div className="flex flex-col gap-1 whitespace-nowrap has-[:hover]:[&>*:not(:hover)]:text-[#0c0c0c]/30">
               {desktopSocialLinks.map((link) => (
-                <a key={link.href} href={link.href} className="leading-[1.1]">
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="leading-[1.1] font-medium text-sm transition-colors duration-300 ease-linear"
+                >
                   {link.label}
                 </a>
               ))}
@@ -143,9 +120,14 @@ export default function Footer() {
           <p className="flex-1 leading-[1.1]">
             © Anagram Brand design studio {year}
           </p>
-          <Link href="/privacy" className="flex-1 leading-[1.1]">
-            Privacy Policy
-          </Link>
+          <div className="flex-1">
+            <Link
+              href="/privacy"
+              className="leading-[1.1] hover:text-[#0c0c0c]/70 transition-colors duration-300 ease-linear"
+            >
+              Privacy Policy
+            </Link>
+          </div>
 
           {/* <button
             id="footer-desktop-cookie-settings"
@@ -155,14 +137,15 @@ export default function Footer() {
           >
             Cookie settings
           </button> */}
-
-          <button
-            type="button"
-            onClick={handleBackToTop}
-            className="flex-1 text-left leading-[1.1] cursor-pointer"
-          >
-            Back to top
-          </button>
+          <div className="flex-1">
+            <button
+              type="button"
+              onClick={handleBackToTop}
+              className="text-left leading-[1.1] cursor-pointer hover:text-[#0c0c0c]/70 transition-colors duration-100 ease-linear"
+            >
+              Back to top
+            </button>
+          </div>
         </div>
       </div>
 
@@ -171,7 +154,7 @@ export default function Footer() {
         id="footer-mobile"
         className="flex min-[767px]:hidden flex-col justify-between leading-[0.9] py-6"
       >
-        <DotDivider />
+        <Divider />
         <div className="flex flex-1 flex-col gap-6 pt-6">
           <div id="footer-mobile-row-top" className="flex gap-4 items-start">
             <div

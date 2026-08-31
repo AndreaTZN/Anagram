@@ -159,7 +159,7 @@ export default function AgencyPageTemplate({
   return (
     <main
       id={`${idPrefix}-page`}
-      className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12 flex flex-col gap-16"
+      className="relative flex-1 pt-4 pr-4 pl-4 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12 flex flex-col gap-16"
     >
       <section id={`${idPrefix}-hero`} className="flex flex-col gap-6">
         <div className="flex flex-col gap-4">

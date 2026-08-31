@@ -69,6 +69,10 @@ export default function PhotoCarouselWidget({ active }: { active: boolean }) {
           swiperRef.current = s;
           if (!active) s.autoplay?.stop();
         }}
+        onClick={(s) => {
+          s.slideNext();
+          s.autoplay?.start(); // relance le timer complet
+        }}
         onSlideChange={(s) => setActiveSlide(s.realIndex)}
         className="w-full h-full"
       >

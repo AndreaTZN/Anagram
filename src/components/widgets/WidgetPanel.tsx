@@ -44,13 +44,24 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
     });
 
     tl.current = gsap
-      .timeline({ paused: true, defaults: { ease: "power2.out" } })
+      .timeline({
+        paused: true,
+        defaults: { ease: "power2.out" },
+        // Reverse restores the width measured when the timeline was built,
+        // which predates the vinyl. Clearing it lets the button size to its
+        // content. Registered once here: re-registering it on every close left
+        // a stale callback armed across interrupted reverses.
+        onReverseComplete: () => {
+          gsap.set(buttonRef.current, { clearProps: "width" });
+        },
+      })
       // width drives layout, so a bouncy ease here would reflow on every
       // oscillation — a light back.out gives the stretch without the cost.
       .to(buttonRef.current, {
         width: "36.1875rem",
         duration: 0.65,
         ease: "back.out(1.4)",
+        id: "button-width",
       })
       .to(
         verticalPathRef.current,
@@ -83,19 +94,21 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
     // tweened — the overlay must stop catching clicks the moment we close.
     gsap.set(overlayRef.current, { pointerEvents: open ? "none" : "auto" });
     if (!open) {
-      // invalidate() drops the cached start width so the tween re-reads the
-      // button's current size — it differs depending on whether the vinyl is in.
-      tl.current.invalidate().timeScale(1).play();
+      // Only the button-width tween needs re-measuring (its start size differs
+      // depending on whether the vinyl is in). Invalidating the whole timeline
+      // mid-flight made the widget tween re-read opacity where an interrupted
+      // reverse had left it — recording 0 as its start, so widgets stayed
+      // invisible while the overlay blur still faded in.
+      tl.current
+        .getChildren(false, true, false)
+        .find((t) => t.vars.id === "button-width")
+        ?.invalidate();
+      tl.current.timeScale(1).play();
       scrollLockRef.current = true;
     } else {
       // Played backwards, the elastic overshoot reads as sluggish — closing
       // runs faster so the panel snaps away instead of wobbling out.
       tl.current.timeScale(1.8).reverse();
-      // Reverse restores the width measured when the timeline was built, which
-      // predates the vinyl. Clearing it lets the button size to its content.
-      tl.current.eventCallback("onReverseComplete", () => {
-        gsap.set(buttonRef.current, { clearProps: "width" });
-      });
       scrollLockRef.current = false;
     }
     setOpen((v) => !v);

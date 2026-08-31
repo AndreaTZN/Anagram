@@ -43,7 +43,7 @@ export default async function HomePage() {
   const openRoles = await getOpenRoles();
 
   return (
-    <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12">
+    <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 md:px-4 md:pt-4 max-[62rem]:mt-12">
       <Vimeo169
         src="/home/poster-hero.webp"
         alt="Anagram Club — Hero"

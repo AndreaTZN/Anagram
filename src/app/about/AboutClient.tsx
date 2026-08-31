@@ -292,7 +292,7 @@ export default function AboutPage({
   }
 
   return (
-    <main className="pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12">
+    <main className="pt-4 pr-4 pl-4 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12">
       {/* Hero */}
 
       <div className="flex flex-col gap-6 flex-1 max-[766px]:gap-8">

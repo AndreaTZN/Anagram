@@ -98,7 +98,8 @@ const works: Work[] = [
     tag: "News",
     description:
       "Amazon has acquired Bee, the AI wearable startup behind a personal assistant designed to capture conversations and memories throughout the day. Read the full story on TechCrunch.",
-    externalLink: "https://techcrunch.com/2025/07/22/amazon-acquires-bee-the-ai-wearable-that-records-everything-you-say/",
+    externalLink:
+      "https://techcrunch.com/2025/07/22/amazon-acquires-bee-the-ai-wearable-that-records-everything-you-say/",
     media: {
       type: "image",
       src: "/news/bee-news.webp",
@@ -365,7 +366,7 @@ export default function HomeContain() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-3 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-5 md:gap-4 items-start">
         {filtered.slice(0, firstRowCount).map((work) => (
           <WorkCard key={work.name} work={work} />
         ))}
