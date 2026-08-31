@@ -59,7 +59,7 @@ export default function PhotoCarouselWidget({ active }: { active: boolean }) {
   }, [activeSlide, active]);
 
   return (
-    <div className="relative w-80 aspect-square rounded-lg overflow-hidden bg-[#d9d9d9]">
+    <div className="relative  aspect-square rounded-lg overflow-hidden bg-[#d9d9d9]">
       <Swiper
         loop
         effect="fade"

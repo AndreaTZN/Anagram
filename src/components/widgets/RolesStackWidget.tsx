@@ -127,7 +127,7 @@ function RoleCard({
         localRef.current = el;
         ref?.(el);
       }}
-      className={`absolute inset-x-0 ${stretch ? "inset-y-0" : "top-0"} flex items-start p-4 rounded-lg bg-white drop-shadow-[0_0.25rem_5rem_rgba(0,0,0,0.1)] will-change-transform`}
+      className={`absolute inset-x-0 ${stretch ? "inset-y-0" : "top-0"} flex items-start p-4 rounded-lg bg-white  will-change-transform`}
       style={{ zIndex: 10 - depth }}
     >
       <div className="flex flex-1 flex-col gap-2 items-center justify-center min-w-0">

@@ -76,15 +76,16 @@ export default function MusicWidget() {
     { dependencies: [playing, sliderMounted] },
   );
 
-  function setVolumeFromPointer(clientX: number) {
+  function setVolumeFromPointer(clientY: number) {
     const slider = sliderRef.current;
     if (!slider) return;
     const rect = slider.getBoundingClientRect();
-    const next = gsap.utils.clamp(0, 1, (clientX - rect.left) / rect.width);
+    // Inverted: dragging up (smaller clientY) raises the volume.
+    const next = gsap.utils.clamp(0, 1, (rect.bottom - clientY) / rect.height);
     setVolume(next);
     gsap.to(volumeRef.current, {
-      scaleX: next,
-      transformOrigin: "left center",
+      scaleY: next,
+      transformOrigin: "center bottom",
       duration: 0.2,
       ease: "power2.out",
     });
@@ -92,26 +93,23 @@ export default function MusicWidget() {
 
   function initVolumeBar(el: HTMLDivElement | null) {
     volumeRef.current = el;
-    if (el) gsap.set(el, { scaleX: volume, transformOrigin: "left center" });
+    if (el) gsap.set(el, { scaleY: volume, transformOrigin: "center bottom" });
   }
 
   function onSliderPointerDown(e: React.PointerEvent<HTMLDivElement>) {
     e.preventDefault();
     e.currentTarget.setPointerCapture(e.pointerId);
-    setVolumeFromPointer(e.clientX);
+    setVolumeFromPointer(e.clientY);
   }
 
   function onSliderPointerMove(e: React.PointerEvent<HTMLDivElement>) {
     if (e.currentTarget.hasPointerCapture(e.pointerId)) {
-      setVolumeFromPointer(e.clientX);
+      setVolumeFromPointer(e.clientY);
     }
   }
 
   return (
-    <div
-      id="widget-music"
-      className="flex flex-col items-start justify-center gap-4 size-full"
-    >
+    <div id="widget-music" className="flex items-stretch gap-4 w-full">
       {/* Disc */}
       <button
         ref={discRef}
@@ -138,39 +136,39 @@ export default function MusicWidget() {
           ref={sliderRef}
           onPointerDown={onSliderPointerDown}
           onPointerMove={onSliderPointerMove}
-          className="relative flex flex-col gap-2.5 w-full overflow-hidden rounded-lg backdrop-blur-2xl bg-[rgba(12,12,12,0.2)] px-2 py-3 cursor-ew-resize touch-none select-none"
+          className="relative flex flex-col justify-end gap-2.5 w-full overflow-hidden rounded-lg backdrop-blur-2xl bg-[rgba(12,12,12,0.2)] px-2 py-3 cursor-ns-resize touch-none select-none"
         >
           <div
             ref={initVolumeBar}
-            className="absolute inset-y-0 left-0 w-full bg-white"
+            className="absolute inset-x-0 bottom-0 h-full bg-white"
           />
-          <div className="relative flex items-center justify-between mix-blend-difference pointer-events-none">
-            <span className="text-2xl leading-[0.9] tracking-[-0.015em] text-[#f5f5f5] whitespace-nowrap">
+          <div className="flex items-center justify-center mix-blend-difference pointer-events-none">
+            <span className="text-sm text-center leading-[0.9] tracking-[-0.015em] text-[#f5f5f5] whitespace-nowrap">
               {Math.round(volume * 100)}%
             </span>
-            <span className="size-[0.62rem] shrink-0 text-white">
-              <svg
-                viewBox="0 0 9.91162 9.90303"
-                fill="none"
-                className="block size-full"
-                aria-hidden
-              >
-                <path
-                  d="M6.73145 8.83691L2.80762 6.97168L2.71191 6.93262C2.61535 6.89929 2.51376 6.88185 2.41113 6.88184H0.680664L0.683594 3.01562H2.41113C2.54789 3.01562 2.68309 2.98537 2.80664 2.92676L6.73145 1.06348V8.83691Z"
-                  fill="currentColor"
-                  stroke="currentColor"
-                  strokeWidth="1.3448"
-                />
-                <rect
-                  x="8.97656"
-                  y="2.875"
-                  width="0.935053"
-                  height="4.15521"
-                  rx="0.467527"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
+          </div>
+          <div className="absolute left-1/2 top-4 -translate-x-1/2  mix-blend-difference">
+            <svg
+              viewBox="0 0 9.91162 9.90303"
+              fill="none"
+              className="block  size-[0.62rem] shrink-0 text-white"
+              aria-hidden
+            >
+              <path
+                d="M6.73145 8.83691L2.80762 6.97168L2.71191 6.93262C2.61535 6.89929 2.51376 6.88185 2.41113 6.88184H0.680664L0.683594 3.01562H2.41113C2.54789 3.01562 2.68309 2.98537 2.80664 2.92676L6.73145 1.06348V8.83691Z"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="1.3448"
+              />
+              <rect
+                x="8.97656"
+                y="2.875"
+                width="0.935053"
+                height="4.15521"
+                rx="0.467527"
+                fill="currentColor"
+              />
+            </svg>
           </div>
         </div>
       )}

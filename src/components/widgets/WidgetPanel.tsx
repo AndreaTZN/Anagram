@@ -8,6 +8,7 @@ import PhotoCarouselWidget from "./PhotoCarouselWidget";
 import ClockWidget from "./ClockWidget";
 import MusicWidget from "./MusicWidget";
 import RolesStackWidget from "./RolesStackWidget";
+import SphereWidget from "./SphereWidget";
 import type { OpenRole } from "../OpenRoles";
 import { scrollLockRef } from "@/lib/lenis";
 import { useMusicPlayer } from "@/contexts/MusicContext";
@@ -16,6 +17,9 @@ gsap.registerPlugin(useGSAP);
 
 export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
   const [open, setOpen] = useState(false);
+  // Latches on the first open and never resets: remounting would rebuild the
+  // WebGL context and every label texture on each reopen.
+  const [mountSphere, setMountSphere] = useState(false);
   const { playing: musicPlaying } = useMusicPlayer();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const verticalPathRef = useRef<SVGPathElement>(null);
@@ -105,6 +109,11 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
         ?.invalidate();
       tl.current.timeScale(1).play();
       scrollLockRef.current = true;
+      // Deferred past the opening tween: mounting the sphere synchronously here
+      // would compile its shaders inside the same frame and drop the animation.
+      if (!mountSphere) {
+        gsap.delayedCall(0.9, () => setMountSphere(true));
+      }
     } else {
       // Played backwards, the elastic overshoot reads as sluggish — closing
       // runs faster so the panel snaps away instead of wobbling out.
@@ -153,17 +162,20 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
       >
         {/* Widgets grid */}
         <div className="flex justify-center items-start gap-4">
-          <div
-            ref={(el) => addWidget(el, 0)}
-            className="flex flex-col gap-4 w-31 shrink-0"
-          >
-            <MusicWidget />
-          </div>
-          <div className="flex flex-col gap-4">
-            <div ref={(el) => addWidget(el, 1)}>
+          <div className="flex flex-col gap-4 shrink-0 w-46.5">
+            <div ref={(el) => addWidget(el, 0)}>
               <PhotoCarouselWidget active={open} />
             </div>
+            <div ref={(el) => addWidget(el, 1)}>
+              <MusicWidget />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4 w-75">
             <div ref={(el) => addWidget(el, 3)}>
+              {mountSphere && <SphereWidget />}
+            </div>
+            <div ref={(el) => addWidget(el, 4)}>
               <RolesStackWidget roles={openRoles} />
             </div>
           </div>
