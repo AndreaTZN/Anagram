@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { navWorks } from "@/lib/nav-works";
+import Calendar from "@/components/icons/Calendar";
 
 gsap.registerPlugin(useGSAP);
 
@@ -21,6 +22,10 @@ export default function Navigation() {
   const pathname = usePathname();
   const listRef = useRef<HTMLDivElement>(null);
   const meetingTooltipRef = useRef<HTMLSpanElement>(null);
+  const emailAddressRef = useRef<HTMLSpanElement>(null);
+  const emailBriefRef = useRef<HTMLSpanElement>(null);
+  const emailMarqueeRef = useRef<HTMLSpanElement>(null);
+  const emailMarqueeTween = useRef<gsap.core.Tween | null>(null);
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
@@ -33,6 +38,7 @@ export default function Navigation() {
 
   useGSAP(() => {
     gsap.set(meetingTooltipRef.current, { opacity: 0, y: 4, xPercent: -50 });
+    gsap.set(emailBriefRef.current, { yPercent: 100 });
   }, []);
 
   function handleMeetingEnter() {
@@ -54,6 +60,55 @@ export default function Navigation() {
       duration: 0.2,
       ease: "power2.in",
       overwrite: true,
+    });
+  }
+
+  function handleEmailEnter() {
+    gsap.to(emailAddressRef.current, {
+      yPercent: -220,
+      duration: 0.4,
+      opacity: 0,
+      ease: "power3.out",
+      overwrite: true,
+    });
+    gsap.to(emailBriefRef.current, {
+      yPercent: 0,
+      duration: 0.4,
+      ease: "power3.out",
+      overwrite: true,
+    });
+
+    // Three identical units, so one full unit is exactly a third of the track:
+    // at -1/3 the second copy sits where the first started and the repeat is
+    // seamless. -50% would stop mid-pattern and visibly jump.
+    emailMarqueeTween.current?.kill();
+    gsap.set(emailMarqueeRef.current, { xPercent: 0 });
+    emailMarqueeTween.current = gsap.to(emailMarqueeRef.current, {
+      xPercent: -100 / 3,
+      duration: 4,
+      ease: "none",
+      repeat: -1,
+    });
+  }
+
+  function handleEmailLeave() {
+    gsap.to(emailAddressRef.current, {
+      yPercent: 0,
+      opacity: 1,
+      duration: 0.4,
+      ease: "power3.out",
+      overwrite: true,
+    });
+    gsap.to(emailBriefRef.current, {
+      yPercent: 100,
+      duration: 0.4,
+      ease: "power3.out",
+      overwrite: true,
+      onComplete: () => {
+        emailMarqueeTween.current?.kill();
+        emailMarqueeTween.current = null;
+        gsap.set(emailMarqueeRef.current, { xPercent: 0 });
+      },
     });
   }
 
@@ -151,11 +206,36 @@ export default function Navigation() {
 
             <div className="flex items-start gap-2 self-start">
               <a
+                id="nav-cta-email"
                 href="mailto:hello@anagram.club"
-                className="flex items-center bg-[#f5f5f5] rounded-full px-4 py-3"
+                onMouseEnter={handleEmailEnter}
+                onMouseLeave={handleEmailLeave}
+                className="relative overflow-hidden flex items-center bg-[#f5f5f5] rounded-full px-4 py-3"
               >
-                <span className="text-[#0c0c0c] leading-[0.9] text-sm tracking-[-0.07px]">
+                <span
+                  ref={emailAddressRef}
+                  className="block whitespace-nowrap text-[#0c0c0c] leading-[0.9] text-sm tracking-[-0.07px]"
+                >
                   hello@anagram.club
+                </span>
+                <span
+                  ref={emailBriefRef}
+                  aria-hidden="true"
+                  className="absolute inset-0 flex items-center overflow-hidden"
+                >
+                  <span
+                    ref={emailMarqueeRef}
+                    className="flex items-center w-max"
+                  >
+                    {[0, 1, 2].map((i) => (
+                      <span key={i} className="flex items-center">
+                        <span className="whitespace-nowrap px-2 text-[#0c0c0c] leading-[0.9] text-sm tracking-[-0.07px]">
+                          Send your brief
+                        </span>
+                        <span className="w-1 h-1 rounded-full bg-[#0c0c0c]"></span>
+                      </span>
+                    ))}
+                  </span>
                 </span>
               </a>
 
@@ -168,39 +248,7 @@ export default function Navigation() {
                 onMouseLeave={handleMeetingLeave}
                 className="relative flex items-center justify-center size-9.25 shrink-0 rounded-full bg-[#f5f5f5]"
               >
-                <svg
-                  width="37"
-                  height="37"
-                  viewBox="0 0 37 37"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M12.3372 17.9801C12.3372 15.4597 12.3372 14.1995 13.1202 13.4164C13.9032 12.6334 15.1634 12.6334 17.6839 12.6334H20.3572C22.8776 12.6334 24.1379 12.6334 24.9209 13.4164C25.7039 14.1995 25.7039 15.4597 25.7039 17.9801V19.3168C25.7039 21.8372 25.7039 23.0975 24.9209 23.8805C24.1379 24.6635 22.8776 24.6635 20.3572 24.6635H17.6839C15.1634 24.6635 13.9032 24.6635 13.1202 23.8805C12.3372 23.0975 12.3372 21.8372 12.3372 19.3168V17.9801Z"
-                    stroke="#0c0c0c"
-                    strokeWidth="1.3337"
-                  />
-                  <path
-                    d="M15.6779 12.6335V11.631"
-                    stroke="#0c0c0c"
-                    strokeWidth="1.3337"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M22.3621 12.6335V11.631"
-                    stroke="#0c0c0c"
-                    strokeWidth="1.3337"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M12.6706 15.9751H25.369"
-                    stroke="#0c0c0c"
-                    strokeWidth="1.3337"
-                    strokeLinecap="round"
-                  />
-                </svg>
-
+                <Calendar />
                 <span
                   ref={meetingTooltipRef}
                   id="nav-cta-meeting-tooltip"

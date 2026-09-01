@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export type CaseSection = {
   id: string;
@@ -34,15 +35,12 @@ const CaseNavContext = createContext<CaseNavContextType>({
   setActiveTab: () => {},
 });
 
-export function CaseNavProvider({
-  children,
-  isCasePage = false,
-}: {
-  children: React.ReactNode;
-  isCasePage?: boolean;
-}) {
-  const [data, setData] = useState<CaseNavData | null>(
-    isCasePage ? ({} as CaseNavData) : null,
+// Derived here rather than passed from the root layout: reading the pathname
+// from headers() there made every route in the app dynamically rendered.
+export function CaseNavProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const [data, setData] = useState<CaseNavData | null>(() =>
+    /^\/works\/.+/.test(pathname) ? ({} as CaseNavData) : null,
   );
   const [activeTab, setActiveTab] = useState<"release" | "backstage">("release");
 

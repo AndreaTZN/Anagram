@@ -1,5 +1,4 @@
 import "./globals.css";
-import { headers } from "next/headers";
 import NavWrapper from "@/components/NavWrapper";
 import SmoothScroll from "@/components/SmoothScroll";
 import PageTheme from "@/components/PageTheme";
@@ -132,15 +131,11 @@ const jsonLd = {
   ],
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") ?? "";
-  const isCasePage = /^\/works\/.+/.test(pathname);
-
   return (
     <html lang="en">
       <head>
@@ -162,7 +157,7 @@ export default async function RootLayout({
           <CookieServices />
           <GtmPageView />
           <MusicProvider>
-            <CaseNavProvider isCasePage={isCasePage}>
+            <CaseNavProvider>
               <CaseOriginTracker />
               <PageTheme>
                 <FadeIn id="home-main" className="opacity-0">
