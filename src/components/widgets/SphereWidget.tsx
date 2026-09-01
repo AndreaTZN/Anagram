@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 // Type-only: the runtime module is imported dynamically inside the effect so
@@ -75,6 +76,38 @@ const COLOR_SEQUENCE = [
   "#FF331B",
   "#C3BD9A",
 ];
+
+// Index = numéro affiché sur la sphère - 1. L'ordre est éditable : il définit
+// vers quel projet chaque numéro envoie. Doit compter exactement PROJECT_COUNT
+// entrées, chacune correspondant à un dossier de src/app/works/.
+const PROJECT_SLUGS = [
+  "wastetide",
+  "founders-future",
+  "planity",
+  "pennylane",
+  "inbolt",
+  "arcads",
+  "twin",
+  "vizzia",
+  "perma",
+  "henoo",
+  "tilt",
+  "semplice",
+] as const;
+
+// Le décalage silencieux entre les deux tableaux enverrait tous les numéros
+// suivants sur le mauvais projet ; on échoue en dev plutôt qu'en production.
+if (
+  process.env.NODE_ENV !== "production" &&
+  PROJECT_SLUGS.length !== CONFIG.projectCount
+) {
+  throw new Error(
+    `SphereWidget: PROJECT_SLUGS has ${PROJECT_SLUGS.length} entries, expected ${CONFIG.projectCount}`,
+  );
+}
+
+// Laisse le temps de lire le numéro obtenu avant de quitter la page.
+const NAVIGATION_DELAY_MS = 700;
 
 const VERTEX_SHADER = `
   varying vec3 vWorldDirection;
@@ -300,8 +333,10 @@ export default function SphereWidget({
 }: {
   onProjectSelected?: (detail: SphereProjectSelected) => void;
 }) {
+  const router = useRouter();
   const wrapRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLSpanElement>(null);
+  const navigationTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [status, setStatus] = useState("Spin the ball");
   const [spinning, setSpinning] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -309,6 +344,8 @@ export default function SphereWidget({
   // Read inside the WebGL loop without re-running the effect on every change.
   const onSelectedRef = useRef(onProjectSelected);
   onSelectedRef.current = onProjectSelected;
+  const routerRef = useRef(router);
+  routerRef.current = router;
 
   // Replaces the CSS @keyframes mask-in/out: the label swaps text mid-tween.
   const pendingStatus = useRef<{ text: string; spinning: boolean } | null>(null);
@@ -416,7 +453,7 @@ export default function SphereWidget({
       id: i + 1,
       color: PROJECT_COLOR_HEX[i],
       opposite: ((i + PROJECT_COUNT / 2) % PROJECT_COUNT) + 1,
-      url: `/projects/${String(i + 1).padStart(2, "0")}`,
+      url: `/works/${PROJECT_SLUGS[i]}`,
     }));
 
     const sphereMaterial = new THREE.ShaderMaterial({
@@ -938,7 +975,6 @@ export default function SphereWidget({
           settleWithBounce(snapped, () => {
             locked = false;
             canvasWrap.classList.remove("cursor-wait");
-            pushStatus("Another spin?");
 
             const index = getCurrentIndex();
             const project = PROJECTS[index];
@@ -950,6 +986,12 @@ export default function SphereWidget({
               oppositeProject: project.opposite,
               url: project.url,
             });
+
+            pushStatus(`Going to ${project.id}`);
+            navigationTimeout.current = setTimeout(() => {
+              navigationTimeout.current = null;
+              routerRef.current.push(project.url);
+            }, NAVIGATION_DELAY_MS);
 
             if (!hovered) startIdleRotation();
           });
@@ -1128,6 +1170,9 @@ export default function SphereWidget({
     resizeObserver.observe(canvasWrap);
 
     resize();
+    // Compile le programme GLSL avant de retirer le loader : sans ça `ready`
+    // passe à true pendant que le GPU compile encore, découvrant un canvas vide.
+    renderer.compile(scene, camera);
     render();
     setReady(true);
     startIdleRotation();
@@ -1166,6 +1211,8 @@ export default function SphereWidget({
 
     return () => {
       disposed = true;
+      // Sans ça, fermer le panel pendant le délai navigue quand même.
+      if (navigationTimeout.current) clearTimeout(navigationTimeout.current);
       teardown?.();
     };
   }, []);

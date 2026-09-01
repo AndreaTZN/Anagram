@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import WidgetToggleButton from "./WidgetToggleButton";
@@ -8,18 +9,39 @@ import PhotoCarouselWidget from "./PhotoCarouselWidget";
 import ClockWidget from "./ClockWidget";
 import MusicWidget from "./MusicWidget";
 import RolesStackWidget from "./RolesStackWidget";
-import SphereWidget from "./SphereWidget";
+
 import type { OpenRole } from "../OpenRoles";
 import { scrollLockRef } from "@/lib/lenis";
 import { useMusicPlayer } from "@/contexts/MusicContext";
 
 gsap.registerPlugin(useGSAP);
 
+function SpherePlaceholder() {
+  return (
+    <div className="w-full overflow-hidden rounded-lg bg-[#f7f7f5]">
+      <div className="relative w-full aspect-square" />
+      <div className="px-5 py-8 leading-none">&nbsp;</div>
+    </div>
+  );
+}
+
+// Chargé à la demande : three (~520 kB) resterait dans le bundle de la page
+// avec un import statique, même tant que le panel n'a jamais été ouvert.
+const SphereWidget = dynamic(() => import("./SphereWidget"), {
+  ssr: false,
+  loading: () => <SpherePlaceholder />,
+});
+
 export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
   const [open, setOpen] = useState(false);
-  // Latches on the first open and never resets: remounting would rebuild the
-  // WebGL context and every label texture on each reopen.
-  const [mountSphere, setMountSphere] = useState(false);
+  // La sphère monte à la première ouverture et reste montée : la démonter à
+  // chaque fermeture recréerait un contexte WebGL et perdrait sa rotation.
+  const [sphereMounted, setSphereMounted] = useState(false);
+
+  useEffect(() => {
+    if (open) setSphereMounted(true);
+  }, [open]);
+
   const { playing: musicPlaying } = useMusicPlayer();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const verticalPathRef = useRef<SVGPathElement>(null);
@@ -94,29 +116,16 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
 
   function toggle() {
     if (!tl.current) return;
-    // pointerEvents isn't interpolatable, so it's set outright rather than
-    // tweened — the overlay must stop catching clicks the moment we close.
+
     gsap.set(overlayRef.current, { pointerEvents: open ? "none" : "auto" });
     if (!open) {
-      // Only the button-width tween needs re-measuring (its start size differs
-      // depending on whether the vinyl is in). Invalidating the whole timeline
-      // mid-flight made the widget tween re-read opacity where an interrupted
-      // reverse had left it — recording 0 as its start, so widgets stayed
-      // invisible while the overlay blur still faded in.
       tl.current
         .getChildren(false, true, false)
         .find((t) => t.vars.id === "button-width")
         ?.invalidate();
       tl.current.timeScale(1).play();
       scrollLockRef.current = true;
-      // Deferred past the opening tween: mounting the sphere synchronously here
-      // would compile its shaders inside the same frame and drop the animation.
-      if (!mountSphere) {
-        gsap.delayedCall(0.9, () => setMountSphere(true));
-      }
     } else {
-      // Played backwards, the elastic overshoot reads as sluggish — closing
-      // runs faster so the panel snaps away instead of wobbling out.
       tl.current.timeScale(1.8).reverse();
       scrollLockRef.current = false;
     }
@@ -173,7 +182,7 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
 
           <div className="flex flex-col gap-4 w-75">
             <div ref={(el) => addWidget(el, 3)}>
-              {mountSphere && <SphereWidget />}
+              {sphereMounted ? <SphereWidget /> : <SpherePlaceholder />}
             </div>
             <div ref={(el) => addWidget(el, 4)}>
               <RolesStackWidget roles={openRoles} />
