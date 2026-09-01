@@ -6,10 +6,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { navWorks } from "@/lib/nav-works";
 import Calendar from "@/components/icons/Calendar";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -26,7 +27,15 @@ export default function Navigation() {
   const emailBriefRef = useRef<HTMLSpanElement>(null);
   const emailMarqueeRef = useRef<HTMLSpanElement>(null);
   const emailMarqueeTween = useRef<gsap.core.Tween | null>(null);
+  const stackHandleRef = useRef<HTMLDivElement>(null);
   const [isDesktop, setIsDesktop] = useState(false);
+  // Sur /works la pile est l'état par défaut, sans attendre le scroll.
+  const alwaysStacked = pathname === "/works";
+  const [isStacked, setIsStacked] = useState(alwaysStacked);
+
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const isCollapsed = (isStacked || alwaysStacked) && !isExpanded;
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 993px)");
@@ -35,6 +44,32 @@ export default function Navigation() {
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
+
+  useGSAP(
+    () => {
+      const scroller = document.getElementById("smooth-scroll-container");
+      if (!scroller) return;
+
+      const sync = (self: ScrollTrigger) => {
+        const stacked = alwaysStacked || self.scroll() > 300;
+        setIsStacked(stacked);
+        if (!stacked) setIsExpanded(false);
+      };
+
+      // La nav persiste entre les routes : sans ce set, arriver sur /works par
+      // navigation client garderait l'état déplié de la page précédente.
+      setIsStacked(alwaysStacked || scroller.scrollTop > 300);
+      setIsExpanded(false);
+
+      ScrollTrigger.create({
+        scroller,
+        start: 300,
+        onUpdate: sync,
+        onRefresh: sync,
+      });
+    },
+    { dependencies: [pathname, alwaysStacked] },
+  );
 
   useGSAP(() => {
     gsap.set(meetingTooltipRef.current, { opacity: 0, y: 4, xPercent: -50 });
@@ -120,7 +155,100 @@ export default function Navigation() {
       const items = gsap.utils.toArray<HTMLElement>("[data-nav-work]", list);
       if (!items.length) return;
 
+      const links = items.map((item) => item.parentElement as HTMLElement);
+
+      const cardHeight = links[0].offsetHeight;
+      const step = cardHeight + 6;
+
+      const tl = gsap.timeline();
+
+      if (isCollapsed) {
+        list.scrollTop = 0;
+
+        tl.to(
+          stackHandleRef.current,
+          { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
+          0,
+        )
+          .to(
+            links,
+            {
+              y: (i: number) => -i * step,
+              duration: 0.5,
+              ease: "power3.out",
+              transformOrigin: "center top",
+            },
+            0,
+          )
+          .to(
+            list,
+            {
+              height:
+                cardHeight + parseFloat(getComputedStyle(list).paddingBottom),
+              duration: 0.5,
+              ease: "power3.out",
+            },
+            0,
+          );
+      } else {
+        tl.to(
+          stackHandleRef.current,
+          { opacity: 0, y: -4, duration: 0.3, ease: "power3.in" },
+          0,
+        )
+          .to(
+            links,
+            {
+              y: 0,
+              scale: 1,
+              duration: 0.5,
+              ease: "power3.out",
+            },
+            0,
+          )
+          .to(
+            list,
+            {
+              height: list.scrollHeight,
+              duration: 0.5,
+              ease: "power3.out",
+              clearProps: "height",
+            },
+            0,
+          );
+      }
+    },
+    { dependencies: [isCollapsed], scope: listRef },
+  );
+
+  useGSAP(
+    () => {
+      const list = listRef.current;
+      if (!list) return;
+
+      const items = gsap.utils.toArray<HTMLElement>("[data-nav-work]", list);
+      if (!items.length) return;
+
+      if (isCollapsed) {
+        gsap.to(items, {
+          scaleX: 1,
+          scaleY: 1,
+          opacity: 1,
+          x: 0,
+          duration: 0.4,
+          ease: "power3.out",
+          overwrite: true,
+        });
+        return;
+      }
+
       gsap.set(items, { transformOrigin: "left center", force3D: true });
+
+      const startDelay = gsap.delayedCall(0.55, () => {
+        update();
+        list.addEventListener("scroll", update, { passive: true });
+        window.addEventListener("resize", update);
+      });
 
       const setters = items.map((item) => ({
         scaleX: gsap.quickTo(item, "scaleX", {
@@ -163,16 +291,13 @@ export default function Navigation() {
         });
       };
 
-      update();
-      list.addEventListener("scroll", update, { passive: true });
-      window.addEventListener("resize", update);
-
       return () => {
+        startDelay.kill();
         list.removeEventListener("scroll", update);
         window.removeEventListener("resize", update);
       };
     },
-    { scope: listRef },
+    { dependencies: [isCollapsed], scope: listRef },
   );
 
   return (
@@ -281,57 +406,88 @@ export default function Navigation() {
 
       {/* Works list + Show all works */}
       <div
+        id="nav-works"
         className="relative flex flex-col justify-end flex-1 overflow-hidden"
         style={{
-          maskImage:
-            "linear-gradient(to bottom, transparent 0, #000 5rem, #000 calc(100% - 1.5rem), transparent 100%)",
-          WebkitMaskImage:
-            "linear-gradient(to bottom, transparent 0, #000 5rem, #000 calc(100% - 1.5rem), transparent 100%)",
+          // Le masque de fondu haut n'a de sens que sur la liste scrollable ;
+          // sur la pile repliée il mangerait la poignée.
+          maskImage: isCollapsed
+            ? undefined
+            : "linear-gradient(to bottom, transparent 0, #000 5rem, #000 calc(100% - 1.5rem), transparent 100%)",
+          WebkitMaskImage: isCollapsed
+            ? undefined
+            : "linear-gradient(to bottom, transparent 0, #000 5rem, #000 calc(100% - 1.5rem), transparent 100%)",
         }}
       >
         <div
-          id="nav-works-list"
-          ref={listRef}
-          className="flex flex-col gap-1.5 pl-3 pr-1.5 pb-4  pt-14 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden "
+          id="nav-works-stack"
+          onMouseEnter={() => isStacked && setIsExpanded(true)}
+          onMouseLeave={() => setIsExpanded(false)}
+          onClick={() => isStacked && setIsExpanded(true)}
+          className="flex min-h-0 flex-col justify-end"
         >
-          {navWorks.map((work) => (
-            <Link key={work.name} href={work.href}>
-              <div
-                data-nav-work
-                className="flex items-center gap-3 p-2 transition-colors bg-[#f9f9f9] hover:bg-[#ededed]"
+          {/* Poignée affichée quand la liste est repliée en pile */}
+          <div
+            id="nav-works-stack-handle"
+            ref={stackHandleRef}
+            aria-hidden="true"
+            className="mx-auto mb-1.5 h-0.75 w-8 shrink-0 rounded-full bg-[#e0e0e0] opacity-0"
+          />
+
+          <div
+            id="nav-works-list"
+            ref={listRef}
+            className={`flex min-h-0 flex-col gap-1.5 pl-3 pr-1.5 pb-4 scrollbar-none [&::-webkit-scrollbar]:hidden ${
+              isCollapsed ? "overflow-hidden pt-0" : "overflow-y-auto pt-14"
+            }`}
+          >
+            {navWorks.map((work, i) => (
+              <Link
+                key={work.name}
+                href={work.href}
+                // Ordre d'empilement statique : la première carte au-dessus. En
+                // CSS plutôt qu'animé, sinon GSAP interpole le zIndex depuis
+                // `auto` et la carte 1 passe sous les suivantes au repli.
+                style={{ zIndex: navWorks.length - i }}
+                className="relative shrink-0"
               >
-                <div className="relative shrink-0 overflow-hidden w-25 h-15">
-                  {isDesktop ? (
-                    <video
-                      src={work.video}
-                      poster={work.poster}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  ) : (
-                    <Image
-                      src={work.poster}
-                      alt={work.name}
-                      fill
-                      sizes="100px"
-                      className="object-cover"
-                    />
-                  )}
+                <div
+                  data-nav-work
+                  className="flex items-center gap-3 p-2 transition-colors bg-[#f9f9f9] hover:bg-[#ededed]"
+                >
+                  <div className="relative shrink-0 overflow-hidden w-25 h-15">
+                    {isDesktop ? (
+                      <video
+                        src={work.video}
+                        poster={work.poster}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ) : (
+                      <Image
+                        src={work.poster}
+                        alt={work.name}
+                        fill
+                        sizes="100px"
+                        className="object-cover"
+                      />
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[#7c7c7c] text-sm  leading-[0.8] font-normal">
+                      {work.category}
+                    </span>
+                    <p className="text-[#0c0c0c] text-sm  leading-[0.8] font-medium">
+                      {work.name}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <span className="text-[#7c7c7c] text-sm  leading-[0.8] font-normal">
-                    {work.category}
-                  </span>
-                  <p className="text-[#0c0c0c] text-sm  leading-[0.8] font-medium">
-                    {work.name}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </nav>
