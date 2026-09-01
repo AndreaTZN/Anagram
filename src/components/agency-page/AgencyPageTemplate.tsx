@@ -8,7 +8,6 @@ import CaseHighlightCard from "./CaseHighlightCard";
 import ClientsWall from "./ClientsWall";
 import SectorsGrid from "./SectorsGrid";
 import Faq from "./Faq";
-import DotDivider from "./DotDivider";
 
 const HERO_VIDEOS = [
   "/seo/video01.mp4",
@@ -321,21 +320,13 @@ export default function AgencyPageTemplate({
             .filter(Boolean)
             .map((section, i) => (
               <Fragment key={i}>
-                {i > 0 && <DotDivider id={`${idPrefix}-divider-${i}`} />}
+                {i > 0 && <div className="h-[0.5px] w-full bg-[#0c0c0c26]" />}
                 {section}
               </Fragment>
             ))}
         </div>
 
-        <DotDivider
-          id={`${idPrefix}-divider-vertical`}
-          orientation="vertical"
-          dots={verticalDividerDots}
-        />
-
-        <div className="hidden max-[992px]:block">
-          <DotDivider id={`${idPrefix}-divider-mobile-services`} />
-        </div>
+        <div className="w-[0.5px] self-stretch bg-[#0c0c0c26] max-[992px]:hidden" />
 
         <ServicesPanel
           idPrefix={`${idPrefix}-services`}
