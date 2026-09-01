@@ -68,15 +68,16 @@ const works: Work[] = [
     },
   },
   {
-    name: "Planity takes over Germany",
+    name: "Amazon acquires Bee",
     tag: "News",
     description:
-      "Planity's latest campaign brings the photography created by Anagram to the streets of Germany. Rolled out across Cologne, Frankfurt, Hamburg, Munich and Nuremberg, the campaign brings the brand's photography into the public space.",
-    externalLink: "https://www.instagram.com/p/DY2HO9noNYw/",
+      "Amazon has acquired Bee, the AI wearable startup behind a personal assistant designed to capture conversations and memories throughout the day. Read the full story on TechCrunch.",
+    externalLink:
+      "https://techcrunch.com/2025/07/22/amazon-acquires-bee-the-ai-wearable-that-records-everything-you-say/",
     media: {
       type: "image",
-      src: "/news/planity-news.webp",
-      aspect: "aspect-[280/200]",
+      src: "/news/bee-news.webp",
+      aspect: "aspect-[280/250]",
     },
   },
   {
@@ -94,16 +95,15 @@ const works: Work[] = [
     },
   },
   {
-    name: "Amazon acquires Bee",
+    name: "Planity takes over Germany",
     tag: "News",
     description:
-      "Amazon has acquired Bee, the AI wearable startup behind a personal assistant designed to capture conversations and memories throughout the day. Read the full story on TechCrunch.",
-    externalLink:
-      "https://techcrunch.com/2025/07/22/amazon-acquires-bee-the-ai-wearable-that-records-everything-you-say/",
+      "Planity's latest campaign brings the photography created by Anagram to the streets of Germany. Rolled out across Cologne, Frankfurt, Hamburg, Munich and Nuremberg, the campaign brings the brand's photography into the public space.",
+    externalLink: "https://www.instagram.com/p/DY2HO9noNYw/",
     media: {
       type: "image",
-      src: "/news/bee-news.webp",
-      aspect: "aspect-[280/250]",
+      src: "/news/planity-news.webp",
+      aspect: "aspect-[280/200]",
     },
   },
   {

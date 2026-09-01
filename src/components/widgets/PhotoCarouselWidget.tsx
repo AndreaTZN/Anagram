@@ -74,7 +74,7 @@ export default function PhotoCarouselWidget({ active }: { active: boolean }) {
           s.autoplay?.start(); // relance le timer complet
         }}
         onSlideChange={(s) => setActiveSlide(s.realIndex)}
-        className="w-full h-full"
+        className="w-full h-full cursor-pointer"
       >
         {photos.map((src, i) => (
           <SwiperSlide key={i}>

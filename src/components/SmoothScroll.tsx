@@ -52,18 +52,6 @@ export default function SmoothScroll({
 
     lenis.on("scroll", () => ScrollTrigger.update());
 
-    // let lastWidth = window.innerWidth;
-    // let resizeTimeout: ReturnType<typeof setTimeout>;
-    // function onResize() {
-    //   const currentWidth = window.innerWidth;
-    //   if (currentWidth !== lastWidth) {
-    //     clearTimeout(resizeTimeout);
-    //     resizeTimeout = setTimeout(() => location.reload(), 500);
-    //     lastWidth = currentWidth;
-    //   }
-    // }
-    // window.addEventListener("resize", onResize);
-
     let raf: number;
     function loop(time: number) {
       lenis.raf(time);
@@ -83,20 +71,6 @@ export default function SmoothScroll({
 
   useEffect(() => {
     lenisRef.current?.scrollTo(0, { immediate: true });
-  }, [pathname]);
-
-  useLayoutEffect(() => {
-    const content = contentRef.current;
-    if (!content) return;
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    gsap.fromTo(
-      content,
-      { opacity: 0 },
-      { opacity: 1, duration: 1, ease: "power2.inOut" },
-    );
   }, [pathname]);
 
   return (
