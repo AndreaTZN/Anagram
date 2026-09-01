@@ -95,6 +95,22 @@ const PROJECT_SLUGS = [
   "semplice",
 ] as const;
 
+// Noms affichables, alignés index par index sur PROJECT_SLUGS.
+const PROJECT_NAMES = [
+  "Wastetide",
+  "Founders Future",
+  "Planity",
+  "Pennylane",
+  "Inbolt",
+  "Arcads",
+  "Twin",
+  "Vizzia",
+  "Perma",
+  "Henoo",
+  "Tilt",
+  "Semplice",
+] as const;
+
 // Le décalage silencieux entre les deux tableaux enverrait tous les numéros
 // suivants sur le mauvais projet ; on échoue en dev plutôt qu'en production.
 if (
@@ -103,6 +119,15 @@ if (
 ) {
   throw new Error(
     `SphereWidget: PROJECT_SLUGS has ${PROJECT_SLUGS.length} entries, expected ${CONFIG.projectCount}`,
+  );
+}
+
+if (
+  process.env.NODE_ENV !== "production" &&
+  PROJECT_NAMES.length !== PROJECT_SLUGS.length
+) {
+  throw new Error(
+    `SphereWidget: PROJECT_NAMES has ${PROJECT_NAMES.length} entries, expected ${PROJECT_SLUGS.length}`,
   );
 }
 
@@ -451,6 +476,7 @@ export default function SphereWidget({
 
     const PROJECTS = Array.from({ length: PROJECT_COUNT }, (_, i) => ({
       id: i + 1,
+      name: PROJECT_NAMES[i],
       color: PROJECT_COLOR_HEX[i],
       opposite: ((i + PROJECT_COUNT / 2) % PROJECT_COUNT) + 1,
       url: `/works/${PROJECT_SLUGS[i]}`,
@@ -987,7 +1013,7 @@ export default function SphereWidget({
               url: project.url,
             });
 
-            pushStatus(`Going to ${project.id}`);
+            pushStatus(`Going to ${project.name}`);
             navigationTimeout.current = setTimeout(() => {
               navigationTimeout.current = null;
               routerRef.current.push(project.url);

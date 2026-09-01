@@ -73,16 +73,12 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
       .timeline({
         paused: true,
         defaults: { ease: "power2.out" },
-        // Reverse restores the width measured when the timeline was built,
-        // which predates the vinyl. Clearing it lets the button size to its
-        // content. Registered once here: re-registering it on every close left
-        // a stale callback armed across interrupted reverses.
+
         onReverseComplete: () => {
           gsap.set(buttonRef.current, { clearProps: "width" });
         },
       })
-      // width drives layout, so a bouncy ease here would reflow on every
-      // oscillation — a light back.out gives the stretch without the cost.
+
       .to(buttonRef.current, {
         width: "36.1875rem",
         duration: 0.65,
@@ -172,23 +168,23 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
         {/* Widgets grid */}
         <div className="flex justify-center items-start gap-4">
           <div className="flex flex-col gap-4 shrink-0 w-46.5">
-            <div ref={(el) => addWidget(el, 0)}>
-              <PhotoCarouselWidget active={open} />
-            </div>
             <div ref={(el) => addWidget(el, 1)}>
+              {sphereMounted ? <SphereWidget /> : <SpherePlaceholder />}
+            </div>
+            <div ref={(el) => addWidget(el, 2)}>
               <MusicWidget />
             </div>
           </div>
 
           <div className="flex flex-col gap-4 w-75">
             <div ref={(el) => addWidget(el, 3)}>
-              {sphereMounted ? <SphereWidget /> : <SpherePlaceholder />}
+              <PhotoCarouselWidget active={open} />
             </div>
             <div ref={(el) => addWidget(el, 4)}>
               <RolesStackWidget roles={openRoles} />
             </div>
           </div>
-          <div ref={(el) => addWidget(el, 2)} className="shrink-0">
+          <div ref={(el) => addWidget(el, 5)} className="shrink-0">
             <ClockWidget />
           </div>
         </div>
