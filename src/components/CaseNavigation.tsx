@@ -6,6 +6,12 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useCaseNav } from "@/contexts/CaseNavContext";
 import { getCaseOrigin } from "@/lib/case-origin";
+import ArrowWebGL, {
+  type ArrowWebGLHandle,
+} from "@/components/icons/ArrowWebGL";
+import CloseWebGL, {
+  type CloseWebGLHandle,
+} from "@/components/icons/CloseWebGL";
 
 export default function CaseNavigation() {
   const router = useRouter();
@@ -17,7 +23,8 @@ export default function CaseNavigation() {
   const navRef = useRef<HTMLElement>(null);
   const tabReleaseRef = useRef<HTMLButtonElement>(null);
   const tabBackstageRef = useRef<HTMLButtonElement>(null);
-  const closeIconRef = useRef<SVGSVGElement>(null);
+  const closeIconRef = useRef<CloseWebGLHandle>(null);
+  const liveArrowRef = useRef<ArrowWebGLHandle>(null);
   const isFirstTheme = useRef(true);
 
   const sections = data?.[activeTab]?.sections;
@@ -134,41 +141,20 @@ export default function CaseNavigation() {
         <Link
           id="case-nav-close"
           href="/works"
-          className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f5f5f5] hover:bg-[#e0e0e0] transition-colors duration-300 ease-linear"
+          aria-label="Close project"
+          className="grid place-items-center size-9.5 rounded-full bg-[#f7f7f7] hover:bg-[#ededed] transition-colors duration-500"
           onClick={(e) => {
             e.preventDefault();
             router.push(getCaseOrigin());
           }}
-          onMouseEnter={() =>
-            gsap.to(closeIconRef.current, {
-              rotation: 90,
-              duration: 0.3,
-              ease: "power2.out",
-            })
-          }
-          onMouseLeave={() =>
-            gsap.to(closeIconRef.current, {
-              rotation: 0,
-              duration: 0.3,
-              ease: "power2.inOut",
-            })
-          }
+          onMouseEnter={() => closeIconRef.current?.play()}
+          onFocus={() => closeIconRef.current?.play()}
         >
-          <svg
+          <CloseWebGL
             ref={closeIconRef}
-            width="10"
-            height="10"
-            viewBox="0 0 10 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1 1L9 9M9 1L1 9"
-              stroke="#7C7C7C"
-              strokeWidth="1.25"
-              strokeLinecap="round"
-            />
-          </svg>
+            light={activeTab === "backstage"}
+            className="block size-3"
+          />
         </Link>
 
         {data && (
@@ -192,30 +178,16 @@ export default function CaseNavigation() {
                   href={data.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onMouseEnter={() => liveArrowRef.current?.play()}
+                  onFocus={() => liveArrowRef.current?.play()}
                   className="flex items-center gap-2 text-[#0c0c0c] text-sm font-medium leading-[0.9] tracking-[-0.07px] w-fit"
                 >
                   See it live
-                  {/* L'encre du tracé va de 0 à 8.25 dans un viewBox de 9 :
-                      son centre est à 4.13 au lieu de 4.5, d'où la flèche
-                      visuellement trop haute. Le translate compense. */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="9"
-                    height="9"
-                    fill="none"
-                    viewBox="0 0 9 9"
-                    aria-hidden="true"
-                    className="shrink-0 translate-y-[0.375px]"
-                  >
-                    <path
-                      stroke="#0C0C0C"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.25"
-                      d="m.625 7.625 7-7m-4 0h4v4"
-                      opacity=".5"
-                    />
-                  </svg>
+                  <ArrowWebGL
+                    ref={liveArrowRef}
+                    light={activeTab === "backstage"}
+                    className="block size-3.5 shrink-0"
+                  />
                 </a>
               )}
             </div>

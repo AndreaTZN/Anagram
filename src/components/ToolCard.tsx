@@ -4,6 +4,9 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
+import ArrowWebGL, {
+  type ArrowWebGLHandle,
+} from "@/components/icons/ArrowWebGL";
 
 gsap.registerPlugin(useGSAP);
 
@@ -23,6 +26,7 @@ export default function ToolCard({
   aspect,
 }: Props) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const arrowRef = useRef<ArrowWebGLHandle>(null);
 
   useGSAP(() => {
     gsap.set(overlayRef.current, { opacity: 0 });
@@ -35,6 +39,7 @@ export default function ToolCard({
       duration: 0.3,
       ease: "power2.out",
     });
+    arrowRef.current?.play();
   }
 
   function handleLeave() {
@@ -46,31 +51,19 @@ export default function ToolCard({
     });
   }
 
-  const Wrapper = href
-    ? ({ children }: { children: React.ReactNode }) => (
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`relative block ${aspect} overflow-hidden`}
-          onMouseEnter={handleEnter}
-          onMouseLeave={handleLeave}
-        >
-          {children}
-        </a>
-      )
-    : ({ children }: { children: React.ReactNode }) => (
-        <div className={`relative ${aspect} overflow-hidden`}>{children}</div>
-      );
-
-  return (
-    <Wrapper>
+  const content = (
+    <>
       {/* Try now badge */}
       {href && (
-        <div className="absolute top-4 right-4 z-10 flex items-center px-4 py-4 rounded-full bg-[#1c1c1c]">
-          <span className="text-sm leading-[0.8] text-white whitespace-nowrap">
-            Try now ↗
+        <div className="absolute top-4 right-4 z-10 inline-flex items-center gap-2 px-4 py-3 rounded-full bg-[#FFFFFF]/20 backdrop-blur-[5rem] transition-colors duration-500 group-hover:bg-[#FFFFFF]/10">
+          <span className="text-sm leading-none text-white whitespace-nowrap">
+            Try now
           </span>
+          <ArrowWebGL
+            ref={arrowRef}
+            light
+            className="block size-3.5 shrink-0"
+          />
         </div>
       )}
 
@@ -103,6 +96,25 @@ export default function ToolCard({
           </p>
         )}
       </div>
-    </Wrapper>
+    </>
+  );
+
+  if (!href) {
+    return (
+      <div className={`relative ${aspect} overflow-hidden`}>{content}</div>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`group relative block ${aspect} overflow-hidden`}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      {content}
+    </a>
   );
 }

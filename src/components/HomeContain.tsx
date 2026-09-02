@@ -289,6 +289,12 @@ function WorkCard({ work }: { work: Work }) {
 
 export default function HomeContain() {
   const [activeFilter, setActiveFilter] = useState("All");
+  // `pendingFilter` is what the user clicked; `activeFilter` only swaps once the
+  // grid has faded out, so the content never changes while it is visible.
+  const [pendingFilter, setPendingFilter] = useState("All");
+  // Stays false until the first filter click so the initial render is not animated.
+  const hasFiltered = useRef(false);
+  const gridRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
   const labelWidth = useRef(0);
   const labelHidden = useRef(false);
@@ -303,6 +309,40 @@ export default function HomeContain() {
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
+
+  // Fade the grid out on click, swap the filter, then fade the cards back in.
+  useGSAP(
+    () => {
+      const grid = gridRef.current;
+      if (!grid || !hasFiltered.current) return;
+
+      if (pendingFilter !== activeFilter) {
+        gsap.to(grid, {
+          opacity: 0,
+          y: 8,
+          duration: 0.25,
+          ease: "power2.out",
+          onComplete: () => setActiveFilter(pendingFilter),
+        });
+        return;
+      }
+
+      gsap.set(grid, { opacity: 1, y: 0 });
+      gsap.fromTo(
+        grid.children,
+        { opacity: 0, y: 12 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
+          ease: "power2.out",
+          stagger: 0.04,
+          clearProps: "transform,opacity",
+        },
+      );
+    },
+    { dependencies: [pendingFilter, activeFilter] },
+  );
 
   function handlePillsScroll(e: React.UIEvent<HTMLDivElement>) {
     const label = labelRef.current;
@@ -352,9 +392,12 @@ export default function HomeContain() {
           {visibleFilters.map((filter) => (
             <button
               key={filter}
-              onClick={() => setActiveFilter(filter)}
+              onClick={() => {
+                hasFiltered.current = true;
+                setPendingFilter(filter);
+              }}
               className={`min-w-16 px-4 py-4 rounded-full text-sm leading-[0.8] cursor-pointer transition-colors shrink-0 whitespace-nowrap ${
-                activeFilter === filter
+                pendingFilter === filter
                   ? "bg-[#0c0c0c] text-white"
                   : "bg-[#f5f5f5] text-[#7C7C7C]"
               }`}
@@ -366,7 +409,10 @@ export default function HomeContain() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-5 md:gap-4 items-start">
+      <div
+        ref={gridRef}
+        className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-5 md:gap-4 items-start"
+      >
         {filtered.slice(0, firstRowCount).map((work) => (
           <WorkCard key={work.name} work={work} />
         ))}

@@ -373,7 +373,9 @@ export default function SphereWidget({
   routerRef.current = router;
 
   // Replaces the CSS @keyframes mask-in/out: the label swaps text mid-tween.
-  const pendingStatus = useRef<{ text: string; spinning: boolean } | null>(null);
+  const pendingStatus = useRef<{ text: string; spinning: boolean } | null>(
+    null,
+  );
   useGSAP(
     () => {
       const el = statusRef.current;
@@ -385,6 +387,18 @@ export default function SphereWidget({
       );
     },
     { dependencies: [status] },
+  );
+
+  // Le canvas apparaît en fondu une fois la scène compilée.
+  useGSAP(
+    () => {
+      if (!ready) return;
+      const canvas = wrapRef.current?.querySelector("canvas");
+      if (!canvas) return;
+
+      gsap.to(canvas, { autoAlpha: 1, duration: 0.5, ease: "power2.out" });
+    },
+    { dependencies: [ready] },
   );
 
   useEffect(() => {
@@ -442,265 +456,278 @@ export default function SphereWidget({
         return;
       }
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      CONFIG.camera.fov,
-      1,
-      0.1,
-      100,
-    );
-    camera.position.set(0, 0, CONFIG.camera.distance);
-    camera.lookAt(0, 0, 0);
-
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.NoToneMapping;
-    renderer.shadowMap.enabled = false;
-    canvasWrap.appendChild(renderer.domElement);
-
-    // Camera-relative hover tilt lives on a parent group. Keeping it
-    // separate from the sphere's local rotation prevents cursor directions
-    // from flipping after the rotor has completed half a turn.
-    const hoverPivot = new THREE.Group();
-    const rotor = new THREE.Group();
-    hoverPivot.add(rotor);
-    scene.add(hoverPivot);
-
-    const radius = CONFIG.sphere.radius;
-
-    const PROJECT_COLOR_HEX = Array.from(
-      { length: PROJECT_COUNT },
-      (_, index) => COLOR_SEQUENCE[index % COLOR_SEQUENCE.length],
-    );
-    const PROJECT_COLORS = PROJECT_COLOR_HEX.map((hex) => new THREE.Color(hex));
-
-    const PROJECTS = Array.from({ length: PROJECT_COUNT }, (_, i) => ({
-      id: i + 1,
-      name: PROJECT_NAMES[i],
-      color: PROJECT_COLOR_HEX[i],
-      opposite: ((i + PROJECT_COUNT / 2) % PROJECT_COUNT) + 1,
-      url: `/works/${PROJECT_SLUGS[i]}`,
-    }));
-
-    const sphereMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        colorTop: { value: PROJECT_COLORS[0].clone() },
-        colorBottom: { value: PROJECT_COLORS[1].clone() },
-        gradientTime: { value: 0 },
-        motionAmount: { value: 0 },
-        desaturation: { value: CONFIG.color.desaturation },
-        brightness: { value: CONFIG.color.brightness },
-        contrast: { value: CONFIG.color.contrast },
-        grainStrength: { value: CONFIG.color.grainStrength },
-        fresnelColor: { value: new THREE.Color("#FFFFFF") },
-        fresnelStrength: { value: 0.46 },
-        fresnelPower: { value: 5.2 },
-      },
-      vertexShader: VERTEX_SHADER,
-      fragmentShader: FRAGMENT_SHADER,
-    });
-
-    const sphereGeometry = new THREE.SphereGeometry(radius, 192, 128);
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    rotor.add(sphere);
-
-    const patchSurfaceRadius = radius + 0.006;
-    const patchAngularRadius = 0.29;
-
-    function createSphericalCapGeometry(
-      surfaceRadius: number,
-      angularRadius: number,
-      radialSegments = 32,
-      angularSegments = 128,
-    ) {
-      const positions: number[] = [];
-      const uvs: number[] = [];
-      const indices: number[] = [];
-
-      for (let ring = 0; ring <= radialSegments; ring++) {
-        const v = ring / radialSegments;
-        const theta = angularRadius * v;
-        const sinTheta = Math.sin(theta);
-        const cosTheta = Math.cos(theta);
-
-        for (let seg = 0; seg <= angularSegments; seg++) {
-          const u = seg / angularSegments;
-          const phi = u * Math.PI * 2;
-
-          positions.push(
-            surfaceRadius * sinTheta * Math.cos(phi),
-            surfaceRadius * sinTheta * Math.sin(phi),
-            surfaceRadius * cosTheta,
-          );
-
-          const radial = v * 0.5;
-          uvs.push(0.5 + Math.cos(phi) * radial, 0.5 + Math.sin(phi) * radial);
-        }
-      }
-
-      const stride = angularSegments + 1;
-
-      for (let ring = 0; ring < radialSegments; ring++) {
-        for (let seg = 0; seg < angularSegments; seg++) {
-          const a = ring * stride + seg;
-          const b = a + 1;
-          const c = (ring + 1) * stride + seg;
-          const d = c + 1;
-
-          indices.push(a, c, b);
-          indices.push(b, c, d);
-        }
-      }
-
-      const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute(
-        "position",
-        new THREE.Float32BufferAttribute(positions, 3),
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        CONFIG.camera.fov,
+        1,
+        0.1,
+        100,
       );
-      geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
-      geometry.setIndex(indices);
-      geometry.computeVertexNormals();
-      return geometry;
-    }
+      camera.position.set(0, 0, CONFIG.camera.distance);
+      camera.lookAt(0, 0, 0);
 
-    const curvedPatchGeometry = createSphericalCapGeometry(
-      patchSurfaceRadius,
-      patchAngularRadius,
-    );
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.NoToneMapping;
+      renderer.shadowMap.enabled = false;
+      // Masqué dès l'insertion : le fondu est lancé par le useGSAP sur `ready`,
+      // une fois le programme GLSL compilé et la première frame rendue.
+      gsap.set(renderer.domElement, { autoAlpha: 0 });
+      canvasWrap.appendChild(renderer.domElement);
 
-    function makePatchTexture(number: number) {
-      const canvas = document.createElement("canvas");
-      canvas.width = 1024;
-      canvas.height = 1024;
+      // Camera-relative hover tilt lives on a parent group. Keeping it
+      // separate from the sphere's local rotation prevents cursor directions
+      // from flipping after the rotor has completed half a turn.
+      const hoverPivot = new THREE.Group();
+      const rotor = new THREE.Group();
+      hoverPivot.add(rotor);
+      scene.add(hoverPivot);
 
-      const ctx = canvas.getContext("2d")!;
-      ctx.clearRect(0, 0, 1024, 1024);
+      const radius = CONFIG.sphere.radius;
 
-      ctx.beginPath();
-      ctx.arc(512, 512, 511, 0, Math.PI * 2);
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fill();
-
-      ctx.fillStyle = "#0C0C0C";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.font = '500 440px Aeonik, Arial, Helvetica, sans-serif';
-      ctx.fillText(String(number), 512, 530);
-
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-      texture.needsUpdate = true;
-      return texture;
-    }
-
-    // Prebuild every label texture once. Creating and disposing a 1024 px
-    // canvas texture at each number boundary caused visible frame hitches.
-    const PATCH_TEXTURES = Array.from({ length: PROJECT_COUNT }, (_, index) =>
-      makePatchTexture(index + 1),
-    );
-
-    type PatchObject = {
-      mesh: THREE_NS.Mesh;
-      material: THREE_NS.MeshBasicMaterial;
-      currentNumber: number | null;
-    };
-    const patchObjects: PatchObject[] = [];
-    const forward = new THREE.Vector3(0, 0, 1);
-
-    function createPatch(baseAngle: number, uprightCorrection: boolean) {
-      const normal = new THREE.Vector3(
-        0,
-        Math.sin(baseAngle),
-        Math.cos(baseAngle),
-      ).normalize();
-
-      const orientation = new THREE.Quaternion().setFromUnitVectors(
-        forward,
-        normal,
+      const PROJECT_COLOR_HEX = Array.from(
+        { length: PROJECT_COUNT },
+        (_, index) => COLOR_SEQUENCE[index % COLOR_SEQUENCE.length],
+      );
+      const PROJECT_COLORS = PROJECT_COLOR_HEX.map(
+        (hex) => new THREE.Color(hex),
       );
 
-      if (uprightCorrection) {
-        const correction = new THREE.Quaternion().setFromAxisAngle(
-          forward,
-          Math.PI,
-        );
-        orientation.multiply(correction);
-      }
+      const PROJECTS = Array.from({ length: PROJECT_COUNT }, (_, i) => ({
+        id: i + 1,
+        name: PROJECT_NAMES[i],
+        color: PROJECT_COLOR_HEX[i],
+        opposite: ((i + PROJECT_COUNT / 2) % PROJECT_COUNT) + 1,
+        url: `/works/${PROJECT_SLUGS[i]}`,
+      }));
 
-      const material = new THREE.MeshBasicMaterial({
-        map: PATCH_TEXTURES[0],
-        transparent: true,
-        depthWrite: true,
-        side: THREE.FrontSide,
-        polygonOffset: true,
-        polygonOffsetFactor: -2,
-        polygonOffsetUnits: -2,
+      const sphereMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+          colorTop: { value: PROJECT_COLORS[0].clone() },
+          colorBottom: { value: PROJECT_COLORS[1].clone() },
+          gradientTime: { value: 0 },
+          motionAmount: { value: 0 },
+          desaturation: { value: CONFIG.color.desaturation },
+          brightness: { value: CONFIG.color.brightness },
+          contrast: { value: CONFIG.color.contrast },
+          grainStrength: { value: CONFIG.color.grainStrength },
+          fresnelColor: { value: new THREE.Color("#FFFFFF") },
+          fresnelStrength: { value: 0.46 },
+          fresnelPower: { value: 5.2 },
+        },
+        vertexShader: VERTEX_SHADER,
+        fragmentShader: FRAGMENT_SHADER,
       });
 
-      const mesh = new THREE.Mesh(curvedPatchGeometry, material);
-      mesh.quaternion.copy(orientation);
-      rotor.add(mesh);
+      const sphereGeometry = new THREE.SphereGeometry(radius, 192, 128);
+      const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+      rotor.add(sphere);
 
-      patchObjects.push({ mesh, material, currentNumber: null });
-    }
+      const patchSurfaceRadius = radius + 0.006;
+      const patchAngularRadius = 0.29;
 
-    createPatch(0, false);
-    createPatch(Math.PI, true);
+      function createSphericalCapGeometry(
+        surfaceRadius: number,
+        angularRadius: number,
+        radialSegments = 32,
+        angularSegments = 128,
+      ) {
+        const positions: number[] = [];
+        const uvs: number[] = [];
+        const indices: number[] = [];
 
-    // Interaction state.
-    let rotation = 0;
-    let dragging = false;
-    let locked = false;
-    let pointerId: number | null = null;
-    let startY = 0;
-    let hasDragged = false;
-    let previousY = 0;
-    let previousTime = 0;
-    let velocity = 0;
-    let hovered = false;
-    let hoverAligning = false;
+        for (let ring = 0; ring <= radialSegments; ring++) {
+          const v = ring / radialSegments;
+          const theta = angularRadius * v;
+          const sinTheta = Math.sin(theta);
+          const cosTheta = Math.cos(theta);
 
-    // Camera-relative presentation state.
-    let ambientYaw = 0;
-    let ambientRoll = 0;
-    let hoverPitch = 0;
-    let hoverYaw = 0;
-    let hoverTargetPitch = 0;
-    let hoverTargetYaw = 0;
+          for (let seg = 0; seg <= angularSegments; seg++) {
+            const u = seg / angularSegments;
+            const phi = u * Math.PI * 2;
 
-    // Each animation channel owns its own requestAnimationFrame handle.
-    let raf = 0;
-    let idleRaf = 0;
-    let hoverFollowRaf = 0;
+            positions.push(
+              surfaceRadius * sinTheta * Math.cos(phi),
+              surfaceRadius * sinTheta * Math.sin(phi),
+              surfaceRadius * cosTheta,
+            );
 
-    // Reused Three.js values avoid allocations inside render().
-    const hoverEuler = new THREE.Euler(0, 0, 0, "XYZ");
-    const hoverOrientation = new THREE.Quaternion();
+            const radial = v * 0.5;
+            uvs.push(
+              0.5 + Math.cos(phi) * radial,
+              0.5 + Math.sin(phi) * radial,
+            );
+          }
+        }
 
-    // Animation clocks and shader motion state.
-    let ambientBlend = 0;
-    let lastIdleTime = performance.now();
-    let gradientClock = 0;
-    let gradientMotion = 0;
-    let lastRenderTime = performance.now();
-    let lastRenderRotation = 0;
+        const stride = angularSegments + 1;
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        for (let ring = 0; ring < radialSegments; ring++) {
+          for (let seg = 0; seg < angularSegments; seg++) {
+            const a = ring * stride + seg;
+            const b = a + 1;
+            const c = (ring + 1) * stride + seg;
+            const d = c + 1;
 
-    function getPassageIndex() {
-      return Math.round(-rotation / PASSAGE_ANGLE);
-    }
+            indices.push(a, c, b);
+            indices.push(b, c, d);
+          }
+        }
 
-    function getCurrentIndex() {
-      return modulo(getPassageIndex(), PROJECT_COUNT);
-    }
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute(
+          "position",
+          new THREE.Float32BufferAttribute(positions, 3),
+        );
+        geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+        geometry.setIndex(indices);
+        geometry.computeVertexNormals();
+        return geometry;
+      }
 
-    const tempTop = new THREE.Color();
-    const tempBottom = new THREE.Color();
+      const curvedPatchGeometry = createSphericalCapGeometry(
+        patchSurfaceRadius,
+        patchAngularRadius,
+      );
 
-    function updateContinuousGradient() {
-      /*
+      function makePatchTexture(number: number) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 1024;
+        canvas.height = 1024;
+
+        const ctx = canvas.getContext("2d")!;
+        ctx.clearRect(0, 0, 1024, 1024);
+
+        ctx.beginPath();
+        ctx.arc(512, 512, 511, 0, Math.PI * 2);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fill();
+
+        ctx.fillStyle = "#0C0C0C";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "500 440px Aeonik, Arial, Helvetica, sans-serif";
+        ctx.fillText(String(number), 512, 530);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.anisotropy = Math.min(
+          8,
+          renderer.capabilities.getMaxAnisotropy(),
+        );
+        texture.needsUpdate = true;
+        return texture;
+      }
+
+      // Prebuild every label texture once. Creating and disposing a 1024 px
+      // canvas texture at each number boundary caused visible frame hitches.
+      const PATCH_TEXTURES = Array.from({ length: PROJECT_COUNT }, (_, index) =>
+        makePatchTexture(index + 1),
+      );
+
+      type PatchObject = {
+        mesh: THREE_NS.Mesh;
+        material: THREE_NS.MeshBasicMaterial;
+        currentNumber: number | null;
+      };
+      const patchObjects: PatchObject[] = [];
+      const forward = new THREE.Vector3(0, 0, 1);
+
+      function createPatch(baseAngle: number, uprightCorrection: boolean) {
+        const normal = new THREE.Vector3(
+          0,
+          Math.sin(baseAngle),
+          Math.cos(baseAngle),
+        ).normalize();
+
+        const orientation = new THREE.Quaternion().setFromUnitVectors(
+          forward,
+          normal,
+        );
+
+        if (uprightCorrection) {
+          const correction = new THREE.Quaternion().setFromAxisAngle(
+            forward,
+            Math.PI,
+          );
+          orientation.multiply(correction);
+        }
+
+        const material = new THREE.MeshBasicMaterial({
+          map: PATCH_TEXTURES[0],
+          transparent: true,
+          depthWrite: true,
+          side: THREE.FrontSide,
+          polygonOffset: true,
+          polygonOffsetFactor: -2,
+          polygonOffsetUnits: -2,
+        });
+
+        const mesh = new THREE.Mesh(curvedPatchGeometry, material);
+        mesh.quaternion.copy(orientation);
+        rotor.add(mesh);
+
+        patchObjects.push({ mesh, material, currentNumber: null });
+      }
+
+      createPatch(0, false);
+      createPatch(Math.PI, true);
+
+      // Interaction state.
+      let rotation = 0;
+      let dragging = false;
+      let locked = false;
+      let pointerId: number | null = null;
+      let startY = 0;
+      let hasDragged = false;
+      let previousY = 0;
+      let previousTime = 0;
+      let velocity = 0;
+      let hovered = false;
+      let hoverAligning = false;
+
+      // Camera-relative presentation state.
+      let ambientYaw = 0;
+      let ambientRoll = 0;
+      let hoverPitch = 0;
+      let hoverYaw = 0;
+      let hoverTargetPitch = 0;
+      let hoverTargetYaw = 0;
+
+      // Each animation channel owns its own requestAnimationFrame handle.
+      let raf = 0;
+      let idleRaf = 0;
+      let hoverFollowRaf = 0;
+
+      // Reused Three.js values avoid allocations inside render().
+      const hoverEuler = new THREE.Euler(0, 0, 0, "XYZ");
+      const hoverOrientation = new THREE.Quaternion();
+
+      // Animation clocks and shader motion state.
+      let ambientBlend = 0;
+      let lastIdleTime = performance.now();
+      let gradientClock = 0;
+      let gradientMotion = 0;
+      let lastRenderTime = performance.now();
+      let lastRenderRotation = 0;
+
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      );
+
+      function getPassageIndex() {
+        return Math.round(-rotation / PASSAGE_ANGLE);
+      }
+
+      function getCurrentIndex() {
+        return modulo(getPassageIndex(), PROJECT_COUNT);
+      }
+
+      const tempTop = new THREE.Color();
+      const tempBottom = new THREE.Color();
+
+      function updateContinuousGradient() {
+        /*
         logicalPosition is continuous:
 
         0.00 = project 01 exactly centred
@@ -709,524 +736,528 @@ export default function SphereWidget({
 
         There is NEVER a discrete colour switch here.
       */
-      const logicalPosition = -rotation / PASSAGE_ANGLE;
-      const base = Math.floor(logicalPosition);
-      const fraction = logicalPosition - base;
-      const blend = smootherstep(fraction);
+        const logicalPosition = -rotation / PASSAGE_ANGLE;
+        const base = Math.floor(logicalPosition);
+        const fraction = logicalPosition - base;
+        const blend = smootherstep(fraction);
 
-      const current = modulo(base, PROJECT_COUNT);
-      const next = modulo(base + 1, PROJECT_COUNT);
-      // Gradient chain:
-      // bottom(n) = top(n + 1), including the 12 -> 01 loop.
-      const afterNext = modulo(base + 2, PROJECT_COUNT);
+        const current = modulo(base, PROJECT_COUNT);
+        const next = modulo(base + 1, PROJECT_COUNT);
+        // Gradient chain:
+        // bottom(n) = top(n + 1), including the 12 -> 01 loop.
+        const afterNext = modulo(base + 2, PROJECT_COUNT);
 
-      tempTop.copy(PROJECT_COLORS[current]).lerp(PROJECT_COLORS[next], blend);
-      tempBottom
-        .copy(PROJECT_COLORS[next])
-        .lerp(PROJECT_COLORS[afterNext], blend);
+        tempTop.copy(PROJECT_COLORS[current]).lerp(PROJECT_COLORS[next], blend);
+        tempBottom
+          .copy(PROJECT_COLORS[next])
+          .lerp(PROJECT_COLORS[afterNext], blend);
 
-      sphereMaterial.uniforms.colorTop.value.copy(tempTop);
-      sphereMaterial.uniforms.colorBottom.value.copy(tempBottom);
-    }
+        sphereMaterial.uniforms.colorTop.value.copy(tempTop);
+        sphereMaterial.uniforms.colorBottom.value.copy(tempBottom);
+      }
 
-    function setPatchNumber(object: PatchObject, projectIndex: number) {
-      const number = modulo(projectIndex, PROJECT_COUNT) + 1;
-      if (object.currentNumber === number) return;
+      function setPatchNumber(object: PatchObject, projectIndex: number) {
+        const number = modulo(projectIndex, PROJECT_COUNT) + 1;
+        if (object.currentNumber === number) return;
 
-      object.material.map = PATCH_TEXTURES[number - 1];
-      object.material.needsUpdate = true;
-      object.currentNumber = number;
-    }
+        object.material.map = PATCH_TEXTURES[number - 1];
+        object.material.needsUpdate = true;
+        object.currentNumber = number;
+      }
 
-    function updatePatches() {
-      const passage = getPassageIndex();
-      const visiblePatchIndex = modulo(passage, 2);
-      const hiddenPatchIndex = 1 - visiblePatchIndex;
+      function updatePatches() {
+        const passage = getPassageIndex();
+        const visiblePatchIndex = modulo(passage, 2);
+        const hiddenPatchIndex = 1 - visiblePatchIndex;
 
-      setPatchNumber(patchObjects[visiblePatchIndex], passage);
-      setPatchNumber(patchObjects[hiddenPatchIndex], passage + 1);
-    }
+        setPatchNumber(patchObjects[visiblePatchIndex], passage);
+        setPatchNumber(patchObjects[hiddenPatchIndex], passage + 1);
+      }
 
-    function render() {
-      const now = performance.now();
-      const dt = Math.min(50, Math.max(1, now - lastRenderTime));
-      const angularSpeed = Math.abs(rotation - lastRenderRotation) / dt;
-      const targetMotion = reducedMotion.matches
-        ? 0
-        : Math.min(1, angularSpeed * 115);
+      function render() {
+        const now = performance.now();
+        const dt = Math.min(50, Math.max(1, now - lastRenderTime));
+        const angularSpeed = Math.abs(rotation - lastRenderRotation) / dt;
+        const targetMotion = reducedMotion.matches
+          ? 0
+          : Math.min(1, angularSpeed * 115);
 
-      gradientMotion +=
-        (targetMotion - gradientMotion) *
-        (targetMotion > gradientMotion ? 0.24 : 0.1);
-      gradientClock += (dt / 1000) * gradientMotion;
-      sphereMaterial.uniforms.gradientTime.value = gradientClock;
-      sphereMaterial.uniforms.motionAmount.value = gradientMotion;
+        gradientMotion +=
+          (targetMotion - gradientMotion) *
+          (targetMotion > gradientMotion ? 0.24 : 0.1);
+        gradientClock += (dt / 1000) * gradientMotion;
+        sphereMaterial.uniforms.gradientTime.value = gradientClock;
+        sphereMaterial.uniforms.motionAmount.value = gradientMotion;
 
-      lastRenderTime = now;
-      lastRenderRotation = rotation;
-      // Functional rotation stays local to the sphere. Hover orientation
-      // is applied in camera-relative axes by its parent group.
-      rotor.rotation.set(rotation, ambientYaw, ambientRoll);
-      hoverEuler.set(hoverPitch, hoverYaw, 0);
-      hoverOrientation.setFromEuler(hoverEuler);
-      hoverPivot.quaternion.copy(hoverOrientation);
-      updatePatches();
-      updateContinuousGradient();
-      renderer.render(scene, camera);
-    }
+        lastRenderTime = now;
+        lastRenderRotation = rotation;
+        // Functional rotation stays local to the sphere. Hover orientation
+        // is applied in camera-relative axes by its parent group.
+        rotor.rotation.set(rotation, ambientYaw, ambientRoll);
+        hoverEuler.set(hoverPitch, hoverYaw, 0);
+        hoverOrientation.setFromEuler(hoverEuler);
+        hoverPivot.quaternion.copy(hoverOrientation);
+        updatePatches();
+        updateContinuousGradient();
+        renderer.render(scene, camera);
+      }
 
-    function animateTo(target: number, duration: number, callback?: () => void) {
-      if (raf) cancelAnimationFrame(raf);
+      function animateTo(
+        target: number,
+        duration: number,
+        callback?: () => void,
+      ) {
+        if (raf) cancelAnimationFrame(raf);
 
-      const from = rotation;
-      const started = performance.now();
-      const finalDuration = reducedMotion.matches
-        ? Math.min(duration, 260)
-        : duration;
+        const from = rotation;
+        const started = performance.now();
+        const finalDuration = reducedMotion.matches
+          ? Math.min(duration, 260)
+          : duration;
 
-      function frame(now: number) {
-        const t = Math.min(1, (now - started) / finalDuration);
-        rotation = from + (target - from) * easeOutCubic(t);
-        render();
-
-        if (t < 1) {
-          raf = requestAnimationFrame(frame);
-        } else {
-          rotation = target;
-          raf = 0;
+        function frame(now: number) {
+          const t = Math.min(1, (now - started) / finalDuration);
+          rotation = from + (target - from) * easeOutCubic(t);
           render();
-          callback?.();
+
+          if (t < 1) {
+            raf = requestAnimationFrame(frame);
+          } else {
+            rotation = target;
+            raf = 0;
+            render();
+            callback?.();
+          }
         }
+
+        raf = requestAnimationFrame(frame);
       }
 
-      raf = requestAnimationFrame(frame);
-    }
+      function settleWithBounce(target: number, callback?: () => void) {
+        if (reducedMotion.matches) {
+          animateTo(target, 220, callback);
+          return;
+        }
 
-    function settleWithBounce(target: number, callback?: () => void) {
-      if (reducedMotion.matches) {
-        animateTo(target, 220, callback);
-        return;
-      }
+        if (raf) cancelAnimationFrame(raf);
 
-      if (raf) cancelAnimationFrame(raf);
+        const from = rotation;
+        const distance = target - from;
+        const started = performance.now();
+        const { durationMs: duration, damping, frequency } = CONFIG.settle;
 
-      const from = rotation;
-      const distance = target - from;
-      const started = performance.now();
-      const { durationMs: duration, damping, frequency } = CONFIG.settle;
+        function frame(now: number) {
+          const t = Math.min(1, (now - started) / duration);
 
-      function frame(now: number) {
-        const t = Math.min(1, (now - started) / duration);
-
-        // One continuous damped spring. Its initial movement follows the
-        // launch direction, crosses the snap point and settles smoothly.
-        const spring = 1 - Math.exp(-damping * t) * Math.cos(frequency * t);
-        rotation = from + distance * spring;
-        render();
-
-        if (t < 1) {
-          raf = requestAnimationFrame(frame);
-        } else {
-          rotation = target;
-          raf = 0;
+          // One continuous damped spring. Its initial movement follows the
+          // launch direction, crosses the snap point and settles smoothly.
+          const spring = 1 - Math.exp(-damping * t) * Math.cos(frequency * t);
+          rotation = from + distance * spring;
           render();
-          callback?.();
+
+          if (t < 1) {
+            raf = requestAnimationFrame(frame);
+          } else {
+            rotation = target;
+            raf = 0;
+            render();
+            callback?.();
+          }
         }
+
+        raf = requestAnimationFrame(frame);
       }
 
-      raf = requestAnimationFrame(frame);
-    }
+      function stopIdleRotation() {
+        if (!idleRaf) return;
+        cancelAnimationFrame(idleRaf);
+        idleRaf = 0;
+      }
 
-    function stopIdleRotation() {
-      if (!idleRaf) return;
-      cancelAnimationFrame(idleRaf);
-      idleRaf = 0;
-    }
+      function stopHoverFollow() {
+        if (!hoverFollowRaf) return;
+        cancelAnimationFrame(hoverFollowRaf);
+        hoverFollowRaf = 0;
+      }
 
-    function stopHoverFollow() {
-      if (!hoverFollowRaf) return;
-      cancelAnimationFrame(hoverFollowRaf);
-      hoverFollowRaf = 0;
-    }
+      function startIdleRotation() {
+        if (idleRaf || hovered || dragging || locked || hoverAligning) return;
+        lastIdleTime = performance.now();
+        ambientBlend = 0;
 
-    function startIdleRotation() {
-      if (idleRaf || hovered || dragging || locked || hoverAligning) return;
-      lastIdleTime = performance.now();
-      ambientBlend = 0;
+        function frame(now: number) {
+          const dt = Math.min(40, now - lastIdleTime);
+          lastIdleTime = now;
+          ambientBlend = Math.min(1, ambientBlend + dt / CONFIG.idle.rampMs);
+          const idleRamp = smootherstep(ambientBlend);
 
-      function frame(now: number) {
-        const dt = Math.min(40, now - lastIdleTime);
-        lastIdleTime = now;
-        ambientBlend = Math.min(1, ambientBlend + dt / CONFIG.idle.rampMs);
-        const idleRamp = smootherstep(ambientBlend);
+          // X, Y and Z share the same startup ramp. The fixed tilts approach
+          // their targets asymptotically, without a visible stop or a
+          // rightward movement occurring before the upward rotation.
+          rotation -= dt * CONFIG.idle.speed * idleRamp;
+          const tiltSmoothing =
+            1 - Math.exp(-(dt * idleRamp) / CONFIG.idle.tiltEaseMs);
+          ambientYaw += (FIXED_Y_ROTATION - ambientYaw) * tiltSmoothing;
+          ambientRoll += (FIXED_Z_ROTATION - ambientRoll) * tiltSmoothing;
+          render();
+          idleRaf = requestAnimationFrame(frame);
+        }
 
-        // X, Y and Z share the same startup ramp. The fixed tilts approach
-        // their targets asymptotically, without a visible stop or a
-        // rightward movement occurring before the upward rotation.
-        rotation -= dt * CONFIG.idle.speed * idleRamp;
-        const tiltSmoothing =
-          1 - Math.exp(-(dt * idleRamp) / CONFIG.idle.tiltEaseMs);
-        ambientYaw += (FIXED_Y_ROTATION - ambientYaw) * tiltSmoothing;
-        ambientRoll += (FIXED_Z_ROTATION - ambientRoll) * tiltSmoothing;
-        render();
         idleRaf = requestAnimationFrame(frame);
       }
 
-      idleRaf = requestAnimationFrame(frame);
-    }
+      function alignNearestProjectOnHover(pointAtCursor = false) {
+        if (locked || dragging || hoverAligning) return;
 
-    function alignNearestProjectOnHover(pointAtCursor = false) {
-      if (locked || dragging || hoverAligning) return;
+        stopIdleRotation();
+        stopHoverFollow();
+        hoverAligning = true;
+        if (raf) cancelAnimationFrame(raf);
 
-      stopIdleRotation();
-      stopHoverFollow();
-      hoverAligning = true;
-      if (raf) cancelAnimationFrame(raf);
+        const fromX = rotation;
+        const fromY = ambientYaw;
+        const fromZ = ambientRoll;
+        const fromHoverPitch = hoverPitch;
+        const fromHoverYaw = hoverYaw;
+        const targetX = Math.round(fromX / PASSAGE_ANGLE) * PASSAGE_ANGLE;
+        // The Y inclination belongs to idle only; interaction returns to 0°.
+        const targetY = 0;
+        const targetZ = 0;
+        const started = performance.now();
+        const duration = reducedMotion.matches
+          ? 240
+          : CONFIG.hover.snapDurationMs;
+        const damping = CONFIG.hover.snapDamping;
+        const frequency = CONFIG.hover.snapFrequency;
 
-      const fromX = rotation;
-      const fromY = ambientYaw;
-      const fromZ = ambientRoll;
-      const fromHoverPitch = hoverPitch;
-      const fromHoverYaw = hoverYaw;
-      const targetX = Math.round(fromX / PASSAGE_ANGLE) * PASSAGE_ANGLE;
-      // The Y inclination belongs to idle only; interaction returns to 0°.
-      const targetY = 0;
-      const targetZ = 0;
-      const started = performance.now();
-      const duration = reducedMotion.matches
-        ? 240
-        : CONFIG.hover.snapDurationMs;
-      const damping = CONFIG.hover.snapDamping;
-      const frequency = CONFIG.hover.snapFrequency;
+        function frame(now: number) {
+          const t = Math.min(1, (now - started) / duration);
+          // The same spring progress is applied to each signed angular
+          // distance. Overshoot direction and amplitude therefore follow
+          // the sphere's actual incoming 3D orientation.
+          const spring = reducedMotion.matches
+            ? easeOutCubic(t)
+            : 1 - Math.exp(-damping * t) * Math.cos(frequency * t);
 
-      function frame(now: number) {
-        const t = Math.min(1, (now - started) / duration);
-        // The same spring progress is applied to each signed angular
-        // distance. Overshoot direction and amplitude therefore follow
-        // the sphere's actual incoming 3D orientation.
-        const spring = reducedMotion.matches
-          ? easeOutCubic(t)
-          : 1 - Math.exp(-damping * t) * Math.cos(frequency * t);
-
-        rotation = fromX + (targetX - fromX) * spring;
-        ambientYaw = fromY + (targetY - fromY) * spring;
-        ambientRoll = fromZ + (targetZ - fromZ) * spring;
-        const useCursorTarget = pointAtCursor && hovered;
-        const targetHoverPitch = useCursorTarget ? hoverTargetPitch : 0;
-        const targetHoverYaw = useCursorTarget ? hoverTargetYaw : 0;
-        hoverPitch =
-          fromHoverPitch + (targetHoverPitch - fromHoverPitch) * spring;
-        hoverYaw = fromHoverYaw + (targetHoverYaw - fromHoverYaw) * spring;
-        render();
-
-        if (t < 1) {
-          raf = requestAnimationFrame(frame);
-        } else {
-          rotation = targetX;
-          ambientYaw = targetY;
-          ambientRoll = targetZ;
-          hoverPitch = pointAtCursor && hovered ? hoverTargetPitch : 0;
-          hoverYaw = pointAtCursor && hovered ? hoverTargetYaw : 0;
-          raf = 0;
-          hoverAligning = false;
+          rotation = fromX + (targetX - fromX) * spring;
+          ambientYaw = fromY + (targetY - fromY) * spring;
+          ambientRoll = fromZ + (targetZ - fromZ) * spring;
+          const useCursorTarget = pointAtCursor && hovered;
+          const targetHoverPitch = useCursorTarget ? hoverTargetPitch : 0;
+          const targetHoverYaw = useCursorTarget ? hoverTargetYaw : 0;
+          hoverPitch =
+            fromHoverPitch + (targetHoverPitch - fromHoverPitch) * spring;
+          hoverYaw = fromHoverYaw + (targetHoverYaw - fromHoverYaw) * spring;
           render();
-          if (!hovered) startIdleRotation();
-        }
-      }
 
-      raf = requestAnimationFrame(frame);
-    }
-
-    function launchSpin() {
-      if (locked || hoverAligning) return;
-
-      stopIdleRotation();
-      stopHoverFollow();
-      hoverPitch = 0;
-      hoverYaw = 0;
-      ambientYaw = 0;
-      ambientRoll = 0;
-      locked = true;
-      dragging = false;
-      canvasWrap.classList.remove("cursor-grabbing");
-      canvasWrap.classList.add("cursor-wait");
-      pushStatus("Spinning", true);
-
-      const direction =
-        Math.abs(velocity) > 0.003
-          ? Math.sign(velocity)
-          : Math.random() > 0.5
-            ? 1
-            : -1;
-
-      // The destination project is truly random. Passage count is derived
-      // from that destination, so the final number is not biased by speed.
-      const speed = Math.min(1.25, Math.max(0.22, Math.abs(velocity)));
-      const currentPassage = Math.round(rotation / PASSAGE_ANGLE);
-      const currentProjectIndex = modulo(-currentPassage, PROJECT_COUNT);
-      // Pick one of the other projects: a spin can never return directly
-      // to the number that was visible when it started.
-      const targetProjectIndex = modulo(
-        currentProjectIndex +
-          1 +
-          Math.floor(Math.random() * (PROJECT_COUNT - 1)),
-        PROJECT_COUNT,
-      );
-      let passages = 1;
-
-      while (
-        modulo(-(currentPassage + direction * passages), PROJECT_COUNT) !==
-        targetProjectIndex
-      ) {
-        passages += 1;
-      }
-
-      // Preserve a satisfying launch even when the random target is close.
-      if (passages < CONFIG.launch.minimumPassages) {
-        passages += PROJECT_COUNT;
-      }
-
-      const snapped = (currentPassage + direction * passages) * PASSAGE_ANGLE;
-      // A relatively generous duration over the reduced distance produces
-      // a slower rotation without making the final settle feel heavy.
-      const duration =
-        CONFIG.launch.baseDurationMs +
-        speed * CONFIG.launch.speedDurationMs +
-        passages * CONFIG.launch.passageDurationMs;
-
-      animateTo(
-        snapped - direction * CONFIG.launch.preBounceOffset,
-        duration,
-        () => {
-          settleWithBounce(snapped, () => {
-            locked = false;
-            canvasWrap.classList.remove("cursor-wait");
-
-            const index = getCurrentIndex();
-            const project = PROJECTS[index];
-
-            onSelectedRef.current?.({
-              index,
-              projectNumber: project.id,
-              projectColor: project.color,
-              oppositeProject: project.opposite,
-              url: project.url,
-            });
-
-            pushStatus(`Going to ${project.name}`);
-            navigationTimeout.current = setTimeout(() => {
-              navigationTimeout.current = null;
-              routerRef.current.push(project.url);
-            }, NAVIGATION_DELAY_MS);
-
+          if (t < 1) {
+            raf = requestAnimationFrame(frame);
+          } else {
+            rotation = targetX;
+            ambientYaw = targetY;
+            ambientRoll = targetZ;
+            hoverPitch = pointAtCursor && hovered ? hoverTargetPitch : 0;
+            hoverYaw = pointAtCursor && hovered ? hoverTargetYaw : 0;
+            raf = 0;
+            hoverAligning = false;
+            render();
             if (!hovered) startIdleRotation();
-          });
-        },
-      );
-    }
-
-    function onPointerDown(event: PointerEvent) {
-      if (locked || hoverAligning) return;
-
-      stopIdleRotation();
-      dragging = true;
-      hasDragged = false;
-      pointerId = event.pointerId;
-      startY = event.clientY;
-      previousY = event.clientY;
-      previousTime = performance.now();
-      velocity = 0;
-
-      canvasWrap.classList.add("cursor-grabbing");
-      canvasWrap.setPointerCapture?.(pointerId);
-    }
-
-    function updateHoverOrientation(event: PointerEvent | MouseEvent) {
-      if (!hovered || locked) return;
-
-      const rect = canvasWrap.getBoundingClientRect();
-      const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      const y = ((event.clientY - rect.top) / rect.height) * 2 - 1;
-      const clampedX = Math.max(-1, Math.min(1, x));
-      const clampedY = Math.max(-1, Math.min(1, y));
-      const halfVerticalFov = THREE.MathUtils.degToRad(camera.fov * 0.5);
-      const verticalProjection = Math.tan(halfVerticalFov);
-
-      // Convert the cursor's screen position to the actual camera-ray
-      // angle. At the box edge this is ~13°, rather than the former 6.5°.
-      hoverTargetPitch = Math.atan(clampedY * verticalProjection);
-      hoverTargetYaw = Math.atan(
-        clampedX * verticalProjection * camera.aspect,
-      );
-
-      // The hover-alignment animation reads these live targets itself.
-      if (hoverAligning) return;
-      if (hoverFollowRaf) return;
-
-      let previousFollowTime = performance.now();
-      function followFrame(now: number) {
-        if (!hovered || dragging || locked || hoverAligning) {
-          hoverFollowRaf = 0;
-          return;
+          }
         }
 
-        const dt = Math.min(40, now - previousFollowTime);
-        previousFollowTime = now;
-        const smoothing = 1 - Math.exp(-dt / CONFIG.hover.followEaseMs);
-        hoverPitch += (hoverTargetPitch - hoverPitch) * smoothing;
-        hoverYaw += (hoverTargetYaw - hoverYaw) * smoothing;
-        render();
+        raf = requestAnimationFrame(frame);
+      }
 
-        const remaining =
-          Math.abs(hoverTargetPitch - hoverPitch) +
-          Math.abs(hoverTargetYaw - hoverYaw);
+      function launchSpin() {
+        if (locked || hoverAligning) return;
 
-        if (remaining > 0.0001) {
-          hoverFollowRaf = requestAnimationFrame(followFrame);
-        } else {
-          hoverPitch = hoverTargetPitch;
-          hoverYaw = hoverTargetYaw;
-          hoverFollowRaf = 0;
+        stopIdleRotation();
+        stopHoverFollow();
+        hoverPitch = 0;
+        hoverYaw = 0;
+        ambientYaw = 0;
+        ambientRoll = 0;
+        locked = true;
+        dragging = false;
+        canvasWrap.classList.remove("cursor-grabbing");
+        canvasWrap.classList.add("cursor-wait");
+        pushStatus("Spinning", true);
+
+        const direction =
+          Math.abs(velocity) > 0.003
+            ? Math.sign(velocity)
+            : Math.random() > 0.5
+              ? 1
+              : -1;
+
+        // The destination project is truly random. Passage count is derived
+        // from that destination, so the final number is not biased by speed.
+        const speed = Math.min(1.25, Math.max(0.22, Math.abs(velocity)));
+        const currentPassage = Math.round(rotation / PASSAGE_ANGLE);
+        const currentProjectIndex = modulo(-currentPassage, PROJECT_COUNT);
+        // Pick one of the other projects: a spin can never return directly
+        // to the number that was visible when it started.
+        const targetProjectIndex = modulo(
+          currentProjectIndex +
+            1 +
+            Math.floor(Math.random() * (PROJECT_COUNT - 1)),
+          PROJECT_COUNT,
+        );
+        let passages = 1;
+
+        while (
+          modulo(-(currentPassage + direction * passages), PROJECT_COUNT) !==
+          targetProjectIndex
+        ) {
+          passages += 1;
+        }
+
+        // Preserve a satisfying launch even when the random target is close.
+        if (passages < CONFIG.launch.minimumPassages) {
+          passages += PROJECT_COUNT;
+        }
+
+        const snapped = (currentPassage + direction * passages) * PASSAGE_ANGLE;
+        // A relatively generous duration over the reduced distance produces
+        // a slower rotation without making the final settle feel heavy.
+        const duration =
+          CONFIG.launch.baseDurationMs +
+          speed * CONFIG.launch.speedDurationMs +
+          passages * CONFIG.launch.passageDurationMs;
+
+        animateTo(
+          snapped - direction * CONFIG.launch.preBounceOffset,
+          duration,
+          () => {
+            settleWithBounce(snapped, () => {
+              locked = false;
+              canvasWrap.classList.remove("cursor-wait");
+
+              const index = getCurrentIndex();
+              const project = PROJECTS[index];
+
+              onSelectedRef.current?.({
+                index,
+                projectNumber: project.id,
+                projectColor: project.color,
+                oppositeProject: project.opposite,
+                url: project.url,
+              });
+
+              pushStatus(`Going to ${project.name}`);
+              navigationTimeout.current = setTimeout(() => {
+                navigationTimeout.current = null;
+                routerRef.current.push(project.url);
+              }, NAVIGATION_DELAY_MS);
+
+              if (!hovered) startIdleRotation();
+            });
+          },
+        );
+      }
+
+      function onPointerDown(event: PointerEvent) {
+        if (locked || hoverAligning) return;
+
+        stopIdleRotation();
+        dragging = true;
+        hasDragged = false;
+        pointerId = event.pointerId;
+        startY = event.clientY;
+        previousY = event.clientY;
+        previousTime = performance.now();
+        velocity = 0;
+
+        canvasWrap.classList.add("cursor-grabbing");
+        canvasWrap.setPointerCapture?.(pointerId);
+      }
+
+      function updateHoverOrientation(event: PointerEvent | MouseEvent) {
+        if (!hovered || locked) return;
+
+        const rect = canvasWrap.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        const y = ((event.clientY - rect.top) / rect.height) * 2 - 1;
+        const clampedX = Math.max(-1, Math.min(1, x));
+        const clampedY = Math.max(-1, Math.min(1, y));
+        const halfVerticalFov = THREE.MathUtils.degToRad(camera.fov * 0.5);
+        const verticalProjection = Math.tan(halfVerticalFov);
+
+        // Convert the cursor's screen position to the actual camera-ray
+        // angle. At the box edge this is ~13°, rather than the former 6.5°.
+        hoverTargetPitch = Math.atan(clampedY * verticalProjection);
+        hoverTargetYaw = Math.atan(
+          clampedX * verticalProjection * camera.aspect,
+        );
+
+        // The hover-alignment animation reads these live targets itself.
+        if (hoverAligning) return;
+        if (hoverFollowRaf) return;
+
+        let previousFollowTime = performance.now();
+        function followFrame(now: number) {
+          if (!hovered || dragging || locked || hoverAligning) {
+            hoverFollowRaf = 0;
+            return;
+          }
+
+          const dt = Math.min(40, now - previousFollowTime);
+          previousFollowTime = now;
+          const smoothing = 1 - Math.exp(-dt / CONFIG.hover.followEaseMs);
+          hoverPitch += (hoverTargetPitch - hoverPitch) * smoothing;
+          hoverYaw += (hoverTargetYaw - hoverYaw) * smoothing;
           render();
+
+          const remaining =
+            Math.abs(hoverTargetPitch - hoverPitch) +
+            Math.abs(hoverTargetYaw - hoverYaw);
+
+          if (remaining > 0.0001) {
+            hoverFollowRaf = requestAnimationFrame(followFrame);
+          } else {
+            hoverPitch = hoverTargetPitch;
+            hoverYaw = hoverTargetYaw;
+            hoverFollowRaf = 0;
+            render();
+          }
         }
+
+        hoverFollowRaf = requestAnimationFrame(followFrame);
       }
 
-      hoverFollowRaf = requestAnimationFrame(followFrame);
-    }
-
-    function onPointerMove(event: PointerEvent) {
-      if (!dragging) {
-        updateHoverOrientation(event);
-        return;
-      }
-
-      if (locked || event.pointerId !== pointerId) return;
-
-      const now = performance.now();
-      const dy = event.clientY - previousY;
-      const dt = Math.max(8, now - previousTime);
-
-      if (!hasDragged) {
-        if (Math.abs(event.clientY - startY) < CONFIG.drag.thresholdPx) {
-          previousY = event.clientY;
-          previousTime = now;
+      function onPointerMove(event: PointerEvent) {
+        if (!dragging) {
+          updateHoverOrientation(event);
           return;
         }
 
-        hasDragged = true;
+        if (locked || event.pointerId !== pointerId) return;
+
+        const now = performance.now();
+        const dy = event.clientY - previousY;
+        const dt = Math.max(8, now - previousTime);
+
+        if (!hasDragged) {
+          if (Math.abs(event.clientY - startY) < CONFIG.drag.thresholdPx) {
+            previousY = event.clientY;
+            previousTime = now;
+            return;
+          }
+
+          hasDragged = true;
+        }
+
+        rotation += dy * CONFIG.drag.radiansPerPixel;
+        hoverPitch *= 0.82;
+        hoverYaw *= 0.82;
+
+        const instant = (dy / dt) * CONFIG.drag.velocityScale;
+        velocity = velocity * 0.55 + instant * 0.45;
+
+        previousY = event.clientY;
+        previousTime = now;
+        render();
       }
 
-      rotation += dy * CONFIG.drag.radiansPerPixel;
-      hoverPitch *= 0.82;
-      hoverYaw *= 0.82;
+      function onPointerUp(event: PointerEvent) {
+        if (!dragging || locked || event.pointerId !== pointerId) return;
 
-      const instant = (dy / dt) * CONFIG.drag.velocityScale;
-      velocity = velocity * 0.55 + instant * 0.45;
+        dragging = false;
+        pointerId = null;
+        canvasWrap.classList.remove("cursor-grabbing");
 
-      previousY = event.clientY;
-      previousTime = now;
-      render();
-    }
+        if (!hasDragged) {
+          alignNearestProjectOnHover();
+          return;
+        }
 
-    function onPointerUp(event: PointerEvent) {
-      if (!dragging || locked || event.pointerId !== pointerId) return;
-
-      dragging = false;
-      pointerId = null;
-      canvasWrap.classList.remove("cursor-grabbing");
-
-      if (!hasDragged) {
-        alignNearestProjectOnHover();
-        return;
-      }
-
-      launchSpin();
-    }
-
-    function onMouseEnter(event: MouseEvent) {
-      hovered = true;
-      stopIdleRotation();
-      updateHoverOrientation(event);
-      alignNearestProjectOnHover(true);
-    }
-
-    function onMouseLeave() {
-      hovered = false;
-      if (!locked && !dragging && !hoverAligning) {
-        alignNearestProjectOnHover();
-      }
-    }
-
-    function onKeyDown(event: KeyboardEvent) {
-      if (locked) return;
-
-      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-        event.preventDefault();
-        velocity = event.key === "ArrowUp" ? -0.6 : 0.6;
         launchSpin();
       }
 
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        velocity = Math.random() > 0.5 ? 0.75 : -0.75;
-        launchSpin();
+      function onMouseEnter(event: MouseEvent) {
+        hovered = true;
+        stopIdleRotation();
+        updateHoverOrientation(event);
+        alignNearestProjectOnHover(true);
       }
-    }
 
-    canvasWrap.addEventListener("pointerdown", onPointerDown);
-    canvasWrap.addEventListener("pointermove", onPointerMove);
-    canvasWrap.addEventListener("pointerup", onPointerUp);
-    canvasWrap.addEventListener("pointercancel", onPointerUp);
-    canvasWrap.addEventListener("mouseenter", onMouseEnter);
-    canvasWrap.addEventListener("mouseleave", onMouseLeave);
-    canvasWrap.addEventListener("keydown", onKeyDown);
+      function onMouseLeave() {
+        hovered = false;
+        if (!locked && !dragging && !hoverAligning) {
+          alignNearestProjectOnHover();
+        }
+      }
 
-    function resize() {
-      const rect = canvasWrap.getBoundingClientRect();
-      const width = Math.max(1, Math.round(rect.width));
-      const height = Math.max(1, Math.round(rect.height));
+      function onKeyDown(event: KeyboardEvent) {
+        if (locked) return;
 
-      renderer.setSize(width, height, false);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
+        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+          event.preventDefault();
+          velocity = event.key === "ArrowUp" ? -0.6 : 0.6;
+          launchSpin();
+        }
+
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          velocity = Math.random() > 0.5 ? 0.75 : -0.75;
+          launchSpin();
+        }
+      }
+
+      canvasWrap.addEventListener("pointerdown", onPointerDown);
+      canvasWrap.addEventListener("pointermove", onPointerMove);
+      canvasWrap.addEventListener("pointerup", onPointerUp);
+      canvasWrap.addEventListener("pointercancel", onPointerUp);
+      canvasWrap.addEventListener("mouseenter", onMouseEnter);
+      canvasWrap.addEventListener("mouseleave", onMouseLeave);
+      canvasWrap.addEventListener("keydown", onKeyDown);
+
+      function resize() {
+        const rect = canvasWrap.getBoundingClientRect();
+        const width = Math.max(1, Math.round(rect.width));
+        const height = Math.max(1, Math.round(rect.height));
+
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        render();
+      }
+
+      const resizeObserver = new ResizeObserver(resize);
+      resizeObserver.observe(canvasWrap);
+
+      resize();
+      // Compile le programme GLSL avant de retirer le loader : sans ça `ready`
+      // passe à true pendant que le GPU compile encore, découvrant un canvas vide.
+      renderer.compile(scene, camera);
       render();
-    }
+      setReady(true);
+      startIdleRotation();
 
-    const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(canvasWrap);
+      teardown = () => {
+        resizeObserver.disconnect();
+        canvasWrap.removeEventListener("pointerdown", onPointerDown);
+        canvasWrap.removeEventListener("pointermove", onPointerMove);
+        canvasWrap.removeEventListener("pointerup", onPointerUp);
+        canvasWrap.removeEventListener("pointercancel", onPointerUp);
+        canvasWrap.removeEventListener("mouseenter", onMouseEnter);
+        canvasWrap.removeEventListener("mouseleave", onMouseLeave);
+        canvasWrap.removeEventListener("keydown", onKeyDown);
 
-    resize();
-    // Compile le programme GLSL avant de retirer le loader : sans ça `ready`
-    // passe à true pendant que le GPU compile encore, découvrant un canvas vide.
-    renderer.compile(scene, camera);
-    render();
-    setReady(true);
-    startIdleRotation();
+        cancelAnimationFrame(raf);
+        cancelAnimationFrame(idleRaf);
+        cancelAnimationFrame(hoverFollowRaf);
 
-    teardown = () => {
-      resizeObserver.disconnect();
-      canvasWrap.removeEventListener("pointerdown", onPointerDown);
-      canvasWrap.removeEventListener("pointermove", onPointerMove);
-      canvasWrap.removeEventListener("pointerup", onPointerUp);
-      canvasWrap.removeEventListener("pointercancel", onPointerUp);
-      canvasWrap.removeEventListener("mouseenter", onMouseEnter);
-      canvasWrap.removeEventListener("mouseleave", onMouseLeave);
-      canvasWrap.removeEventListener("keydown", onKeyDown);
-
-      cancelAnimationFrame(raf);
-      cancelAnimationFrame(idleRaf);
-      cancelAnimationFrame(hoverFollowRaf);
-
-      // GPU resources aren't garbage-collected with the JS objects — every
-      // remount would otherwise leak a context, its textures and its buffers.
-      PATCH_TEXTURES.forEach((texture) => texture.dispose());
-      patchObjects.forEach((patch) => patch.material.dispose());
-      curvedPatchGeometry.dispose();
-      sphereGeometry.dispose();
-      sphereMaterial.dispose();
-      renderer.dispose();
-      renderer.domElement.remove();
-    };
+        // GPU resources aren't garbage-collected with the JS objects — every
+        // remount would otherwise leak a context, its textures and its buffers.
+        PATCH_TEXTURES.forEach((texture) => texture.dispose());
+        patchObjects.forEach((patch) => patch.material.dispose());
+        curvedPatchGeometry.dispose();
+        sphereGeometry.dispose();
+        sphereMaterial.dispose();
+        renderer.dispose();
+        renderer.domElement.remove();
+      };
     }
 
     setup().catch((error) => {
@@ -1257,12 +1288,11 @@ export default function SphereWidget({
           aria-label="3D project selector. Drag vertically and release to spin."
           className="size-full overflow-hidden rounded-lg bg-[#f7f7f5] cursor-grab outline-none touch-pan-x [&>canvas]:block [&>canvas]:size-full"
         />
-        {!ready && !failed && <SphereLoading />}
       </div>
 
       <div
         id="widget-sphere-status"
-        className="flex items-center justify-center overflow-hidden px-5 py-8 text-center leading-none text-[#0c0c0c] opacity-50"
+        className="flex items-center justify-center overflow-hidden px-5 py-8 text-center leading-none text-[#0c0c0c] text-sm opacity-50"
       >
         <span ref={statusRef} className="inline-block will-change-transform">
           {status}
@@ -1279,39 +1309,6 @@ export default function SphereWidget({
           3D unavailable
         </div>
       )}
-    </div>
-  );
-}
-
-// Shown while three is fetched and the scene compiles, so the panel opens onto
-// a breathing placeholder rather than an empty square.
-function SphereLoading() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      gsap.fromTo(
-        ".sphere-loading-disc",
-        { scale: 0.94, autoAlpha: 0.35 },
-        {
-          scale: 1,
-          autoAlpha: 0.6,
-          duration: 1.1,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-        },
-      );
-    },
-    { scope: ref },
-  );
-
-  return (
-    <div
-      ref={ref}
-      className="absolute inset-0 grid place-items-center pointer-events-none"
-    >
-      <div className="sphere-loading-disc size-2/5 rounded-full bg-[#0c0c0c] opacity-10" />
     </div>
   );
 }
