@@ -109,7 +109,7 @@ export default function MusicWidget() {
   }
 
   return (
-    <div id="widget-music" className="flex items-stretch gap-4 w-full">
+    <div id="widget-music" className="flex items-stretch gap-1 w-full">
       {/* Disc */}
       <button
         ref={discRef}

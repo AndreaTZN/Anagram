@@ -129,12 +129,12 @@ export default function CaseNavigation() {
     >
       <div
         id="case-nav-inner"
-        className="flex flex-col gap-10 pl-4 pr-2 pt-6 pb-8"
+        className="flex flex-col gap-8 pl-4 pr-2 pt-6 pb-8"
       >
         <Link
           id="case-nav-close"
           href="/works"
-          className="flex items-center gap-2 opacity-50 w-fit"
+          className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f5f5f5] hover:bg-[#e0e0e0] transition-colors duration-300 ease-linear"
           onClick={(e) => {
             e.preventDefault();
             router.push(getCaseOrigin());
@@ -164,14 +164,11 @@ export default function CaseNavigation() {
           >
             <path
               d="M1 1L9 9M9 1L1 9"
-              stroke="#0C0C0C"
-              strokeWidth="1.5"
+              stroke="#7C7C7C"
+              strokeWidth="1.25"
               strokeLinecap="round"
             />
           </svg>
-          <span className="text-[#0c0c0c] text-sm leading-[0.9] tracking-[-0.07px]">
-            Close project
-          </span>
         </Link>
 
         {data && (
@@ -195,9 +192,30 @@ export default function CaseNavigation() {
                   href={data.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#0c0c0c] text-sm font-medium leading-[0.9] tracking-[-0.07px] w-fit underline"
+                  className="flex items-center gap-2 text-[#0c0c0c] text-sm font-medium leading-[0.9] tracking-[-0.07px] w-fit"
                 >
                   See it live
+                  {/* L'encre du tracé va de 0 à 8.25 dans un viewBox de 9 :
+                      son centre est à 4.13 au lieu de 4.5, d'où la flèche
+                      visuellement trop haute. Le translate compense. */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="9"
+                    height="9"
+                    fill="none"
+                    viewBox="0 0 9 9"
+                    aria-hidden="true"
+                    className="shrink-0 translate-y-[0.375px]"
+                  >
+                    <path
+                      stroke="#0C0C0C"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.25"
+                      d="m.625 7.625 7-7m-4 0h4v4"
+                      opacity=".5"
+                    />
+                  </svg>
                 </a>
               )}
             </div>
@@ -233,7 +251,7 @@ export default function CaseNavigation() {
                   <div id={`case-nav-section-${section.id}`} key={section.id}>
                     <button
                       onClick={() => handleSectionClick(section.id)}
-                      className={`cursor-pointer text-[1.125rem] font-normal leading-[1.1] tracking-[-0.09px] text-[#0c0c0c] transition-opacity duration-200 ${
+                      className={`cursor-pointer text-sm font-medium leading-[1.1]] text-[#0c0c0c] transition-opacity duration-200 ${
                         activeSection !== section.id ? "opacity-30" : ""
                       }`}
                     >

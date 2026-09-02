@@ -431,7 +431,7 @@ export default function Navigation() {
             id="nav-works-stack-handle"
             ref={stackHandleRef}
             aria-hidden="true"
-            className="mx-auto mb-1.5 h-0.75 w-8 shrink-0 rounded-full bg-[#e0e0e0] opacity-0"
+            className="mx-auto mb-1.5 h-0.5 w-10 shrink-0 rounded-full bg-[#EDEDED] opacity-0"
           />
 
           <div

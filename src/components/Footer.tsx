@@ -48,19 +48,44 @@ export default function Footer() {
             className="flex flex-col gap-16 flex-1"
           >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Contact</p>
-            <div className="flex flex-col gap-8 font-medium text-sm">
+            <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-1">
-                <p className="leading-[1.1]">Anagram</p>
-                <p className="leading-[1.1]">Paris / New York</p>
+                <p className="leading-[1.1]  font-medium text-sm">Anagram</p>
+                <p className="leading-[1.1]  font-medium text-sm">
+                  Paris / New York
+                </p>
               </div>
-              <div className="flex flex-col gap-1">
-                <p className="leading-[1.1]">Book a call</p>
-                <a
-                  href="mailto:hello@anagram.club"
-                  className="leading-[1.1]  hover:text-[#0c0c0c]/70 transition-colors duration-300 ease-linear"
-                >
-                  hello@anagram.club
-                </a>
+              <div className="flex flex-col gap-4">
+                <div>
+                  <p className="leading-[1.1]  font-medium text-sm">
+                    New Business
+                  </p>
+                  <a
+                    href="mailto:hello@anagram.club"
+                    className="text-[#7C7C7C] leading-[1.1] hover:text-[#0c0c0c]/70 transition-colors duration-300 ease-linear"
+                  >
+                    hello@anagram.club
+                  </a>
+                </div>
+                <div>
+                  <a
+                    href="https://cal.com/anagram/hello"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="leading-[1.1] font-medium text-sm"
+                  >
+                    Book a call
+                  </a>
+                </div>
+                <div>
+                  <p className="leading-[1.1]  font-medium text-sm">Careers</p>
+                  <a
+                    href="mailto:hello@anagram.club"
+                    className="text-[#7C7C7C] leading-[1.1] hover:text-[#0c0c0c]/70 transition-colors duration-300 ease-linear"
+                  >
+                    careers@anagram.club
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -128,8 +153,8 @@ export default function Footer() {
               Privacy Policy
             </Link>
           </div>
-
-          {/* <button
+          {/* 
+          <button
             id="footer-desktop-cookie-settings"
             type="button"
             onClick={() => setOpen(true)}
