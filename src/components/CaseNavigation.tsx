@@ -150,11 +150,7 @@ export default function CaseNavigation() {
           onMouseEnter={() => closeIconRef.current?.play()}
           onFocus={() => closeIconRef.current?.play()}
         >
-          <CloseWebGL
-            ref={closeIconRef}
-            light={activeTab === "backstage"}
-            className="block size-3"
-          />
+          <CloseWebGL ref={closeIconRef} className="block size-3" />
         </Link>
 
         {data && (

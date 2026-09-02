@@ -9,8 +9,6 @@ export type CloseWebGLHandle = {
 
 type CloseWebGLProps = {
   className?: string;
-  /** Croix blanche (fond sombre) ou grise (#7c7c7c) sur fond clair. */
-  light?: boolean;
   ref?: React.Ref<CloseWebGLHandle>;
 };
 
@@ -88,49 +86,18 @@ const VERTEX_SOURCE = `
     gl_Position = vec4(p.x * 1.36, p.y * 1.36, p.z * .35, 1.0);
   }
 `;
+// Couleur figée (#7c7c7c) : ce bouton garde un fond clair quel que soit le
+// thème de la nav, la croix n'a donc jamais à changer de couleur.
 const FRAGMENT_SOURCE = `
   precision mediump float;
-  uniform vec3 uColor;
-  void main() { gl_FragColor = vec4(uColor, 1.0); }
+  void main() { gl_FragColor = vec4(.4863, .4863, .4863, 1.0); }
 `;
 
-export default function CloseWebGL({
-  className,
-  light = false,
-  ref,
-}: CloseWebGLProps) {
+export default function CloseWebGL({ className, ref }: CloseWebGLProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const playRef = useRef<() => void>(() => {});
-  // La couleur passe par un ref, pas par une dépendance d'effet : la relire à
-  // chaque frame évite de recréer le contexte GL quand le thème bascule.
-  // 0 = gris #7c7c7c, 1 = blanc.
-  const lightRef = useRef(light ? 1 : 0);
-  const redrawRef = useRef<() => void>(() => {});
 
   useImperativeHandle(ref, () => ({ play: () => playRef.current() }), []);
-
-  // Le canvas ne peut pas suivre une transition CSS : on interpole l'uniform
-  // à la main pour rester en phase avec le fondu de thème du parent.
-  useEffect(() => {
-    const target = light ? 1 : 0;
-    const from = lightRef.current;
-    if (from === target) return;
-
-    const start = performance.now();
-    const duration = 500;
-    let frame = 0;
-
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-      lightRef.current = from + (target - from) * eased;
-      redrawRef.current();
-      if (t < 1) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(frame);
-  }, [light]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -158,7 +125,6 @@ export default function CloseWebGL({
     const position = gl.getAttribLocation(program, "aPosition");
     gl.enableVertexAttribArray(position);
     const angle = gl.getUniformLocation(program, "uAngle");
-    const color = gl.getUniformLocation(program, "uColor");
     gl.enable(gl.DEPTH_TEST);
     gl.clearColor(0, 0, 0, 0);
 
@@ -166,13 +132,6 @@ export default function CloseWebGL({
     const render = (valueA: number, valueB = valueA, inset = 0) => {
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-      const k = lightRef.current;
-      gl.uniform3f(
-        color,
-        0.4863 + (1 - 0.4863) * k,
-        0.4863 + (1 - 0.4863) * k,
-        0.4863 + (1 - 0.4863) * k,
-      );
       buffers.forEach((buffer, index) => {
         const edge = 0.44 - inset;
         const data = index
@@ -186,23 +145,10 @@ export default function CloseWebGL({
       });
     };
 
-    // Dernière pose dessinée : un redraw de couleur doit la conserver, sinon
-    // un changement de thème pendant le survol ramènerait la croix au repos.
-    let lastA = 0;
-    let lastB = 0;
-    let lastInset = 0;
-    const renderPose = (a: number, b = a, inset = 0) => {
-      lastA = a;
-      lastB = b;
-      lastInset = inset;
-      render(a, b, inset);
-    };
-    redrawRef.current = () => render(lastA, lastB, lastInset);
-
     const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
 
-    renderPose(0, 0, 0);
+    render(0, 0, 0);
     // Le canvas est rendu côté serveur : il apparaît vide dès le premier paint
     // et ne se remplit qu'à l'hydratation. On ne le révèle qu'une fois dessiné,
     // en fondu pour que l'apparition ne soit pas sèche.
@@ -248,7 +194,7 @@ export default function CloseWebGL({
           total > 0.58 && total < 0.78
             ? Math.sin(((total - 0.58) / 0.2) * Math.PI) * -0.012
             : 0;
-        renderPose(motion(a), motion(b), 0.055 * contraction + rebound);
+        render(motion(a), motion(b), 0.055 * contraction + rebound);
         if (elapsed < duration + branchDelay)
           frame = requestAnimationFrame(tick);
       };
@@ -258,7 +204,6 @@ export default function CloseWebGL({
     return () => {
       cancelAnimationFrame(frame);
       playRef.current = () => {};
-      redrawRef.current = () => {};
       reveal.kill();
       buffers.forEach((b) => gl.deleteBuffer(b));
       gl.deleteProgram(program);

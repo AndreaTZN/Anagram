@@ -129,7 +129,6 @@ export default function Navigation() {
     });
     gsap.set(emailBriefRef.current, { yPercent: 100 });
     gsap.set(stackHandleRef.current, {
-      xPercent: -50,
       y: 28,
       scaleX: 0,
       scaleY: 0.25,
@@ -190,9 +189,8 @@ export default function Navigation() {
           )
           .fromTo(
             stackHandleRef.current,
-            { xPercent: -50, y: 28, scaleX: 0, scaleY: 0.25, opacity: 1 },
+            { y: 28, scaleX: 0, scaleY: 0.25, opacity: 1 },
             {
-              xPercent: -50,
               y: -10,
               scaleX: 1,
               scaleY: 1,
@@ -209,7 +207,6 @@ export default function Navigation() {
         tl.to(
           stackHandleRef.current,
           {
-            xPercent: -50,
             scaleX: 0,
             scaleY: 0.25,
             opacity: 0,
@@ -561,7 +558,7 @@ export default function Navigation() {
             id="nav-works-stack-handle"
             ref={stackHandleRef}
             aria-hidden="true"
-            className="absolute left-1/2 top-0 z-0 h-0.5 w-10 rounded-full bg-[#EDEDED]"
+            className="absolute left-1/2 top-0 z-0 -ml-5 h-0.5 w-10 rounded-full bg-[#EDEDED]"
           />
 
           <div
