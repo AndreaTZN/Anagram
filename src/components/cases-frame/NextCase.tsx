@@ -143,14 +143,7 @@ export default function NextCase({ projectName, href, media }: Props) {
       ref={containerRef}
       className="nextcase_component flex flex-col gap-6 w-full"
     >
-      <div className="nextcase_separator flex items-center justify-between w-full max-[992px]:[&>div:nth-child(n+61)]:hidden">
-        {Array.from({ length: 140 }).map((_, i) => (
-          <div
-            key={i}
-            className="nextcase_dot bg-[#0c0c0c] opacity-30 rounded-full shrink-0 size-[1.5px]"
-          />
-        ))}
-      </div>
+      <div className="h-[0.5px] w-full bg-[#0c0c0c26]" />
 
       <div className="nextcase_cta flex items-center justify-between w-full max-[992px]:flex-col max-[992px]:gap-6">
         <div className="flex flex-col gap-1 max-[992px]:items-center max-[992px]:text-center">

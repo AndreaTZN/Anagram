@@ -87,14 +87,7 @@ export default function TeamCredits({
           </div>
         )}
         {faq && (
-          <div className="teamcredits_divider flex items-center justify-between w-full md:mt-6 max-[992px]:mt-4 max-[992px]:mb-4">
-            {Array.from({ length: 80 }).map((_, i) => (
-              <div
-                key={i}
-                className="tc-dot bg-[#0c0c0c] opacity-30 rounded-full shrink-0 size-[1.5px]"
-              />
-            ))}
-          </div>
+          <div className="h-[0.5px] w-full bg-[#0c0c0c26] md:mt-6 max-[992px]:mt-4 max-[992px]:mb-4" />
         )}
         {faq && <div className="teamcredits_faq md:pt-8">{faq}</div>}
       </div>
