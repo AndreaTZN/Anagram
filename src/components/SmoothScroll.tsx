@@ -34,9 +34,6 @@ export default function SmoothScroll({
     const content = contentRef.current;
     if (!wrapper || !content) return;
 
-    // Trial 1: keep Lenis wired (API, ScrollTrigger sync) but stop it from
-    // JS-driving wheel scroll on desktop Safari — native wheel scroll takes
-    // over instead, Lenis picks it back up via onNativeScroll.
     const safariTrial = isDesktopSafari();
 
     const lenis = new Lenis({

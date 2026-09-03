@@ -7,6 +7,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
 import { useCaseNav } from "@/contexts/CaseNavContext";
+import ArrowWebGL, {
+  type ArrowWebGLHandle,
+} from "@/components/icons/ArrowWebGL";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,9 +34,9 @@ export default function NextCase({ projectName, href, media }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mediaRef = useRef(null);
   const embedRef = useRef<HTMLDivElement>(null);
-  const arrow1Ref = useRef<SVGSVGElement>(null);
-  const arrow2Ref = useRef<SVGSVGElement>(null);
+
   const isFirst = useRef(true);
+  const arrowRef = useRef<ArrowWebGLHandle>(null);
 
   useVimeoPlayer({
     embedRef,
@@ -52,27 +55,27 @@ export default function NextCase({ projectName, href, media }: Props) {
 
     const textColor = dark ? "#ffffff" : "#0c0c0c";
     const dotColor = dark ? "#ffffff" : "#0c0c0c";
-    const btnBg = dark ? "#1a1a1a" : "#f5f5f5";
-    const btnText = dark ? "#ffffff" : "#0c0c0c";
 
     gsap.to(el.querySelectorAll(".nextcase_cta p"), {
       color: textColor,
       duration,
       ease: "power2.inOut",
     });
+
     gsap.to(el.querySelectorAll(".nextcase_dot"), {
       backgroundColor: dotColor,
       duration,
       ease: "power2.inOut",
     });
+
     gsap.to(el.querySelector(".nextcase_btn"), {
-      backgroundColor: btnBg,
-      color: btnText,
+      color: textColor,
       duration,
       ease: "power2.inOut",
     });
+
     gsap.to(el.querySelectorAll(".nextcase_btn path"), {
-      attr: { stroke: btnText },
+      attr: { stroke: textColor },
       duration,
       ease: "power2.inOut",
     });
@@ -127,6 +130,10 @@ export default function NextCase({ projectName, href, media }: Props) {
     return () => ctx.revert();
   }, []);
 
+  function handleEnter() {
+    arrowRef.current?.play();
+  }
+
   const posterSrc = media.type === "image" ? media.src : media.posterSrc;
   const posterAlt =
     media.type === "image" ? (media.alt ?? "") : (media.posterAlt ?? "");
@@ -156,78 +163,15 @@ export default function NextCase({ projectName, href, media }: Props) {
         </div>
         <a
           href="mailto:hello@anagram.fr"
-          className="nextcase_btn flex items-center gap-4 bg-[#f5f5f5] px-4 py-4 rounded-full text-[#0c0c0c] text-base leading-[0.9] tracking-[-0.08px] whitespace-nowrap"
-          onMouseEnter={() => {
-            gsap.to(arrow1Ref.current, {
-              x: 10,
-              y: -10,
-              opacity: 0,
-              duration: 0.25,
-              ease: "power2.inOut",
-            });
-            gsap.to(arrow2Ref.current, {
-              x: 0,
-              y: 0,
-              opacity: 1,
-              duration: 0.25,
-              ease: "power2.inOut",
-            });
-          }}
-          onMouseLeave={() => {
-            gsap.to(arrow1Ref.current, {
-              x: 0,
-              y: 0,
-              opacity: 1,
-              duration: 0.25,
-              ease: "power2.inOut",
-            });
-            gsap.to(arrow2Ref.current, {
-              x: -10,
-              y: 10,
-              opacity: 0,
-              duration: 0.25,
-              ease: "power2.inOut",
-            });
-          }}
+          className={`nextcase_btn flex items-center gap-2 rounded-full px-4 py-4 text-base leading-[0.9] tracking-[-0.08px] whitespace-nowrap transition-colors duration-300 ease-in-out ${
+            activeTab === "backstage"
+              ? "bg-[#1a1a1a] text-white hover:bg-[#2a2a2a]"
+              : "bg-[#f5f5f5] text-[#0c0c0c] hover:bg-[#0c0c0c]/10"
+          }`}
+          onMouseEnter={handleEnter}
         >
           Work with us
-          <div className="relative size-3">
-            <svg
-              ref={arrow1Ref}
-              className="absolute inset-0"
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1 11L11 1M11 1H3M11 1V9"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <svg
-              ref={arrow2Ref}
-              className="absolute inset-0"
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ opacity: 0, transform: "translate(-10px, 10px)" }}
-            >
-              <path
-                d="M1 11L11 1M11 1H3M11 1V9"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
+          <ArrowWebGL ref={arrowRef} className="block size-3.5 shrink-0" />
         </a>
       </div>
 

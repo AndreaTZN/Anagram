@@ -229,13 +229,13 @@ function TeamPhotoStack({
 }) {
   return (
     <div className={className}>
-      {team.map((member, i) =>
-        member.image ? (
-          <div
-            key={member.image}
-            className="absolute inset-0"
-            style={{ opacity: displayedIndex === i ? 1 : 0 }}
-          >
+      {team.map((member, i) => (
+        <div
+          key={member.image ?? member.name}
+          className="absolute inset-0"
+          style={{ opacity: displayedIndex === i ? 1 : 0 }}
+        >
+          {member.image ? (
             <Image
               src={member.image}
               alt={member.name}
@@ -243,9 +243,11 @@ function TeamPhotoStack({
               sizes={sizes}
               className="object-cover"
             />
-          </div>
-        ) : null,
-      )}
+          ) : (
+            <div className="h-full w-full bg-[#0c0c0c]" />
+          )}
+        </div>
+      ))}
     </div>
   );
 }
@@ -294,7 +296,7 @@ export default function AboutPage({
 
   function handleNameHover(index: number) {
     setHoveredIndex(index);
-    if (team[index].image) setDisplayedIndex(index);
+    setDisplayedIndex(index);
   }
 
   return (

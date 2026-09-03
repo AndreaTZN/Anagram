@@ -160,7 +160,7 @@ export default function RootLayout({
             <CaseNavProvider>
               <CaseOriginTracker />
               <PageTheme>
-                <FadeIn id="home-main" className="opacity-0">
+                <FadeIn className="opacity-0">
                   <div className="sticky top-0 h-screen shrink-0 max-[992px]:hidden">
                     <NavWrapper />
                   </div>
