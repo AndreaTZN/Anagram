@@ -90,7 +90,7 @@ const team = [
   },
   {
     name: "Vicenzo Tilleul",
-    role: "Web Designer",
+    role: "Digital Designer",
     year: "2025",
     image: null,
   },
@@ -103,6 +103,12 @@ const team = [
   {
     name: "Quentin Belluc",
     role: "Motion Designer",
+    year: "2026",
+    image: null,
+  },
+  {
+    name: "Tanguy Caruel",
+    role: "Brand & Digital Designer",
     year: "2026",
     image: null,
   },
