@@ -31,6 +31,10 @@ export default function Navigation() {
   const stackHandleRef = useRef<HTMLDivElement>(null);
   const stackRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ x: -1, y: -1 });
+  // `useGSAP` avec `dependencies` n'exécute les cleanups retournés qu'au
+  // démontage : chaque run doit fermer lui-même ce que le précédent a ouvert.
+  const stackTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const fadeCleanupRef = useRef<(() => void) | null>(null);
   // Passe à true dès qu'un scroll ou un survol pilote la pile : avant ça, son
   // état ne dépend que de la route et doit s'appliquer sans animation.
   const hasUserDrivenStack = useRef(false);
@@ -84,7 +88,9 @@ export default function Navigation() {
 
       return () => trigger.kill();
     },
-    { dependencies: [pathname, alwaysStacked] },
+    // Sans revertOnUpdate le trigger n'est tué qu'au démontage : chaque route
+    // en empilerait un de plus, avec un `alwaysStacked` périmé dans sa closure.
+    { dependencies: [pathname, alwaysStacked], revertOnUpdate: true },
   );
 
   useEffect(() => {
@@ -103,9 +109,6 @@ export default function Navigation() {
       setIsExpanded(over);
     };
 
-    // Un ResizeObserver sur la pile suffit : elle change de taille à chaque
-    // repli/dépliage, ce qui couvre exactement les cas où le survol peut
-    // devenir faux sans que la souris ait bougé.
     const ro = new ResizeObserver(check);
     if (stackRef.current) ro.observe(stackRef.current);
 
@@ -152,7 +155,9 @@ export default function Navigation() {
       const instant = !hasUserDrivenStack.current;
       const d = (value: number) => (instant ? 0 : value);
 
+      stackTimelineRef.current?.kill();
       const tl = gsap.timeline();
+      stackTimelineRef.current = tl;
 
       if (isCollapsed) {
         list.scrollTop = 0;
@@ -166,9 +171,6 @@ export default function Navigation() {
             duration: d(0.8),
             ease: "power3.out",
             transformOrigin: "center top",
-            // Sans overwrite, un aller-retour rapide laisse tourner la timeline
-            // précédente en parallèle : les deux écrivent sur y et la pile se
-            // fige dans un état intermédiaire.
             overwrite: true,
           },
           0,
@@ -178,9 +180,6 @@ export default function Navigation() {
             {
               height:
                 cardHeight + parseFloat(getComputedStyle(list).paddingBottom),
-              // Même durée et même ease que les cartes : si la liste se contracte
-              // plus vite, elle tire les cartes vers le bas avant que leur y ne
-              // compense, et la dernière plonge avant de remonter.
               duration: d(0.8),
               ease: "power3.out",
               overwrite: true,
@@ -204,19 +203,15 @@ export default function Navigation() {
             "-=0.3",
           );
       } else {
-        tl.to(
-          stackHandleRef.current,
-          {
-            scaleX: 0,
-            scaleY: 0.25,
-            opacity: 0,
-            duration: d(0.3),
-            ease: "power3.in",
-
-            overwrite: true,
-          },
-          0,
-        )
+        tl.to(stackHandleRef.current, {
+          y: 28,
+          scaleX: 0,
+          scaleY: 0.25,
+          opacity: 0,
+          duration: d(0.3),
+          ease: "power3.in",
+          overwrite: true,
+        })
           .to(
             links,
             {
@@ -231,10 +226,6 @@ export default function Navigation() {
           .to(
             list,
             {
-              // "auto" plutôt que scrollHeight + clearProps : la mesure serait
-              // fausse si la liste est déjà en mouvement, et le clearProps
-              // s'exécute en fin de tween, effaçant la hauteur qu'un repli
-              // relancé entre-temps vient de poser.
               height: "auto",
               duration: d(0.5),
               ease: "power3.out",
@@ -244,8 +235,6 @@ export default function Navigation() {
           );
       }
 
-      // La liste et la notch sont hors du scope de useGSAP : sans ce kill, la
-      // timeline de l'état précédent survit au changement et continue d'écrire.
       return () => {
         tl.kill();
       };
@@ -261,6 +250,9 @@ export default function Navigation() {
       const items = gsap.utils.toArray<HTMLElement>("[data-nav-work]", list);
       if (!items.length) return;
 
+      fadeCleanupRef.current?.();
+      fadeCleanupRef.current = null;
+
       if (isCollapsed) {
         gsap.to(items, {
           scaleX: 1,
@@ -275,12 +267,6 @@ export default function Navigation() {
       }
 
       gsap.set(items, { transformOrigin: "left center", force3D: true });
-
-      const startDelay = gsap.delayedCall(0.55, () => {
-        update();
-        list.addEventListener("scroll", update, { passive: true });
-        window.addEventListener("resize", update);
-      });
 
       const setters = items.map((item) => ({
         scaleX: gsap.quickTo(item, "scaleX", {
@@ -298,7 +284,7 @@ export default function Navigation() {
         x: gsap.quickTo(item, "x", { duration: 0.45, ease: "power3.out" }),
       }));
 
-      const update = () => {
+      const update = (immediate = false) => {
         const bounds = list.getBoundingClientRect();
         const atTop = list.scrollTop <= 1;
         const atBottom =
@@ -316,18 +302,41 @@ export default function Navigation() {
           const progress = Math.min(topProgress, bottomProgress);
           const eased = gsap.parseEase("power2.out")(progress);
           const scale = 0.9 + 0.1 * eased;
+          const opacity = 0.15 + 0.85 * eased;
+          const x = -6 * (1 - eased);
+          if (immediate) {
+            gsap.set(item, { scaleX: scale, scaleY: scale, opacity, x });
+            return;
+          }
           setters[i].scaleX(scale);
           setters[i].scaleY(scale);
-          setters[i].opacity(0.15 + 0.85 * eased);
-          setters[i].x(-6 * (1 - eased));
+          setters[i].opacity(opacity);
+          setters[i].x(x);
         });
       };
+      // Wrapper : passé tel quel à addEventListener, `update` recevrait
+      // l'Event en guise d'`immediate`.
+      const onUpdate = () => update();
 
-      return () => {
-        startDelay.kill();
-        list.removeEventListener("scroll", update);
-        window.removeEventListener("resize", update);
+      // Le délai laisse le dépliage (0.5 s) se terminer avant de mesurer. Sans
+      // action utilisateur la liste est déjà en place : les fades se posent
+      // d'emblée, sinon les cartes du bas s'assombrissent 1 s après l'arrivée.
+      const instant = !hasUserDrivenStack.current;
+      const start = () => {
+        update(instant);
+        list.addEventListener("scroll", onUpdate, { passive: true });
+        window.addEventListener("resize", onUpdate);
       };
+      const startDelay = instant ? null : gsap.delayedCall(0.55, start);
+      if (instant) start();
+
+      const cleanup = () => {
+        startDelay?.kill();
+        list.removeEventListener("scroll", onUpdate);
+        window.removeEventListener("resize", onUpdate);
+      };
+      fadeCleanupRef.current = cleanup;
+      return cleanup;
     },
     { dependencies: [isCollapsed], scope: listRef },
   );
