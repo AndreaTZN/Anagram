@@ -12,6 +12,10 @@ import ChatBubble from "@/components/icons/ChatBubble";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
+// Décalage entre deux cartes au repli ; la première (celle qui voyage le
+// plus) part en premier.
+const STACK_STAGGER = 0.05;
+
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Works", href: "/works" },
@@ -69,15 +73,9 @@ export default function Navigation() {
         if (!stacked) setIsExpanded(false);
       };
 
-      // La nav persiste entre les routes : sans ce set, arriver sur /works par
-      // navigation client garderait l'état déplié de la page précédente.
       apply(scroller.scrollTop);
       setIsExpanded(false);
 
-      // `end` volontairement hors d'atteinte : avec le seul `start: 300`
-      // l'intervalle est de longueur nulle, et calé sur maxScroll sa fin est
-      // franchie au dernier pixel de la page — dans les deux cas l'état restait
-      // bloqué sur « stacked » au retour en haut.
       const trigger = ScrollTrigger.create({
         scroller,
         start: 300,
@@ -88,8 +86,7 @@ export default function Navigation() {
 
       return () => trigger.kill();
     },
-    // Sans revertOnUpdate le trigger n'est tué qu'au démontage : chaque route
-    // en empilerait un de plus, avec un `alwaysStacked` périmé dans sa closure.
+
     { dependencies: [pathname, alwaysStacked], revertOnUpdate: true },
   );
 
@@ -159,8 +156,31 @@ export default function Navigation() {
       const tl = gsap.timeline();
       stackTimelineRef.current = tl;
 
+      const rectTop = (el: HTMLElement) => el.getBoundingClientRect().top;
+      // FLIP : applique `vars` à la liste d'un coup et reporte le déplacement de
+      // layout de chaque carte sur son `y`, pour que rien ne bouge à l'écran.
+      // Le mouvement n'est ainsi porté que par `y`, ce qui autorise un stagger :
+      // si la hauteur était tweenée en parallèle, elle entraînerait vers le bas
+      // les cartes dont le `y` n'a pas encore démarré.
+      const snapListKeepingCards = (vars: gsap.TweenVars) => {
+        const from = links.map(rectTop);
+        gsap.set(list, vars);
+        links.forEach((link, i) => {
+          const y =
+            Number(gsap.getProperty(link, "y")) + from[i] - rectTop(link);
+          gsap.set(link, { y });
+        });
+      };
+
       if (isCollapsed) {
-        list.scrollTop = 0;
+        // overflow visible : pendant le pliage les cartes sont translatées
+        // au-dessus du cadre réduit de la liste ; c'est #nav-works qui coupe.
+        // Ça retire aussi le scroll de la liste tant qu'elle est repliée.
+        snapListKeepingCards({
+          height: cardHeight + parseFloat(getComputedStyle(list).paddingBottom),
+          paddingTop: 0,
+          overflow: "visible",
+        });
         // Toutes les cartes remontent sur la position de la première : une fois
         // la liste réduite, c'est la seule qui reste dans le cadre visible.
         // C'est l'ordre d'empilement (z-index) qui décide laquelle est vue.
@@ -170,39 +190,31 @@ export default function Navigation() {
             y: (i: number) => -i * step,
             duration: d(0.8),
             ease: "power3.out",
+            stagger: d(STACK_STAGGER),
             transformOrigin: "center top",
             overwrite: true,
           },
           0,
-        )
-          .to(
-            list,
-            {
-              height:
-                cardHeight + parseFloat(getComputedStyle(list).paddingBottom),
-              duration: d(0.8),
-              ease: "power3.out",
-              overwrite: true,
-            },
-            0,
-          )
-          .fromTo(
-            stackHandleRef.current,
-            { y: 28, scaleX: 0, scaleY: 0.25, opacity: 1 },
-            {
-              y: -10,
-              scaleX: 1,
-              scaleY: 1,
-              opacity: 1,
-              duration: 0.5,
-              ease: "back.out(1.2)",
-              transformOrigin: "center center",
+        ).fromTo(
+          stackHandleRef.current,
+          { y: 28, scaleX: 0, scaleY: 0.25, opacity: 1 },
+          {
+            y: -10,
+            scaleX: 1,
+            scaleY: 1,
+            opacity: 1,
+            duration: 0.5,
+            ease: "back.out(1.2)",
+            transformOrigin: "center center",
 
-              overwrite: true,
-            },
-            "-=0.3",
-          );
+            overwrite: true,
+          },
+          "-=0.6",
+        );
       } else {
+        // Le padding et le scroll reviennent d'un coup (sans saut grâce au
+        // FLIP) ; seule la hauteur est tweenée, mesurée avec le bon padding.
+        snapListKeepingCards({ clearProps: "overflow,paddingTop" });
         tl.to(stackHandleRef.current, {
           y: 28,
           scaleX: 0,
@@ -395,9 +407,6 @@ export default function Navigation() {
       overwrite: true,
     });
 
-    // Three identical units, so one full unit is exactly a third of the track:
-    // at -1/3 the second copy sits where the first started and the repeat is
-    // seamless. -50% would stop mid-pattern and visibly jump.
     emailMarqueeTween.current?.kill();
     gsap.set(emailMarqueeRef.current, { xPercent: 0 });
     emailMarqueeTween.current = gsap.to(emailMarqueeRef.current, {
@@ -573,9 +582,10 @@ export default function Navigation() {
           <div
             id="nav-works-list"
             ref={listRef}
-            className={`flex min-h-0 flex-col gap-1.5 pl-3 pr-1.5 pb-4 scrollbar-none [&::-webkit-scrollbar]:hidden ${
-              isCollapsed ? "overflow-hidden pt-0" : "overflow-y-auto pt-14"
-            }`}
+            // overflow / padding-top / height de l'état replié sont posés en
+            // inline par GSAP (voir snapListKeepingCards) : un swap de classe
+            // ici ferait sauter les cartes avant que l'animation ne démarre.
+            className="flex min-h-0 flex-col gap-1.5 pl-3 pr-1.5 pb-4 pt-14 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden"
           >
             {navWorks.map((work, i) => (
               <Link

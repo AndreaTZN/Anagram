@@ -41,7 +41,7 @@ const clockBases = [
 
 const team = [
   {
-    name: "Valentin Salomon",
+    name: "Valentin Salmon",
     role: "Co-founder",
     year: "2020",
     image: "/team/valentin.jpg",
@@ -263,7 +263,7 @@ export default function AboutPage({
     ...base,
     color: colorPair[i],
   }));
-  const [hoveredIndex, setHoveredIndex] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeClockSlide, setActiveClockSlide] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
@@ -662,31 +662,32 @@ export default function AboutPage({
                   />
                 </div>
 
-                <div className="grid flex-1 grid-cols-[1fr_auto_auto] items-baseline gap-x-8 gap-y-4">
+                <div
+                  className="flex flex-1 flex-col text-sm leading-[1.3]"
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
                   {team.map((member, i) => (
-                    <Fragment key={member.name}>
-                      <span
-                        className="text-[#0c0c0c] text-sm leading-[1.3] whitespace-nowrap cursor-default"
-                        style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
-                        onMouseEnter={() => handleNameHover(i)}
-                      >
+                    <div
+                      key={member.name}
+                      className="-mx-2.5 flex items-baseline gap-3 rounded px-2.5 py-2 cursor-default transition-colors duration-200"
+                      style={{
+                        backgroundColor:
+                          hoveredIndex === i ? "#f9f9f9" : "transparent",
+                      }}
+                      onMouseEnter={() => handleNameHover(i)}
+                    >
+                      <span className="flex-1 text-[#0c0c0c] whitespace-nowrap">
                         {member.name}
                       </span>
-                      <span
-                        className="text-[#7c7c7c] text-sm leading-[1.3] whitespace-nowrap text-right cursor-default"
-                        style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
-                        onMouseEnter={() => handleNameHover(i)}
-                      >
-                        {member.role}
-                      </span>
-                      <span
-                        className="text-[#7c7c7c] text-sm leading-[1.3] whitespace-nowrap text-right cursor-default"
-                        style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
-                        onMouseEnter={() => handleNameHover(i)}
-                      >
-                        {member.year}
-                      </span>
-                    </Fragment>
+                      <div className="flex-1 flex justify-between gap-4 items-baseline">
+                        <span className="text-[#7c7c7c] whitespace-nowrap">
+                          {member.role}
+                        </span>
+                        <span className=" text-[#7c7c7c] whitespace-nowrap text-right">
+                          {member.year}
+                        </span>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -713,21 +714,18 @@ export default function AboutPage({
                       <Fragment key={member.name}>
                         <p
                           className="text-[#0c0c0c] whitespace-nowrap transition-opacity duration-200 cursor-pointer"
-                          style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
                           onClick={() => handleNameHover(i)}
                         >
                           {member.name}
                         </p>
                         <p
                           className="text-[#7e7e7e] whitespace-nowrap text-right transition-opacity duration-200 cursor-pointer"
-                          style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
                           onClick={() => handleNameHover(i)}
                         >
                           {member.role}
                         </p>
                         <p
                           className="text-[#7e7e7e] whitespace-nowrap text-right transition-opacity duration-200 cursor-pointer"
-                          style={{ opacity: hoveredIndex === i ? 1 : 0.3 }}
                           onClick={() => handleNameHover(i)}
                         >
                           {member.year}
