@@ -20,6 +20,9 @@ export const metadata: Metadata = {
 export default function WorksPage() {
   return (
     <main className=" flex-1 pt-4 pr-4 pl-4 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12">
+      <h1 className="sr-only">
+        Branding and product design case studies by anagram
+      </h1>
       <WorksPageClient />
       <Footer />
     </main>

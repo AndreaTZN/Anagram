@@ -144,6 +144,7 @@ export default function VizziaPage() {
             dataSrc: "1167644462",
             dataRatio: "1920/1080",
             posterSrc: "/works/FoundersFuture/release/2.webp",
+            posterAlt: "Founders Future project case study cover",
           }}
         />
       </div>

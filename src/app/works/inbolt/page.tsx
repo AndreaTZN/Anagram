@@ -139,6 +139,7 @@ export default function InboltPage() {
             dataSrc: "1172151214",
             dataRatio: "1920/1080",
             posterSrc: "/works/Perma/8.avif",
+            posterAlt: "Perma project case study cover",
           }}
         />
       </div>

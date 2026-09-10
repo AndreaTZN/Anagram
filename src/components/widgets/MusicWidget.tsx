@@ -8,8 +8,6 @@ import { useMusicPlayer } from "@/contexts/MusicContext";
 
 gsap.registerPlugin(useGSAP);
 
-const COVER = "/widgets/music-cover.png";
-
 export default function MusicWidget() {
   const { playing, volume, toggle, setVolume } = useMusicPlayer();
   // Kept mounted past `playing` so the slider can animate out before React
@@ -120,8 +118,8 @@ export default function MusicWidget() {
       >
         <div ref={vinylRef} className="absolute inset-1">
           <Image
-            src={COVER}
-            alt=""
+            src={"/widgets/music-cover.png"}
+            alt="Anagram studio playlist cover artwork"
             fill
             sizes="125px"
             className="object-cover"

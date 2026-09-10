@@ -146,6 +146,7 @@ export default function BeeCasePage() {
             dataSrc: "1164024409",
             dataRatio: "1920/1080",
             posterSrc: "/works/Fortuneo/release/2.webp",
+            posterAlt: "Fortuneo project case study cover",
           }}
         />
       </div>

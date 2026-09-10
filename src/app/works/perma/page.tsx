@@ -146,6 +146,7 @@ export default function PermaCasePage() {
             dataSrc: "1172566718",
             dataRatio: "2000/1124",
             posterSrc: "/works/Vizzia/1.avif",
+            posterAlt: "Vizzia project case study cover",
           }}
         />
       </div>

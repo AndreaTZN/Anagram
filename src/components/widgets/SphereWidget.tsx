@@ -880,6 +880,17 @@ export default function SphereWidget({
         hoverFollowRaf = 0;
       }
 
+      // Le snap de survol est du polish : un geste de l'utilisateur doit
+      // pouvoir l'interrompre. Le drapeau est remis à false ici pour qu'une
+      // boucle annulée avant sa dernière frame ne laisse pas la sphère
+      // définitivement insaisissable.
+      function stopHoverAlign() {
+        if (!hoverAligning) return;
+        if (raf) cancelAnimationFrame(raf);
+        raf = 0;
+        hoverAligning = false;
+      }
+
       function startIdleRotation() {
         if (idleRaf || hovered || dragging || locked || hoverAligning) return;
         lastIdleTime = performance.now();
@@ -1057,9 +1068,13 @@ export default function SphereWidget({
       }
 
       function onPointerDown(event: PointerEvent) {
-        if (locked || hoverAligning) return;
+        if (locked) return;
 
         stopIdleRotation();
+        stopHoverFollow();
+        // Attrape la sphère en vol : `rotation` est à jour à chaque frame du
+        // snap, la reprise se fait donc sans saut visuel.
+        stopHoverAlign();
         dragging = true;
         hasDragged = false;
         pointerId = event.pointerId;

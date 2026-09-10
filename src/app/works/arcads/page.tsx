@@ -198,6 +198,7 @@ export default function ArcadsCasePage() {
             dataSrc: "1172492298",
             dataRatio: "3840/2160",
             posterSrc: "/works/Inbolt/inbolt-1-vimeo.webp",
+            posterAlt: "Inbolt project case study cover",
           }}
         />
       </div>

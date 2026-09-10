@@ -11,7 +11,7 @@ import Faq from "@/components/cases-frame/Faq";
 export const metadata: Metadata = {
   title: "Allo Branding | Brand Identity for AI Phone System | anagram",
   description:
-    "anagram created the brand identity for Allo, the AI phone system for small teams. Brand design and website for a SaaS startup freeing entrepreneurs from their phones.",
+    "anagram created the brand identity and website for Allo, the AI phone system for small teams that frees entrepreneurs from their inbound calls.",
   alternates: { canonical: "/works/allo" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },

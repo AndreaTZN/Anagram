@@ -14,7 +14,7 @@ import Faq from "@/components/cases-frame/Faq";
 export const metadata: Metadata = {
   title: "Founders Future Branding | VC Fund Visual Identity | anagram",
   description:
-    "anagram redefined the identity of Founders Future, an entrepreneur-built tech investment platform. Brand strategy, design system and website for an international VC.",
+    "anagram redefined the identity of Founders Future, an entrepreneur-built tech investment platform. Brand strategy, design system and website.",
   alternates: { canonical: "/works/founders-future" },
   openGraph: { images: ["/opengraph.webp"] },
   robots: { index: true, follow: true },

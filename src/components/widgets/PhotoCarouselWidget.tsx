@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper/modules";
@@ -8,7 +9,11 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/effect-fade";
 
-const photos = ["/studio/1.webp", "/studio/2.webp", "/studio/3.webp"];
+const photos = [
+  { src: "/studio/1.webp", alt: "Anagram studio workspace" },
+  { src: "/studio/2.webp", alt: "Anagram team at work in the studio" },
+  { src: "/studio/3.webp", alt: "Branding work in progress at Anagram studio" },
+];
 
 const DELAY = 4000;
 
@@ -76,12 +81,14 @@ export default function PhotoCarouselWidget({ active }: { active: boolean }) {
         onSlideChange={(s) => setActiveSlide(s.realIndex)}
         className="w-full h-full cursor-pointer"
       >
-        {photos.map((src, i) => (
+        {photos.map((photo, i) => (
           <SwiperSlide key={i}>
-            <img
-              src={src}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              sizes="18.75rem"
+              className="object-cover"
             />
           </SwiperSlide>
         ))}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Badge from "./Badge";
@@ -11,6 +12,10 @@ import Vimeo169 from "./cases-frame/Vimeo169";
 import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
 
 gsap.registerPlugin(useGSAP);
+
+// Grid is 1 col, 4 cols from md, 5 from 2xl — keeps Next from serving a
+// full-width source for what renders as a fifth-width thumbnail.
+const CARD_SIZES = "(min-width: 96rem) 20vw, (min-width: 768px) 25vw, 100vw";
 
 type Work = {
   name: string;
@@ -148,7 +153,7 @@ const works: Work[] = [
 
 const FILTERS = ["All", "Works", "Merch", "News", "Coming project", "Tools"];
 
-function WorkCard({ work }: { work: Work }) {
+function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
   if (work.tag === "Merch" && work.price) {
     return (
       <MerchCard name={work.name} price={work.price} src={work.media.src!} />
@@ -232,21 +237,31 @@ function WorkCard({ work }: { work: Work }) {
           onMouseLeave={handleLeave}
         >
           {work.media.type === "image" ? (
-            <img
-              src={work.media.src}
-              alt={work.name}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+            work.media.src && (
+              <Image
+                src={work.media.src}
+                alt={work.name}
+                fill
+                sizes={CARD_SIZES}
+                priority={priority}
+                className="object-cover"
+              />
+            )
           ) : (
             <div
               ref={embedRef}
               className="absolute inset-0 w-full h-full overflow-hidden"
             >
-              <img
-                src={work.media.poster}
-                alt={work.name}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
+              {work.media.poster && (
+                <Image
+                  src={work.media.poster}
+                  alt={work.name}
+                  fill
+                  sizes={CARD_SIZES}
+                  priority={priority}
+                  className="object-cover"
+                />
+              )}
             </div>
           )}
           <div
@@ -414,7 +429,7 @@ export default function HomeContain() {
         className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-5 md:gap-4 items-start"
       >
         {filtered.slice(0, firstRowCount).map((work) => (
-          <WorkCard key={work.name} work={work} />
+          <WorkCard key={work.name} work={work} priority />
         ))}
         {filtered.length > firstRowCount && (
           <div className="relative col-span-1 md:col-span-4 2xl:col-span-5 overflow-hidden aspect-video my-8">
@@ -438,7 +453,7 @@ export default function HomeContain() {
           </div>
         )}
         {filtered.slice(firstRowCount).map((work) => (
-          <WorkCard key={work.name} work={work} />
+          <WorkCard key={work.name} work={work} priority={false} />
         ))}
       </div>
     </div>

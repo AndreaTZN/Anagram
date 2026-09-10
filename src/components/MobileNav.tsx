@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
@@ -257,10 +258,12 @@ export default function MobileNav() {
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   ) : (
-                    <img
+                    <Image
                       src={work.poster}
                       alt={work.name}
-                      className="absolute inset-0 w-full h-full object-cover"
+                      fill
+                      sizes="8.125rem"
+                      className="object-cover"
                     />
                   )}
                 </div>
