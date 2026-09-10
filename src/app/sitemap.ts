@@ -19,11 +19,24 @@ function getSlugs(segment: string): string[] {
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: BASE_URL, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${BASE_URL}/works`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE_URL}/lab`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE_URL}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
+    {
+      url: BASE_URL,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    {
+      url: `${BASE_URL}/works`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/about`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
   ];
 
   const workRoutes: MetadataRoute.Sitemap = getSlugs("works").map((slug) => ({
@@ -35,8 +48,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Acquisition landing pages — indexable, so they belong in the sitemap.
   // There is no /seo index route, only the leaf pages.
-  const seoRoutes: MetadataRoute.Sitemap = getSlugs("seo").map((slug) => ({
-    url: `${BASE_URL}/seo/${slug}`,
+  const seoRoutes: MetadataRoute.Sitemap = getSlugs("page").map((slug) => ({
+    url: `${BASE_URL}/page/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.7,

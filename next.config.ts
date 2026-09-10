@@ -20,9 +20,6 @@ const nextConfig: NextConfig = {
 
       // Archives is now a tab inside /works, not its own route.
       { source: '/archives', destination: '/works', permanent: true },
-
-      // No dedicated contact page in the rebuild — contact info lives on /about.
-      { source: '/contact', destination: '/about', permanent: true },
     ]
   },
 }
