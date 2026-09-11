@@ -36,7 +36,7 @@ export default function PageTransition({
       {
         top: 0,
         opacity: 1,
-        duration: 0.5,
+        duration: 0.25,
         ease: "power2.out",
         overwrite: true,
         clearProps: "top,opacity",
@@ -58,7 +58,7 @@ export default function PageTransition({
       gsap.to(el, {
         top: -OFFSET,
         opacity: 0,
-        duration: 0.6,
+        duration: 0.25,
         ease: "power2.in",
         overwrite: true,
         onComplete: () => router.push(href),
