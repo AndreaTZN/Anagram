@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useCaseNav } from "@/contexts/CaseNavContext";
 import { getCaseOrigin } from "@/lib/case-origin";
+import { transitionTo } from "@/lib/page-transition";
 import ArrowWebGL, {
   type ArrowWebGLHandle,
 } from "@/components/icons/ArrowWebGL";
@@ -14,7 +14,6 @@ import CloseWebGL, {
 } from "@/components/icons/CloseWebGL";
 
 export default function CaseNavigation() {
-  const router = useRouter();
   const { data, activeTab, setActiveTab } = useCaseNav();
   const [activeSection, setActiveSection] = useState<string>("");
   const activeSectionRef = useRef<string>("");
@@ -143,9 +142,10 @@ export default function CaseNavigation() {
           href="/works"
           aria-label="Close project"
           className="grid place-items-center size-9.5 rounded-full bg-[#f7f7f7] hover:bg-[#ededed] transition-colors duration-500"
+          data-transition="manual"
           onClick={(e) => {
             e.preventDefault();
-            router.push(getCaseOrigin());
+            transitionTo(getCaseOrigin());
           }}
           onMouseEnter={() => closeIconRef.current?.play()}
           onFocus={() => closeIconRef.current?.play()}
