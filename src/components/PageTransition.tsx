@@ -55,6 +55,11 @@ export default function PageTransition({
       if (!el || transitioning.current) return;
       transitioning.current = true;
 
+      // The sidebar exits before the route commits and replaces its content.
+      document.dispatchEvent(
+        new CustomEvent("anagram:page-exit", { detail: { href } }),
+      );
+
       gsap.to(el, {
         top: `-${OFFSET}`,
         opacity: 0,
