@@ -39,9 +39,9 @@ export default function Navigation() {
   // démontage : chaque run doit fermer lui-même ce que le précédent a ouvert.
   const stackTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const fadeCleanupRef = useRef<(() => void) | null>(null);
-  // Passe à true dès qu'un scroll ou un survol pilote la pile : avant ça, son
-  // état ne dépend que de la route et doit s'appliquer sans animation.
+  // Only the initial route is instant; scroll, hover, and navigation animate.
   const hasUserDrivenStack = useRef(false);
+  const stackPathnameRef = useRef(pathname);
   const [isDesktop, setIsDesktop] = useState(false);
   // Sur /works la pile est l'état par défaut, sans attendre le scroll.
   const alwaysStacked = pathname === "/works";
@@ -61,6 +61,11 @@ export default function Navigation() {
 
   useGSAP(
     () => {
+      if (stackPathnameRef.current !== pathname) {
+        hasUserDrivenStack.current = true;
+        stackPathnameRef.current = pathname;
+      }
+
       const scroller = document.getElementById("smooth-scroll-container");
       if (!scroller) return;
 
@@ -129,7 +134,7 @@ export default function Navigation() {
     });
     gsap.set(emailBriefRef.current, { yPercent: 100 });
     gsap.set(stackHandleRef.current, {
-      y: 28,
+      y: "1.75rem",
       scaleX: 0,
       scaleY: 0.25,
       transformOrigin: "center center",
@@ -195,28 +200,40 @@ export default function Navigation() {
             overwrite: true,
           },
           0,
-        ).fromTo(
-          stackHandleRef.current,
-          { y: 28, scaleX: 0, scaleY: 0.25, opacity: 1 },
-          {
-            y: -10,
+        );
+
+        if (instant) {
+          // A negative overlap on a zero-duration stack hides the initial handle.
+          gsap.set(stackHandleRef.current, {
+            y: "-0.625rem",
             scaleX: 1,
             scaleY: 1,
             opacity: 1,
-            duration: 0.5,
-            ease: "back.out(1.2)",
             transformOrigin: "center center",
-
-            overwrite: true,
-          },
-          "-=0.6",
-        );
+          });
+        } else {
+          tl.fromTo(
+            stackHandleRef.current,
+            { y: "1.75rem", scaleX: 0, scaleY: 0.25, opacity: 1 },
+            {
+              y: "-0.625rem",
+              scaleX: 1,
+              scaleY: 1,
+              opacity: 1,
+              duration: 0.5,
+              ease: "back.out(1.2)",
+              transformOrigin: "center center",
+              overwrite: true,
+            },
+            Math.max(0, tl.duration() - 0.6),
+          );
+        }
       } else {
         // Le padding et le scroll reviennent d'un coup (sans saut grâce au
         // FLIP) ; seule la hauteur est tweenée, mesurée avec le bon padding.
         snapListKeepingCards({ clearProps: "overflow,paddingTop" });
         tl.to(stackHandleRef.current, {
-          y: 28,
+          y: "1.75rem",
           scaleX: 0,
           scaleY: 0.25,
           opacity: 0,
