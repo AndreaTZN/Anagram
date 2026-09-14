@@ -18,7 +18,7 @@ const STACK_STAGGER = 0.05;
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Works", href: "/works" },
+  { label: "Work", href: "/works" },
   { label: "Studio", href: "/about" },
   // { label: "Lab", href: "/lab" },
 ];

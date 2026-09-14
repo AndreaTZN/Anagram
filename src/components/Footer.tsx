@@ -12,7 +12,7 @@ const Divider = () => {
 
 const sitemapLinks = [
   { label: "Home", href: "/" },
-  { label: "Works", href: "/works" },
+  { label: "Work", href: "/works" },
   { label: "Studio", href: "/about" },
   { label: "Lab", href: "/lab" },
 ];
