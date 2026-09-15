@@ -411,10 +411,10 @@ export default function HomeContain() {
                 hasFiltered.current = true;
                 setPendingFilter(filter);
               }}
-              className={`min-w-16 px-4 py-4 rounded-full text-sm leading-[0.8] cursor-pointer transition-colors shrink-0 whitespace-nowrap ${
+              className={`min-w-16 px-4 py-4 rounded-full text-sm leading-[0.8] cursor-pointer transition-colors duration-200 ease-out shrink-0 whitespace-nowrap ${
                 pendingFilter === filter
                   ? "bg-[#0c0c0c] text-white"
-                  : "bg-[#f5f5f5] text-[#7C7C7C]"
+                  : "bg-[#f5f5f5] text-[#7C7C7C] hover:bg-[#e8e8e8] hover:text-[#0c0c0c]"
               }`}
             >
               {filter}

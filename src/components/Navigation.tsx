@@ -142,7 +142,7 @@ export default function Navigation() {
   }, []);
 
   useGSAP(() => {
-    gsap.set(emailBriefRef.current, { yPercent: 100 });
+    gsap.set(emailBriefRef.current, { opacity: 0 });
     gsap.set(emailMarqueeRef.current, { xPercent: 0 });
 
     const marquee = gsap.to(emailMarqueeRef.current, {
@@ -158,13 +158,13 @@ export default function Navigation() {
     emailHoverTimeline.current = gsap
       .timeline({
         paused: true,
-        defaults: { duration: 0.55, ease: "power2.inOut" },
+        defaults: { duration: 0.2, ease: "sine.inOut" },
         onReverseComplete: () => {
           marquee.pause();
         },
       })
-      .to(emailAddressRef.current, { yPercent: -150, opacity: 0 }, 0)
-      .to(emailBriefRef.current, { yPercent: 0 }, 0);
+      .to(emailAddressRef.current, { opacity: 0 }, 0)
+      .to(emailBriefRef.current, { opacity: 1 }, 0);
 
     return () => {
       emailMarqueeTween.current = null;
@@ -490,7 +490,7 @@ export default function Navigation() {
                 <span
                   ref={emailBriefRef}
                   aria-hidden="true"
-                  className="absolute inset-0 flex items-center overflow-hidden"
+                  className="absolute inset-0 flex items-center overflow-hidden opacity-0"
                 >
                   <span
                     ref={emailMarqueeRef}
