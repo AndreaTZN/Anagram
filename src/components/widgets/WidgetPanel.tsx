@@ -55,8 +55,8 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
 
     gsap.set(buttonRef.current, { opacity: 0 });
     gsap.set(overlayRef.current, { opacity: 0, pointerEvents: "none" });
-    gsap.set(panelRef.current, { opacity: 0, y: -16, scale: 0.96 });
-    gsap.set(widgetsRef.current, { opacity: 0, y: 20 });
+    gsap.set(panelRef.current, { opacity: 0, y: "-1rem", scale: 0.96 });
+    gsap.set(widgetsRef.current, { opacity: 0, y: "1.25rem" });
     gsap.set(verticalPathRef.current, {
       transformOrigin: "50% 50%",
       rotate: 0,
@@ -72,57 +72,65 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
     tl.current = gsap
       .timeline({
         paused: true,
-        defaults: { ease: "power2.out" },
-
-        onReverseComplete: () => {
-          gsap.set(buttonRef.current, { clearProps: "width" });
-        },
-      })
-
-      .to(buttonRef.current, {
-        width: "36.1875rem",
-        duration: 0.65,
-        ease: "back.out(1.4)",
-        id: "button-width",
+        defaults: { ease: "power2.inOut" },
       })
       .to(
         verticalPathRef.current,
-        { rotate: 90, duration: 0.5, ease: "back.out(2)" },
-        "<",
+        { rotate: 90, duration: 0.52 },
+        0,
       )
-      .to(overlayRef.current, { opacity: 1, duration: 0.5 }, "<0.05")
+      .to(overlayRef.current, { opacity: 1, duration: 0.5, ease: "sine.inOut" }, 0)
       .to(
         panelRef.current,
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 0.9,
-          ease: "power2.out",
+          duration: 0.6,
+          ease: "sine.inOut",
         },
-        "<0.05",
+        0.08,
       )
       .to(
         widgetsRef.current,
-        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", stagger: 0.06 },
-
-        "<0.12",
+        { opacity: 1, y: 0, duration: 0.44, stagger: 0.035 },
+        0.12,
       );
   }, []);
+
+  useGSAP(() => {
+    const button = buttonRef.current;
+    if (!button) return;
+
+    let width: string | number = "36.1875rem";
+    if (!open) {
+      // Measure after React adds the cover, then restore the current width before paint.
+      const currentWidth = button.getBoundingClientRect().width;
+      button.style.width = "auto";
+      width = button.getBoundingClientRect().width;
+      gsap.set(button, { width: currentWidth });
+    }
+
+    gsap.to(button, {
+      width,
+      duration: open ? 0.68 : 0.68 / 1.2,
+      ease: "power2.inOut",
+      overwrite: "auto",
+      onComplete: () => {
+        if (!open) gsap.set(button, { clearProps: "width" });
+      },
+    });
+  }, { dependencies: [open, musicPlaying] });
 
   function toggle() {
     if (!tl.current) return;
 
     gsap.set(overlayRef.current, { pointerEvents: open ? "none" : "auto" });
     if (!open) {
-      tl.current
-        .getChildren(false, true, false)
-        .find((t) => t.vars.id === "button-width")
-        ?.invalidate();
       tl.current.timeScale(1).play();
       scrollLockRef.current = true;
     } else {
-      tl.current.timeScale(1.8).reverse();
+      tl.current.timeScale(1.2).reverse();
       scrollLockRef.current = false;
     }
     setOpen((v) => !v);

@@ -14,7 +14,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 // Décalage entre deux cartes au repli ; la première (celle qui voyage le
 // plus) part en premier.
-const STACK_STAGGER = 0.05;
+const STACK_STAGGER = 0.06;
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -32,6 +32,7 @@ export default function Navigation() {
   const emailBriefRef = useRef<HTMLSpanElement>(null);
   const emailMarqueeRef = useRef<HTMLSpanElement>(null);
   const emailMarqueeTween = useRef<gsap.core.Tween | null>(null);
+  const emailHoverTimeline = useRef<gsap.core.Timeline | null>(null);
   const stackHandleRef = useRef<HTMLDivElement>(null);
   const stackRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ x: -1, y: -1 });
@@ -132,13 +133,43 @@ export default function Navigation() {
       xPercent: -50,
       transformOrigin: "50% 100%",
     });
-    gsap.set(emailBriefRef.current, { yPercent: 100 });
     gsap.set(stackHandleRef.current, {
       y: "1.75rem",
       scaleX: 0,
       scaleY: 0.25,
       transformOrigin: "center center",
     });
+  }, []);
+
+  useGSAP(() => {
+    gsap.set(emailBriefRef.current, { yPercent: 100 });
+    gsap.set(emailMarqueeRef.current, { xPercent: 0 });
+
+    const marquee = gsap.to(emailMarqueeRef.current, {
+      xPercent: -100 / 3,
+      duration: 6,
+      ease: "none",
+      repeat: -1,
+      paused: true,
+    });
+    emailMarqueeTween.current = marquee;
+
+    // Reversing the same timeline preserves continuity during quick re-entry.
+    emailHoverTimeline.current = gsap
+      .timeline({
+        paused: true,
+        defaults: { duration: 0.55, ease: "power2.inOut" },
+        onReverseComplete: () => {
+          marquee.pause();
+        },
+      })
+      .to(emailAddressRef.current, { yPercent: -150, opacity: 0 }, 0)
+      .to(emailBriefRef.current, { yPercent: 0 }, 0);
+
+    return () => {
+      emailMarqueeTween.current = null;
+      emailHoverTimeline.current = null;
+    };
   }, []);
 
   useGSAP(
@@ -178,22 +209,17 @@ export default function Navigation() {
       };
 
       if (isCollapsed) {
-        // overflow visible : pendant le pliage les cartes sont translatées
-        // au-dessus du cadre réduit de la liste ; c'est #nav-works qui coupe.
-        // Ça retire aussi le scroll de la liste tant qu'elle est repliée.
         snapListKeepingCards({
           height: cardHeight + parseFloat(getComputedStyle(list).paddingBottom),
           paddingTop: 0,
           overflow: "visible",
         });
-        // Toutes les cartes remontent sur la position de la première : une fois
-        // la liste réduite, c'est la seule qui reste dans le cadre visible.
-        // C'est l'ordre d'empilement (z-index) qui décide laquelle est vue.
+
         tl.to(
           links,
           {
             y: (i: number) => -i * step,
-            duration: d(0.8),
+            duration: d(1),
             ease: "power3.out",
             stagger: d(STACK_STAGGER),
             transformOrigin: "center top",
@@ -410,49 +436,12 @@ export default function Navigation() {
   }
 
   function handleEmailEnter() {
-    gsap.to(emailAddressRef.current, {
-      yPercent: -220,
-      duration: 0.4,
-      opacity: 0,
-      ease: "power3.out",
-      overwrite: true,
-    });
-    gsap.to(emailBriefRef.current, {
-      yPercent: 0,
-      duration: 0.4,
-      ease: "power3.out",
-      overwrite: true,
-    });
-
-    emailMarqueeTween.current?.kill();
-    gsap.set(emailMarqueeRef.current, { xPercent: 0 });
-    emailMarqueeTween.current = gsap.to(emailMarqueeRef.current, {
-      xPercent: -100 / 3,
-      duration: 4,
-      ease: "none",
-      repeat: -1,
-    });
+    emailMarqueeTween.current?.play();
+    emailHoverTimeline.current?.play();
   }
 
   function handleEmailLeave() {
-    gsap.to(emailAddressRef.current, {
-      yPercent: 0,
-      opacity: 1,
-      duration: 0.4,
-      ease: "power3.out",
-      overwrite: true,
-    });
-    gsap.to(emailBriefRef.current, {
-      yPercent: 100,
-      duration: 0.4,
-      ease: "power3.out",
-      overwrite: true,
-      onComplete: () => {
-        emailMarqueeTween.current?.kill();
-        emailMarqueeTween.current = null;
-        gsap.set(emailMarqueeRef.current, { xPercent: 0 });
-      },
-    });
+    emailHoverTimeline.current?.reverse();
   }
 
   return (

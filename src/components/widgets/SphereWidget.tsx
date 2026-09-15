@@ -1337,9 +1337,8 @@ function SpinningDots() {
         y: "-0.25rem",
         duration: 0.41,
         ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.18,
+        // Individual loops keep the wave moving with a constant phase offset.
+        stagger: { each: 0.08, repeat: -1, yoyo: true },
       });
     },
     { scope: ref },
