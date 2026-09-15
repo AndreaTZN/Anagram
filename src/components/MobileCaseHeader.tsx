@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCaseNav } from "@/contexts/CaseNavContext";
 import { getCaseOrigin } from "@/lib/case-origin";
+import { transitionTo } from "@/lib/page-transition";
 
 export default function MobileCaseHeader() {
-  const router = useRouter();
   const { data, activeTab, setActiveTab } = useCaseNav();
   if (!data?.title) return null;
 
@@ -27,10 +26,11 @@ export default function MobileCaseHeader() {
         <Link
           id="case-mobile-close"
           href="/works"
+          data-transition="manual"
           className="flex items-center gap-2 shrink-0 pt-2 text-sm leading-[0.9] tracking-[-0.07px] text-[#868686]"
           onClick={(e) => {
             e.preventDefault();
-            router.push(getCaseOrigin());
+            transitionTo(getCaseOrigin());
           }}
         >
           <svg

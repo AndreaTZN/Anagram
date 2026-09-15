@@ -8,6 +8,7 @@ import MobileNav from "@/components/MobileNav";
 import CaseOriginTracker from "@/components/CaseOriginTracker";
 import type { Metadata } from "next";
 import FadeIn from "@/components/FadeIn";
+import PageTransition from "@/components/PageTransition";
 import {
   GoogleTagManager,
   GoogleTagManagerNoScript,
@@ -166,7 +167,9 @@ export default function RootLayout({
                   </div>
                 </FadeIn>
                 <MobileNav />
-                <SmoothScroll>{children}</SmoothScroll>
+                <SmoothScroll>
+                  <PageTransition>{children}</PageTransition>
+                </SmoothScroll>
               </PageTheme>
             </CaseNavProvider>
           </MusicProvider>
