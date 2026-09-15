@@ -18,9 +18,9 @@ const sitemapLinks = [
 ];
 
 const desktopSocialLinks = [
-  { label: "X", href: "https://x.com" },
-  { label: "Linkedin", href: "https://linkedin.com" },
-  { label: "Instagram", href: "https://instagram.com" },
+  { label: "X", href: "https://x.com/anagramclub" },
+  { label: "Linkedin", href: "https://www.linkedin.com/company/anagramclub/" },
+  { label: "Instagram", href: "https://www.instagram.com/anagramclub/" },
 ];
 
 const brands = ["Arpe", "Voff"];
@@ -75,15 +75,6 @@ export default function Footer() {
                     className="leading-[1.1] font-medium text-sm"
                   >
                     Book a call
-                  </a>
-                </div>
-                <div>
-                  <p className="leading-[1.1]  font-medium text-sm">Careers</p>
-                  <a
-                    href="mailto:hello@anagram.club"
-                    className="text-[#7C7C7C] leading-[1.1] hover:text-[#0c0c0c]/70 transition-colors duration-300 ease-linear"
-                  >
-                    careers@anagram.club
                   </a>
                 </div>
               </div>
