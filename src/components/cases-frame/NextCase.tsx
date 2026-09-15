@@ -82,48 +82,46 @@ export default function NextCase({ projectName, href, media }: Props) {
   }, [activeTab]);
 
   useLayoutEffect(() => {
-    const pinEl = mediaRef.current;
+    const mediaEl = mediaRef.current;
     const root = containerRef.current;
-    if (!pinEl || !root) return;
+    if (!mediaEl || !root) return;
 
     // Lenis scrolls this wrapper, not window — ScrollTrigger never fires without it.
     const scroller = document.getElementById("smooth-scroll-container");
+    if (!scroller) return;
 
     // Scoped so selectors resolve inside this component and cleanup is automatic.
     const ctx = gsap.context(() => {
-      // Reveal the media as it scrolls up: a bottom-to-top clip wipe plus a slow
-      // Ken Burns zoom on the poster. No pin — ScrollTrigger pinning conflicts
-      // with Lenis owning this scroller (would need a scrollerProxy).
-      // Hidden until the scrubbed reveal finishes, then played on its own.
-      gsap.set(".nextcase_badge", { yPercent: 60, opacity: 0 });
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       const tl = gsap.timeline({
         defaults: { ease: "power2.out" },
         scrollTrigger: {
-          trigger: pinEl,
-          scroller: scroller ?? undefined,
-          start: "top bottom",
-          end: "bottom bottom",
+          trigger: mediaEl,
+          scroller,
+          start: "top 90%",
+          once: true,
         },
       });
 
       tl.fromTo(
         ".nextcase_media",
-        { clipPath: "inset(100% 0% 0% 0%)" },
-        { clipPath: "inset(0% 0% 0% 0%)", duration: 1 },
+        // Reveal the top first because it is the first part entering the viewport.
+        { clipPath: "inset(0% 0% 100% 0%)" },
+        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.95, ease: "power3.inOut" },
         0,
       ).fromTo(
         ".projet-card_embed-vimeo-contain",
-        { scale: 1.15 },
-        { scale: 1, duration: 1 },
+        { scale: 1.08 },
+        { scale: 1, duration: 1.3, ease: "power3.out" },
         0,
       );
 
       tl.fromTo(
         ".nextcase_badge",
-        { yPercent: 60, opacity: 0 },
-        { yPercent: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-        0.5,
+        { y: "0.75rem", opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" },
+        0.6,
       );
     }, root);
 
