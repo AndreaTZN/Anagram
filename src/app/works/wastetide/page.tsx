@@ -130,6 +130,7 @@ export default function WastetidePage() {
               />
               <VimeoSound
                 dataSrc="1199785516"
+                videoSrc="https://player.vimeo.com/progressive_redirect/playback/1198689576/rendition/1080p/file.mp4%20%281080p%29.mp4?loc=external&signature=cf9d6aaaaa8a8e389cbfe87e45eaa9370d42f7976256deef2e8970017015eb86"
                 dataRatio="1920/1080"
                 src="/works/Wastetide/2.webp"
                 alt="Wastetide video"
