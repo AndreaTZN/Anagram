@@ -25,13 +25,18 @@ const navLinks = [
 
 export default function Navigation() {
   const pathname = usePathname();
+  const [pendingNavigation, setPendingNavigation] = useState<{
+    from: string;
+    to: string;
+  } | null>(null);
+  const activePathname =
+    pendingNavigation?.from === pathname ? pendingNavigation.to : pathname;
   const listRef = useRef<HTMLDivElement>(null);
+  const navLinksRef = useRef<HTMLDivElement>(null);
   const meetingTooltipRef = useRef<HTMLSpanElement>(null);
   const meetingIconRef = useRef<SVGSVGElement>(null);
   const emailAddressRef = useRef<HTMLSpanElement>(null);
   const emailBriefRef = useRef<HTMLSpanElement>(null);
-  const emailMarqueeRef = useRef<HTMLSpanElement>(null);
-  const emailMarqueeTween = useRef<gsap.core.Tween | null>(null);
   const emailHoverTimeline = useRef<gsap.core.Timeline | null>(null);
   const stackHandleRef = useRef<HTMLDivElement>(null);
   const stackRef = useRef<HTMLDivElement>(null);
@@ -51,6 +56,66 @@ export default function Navigation() {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const isCollapsed = (isStacked || alwaysStacked) && !isExpanded;
+
+  useEffect(() => {
+    setPendingNavigation(null);
+
+    // The exit event announces accepted navigation before router.push runs.
+    const onPageExit = (event: Event) => {
+      const href = (event as CustomEvent<{ href: string }>).detail?.href;
+      if (!href) return;
+      setPendingNavigation({
+        from: pathname,
+        to: new URL(href, window.location.href).pathname,
+      });
+    };
+
+    document.addEventListener("anagram:page-exit", onPageExit);
+    return () => document.removeEventListener("anagram:page-exit", onPageExit);
+  }, [pathname]);
+
+  useGSAP(
+    () => {
+      const media = gsap.matchMedia();
+      media.add(
+        { reduceMotion: "(prefers-reduced-motion: reduce)", all: "all" },
+        (context) => {
+          const reduceMotion = context.conditions?.reduceMotion;
+          const cleanups = Array.from(
+            navLinksRef.current?.querySelectorAll("a:not([aria-current])") ?? [],
+          ).map((link) => {
+            const tween = gsap.fromTo(
+              link.firstElementChild,
+              { opacity: 0.3 },
+              {
+                opacity: 0.5,
+                duration: 0.25,
+                ease: "power2.out",
+                paused: true,
+              },
+            );
+            const update = () => {
+              const engaged = link.matches(":hover, :focus-visible");
+              if (reduceMotion) {
+                tween.progress(engaged ? 1 : 0);
+                return;
+              }
+              if (engaged) tween.play();
+              else tween.reverse();
+            };
+            const events = ["mouseenter", "mouseleave", "focus", "blur"];
+            events.forEach((event) => link.addEventListener(event, update));
+            update();
+            return () =>
+              events.forEach((event) => link.removeEventListener(event, update));
+          });
+          return () => cleanups.forEach((cleanup) => cleanup());
+        },
+      );
+      return () => media.revert();
+    },
+    { dependencies: [activePathname], scope: navLinksRef, revertOnUpdate: true },
+  );
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 993px)");
@@ -142,32 +207,18 @@ export default function Navigation() {
   }, []);
 
   useGSAP(() => {
-    gsap.set(emailBriefRef.current, { opacity: 0 });
-    gsap.set(emailMarqueeRef.current, { xPercent: 0 });
-
-    const marquee = gsap.to(emailMarqueeRef.current, {
-      xPercent: -100 / 3,
-      duration: 6,
-      ease: "none",
-      repeat: -1,
-      paused: true,
-    });
-    emailMarqueeTween.current = marquee;
+    gsap.set(emailBriefRef.current, { yPercent: 100, opacity: 1 });
 
     // Reversing the same timeline preserves continuity during quick re-entry.
     emailHoverTimeline.current = gsap
       .timeline({
         paused: true,
-        defaults: { duration: 0.2, ease: "sine.inOut" },
-        onReverseComplete: () => {
-          marquee.pause();
-        },
+        defaults: { duration: 0.55, ease: "power2.inOut" },
       })
-      .to(emailAddressRef.current, { opacity: 0 }, 0)
-      .to(emailBriefRef.current, { opacity: 1 }, 0);
+      .to(emailAddressRef.current, { yPercent: -150, opacity: 0 }, 0)
+      .to(emailBriefRef.current, { yPercent: 0 }, 0);
 
     return () => {
-      emailMarqueeTween.current = null;
       emailHoverTimeline.current = null;
     };
   }, []);
@@ -436,7 +487,6 @@ export default function Navigation() {
   }
 
   function handleEmailEnter() {
-    emailMarqueeTween.current?.play();
     emailHoverTimeline.current?.play();
   }
 
@@ -490,21 +540,9 @@ export default function Navigation() {
                 <span
                   ref={emailBriefRef}
                   aria-hidden="true"
-                  className="absolute inset-0 flex items-center overflow-hidden opacity-0"
+                  className="absolute inset-0 flex items-center justify-center whitespace-nowrap text-[#0c0c0c] leading-[0.9] text-sm tracking-[-0.004375rem] opacity-0"
                 >
-                  <span
-                    ref={emailMarqueeRef}
-                    className="flex items-center w-max"
-                  >
-                    {[0, 1, 2].map((i) => (
-                      <span key={i} className="flex items-center">
-                        <span className="whitespace-nowrap px-2 text-[#0c0c0c] leading-[0.9] text-sm tracking-[-0.07px]">
-                          Send your brief
-                        </span>
-                        <span className="w-1 h-1 rounded-full bg-[#0c0c0c]"></span>
-                      </span>
-                    ))}
-                  </span>
+                  Send your brief
                 </span>
               </a>
 
@@ -535,17 +573,23 @@ export default function Navigation() {
           </div>
 
           {/* Nav links */}
-          <div className="flex flex-col gap-2">
+          <div id="nav-links" ref={navLinksRef} className="flex flex-col gap-2">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive = activePathname === link.href;
+              // CSS keeps the route state intact when GSAP reverts inline styles.
               return (
                 <Link
+                  id={`nav-link-${link.label.toLowerCase()}`}
                   key={link.href}
                   href={link.href}
-                  className="self-start text-[#0c0c0c] font-medium leading-[0.8] text-sm transition-opacity"
-                  style={{ opacity: isActive ? 1 : 0.3 }}
+                  aria-current={isActive ? "page" : undefined}
+                  className="self-start text-[#0c0c0c] font-medium leading-[0.8] text-sm"
                 >
-                  {link.label}
+                  <span
+                    className={`block ${isActive ? "opacity-100" : "opacity-30"}`}
+                  >
+                    {link.label}
+                  </span>
                 </Link>
               );
             })}
