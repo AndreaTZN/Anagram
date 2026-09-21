@@ -14,7 +14,6 @@ const sitemapLinks = [
   { label: "Home", href: "/" },
   { label: "Work", href: "/works" },
   { label: "Studio", href: "/about" },
-  { label: "Lab", href: "/lab" },
 ];
 
 const desktopSocialLinks = [
