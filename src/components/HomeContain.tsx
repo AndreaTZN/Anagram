@@ -310,6 +310,9 @@ export default function HomeContain() {
   // Stays false until the first filter click so the initial render is not animated.
   const hasFiltered = useRef(false);
   const gridRef = useRef<HTMLDivElement>(null);
+  const gridTweenRef = useRef<gsap.core.Tween | null>(null);
+  const filtersRef = useRef<HTMLDivElement>(null);
+  const filterTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
   const labelWidth = useRef(0);
   const labelHidden = useRef(false);
@@ -325,17 +328,109 @@ export default function HomeContain() {
     return () => mq.removeEventListener("change", update);
   }, []);
 
+  function animateFilters(instant = false) {
+    const group = filtersRef.current;
+    if (!group) return;
+
+    const buttons = Array.from(group.querySelectorAll("button"));
+    const selected = buttons.findIndex(
+      (button) => button.getAttribute("aria-pressed") === "true",
+    );
+    if (selected < 0) return;
+
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const widths = buttons.map((button) => button.offsetWidth / rem);
+    const push = widths[selected] * 0.1 + 0.375;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const inFlight = filterTimelineRef.current?.isActive();
+    filterTimelineRef.current?.kill();
+
+    // Reserve room for the widest chip's swell inside the horizontal scroller.
+    gsap.set(group, {
+      paddingInline: `${Math.max(...widths) * 0.13 + 0.5}rem`,
+    });
+
+    const timeline = gsap.timeline();
+    filterTimelineRef.current = timeline;
+
+    buttons.forEach((button, index) => {
+      const isSelected = index === selected;
+      const distance = Math.abs(index - selected);
+      const scale = isSelected ? 1.1 : 1;
+      const x = `${Math.sign(index - selected) * push}rem`;
+      const colors = {
+        backgroundColor: isSelected ? "#0c0c0c" : "#f5f5f5",
+        color: isSelected ? "#ffffff" : "#7c7c7c",
+      };
+
+      if (instant || reduceMotion) {
+        gsap.set(button, { x, scaleX: scale, scaleY: scale, ...colors });
+        return;
+      }
+
+      // An interrupted wave starts at its current position without a new delay.
+      const delay = inFlight ? 0 : distance * 0.022;
+      const duration = 0.55 + Math.min(distance, 3) * 0.04;
+      timeline
+        .to(button, { x, duration, ease: "back.out(1.2)" }, delay)
+        .to(
+          button,
+          { scaleX: scale, duration, ease: "elastic.out(1, 0.5)" },
+          delay,
+        )
+        .to(
+          button,
+          { scaleY: scale, duration, ease: "back.out(1.4)" },
+          delay + 0.05,
+        )
+        .to(button, { ...colors, duration: 0.2, ease: "power1.out" }, 0);
+    });
+  }
+
+  useGSAP(() => animateFilters(!hasFiltered.current), {
+    dependencies: [pendingFilter],
+    scope: filtersRef,
+  });
+
+  useGSAP(
+    (_context, contextSafe) => {
+      const group = filtersRef.current;
+      if (!group || !contextSafe) return;
+
+      const settle = contextSafe(() => animateFilters(true));
+      const observer = new ResizeObserver(settle);
+      group
+        .querySelectorAll("button")
+        .forEach((button) => observer.observe(button));
+      const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      motion.addEventListener("change", settle);
+
+      return () => {
+        observer.disconnect();
+        motion.removeEventListener("change", settle);
+      };
+    },
+    { scope: filtersRef },
+  );
+
   // Fade the grid out on click, swap the filter, then fade the cards back in.
   useGSAP(
     () => {
       const grid = gridRef.current;
       if (!grid || !hasFiltered.current) return;
+      // A newer selection must cancel the previous filter's pending commit.
+      gridTweenRef.current?.kill();
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
 
       if (pendingFilter !== activeFilter) {
-        gsap.to(grid, {
+        gridTweenRef.current = gsap.to(grid, {
           opacity: 0,
-          y: 8,
-          duration: 0.25,
+          y: reduceMotion ? 0 : "0.5rem",
+          duration: reduceMotion ? 0 : 0.25,
           ease: "power2.out",
           onComplete: () => setActiveFilter(pendingFilter),
         });
@@ -343,15 +438,15 @@ export default function HomeContain() {
       }
 
       gsap.set(grid, { opacity: 1, y: 0 });
-      gsap.fromTo(
+      gridTweenRef.current = gsap.fromTo(
         grid.children,
-        { opacity: 0, y: 12 },
+        { opacity: 0, y: reduceMotion ? 0 : "0.75rem" },
         {
           opacity: 1,
           y: 0,
-          duration: 0.45,
+          duration: reduceMotion ? 0 : 0.45,
           ease: "power2.out",
-          stagger: 0.04,
+          stagger: reduceMotion ? 0 : 0.04,
           clearProps: "transform,opacity",
         },
       );
@@ -390,10 +485,11 @@ export default function HomeContain() {
   const firstRowCount = isWide ? 5 : 4;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div id="home-content" className="flex flex-col gap-4">
       {/* Filters */}
-      <div className="flex items-center min-w-0">
+      <div id="home-filters" className="flex items-center min-w-0">
         <span
+          id="home-filters-label"
           ref={labelRef}
           className="text-[#7e7e7e] text-base leading-[0.8] shrink-0 mr-4 overflow-hidden whitespace-nowrap"
         >
@@ -401,30 +497,44 @@ export default function HomeContain() {
         </span>
 
         <div
+          id="home-filters-scroll"
           onScroll={handlePillsScroll}
-          className="flex gap-2 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden -mx-4 px-4 md:mx-0 md:px-0"
+          className="min-w-0 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden -my-2 -mx-4 px-4 md:mx-0 md:px-0"
         >
-          {visibleFilters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => {
-                hasFiltered.current = true;
-                setPendingFilter(filter);
-              }}
-              className={`min-w-16 px-4 py-4 rounded-full text-sm leading-[0.8] cursor-pointer transition-colors duration-200 ease-out shrink-0 whitespace-nowrap ${
-                pendingFilter === filter
-                  ? "bg-[#0c0c0c] text-white"
-                  : "bg-[#f5f5f5] text-[#7C7C7C] hover:bg-[#e8e8e8] hover:text-[#0c0c0c]"
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
+          <div
+            id="home-filters-options"
+            ref={filtersRef}
+            role="group"
+            aria-labelledby="home-filters-label"
+            className="flex w-max items-center gap-2 px-7 py-2"
+          >
+            {visibleFilters.map((filter) => (
+              <button
+                id={`home-filter-${filter.toLowerCase().replaceAll(" ", "-")}`}
+                key={filter}
+                type="button"
+                aria-pressed={pendingFilter === filter}
+                aria-controls="home-grid"
+                onClick={() => {
+                  hasFiltered.current = true;
+                  setPendingFilter(filter);
+                }}
+                className={`min-w-16 px-4 py-3 rounded-full text-sm leading-[0.8] cursor-pointer shrink-0 whitespace-nowrap origin-center touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c] ${
+                  pendingFilter === filter
+                    ? "bg-[#0c0c0c] text-white"
+                    : "bg-[#f5f5f5] text-[#7C7C7C]"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Grid */}
       <div
+        id="home-grid"
         ref={gridRef}
         className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-5 md:gap-4 items-start"
       >
