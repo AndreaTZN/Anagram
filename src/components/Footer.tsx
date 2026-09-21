@@ -22,7 +22,7 @@ const desktopSocialLinks = [
   { label: "Instagram", href: "https://www.instagram.com/anagramclub/" },
 ];
 
-const brands = ["Arpe", "Voff"];
+const brands = ["Arpe"];
 
 function handleBackToTop() {
   globalLenisRef.current?.scrollTo(0);
@@ -44,7 +44,7 @@ export default function Footer() {
         <div className="flex gap-6 items-start">
           <div
             id="footer-desktop-contact"
-            className="flex flex-col gap-16 flex-1"
+            className="flex flex-col gap-16 flex-2"
           >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Contact</p>
             <div className="flex flex-col gap-8">
@@ -116,23 +116,29 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* <div
+          <div
             id="footer-desktop-brands"
             className="flex flex-1 flex-col gap-16 whitespace-nowrap"
           >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Our brands</p>
-            <div className="flex flex-col gap-1 font-medium text-sm">
+            <div className="flex flex-col gap-1 font-medium text-sm text-[#7c7c7c]">
               {brands.map((brand) => (
-                <p key={brand} className="leading-[1.1]">
+                <p
+                  key={brand}
+                  className="flex items-center gap-2 leading-[1.1]"
+                >
                   {brand}
+                  <span className="rounded-full bg-[#0c0c0c]/5 px-2 py-0.5 text-[0.625rem] leading-none">
+                    Soon
+                  </span>
                 </p>
               ))}
             </div>
-          </div> */}
+          </div>
         </div>
 
         <div id="footer-desktop-bottom" className="flex gap-6 items-end mt-32">
-          <p className="flex-1 leading-[1.1]">
+          <p className="flex-2 leading-[1.1]">
             © Anagram Brand design studio {year}
           </p>
           <div className="flex-1">
@@ -143,15 +149,16 @@ export default function Footer() {
               Privacy Policy
             </Link>
           </div>
-          {/* 
-          <button
-            id="footer-desktop-cookie-settings"
-            type="button"
-            onClick={() => setOpen(true)}
-            className="flex-1 text-left leading-[1.1] cursor-pointer"
-          >
-            Cookie settings
-          </button> */}
+          <div className="flex-1">
+            <button
+              id="footer-desktop-cookie-settings"
+              type="button"
+              onClick={() => setOpen(true)}
+              className="flex-1 text-left leading-[1.1] cursor-pointer  hover:text-[#0c0c0c]/70 transition-colors duration-100 ease-linear"
+            >
+              Cookie
+            </button>
+          </div>
           <div className="flex-1">
             <button
               type="button"
@@ -219,17 +226,22 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* <div
+            <div
               id="footer-mobile-brands"
               className="flex flex-1 min-w-px flex-col gap-6 whitespace-nowrap"
             >
               <p className="text-[#7c7c7c] text-sm leading-[0.9]">Our brands</p>
-              <div className="flex flex-col gap-2 font-medium text-base leading-[0.9] text-[#0c0c0c]">
+              <div className="flex flex-col gap-2 font-medium text-base leading-[0.9] text-[#7c7c7c]">
                 {brands.map((brand) => (
-                  <p key={brand}>{brand}</p>
+                  <p key={brand} className="flex items-center gap-2">
+                    {brand}
+                    <span className="rounded-full bg-[#0c0c0c]/5 px-2 py-0.5 text-[0.625rem] leading-none">
+                      soon
+                    </span>
+                  </p>
                 ))}
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
         <div
@@ -240,14 +252,14 @@ export default function Footer() {
             <Link href="/privacy" className="flex-1 min-w-px">
               Privacy Policy
             </Link>
-            {/* <button
+            <button
               id="footer-mobile-cookie-settings"
               type="button"
               onClick={() => setOpen(true)}
               className="flex-1 min-w-px text-left cursor-pointer"
             >
-              Cookie settings
-            </button> */}
+              Cookies
+            </button>
             <button
               type="button"
               onClick={handleBackToTop}

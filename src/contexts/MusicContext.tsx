@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
 const TRACK = "/widgets/music-track.mp3";
-const INITIAL_VOLUME = 0.35;
+const INITIAL_VOLUME = 0;
+const DISC_VOLUME = 0.3;
 const FADE_DURATION = 1;
 
 type MusicContextType = {
@@ -27,26 +28,44 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const [volume, setVolumeState] = useState(INITIAL_VOLUME);
   const audioRef = useRef<HTMLAudioElement>(null);
   const volumeRef = useRef(volume);
-  volumeRef.current = volume;
   const pathname = usePathname();
   const prevPathname = useRef(pathname);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = INITIAL_VOLUME;
+    return () => {
+      gsap.killTweensOf(audio);
+      audio.pause();
+    };
+  }, []);
 
   function toggle() {
     const audio = audioRef.current;
     if (!audio) return;
     gsap.killTweensOf(audio);
-    if (!playing) {
-      audio.volume = volumeRef.current;
-      audio.play().catch(() => {});
-    } else {
+    if (playing && !audio.paused) {
       audio.pause();
+      return;
     }
-    setPlaying((v) => !v);
+    setVolume(DISC_VOLUME);
   }
 
   function setVolume(next: number) {
-    setVolumeState(next);
-    if (audioRef.current) audioRef.current.volume = next;
+    const clamped = gsap.utils.clamp(0, 1, next);
+    volumeRef.current = clamped;
+    setVolumeState(clamped);
+
+    const audio = audioRef.current;
+    if (!audio) return;
+    // A user adjustment takes priority over a pending route-change fade.
+    gsap.killTweensOf(audio);
+    audio.volume = clamped;
+    if (clamped > 0) {
+      if (audio.paused) audio.play().catch(() => {});
+      else setPlaying(true);
+    }
   }
 
   // Playing across a route change would leak the widget's audio onto pages
@@ -74,7 +93,15 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   return (
     <MusicContext.Provider value={{ playing, volume, toggle, setVolume }}>
       {children}
-      <audio ref={audioRef} src={TRACK} loop preload="none" />
+      <audio
+        ref={audioRef}
+        src={TRACK}
+        loop
+        preload="none"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onError={() => setPlaying(false)}
+      />
     </MusicContext.Provider>
   );
 }

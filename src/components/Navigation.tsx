@@ -82,7 +82,8 @@ export default function Navigation() {
         (context) => {
           const reduceMotion = context.conditions?.reduceMotion;
           const cleanups = Array.from(
-            navLinksRef.current?.querySelectorAll("a:not([aria-current])") ?? [],
+            navLinksRef.current?.querySelectorAll("a:not([aria-current])") ??
+              [],
           ).map((link) => {
             const tween = gsap.fromTo(
               link.firstElementChild,
@@ -107,14 +108,20 @@ export default function Navigation() {
             events.forEach((event) => link.addEventListener(event, update));
             update();
             return () =>
-              events.forEach((event) => link.removeEventListener(event, update));
+              events.forEach((event) =>
+                link.removeEventListener(event, update),
+              );
           });
           return () => cleanups.forEach((cleanup) => cleanup());
         },
       );
       return () => media.revert();
     },
-    { dependencies: [activePathname], scope: navLinksRef, revertOnUpdate: true },
+    {
+      dependencies: [activePathname],
+      scope: navLinksRef,
+      revertOnUpdate: true,
+    },
   );
 
   useEffect(() => {
@@ -240,15 +247,18 @@ export default function Navigation() {
       const d = (value: number) => (instant ? 0 : value);
 
       stackTimelineRef.current?.kill();
-      const tl = gsap.timeline();
+      const clearLayerHints = () => {
+        links.forEach((link) => link.style.removeProperty("will-change"));
+      };
+      // Only keep the stack's compositor hint while its cards are moving.
+      if (!instant) gsap.set(links, { willChange: "transform" });
+      const tl = gsap.timeline({
+        onComplete: clearLayerHints,
+        onInterrupt: clearLayerHints,
+      });
       stackTimelineRef.current = tl;
 
       const rectTop = (el: HTMLElement) => el.getBoundingClientRect().top;
-      // FLIP : applique `vars` à la liste d'un coup et reporte le déplacement de
-      // layout de chaque carte sur son `y`, pour que rien ne bouge à l'écran.
-      // Le mouvement n'est ainsi porté que par `y`, ce qui autorise un stagger :
-      // si la hauteur était tweenée en parallèle, elle entraînerait vers le bas
-      // les cartes dont le `y` n'a pas encore démarré.
       const snapListKeepingCards = (vars: gsap.TweenVars) => {
         const from = links.map(rectTop);
         gsap.set(list, vars);
@@ -323,7 +333,7 @@ export default function Navigation() {
             {
               y: 0,
               scale: 1,
-              duration: d(0.5),
+              duration: d(1),
               ease: "power3.out",
               overwrite: true,
             },
@@ -333,7 +343,7 @@ export default function Navigation() {
             list,
             {
               height: "auto",
-              duration: d(0.5),
+              duration: d(1),
               ease: "power3.out",
               overwrite: true,
             },
@@ -343,6 +353,7 @@ export default function Navigation() {
 
       return () => {
         tl.kill();
+        clearLayerHints();
       };
     },
     { dependencies: [isCollapsed], scope: listRef },
@@ -352,7 +363,6 @@ export default function Navigation() {
     () => {
       const list = listRef.current;
       if (!list) return;
-
       const items = gsap.utils.toArray<HTMLElement>("[data-nav-work]", list);
       if (!items.length) return;
 
@@ -360,19 +370,23 @@ export default function Navigation() {
       fadeCleanupRef.current = null;
 
       if (isCollapsed) {
-        gsap.to(items, {
+        const reset = gsap.to(items, {
           scaleX: 1,
           scaleY: 1,
           opacity: 1,
           x: 0,
-          duration: 0.4,
+          duration: 1,
           ease: "power3.out",
           overwrite: true,
         });
-        return;
+        const cleanup = () => {
+          reset.kill();
+        };
+        fadeCleanupRef.current = cleanup;
+        return cleanup;
       }
 
-      gsap.set(items, { transformOrigin: "left center", force3D: true });
+      gsap.set(items, { x: 0, transformOrigin: "left center", force3D: true });
 
       const setters = items.map((item) => ({
         scaleX: gsap.quickTo(item, "scaleX", {
@@ -387,7 +401,6 @@ export default function Navigation() {
           duration: 0.45,
           ease: "power3.out",
         }),
-        x: gsap.quickTo(item, "x", { duration: 0.45, ease: "power3.out" }),
       }));
 
       const update = (immediate = false) => {
@@ -409,35 +422,42 @@ export default function Navigation() {
           const eased = gsap.parseEase("power2.out")(progress);
           const scale = 0.9 + 0.1 * eased;
           const opacity = 0.15 + 0.85 * eased;
-          const x = -6 * (1 - eased);
           if (immediate) {
-            gsap.set(item, { scaleX: scale, scaleY: scale, opacity, x });
+            gsap.set(item, { scaleX: scale, scaleY: scale, opacity });
             return;
           }
           setters[i].scaleX(scale);
           setters[i].scaleY(scale);
           setters[i].opacity(opacity);
-          setters[i].x(x);
         });
       };
       // Wrapper : passé tel quel à addEventListener, `update` recevrait
       // l'Event en guise d'`immediate`.
       const onUpdate = () => update();
 
-      // Le délai laisse le dépliage (0.5 s) se terminer avant de mesurer. Sans
-      // action utilisateur la liste est déjà en place : les fades se posent
-      // d'emblée, sinon les cartes du bas s'assombrissent 1 s après l'arrivée.
       const instant = !hasUserDrivenStack.current;
       const start = () => {
         update(instant);
         list.addEventListener("scroll", onUpdate, { passive: true });
         window.addEventListener("resize", onUpdate);
       };
-      const startDelay = instant ? null : gsap.delayedCall(0.55, start);
-      if (instant) start();
+      // Measure the final layout even when the unfold duration changes.
+      const stackTimeline = stackTimelineRef.current;
+      let startCall: gsap.core.Tween | null = null;
+      if (instant || !stackTimeline || stackTimeline.progress() === 1) {
+        start();
+      } else {
+        startCall = gsap.delayedCall(0, start);
+        stackTimeline.add(startCall, stackTimeline.duration());
+      }
 
       const cleanup = () => {
-        startDelay?.kill();
+        startCall?.kill();
+        setters.forEach(({ scaleX, scaleY, opacity }) => {
+          scaleX.tween.kill();
+          scaleY.tween.kill();
+          opacity.tween.kill();
+        });
         list.removeEventListener("scroll", onUpdate);
         window.removeEventListener("resize", onUpdate);
       };

@@ -2,6 +2,15 @@
 
 Design studio website for **Anagram**, a creative branding studio.
 
+## Design reference
+
+- Read [design.md](.agents/design.md) before creating or changing visual UI. It documents the site's existing typography, colors, layout, component states, and motion conventions.
+
+## Local servers and browser testing
+
+- Do not start a development, production, or preview server (for example, `npm run dev`, `npm run start`, or equivalent commands). The user manages the server.
+- Before testing in Chrome, ask the user for permission and wait for explicit approval, even if a server or browser tab is already running.
+
 ## Stack
 
 - **Framework**: Next.js 15 (App Router) with React 19

@@ -340,7 +340,7 @@ export default function HomeContain() {
 
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
     const widths = buttons.map((button) => button.offsetWidth / rem);
-    const push = widths[selected] * 0.1 + 0.375;
+    const push = widths[selected] * 0.1 + 0.175;
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -356,6 +356,9 @@ export default function HomeContain() {
     filterTimelineRef.current = timeline;
 
     buttons.forEach((button, index) => {
+      const text = button.querySelector<HTMLSpanElement>("[data-filter-label]");
+      if (!text) return;
+
       const isSelected = index === selected;
       const distance = Math.abs(index - selected);
       const scale = isSelected ? 1.1 : 1;
@@ -367,6 +370,7 @@ export default function HomeContain() {
 
       if (instant || reduceMotion) {
         gsap.set(button, { x, scaleX: scale, scaleY: scale, ...colors });
+        gsap.set(text, { scale: 1 / scale });
         return;
       }
 
@@ -385,7 +389,13 @@ export default function HomeContain() {
           { scaleY: scale, duration, ease: "back.out(1.4)" },
           delay + 0.05,
         )
-        .to(button, { ...colors, duration: 0.2, ease: "power1.out" }, 0);
+        .to(button, { ...colors, duration: 0.2, ease: "power1.out" }, 0)
+        // Let the label swell first, then cancel the button's resting scale.
+        .to(
+          text,
+          { scale: 1 / scale, duration: 0.4, ease: "power2.out" },
+          delay + (isSelected ? 0.12 : 0),
+        );
     });
   }
 
@@ -525,7 +535,13 @@ export default function HomeContain() {
                     : "bg-[#f5f5f5] text-[#7C7C7C]"
                 }`}
               >
-                {filter}
+                <span
+                  id={`home-filter-${filter.toLowerCase().replaceAll(" ", "-")}-label`}
+                  data-filter-label
+                  className="inline-block origin-center"
+                >
+                  {filter}
+                </span>
               </button>
             ))}
           </div>
