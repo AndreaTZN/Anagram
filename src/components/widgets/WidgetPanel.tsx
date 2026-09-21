@@ -49,6 +49,7 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const widgetsRef = useRef<HTMLDivElement[]>([]);
   const tl = useRef<gsap.core.Timeline | null>(null);
+  const previousButtonState = useRef({ open, musicPlaying });
 
   useGSAP(() => {
     if (!buttonRef.current || !overlayRef.current || !panelRef.current) return;
@@ -102,6 +103,11 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
     const button = buttonRef.current;
     if (!button) return;
 
+    const previous = previousButtonState.current;
+    if (previous.open === open && previous.musicPlaying === musicPlaying) return;
+    previousButtonState.current = { open, musicPlaying };
+
+    // Keep the initial width natural while the clock fills in its client-side times.
     let width: string | number = "36.1875rem";
     if (!open) {
       // Measure after React adds the cover, then restore the current width before paint.

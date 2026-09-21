@@ -64,11 +64,8 @@ export default function WidgetToggleButton({
     <button
       ref={buttonRef}
       onClick={onClick}
-      // Le bouton vit dans un conteneur fixed : au focus, le navigateur tente de
-      // le "remettre en vue" et scrolle #smooth-scroll-container jusqu'en haut.
-      // On bloque le focus à la souris ; la navigation clavier reste intacte.
       onMouseDown={(e) => e.preventDefault()}
-      className="absolute top-12 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex items-center justify-between gap-12 px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)] cursor-pointer overflow-hidden opacity-0"
+      className="absolute top-8 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex items-center justify-between gap-12 px-4 py-4 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)] cursor-pointer overflow-hidden opacity-0"
     >
       {/* relative so the vinyl can sit out of the flow: the clock's 1rem shift
           is what makes room for it, not the layout. */}
