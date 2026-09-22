@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import WidgetBackdrop from "./WidgetBackdrop";
 import WidgetToggleButton from "./WidgetToggleButton";
 import PhotoCarouselWidget from "./PhotoCarouselWidget";
 import ClockWidget from "./ClockWidget";
@@ -46,15 +45,17 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
   const { playing: musicPlaying } = useMusicPlayer();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const verticalPathRef = useRef<SVGPathElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const widgetsRef = useRef<HTMLDivElement[]>([]);
   const tl = useRef<gsap.core.Timeline | null>(null);
   const previousButtonState = useRef({ open, musicPlaying });
 
   useGSAP(() => {
-    if (!buttonRef.current || !panelRef.current) return;
+    if (!buttonRef.current || !overlayRef.current || !panelRef.current) return;
 
     gsap.set(buttonRef.current, { opacity: 0 });
+    gsap.set(overlayRef.current, { opacity: 0, pointerEvents: "none" });
     gsap.set(panelRef.current, { opacity: 0, y: "-1rem", scale: 0.96 });
     gsap.set(widgetsRef.current, { opacity: 0, y: "1.25rem" });
     gsap.set(verticalPathRef.current, {
@@ -75,6 +76,11 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
         defaults: { ease: "power2.inOut" },
       })
       .to(verticalPathRef.current, { rotate: 90, duration: 0.52 }, 0)
+      .to(
+        overlayRef.current,
+        { opacity: 1, duration: 0.5, ease: "sine.inOut" },
+        0,
+      )
       .to(
         panelRef.current,
         {
@@ -129,6 +135,7 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
   function toggle() {
     if (!tl.current) return;
 
+    gsap.set(overlayRef.current, { pointerEvents: open ? "none" : "auto" });
     if (!open) {
       tl.current.timeScale(1).play();
       scrollLockRef.current = true;
@@ -157,7 +164,12 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
       />
 
       {/* Overlay + Panel */}
-      <WidgetBackdrop open={open} buttonRef={buttonRef} onClose={toggle} />
+      <div
+        ref={overlayRef}
+        id="home-widgets-overlay"
+        className="absolute inset-0 z-20 backdrop-blur-2xl bg-[rgba(12,12,12,0.15)] opacity-0 pointer-events-none"
+        onClick={toggle}
+      />
 
       <div
         ref={panelRef}
