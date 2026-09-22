@@ -154,7 +154,7 @@ export default function RootLayout({
         <GoogleTagManager />
       </head>
       <body className="antialiased overflow-hidden">
-        <CookieConsentProvider privacyPolicyUrl="/privacy" reloadOnRevoke>
+        <CookieConsentProvider privacyPolicyUrl="/privacy">
           <CookieServices />
           <GtmPageView />
           <MusicProvider>

@@ -53,7 +53,7 @@ export default function ClockWidget() {
   const city = CITIES[active];
 
   return (
-    <div className="w-46 flex flex-col items-center rounded-lg bg-white pt-4 overflow-hidden">
+    <div className="flex flex-col items-center rounded-lg bg-white pt-4 overflow-hidden">
       <div className="w-[80%] overflow-visible">
         <Swiper
           modules={[Autoplay]}

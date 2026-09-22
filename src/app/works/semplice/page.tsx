@@ -82,6 +82,7 @@ export default function SempliceCasePage() {
               <Frame01 src="/works/Semplice/1.avif" alt="Semplice 1" priority />
               <VimeoSound
                 dataSrc="1201691523"
+                videoSrc="https://player.vimeo.com/progressive_redirect/playback/1201691523/rendition/1080p/file.mp4%20%281080p%29.mp4?loc=external&signature=fd9027fada7651bd038a5a81e3d6b4698173c51a93384c1098eddc46fa19c0c6"
                 dataRatio="1920/1080"
                 src="/works/Semplice/poster1.webp"
                 alt="Semplice 2"

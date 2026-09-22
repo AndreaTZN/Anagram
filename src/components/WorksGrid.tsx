@@ -12,8 +12,7 @@ gsap.registerPlugin(useGSAP);
 
 // Grid is 1 col, 3 cols from md, 4 cols from 90rem — keeps Next from serving
 // a full-width source for what renders as a quarter-width thumbnail.
-const CARD_SIZES =
-  "(min-width: 90rem) 25vw, (min-width: 768px) 33vw, 100vw";
+const CARD_SIZES = "(min-width: 90rem) 25vw, (min-width: 768px) 33vw, 100vw";
 
 export type Work = {
   name: string;
@@ -35,8 +34,8 @@ export const allWorks: Work[] = [
       "Incard turns banking into a tangible experience through distinctive cards and collectible trophies, transforming everyday transactions and milestones into visible symbols of identity, status and engagement.",
     href: "https://www.incard.co/",
     badge: "Coming soon",
-    image: "/thumb-work/incard.avif",
-    aspect: "aspect-[378/300]",
+    image: "/thumb-work/incard-home.webp",
+    aspect: "aspect-[387/300]",
   },
   {
     name: "Wastetide",

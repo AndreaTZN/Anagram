@@ -156,7 +156,7 @@ export default function Footer() {
               onClick={() => setOpen(true)}
               className="flex-1 text-left leading-[1.1] cursor-pointer  hover:text-[#0c0c0c]/70 transition-colors duration-100 ease-linear"
             >
-              Cookie
+              Cookies
             </button>
           </div>
           <div className="flex-1">

@@ -552,13 +552,13 @@ export default function HomeContain() {
       <div
         id="home-grid"
         ref={gridRef}
-        className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-5 md:gap-4 items-start"
+        className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-10 md:gap-4 items-start"
       >
         {filtered.slice(0, firstRowCount).map((work) => (
           <WorkCard key={work.name} work={work} priority />
         ))}
         {filtered.length > firstRowCount && (
-          <div className="relative col-span-1 md:col-span-4 2xl:col-span-5 overflow-hidden aspect-video my-8">
+          <div className="relative col-span-1 md:col-span-4 md:my-8 2xl:col-span-5 overflow-hidden aspect-video">
             <Vimeo169
               dataSrc="1199785516"
               dataRatio="1920/1080"

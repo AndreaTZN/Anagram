@@ -540,7 +540,7 @@ export default function Navigation() {
           {/* CTA card */}
           <div className="flex flex-col gap-6">
             <p className="text-[#0c0c0c] leading-[1.1] text-xl tracking-[-0.12px]">
-              We shape brands that need no introduction.
+              A design studio for brands and more.
             </p>
 
             <div className="flex items-start gap-2 self-start">
@@ -652,9 +652,6 @@ export default function Navigation() {
           <div
             id="nav-works-list"
             ref={listRef}
-            // overflow / padding-top / height de l'état replié sont posés en
-            // inline par GSAP (voir snapListKeepingCards) : un swap de classe
-            // ici ferait sauter les cartes avant que l'animation ne démarre.
             className="flex min-h-0 flex-col gap-1.5 pl-3 pr-1.5 pb-4 pt-14 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden"
           >
             {navWorks.map((work, i) => (

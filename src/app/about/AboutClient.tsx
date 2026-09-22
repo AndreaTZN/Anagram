@@ -92,25 +92,25 @@ const team = [
     name: "Vicenzo Tilleul",
     role: "Digital Designer",
     year: "2025",
-    image: null,
+    image: "/team/placeholder.jpg",
   },
   {
     name: "Bérengère Morel",
     role: "Motion Designer",
     year: "2026",
-    image: null,
+    image: "/team/placeholder.jpg",
   },
   {
     name: "Quentin Belluc",
     role: "Motion Designer",
     year: "2026",
-    image: null,
+    image: "/team/placeholder.jpg",
   },
   {
     name: "Tanguy Caruel",
     role: "Brand & Digital Designer",
     year: "2026",
-    image: null,
+    image: "/team/placeholder.jpg",
   },
 ];
 
@@ -700,41 +700,20 @@ export default function AboutPage({
                   Meet the team
                 </h2>
 
-                <div className="relative">
-                  {/* Photo — centered, floating over text */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <TeamPhotoStack
-                      displayedIndex={displayedIndex}
-                      className="relative size-37.5 overflow-hidden rounded"
-                      sizes="9.375rem"
-                    />
-                  </div>
-
-                  {/* Text list */}
-                  <div className="grid grid-cols-[1fr_auto_auto] gap-x-4 gap-y-2 text-base leading-[1.3]">
-                    {team.map((member, i) => (
-                      <Fragment key={member.name}>
-                        <p
-                          className="text-[#0c0c0c] whitespace-nowrap transition-opacity duration-200 cursor-pointer"
-                          onClick={() => handleNameHover(i)}
-                        >
-                          {member.name}
-                        </p>
-                        <p
-                          className="text-[#7e7e7e] whitespace-nowrap text-right transition-opacity duration-200 cursor-pointer"
-                          onClick={() => handleNameHover(i)}
-                        >
-                          {member.role}
-                        </p>
-                        <p
-                          className="text-[#7e7e7e] whitespace-nowrap text-right transition-opacity duration-200 cursor-pointer"
-                          onClick={() => handleNameHover(i)}
-                        >
-                          {member.year}
-                        </p>
-                      </Fragment>
-                    ))}
-                  </div>
+                <div className="grid grid-cols-[1fr_auto_auto] gap-x-4 gap-y-2 text-base leading-[1.3]">
+                  {team.map((member) => (
+                    <Fragment key={member.name}>
+                      <p className="text-[#0c0c0c] whitespace-nowrap">
+                        {member.name}
+                      </p>
+                      <p className="text-[#7e7e7e] whitespace-nowrap text-right">
+                        {member.role}
+                      </p>
+                      <p className="text-[#7e7e7e] whitespace-nowrap text-right">
+                        {member.year}
+                      </p>
+                    </Fragment>
+                  ))}
                 </div>
               </div>
             </div>

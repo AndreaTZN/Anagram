@@ -3,47 +3,29 @@
 import * as React from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { Check, Settings2, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import { useCookieConsent } from "./base/consent-provider";
-import { SettingsForm, consentButtonClass } from "./cookie-settings";
+import { CookieSettings } from "./cookie-settings";
 
 gsap.registerPlugin(useGSAP);
 
-/**
- * The consent banner: a compact card in the bottom corner. "Customize" swaps
- * the card's contents for the full category list in place, rather than opening
- * a separate dialog over it.
- */
-export function CookieBanner() {
-  return <SideBanner />;
-}
+const bannerButtonClass =
+  "size-[2.3125rem] shrink-0 cursor-pointer rounded-[0.5rem] border-0 bg-[#0c0c0c]/20 p-0 text-white backdrop-blur-[2.5rem] transition-none hover:bg-[#0c0c0c]/40 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:not-aria-[haspopup]:translate-y-0";
 
-function SideBanner() {
-  const { isOpen, messages, privacyPolicyUrl, acceptAll, rejectAll } =
-    useCookieConsent();
+export function CookieBanner() {
+  const { isOpen, messages, acceptAll, rejectAll } = useCookieConsent();
   const [showSettings, setShowSettings] = React.useState(false);
-  // Stays mounted for the exit animation: unmounting on `!isOpen` would cut
-  // it instantly, so the DOM node is only dropped once GSAP has finished.
+  const [paused, setPaused] = React.useState(false);
+  // Keep the card mounted until its exit animation has finished.
   const [mounted, setMounted] = React.useState(false);
-  // useStoredConsent's server snapshot is always null (to avoid a hydration
-  // mismatch), so `isOpen` is true during the hydration commit even for a
-  // visitor who already chose. Mounting is gated behind a second commit, by
-  // which point useSyncExternalStore has swapped in the real stored value —
-  // otherwise the banner mounts and plays its enter/exit pair on every reload.
+  // Wait for the stored consent snapshot to avoid flashing on repeat visits.
   const [hydrated, setHydrated] = React.useState(false);
   const cardRef = React.useRef<HTMLDivElement>(null);
-  const viewportRef = React.useRef<HTMLDivElement>(null);
-  const viewRef = React.useRef<HTMLDivElement>(null);
-  // Captured on click, before React swaps the view: once the new view has
-  // rendered the old height is gone, and the tween needs somewhere to start.
-  const previousHeight = React.useRef<number | null>(null);
-
-  const openSettings = () => {
-    previousHeight.current = viewportRef.current?.offsetHeight ?? null;
-    setShowSettings(true);
-  };
+  const textRef = React.useRef<HTMLDivElement>(null);
+  const marqueeRef = React.useRef<gsap.core.Tween | null>(null);
 
   React.useEffect(() => {
     setHydrated(true);
@@ -56,122 +38,169 @@ function SideBanner() {
   useGSAP(
     () => {
       if (!cardRef.current) return;
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
 
       if (isOpen) {
         gsap.fromTo(
           cardRef.current,
-          { autoAlpha: 0, y: 24 },
-          { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out" },
+          { autoAlpha: 0, y: "1.5rem" },
+          {
+            autoAlpha: 1,
+            y: "0rem",
+            duration: reduceMotion ? 0 : 0.5,
+            ease: "power3.out",
+          },
         );
       } else if (mounted) {
-        // A close landing mid-crossfade would otherwise leave the view stuck
-        // at a partial opacity, which the next opening would inherit.
-        gsap.killTweensOf([viewportRef.current, viewRef.current]);
         gsap.to(cardRef.current, {
           autoAlpha: 0,
-
-          duration: 0.35,
+          duration: reduceMotion ? 0 : 0.35,
           ease: "power2.in",
           onComplete: () => {
             setMounted(false);
-            // Reset once the card is invisible: doing it on the click instead
-            // would rewind the view to the intro mid-fade, in plain sight.
             setShowSettings(false);
+            setPaused(false);
           },
         });
       }
     },
-    { dependencies: [isOpen, mounted], scope: cardRef },
+    {
+      dependencies: [isOpen, mounted],
+      scope: cardRef,
+      revertOnUpdate: true,
+    },
   );
 
   useGSAP(
     () => {
-      const viewport = viewportRef.current;
-      const view = viewRef.current;
-      const from = previousHeight.current;
-      // Only set by openSettings, so the card's own entrance doesn't get a
-      // crossfade on top of it.
-      if (!viewport || !view || from === null) return;
-      previousHeight.current = null;
+      const text = textRef.current;
+      if (!text) return;
 
-      const to = view.offsetHeight;
-
-      gsap
-        .timeline({
-          // Back to auto so the card can still reflow — on a resize, or when an
-          // accordion inside the settings view expands.
-          onComplete: () => gsap.set(viewport, { height: "auto" }),
-        })
-        .fromTo(
-          viewport,
-          { height: from },
-          { height: to, duration: 0.4, ease: "power3.inOut" },
-        )
-        .fromTo(
-          view,
-          { autoAlpha: 0 },
-          { autoAlpha: 1, duration: 0.3, ease: "power2.out" },
-          0.1,
+      const media = gsap.matchMedia();
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        const rem = parseFloat(
+          getComputedStyle(document.documentElement).fontSize,
         );
+        // Identical halves make the repeat seamless; speed follows the rem scale.
+        marqueeRef.current = gsap.to(text, {
+          xPercent: -50,
+          duration: text.scrollWidth / 2 / rem / 2,
+          ease: "none",
+          repeat: -1,
+          paused: paused || showSettings,
+        });
+
+        return () => {
+          marqueeRef.current = null;
+        };
+      });
+
+      return () => media.revert();
     },
-    { dependencies: [showSettings], scope: cardRef },
+    {
+      dependencies: [mounted, messages.description],
+      scope: cardRef,
+      revertOnUpdate: true,
+    },
   );
+
+  React.useEffect(() => {
+    marqueeRef.current?.paused(paused || showSettings || !isOpen);
+  }, [paused, showSettings, isOpen]);
 
   if (!mounted) return null;
 
   return (
-    // Centred with left/right margins rather than -translate-x-1/2: GSAP
-    // animates y on this element and would overwrite the whole transform.
-    <div
-      ref={cardRef}
-      id="cookie-banner-card"
-      className="fixed bottom-4 left-3 right-3 z-50 overflow-hidden rounded-lg border border-[#0c0c0c]/10 bg-white p-6 text-[#0c0c0c] shadow-lg sm:left-auto sm:right-4 sm:w-full sm:max-w-md"
-    >
-      {/* The height tween runs on this wrapper, so the card's padding and
-          border stay out of the animated value. */}
-      <div ref={viewportRef} id="cookie-banner-viewport">
-        <div ref={viewRef} key={showSettings ? "settings" : "intro"}>
-          {showSettings ? (
-            <SettingsForm inline />
-          ) : (
-            <>
-              <h2 className="text-base font-semibold">{messages.title}</h2>
-              <p className="mt-2 text-sm text-[#0c0c0c]/60">
-                {messages.description}{" "}
-                <a
-                  href={privacyPolicyUrl}
-                  className="underline underline-offset-4 hover:text-[#0c0c0c]"
-                >
-                  {messages.privacyPolicy}
-                </a>
-                .
-              </p>
-              <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-                <Button
-                  variant="outline"
-                  className={`${consentButtonClass} sm:flex-1 border-[#0c0c0c]/20 text-[#0c0c0c] hover:bg-[#0c0c0c]/5`}
-                  onClick={rejectAll}
-                >
-                  {messages.rejectAll}
-                </Button>
-                <Button
-                  variant="outline"
-                  className={`${consentButtonClass} sm:flex-1 border-[#0c0c0c]/20 text-[#0c0c0c] hover:bg-[#0c0c0c]/5`}
-                  onClick={openSettings}
-                >
-                  {messages.customize}
-                </Button>
-                <Button
-                  className={`${consentButtonClass} sm:flex-1 bg-[#0c0c0c] text-white hover:bg-[#0c0c0c]/90`}
-                  onClick={acceptAll}
-                >
-                  {messages.acceptAll}
-                </Button>
-              </div>
-            </>
-          )}
+    <>
+      <div
+        ref={cardRef}
+        id="cookie-banner-card"
+        role="region"
+        aria-label={messages.title}
+        className="fixed right-3 bottom-4 left-3 z-50 flex items-center gap-3 overflow-hidden rounded-[0.5rem] bg-[#0c0c0c]/20 py-2 pr-2 pl-4 text-white backdrop-blur-[2.5rem] sm:right-4 sm:left-auto sm:w-[35.375rem] sm:max-w-[calc(100%-2rem)] sm:gap-6"
+        onPointerEnter={() => setPaused(true)}
+        onPointerLeave={(event) =>
+          setPaused(event.currentTarget.contains(document.activeElement))
+        }
+        onFocusCapture={() => setPaused(true)}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) {
+            setPaused(event.currentTarget.matches(":hover"));
+          }
+        }}
+      >
+        <p id="cookie-banner-description" className="sr-only">
+          {messages.description}
+        </p>
+        <div
+          id="cookie-banner-viewport"
+          tabIndex={0}
+          role="group"
+          aria-label={messages.title}
+          aria-describedby="cookie-banner-description"
+          className="min-w-0 flex-1 overflow-hidden rounded-sm text-[0.875rem] leading-[1.3] font-normal [mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%_-_1rem),transparent)] focus-visible:[mask-image:none] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:overflow-x-auto"
+        >
+          <div
+            ref={textRef}
+            id="cookie-banner-marquee"
+            aria-hidden="true"
+            className="flex w-max whitespace-nowrap"
+          >
+            <span className="shrink-0 pr-8">{messages.description}</span>
+            <span className="shrink-0 pr-8 motion-reduce:hidden">
+              {messages.description}
+            </span>
+          </div>
+        </div>
+        <div
+          id="cookie-banner-actions"
+          className="flex shrink-0 items-center gap-1"
+        >
+          <Button
+            id="cookie-banner-accept"
+            size="icon"
+            className={bannerButtonClass}
+            aria-label={messages.acceptAll}
+            title={messages.acceptAll}
+            onClick={acceptAll}
+          >
+            <Check aria-hidden="true" className="size-4" strokeWidth={1.875} />
+          </Button>
+          <Button
+            id="cookie-banner-preferences"
+            size="icon"
+            className={bannerButtonClass}
+            aria-label={messages.customize}
+            title={messages.customize}
+            aria-haspopup="dialog"
+            aria-expanded={showSettings}
+            aria-controls={showSettings ? "cookie-settings-dialog" : undefined}
+            onClick={() => setShowSettings(true)}
+          >
+            <Settings2
+              aria-hidden="true"
+              className="size-4"
+              strokeWidth={1.875}
+            />
+          </Button>
+          <Button
+            id="cookie-banner-reject"
+            size="icon"
+            className={bannerButtonClass}
+            aria-label={messages.rejectAll}
+            title={messages.rejectAll}
+            onClick={rejectAll}
+          >
+            <X aria-hidden="true" className="size-3.5" strokeWidth={2.15} />
+          </Button>
         </div>
       </div>
-    </div>
+      <CookieSettings
+        open={showSettings && isOpen}
+        onOpenChange={setShowSettings}
+      />
+    </>
   );
 }

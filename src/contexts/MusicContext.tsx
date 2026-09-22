@@ -4,7 +4,22 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
-const TRACK = "/widgets/music-track.mp3";
+const TRACKS = [
+  "AmiBlu",
+  "Aznavour",
+  "Backbeatboy",
+  "BadBunny",
+  "Berlioz",
+  "Cheddar",
+  "MaiMai",
+  "Mattafix",
+  "Underworld",
+  "WalkFaster",
+].map((name) => ({
+  name: name.replace(/([a-z])([A-Z])/g, "$1 $2"),
+  src: `/widgets/son/${name}.mp3`,
+  cover: `/widgets/cover/${name}.png`,
+}));
 const INITIAL_VOLUME = 0;
 const DISC_VOLUME = 0.3;
 const FADE_DURATION = 1;
@@ -12,30 +27,59 @@ const FADE_DURATION = 1;
 type MusicContextType = {
   playing: boolean;
   volume: number;
+  track: (typeof TRACKS)[number];
+  canPrevious: boolean;
   toggle: () => void;
   setVolume: (volume: number) => void;
+  nextTrack: () => void;
+  previousTrack: () => void;
 };
+
+type Playlist = { history: number[]; position: number };
 
 const MusicContext = createContext<MusicContextType>({
   playing: false,
   volume: INITIAL_VOLUME,
+  track: TRACKS[0],
+  canPrevious: false,
   toggle: () => {},
   setVolume: () => {},
+  nextTrack: () => {},
+  previousTrack: () => {},
 });
 
 export function MusicProvider({ children }: { children: React.ReactNode }) {
   const [playing, setPlaying] = useState(false);
   const [volume, setVolumeState] = useState(INITIAL_VOLUME);
+  const [playlist, setPlaylist] = useState<Playlist>({
+    history: [0],
+    position: 0,
+  });
+  const playlistRef = useRef(playlist);
   const audioRef = useRef<HTMLAudioElement>(null);
   const volumeRef = useRef(volume);
+  const playbackRequested = useRef(false);
+  const changingTrack = useRef(false);
+  const playRequest = useRef(0);
   const pathname = usePathname();
   const prevPathname = useRef(pathname);
+  const track = TRACKS[playlist.history[playlist.position]];
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
+    // Shuffle after hydration so the server and first client render stay identical.
+    const initial = {
+      history: [Math.floor(Math.random() * TRACKS.length)],
+      position: 0,
+    };
+    playlistRef.current = initial;
+    setPlaylist(initial);
+    audio.src = TRACKS[initial.history[0]].src;
     audio.volume = INITIAL_VOLUME;
     return () => {
+      playbackRequested.current = false;
+      playRequest.current += 1;
       gsap.killTweensOf(audio);
       audio.pause();
     };
@@ -45,11 +89,64 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     const audio = audioRef.current;
     if (!audio) return;
     gsap.killTweensOf(audio);
-    if (playing && !audio.paused) {
+    if (playbackRequested.current) {
+      playbackRequested.current = false;
+      changingTrack.current = false;
+      playRequest.current += 1;
       audio.pause();
+      setPlaying(false);
       return;
     }
     setVolume(DISC_VOLUME);
+  }
+
+  function startPlayback(audio: HTMLAudioElement) {
+    const request = ++playRequest.current;
+    playbackRequested.current = true;
+    void audio.play().catch(() => {
+      // Aborting an older source must not stop a newer play request.
+      if (request !== playRequest.current) return;
+      playbackRequested.current = false;
+      changingTrack.current = false;
+      setPlaying(false);
+    });
+  }
+
+  function selectTrack(next: Playlist) {
+    const audio = audioRef.current;
+    if (!audio) return;
+    playlistRef.current = next;
+    setPlaylist(next);
+    gsap.killTweensOf(audio);
+    changingTrack.current = true;
+    // Own the source here so skipping and play() share the user's gesture.
+    audio.src = TRACKS[next.history[next.position]].src;
+    audio.volume = volumeRef.current;
+    if (playbackRequested.current) startPlayback(audio);
+    else changingTrack.current = false;
+  }
+
+  function nextTrack() {
+    const current = playlistRef.current;
+    if (current.position < current.history.length - 1) {
+      selectTrack({ ...current, position: current.position + 1 });
+      return;
+    }
+
+    const currentIndex = current.history[current.position];
+    // Draw from the other tracks to avoid playing the same song twice in a row.
+    const random = Math.floor(Math.random() * (TRACKS.length - 1));
+    const nextIndex = random >= currentIndex ? random + 1 : random;
+    selectTrack({
+      history: [...current.history, nextIndex],
+      position: current.position + 1,
+    });
+  }
+
+  function previousTrack() {
+    const current = playlistRef.current;
+    if (current.position === 0) return;
+    selectTrack({ ...current, position: current.position - 1 });
   }
 
   function setVolume(next: number) {
@@ -63,8 +160,11 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     gsap.killTweensOf(audio);
     audio.volume = clamped;
     if (clamped > 0) {
-      if (audio.paused) audio.play().catch(() => {});
-      else setPlaying(true);
+      if (audio.paused) startPlayback(audio);
+      else {
+        playbackRequested.current = true;
+        setPlaying(true);
+      }
     }
   }
 
@@ -73,6 +173,10 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (prevPathname.current === pathname) return;
     prevPathname.current = pathname;
+    playbackRequested.current = false;
+    changingTrack.current = false;
+    playRequest.current += 1;
+    setPlaying(false);
 
     const audio = audioRef.current;
     if (!audio || audio.paused) return;
@@ -87,20 +191,45 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
         audio.volume = volumeRef.current;
       },
     });
-    setPlaying(false);
   }, [pathname]);
 
   return (
-    <MusicContext.Provider value={{ playing, volume, toggle, setVolume }}>
+    <MusicContext.Provider
+      value={{
+        playing,
+        volume,
+        track,
+        canPrevious: playlist.position > 0,
+        toggle,
+        setVolume,
+        nextTrack,
+        previousTrack,
+      }}
+    >
       {children}
       <audio
         ref={audioRef}
-        src={TRACK}
-        loop
         preload="none"
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-        onError={() => setPlaying(false)}
+        onPlay={(event) => {
+          changingTrack.current = false;
+          if (playbackRequested.current) setPlaying(true);
+          else event.currentTarget.pause();
+        }}
+        onPause={(event) => {
+          if (changingTrack.current || event.currentTarget.ended) return;
+          playbackRequested.current = false;
+          playRequest.current += 1;
+          setPlaying(false);
+        }}
+        onEnded={() => {
+          if (playbackRequested.current) nextTrack();
+        }}
+        onError={() => {
+          playbackRequested.current = false;
+          changingTrack.current = false;
+          playRequest.current += 1;
+          setPlaying(false);
+        }}
       />
     </MusicContext.Provider>
   );

@@ -9,12 +9,55 @@ import { useMusicPlayer } from "@/contexts/MusicContext";
 gsap.registerPlugin(useGSAP);
 
 export default function MusicWidget() {
-  const { playing, volume, toggle, setVolume } = useMusicPlayer();
+  const {
+    playing,
+    volume,
+    track,
+    canPrevious,
+    toggle,
+    setVolume,
+    nextTrack,
+    previousTrack,
+  } = useMusicPlayer();
+  const discAreaRef = useRef<HTMLDivElement>(null);
+  const controlsRef = useRef<HTMLDivElement>(null);
   const discRef = useRef<HTMLButtonElement>(null);
   const vinylRef = useRef<HTMLDivElement>(null);
   const volumeRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const spin = useRef<gsap.core.Tween | null>(null);
+
+  const { contextSafe } = useGSAP(
+    (_context, safe) => {
+      if (!safe) return;
+      const touch = window.matchMedia("(hover: none)");
+      const update = safe(() => {
+        const disc = discAreaRef.current;
+        const visible =
+          touch.matches ||
+          disc?.matches(":hover") ||
+          disc?.contains(document.activeElement);
+        gsap.set(controlsRef.current, { autoAlpha: visible ? 1 : 0 });
+      });
+      update();
+      touch.addEventListener("change", update);
+      return () => touch.removeEventListener("change", update);
+    },
+    { scope: discAreaRef },
+  );
+
+  const showControls = contextSafe((visible: boolean) => {
+    const touch = window.matchMedia("(hover: none)").matches;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    gsap.to(controlsRef.current, {
+      autoAlpha: visible || touch ? 1 : 0,
+      duration: reduceMotion ? 0 : 0.18,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
+  });
 
   useGSAP(
     () => {
@@ -89,25 +132,96 @@ export default function MusicWidget() {
   return (
     <div id="widget-music" className="flex items-stretch gap-1 w-full">
       {/* Disc */}
-      <button
-        id="home-music-disc"
-        ref={discRef}
-        type="button"
-        onClick={toggle}
-        aria-label={playing ? "Pause" : "Play"}
-        className="relative shrink-0 size-31.25 rounded-lg overflow-hidden cursor-pointer bg-[#0c0c0c]"
+      <div
+        id="home-music-disc-shell"
+        ref={discAreaRef}
+        onPointerEnter={() => showControls(true)}
+        onPointerLeave={() => {
+          if (!discAreaRef.current?.contains(document.activeElement))
+            showControls(false);
+        }}
+        onFocusCapture={() => showControls(true)}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget))
+            showControls(false);
+        }}
+        className="relative shrink-0 size-31.25"
       >
-        <div id="home-music-vinyl" ref={vinylRef} className="absolute inset-1">
-          <Image
-            src={"/widgets/music-cover.png"}
-            alt="Anagram studio playlist cover artwork"
-            fill
-            sizes="125px"
-            className="object-cover"
-          />
+        <button
+          id="home-music-disc"
+          ref={discRef}
+          type="button"
+          onClick={toggle}
+          aria-label={`${playing ? "Pause" : "Play"} ${track.name}`}
+          className="relative h-full w-full rounded-lg overflow-hidden cursor-pointer bg-[#0c0c0c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          <div
+            id="home-music-vinyl"
+            ref={vinylRef}
+            className="absolute inset-1"
+          >
+            <Image
+              src={track.cover}
+              alt={`${track.name} cover artwork`}
+              fill
+              sizes="7.8125rem"
+              className="object-cover"
+            />
+          </div>
+          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-[0.633rem] rounded-full bg-white" />
+        </button>
+        <div
+          id="home-music-controls"
+          ref={controlsRef}
+          className="pointer-events-none absolute inset-0 flex items-center justify-between px-1 opacity-0"
+        >
+          <button
+            id="home-music-previous"
+            type="button"
+            onClick={previousTrack}
+            disabled={!canPrevious}
+            aria-label="Previous track"
+            className="pointer-events-auto flex size-8 items-center justify-center rounded-full bg-[#0c0c0c]/50 text-white backdrop-blur-md cursor-pointer disabled:opacity-30 disabled:cursor-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              className="size-3.5"
+              aria-hidden="true"
+            >
+              <path
+                d="m10 3-5 5 5 5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+          <button
+            id="home-music-next"
+            type="button"
+            onClick={nextTrack}
+            aria-label="Next track"
+            className="pointer-events-auto flex size-8 items-center justify-center rounded-full bg-[#0c0c0c]/50 text-white backdrop-blur-md cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              className="size-3.5"
+              aria-hidden="true"
+            >
+              <path
+                d="m6 3 5 5-5 5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
         </div>
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-[0.633rem] rounded-full bg-white" />
-      </button>
+      </div>
 
       {/* Volume slider */}
       <div

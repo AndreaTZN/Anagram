@@ -13,10 +13,8 @@ gsap.registerPlugin(useGSAP);
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Works", href: "/works" },
+  { label: "Work", href: "/works" },
   { label: "Studio", href: "/about" },
-  // { label: "Lab", href: "/lab" },
-  { label: "Store", href: "/store" },
 ];
 
 export default function MobileNav() {
@@ -166,7 +164,8 @@ export default function MobileNav() {
         className="fixed inset-0 z-40 bg-white flex flex-col gap-6 px-4 pt-20 pb-6 overflow-y-auto overscroll-none opacity-0 pointer-events-none"
       >
         <p className="text-[#0c0c0c] leading-[1.1] text-xl tracking-[-0.1px]">
-          We shape brands that <br /> need no introduction.
+          A design studio for <br />
+          brands and more.
         </p>
 
         <div id="mobile-nav-links" className="flex flex-col gap-2">

@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import WorldClock from "./WorldClock";
+import { useMusicPlayer } from "@/contexts/MusicContext";
 
 gsap.registerPlugin(useGSAP);
 
@@ -22,6 +23,7 @@ export default function WidgetToggleButton({
   onClick,
   showVinyl = false,
 }: WidgetToggleButtonProps) {
+  const { track } = useMusicPlayer();
   const vinylRef = useRef<HTMLDivElement>(null);
   const clockRef = useRef<HTMLDivElement>(null);
 
@@ -76,10 +78,10 @@ export default function WidgetToggleButton({
             className="relative size-4 overflow-hidden rounded-full"
           >
             <Image
-              src={"/widgets/music-cover.png"}
+              src={track.cover}
               alt=""
               fill
-              sizes="28px"
+              sizes="1rem"
               className="object-cover"
             />
             <span className="absolute left-1/2 top-1/2 size-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />

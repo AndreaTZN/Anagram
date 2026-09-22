@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import WidgetBackdrop from "./WidgetBackdrop";
 import WidgetToggleButton from "./WidgetToggleButton";
 import PhotoCarouselWidget from "./PhotoCarouselWidget";
 import ClockWidget from "./ClockWidget";
@@ -45,17 +46,15 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
   const { playing: musicPlaying } = useMusicPlayer();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const verticalPathRef = useRef<SVGPathElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const widgetsRef = useRef<HTMLDivElement[]>([]);
   const tl = useRef<gsap.core.Timeline | null>(null);
   const previousButtonState = useRef({ open, musicPlaying });
 
   useGSAP(() => {
-    if (!buttonRef.current || !overlayRef.current || !panelRef.current) return;
+    if (!buttonRef.current || !panelRef.current) return;
 
     gsap.set(buttonRef.current, { opacity: 0 });
-    gsap.set(overlayRef.current, { opacity: 0, pointerEvents: "none" });
     gsap.set(panelRef.current, { opacity: 0, y: "-1rem", scale: 0.96 });
     gsap.set(widgetsRef.current, { opacity: 0, y: "1.25rem" });
     gsap.set(verticalPathRef.current, {
@@ -75,12 +74,7 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
         paused: true,
         defaults: { ease: "power2.inOut" },
       })
-      .to(
-        verticalPathRef.current,
-        { rotate: 90, duration: 0.52 },
-        0,
-      )
-      .to(overlayRef.current, { opacity: 1, duration: 0.5, ease: "sine.inOut" }, 0)
+      .to(verticalPathRef.current, { rotate: 90, duration: 0.52 }, 0)
       .to(
         panelRef.current,
         {
@@ -99,39 +93,42 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
       );
   }, []);
 
-  useGSAP(() => {
-    const button = buttonRef.current;
-    if (!button) return;
+  useGSAP(
+    () => {
+      const button = buttonRef.current;
+      if (!button) return;
 
-    const previous = previousButtonState.current;
-    if (previous.open === open && previous.musicPlaying === musicPlaying) return;
-    previousButtonState.current = { open, musicPlaying };
+      const previous = previousButtonState.current;
+      if (previous.open === open && previous.musicPlaying === musicPlaying)
+        return;
+      previousButtonState.current = { open, musicPlaying };
 
-    // Keep the initial width natural while the clock fills in its client-side times.
-    let width: string | number = "36.1875rem";
-    if (!open) {
-      // Measure after React adds the cover, then restore the current width before paint.
-      const currentWidth = button.getBoundingClientRect().width;
-      button.style.width = "auto";
-      width = button.getBoundingClientRect().width;
-      gsap.set(button, { width: currentWidth });
-    }
+      // Keep the initial width natural while the clock fills in its client-side times.
+      let width: string | number = "36.1875rem";
+      if (!open) {
+        // Measure after React adds the cover, then restore the current width before paint.
+        const currentWidth = button.getBoundingClientRect().width;
+        button.style.width = "auto";
+        width = button.getBoundingClientRect().width;
+        gsap.set(button, { width: currentWidth });
+      }
 
-    gsap.to(button, {
-      width,
-      duration: open ? 0.68 : 0.68 / 1.2,
-      ease: "power2.inOut",
-      overwrite: "auto",
-      onComplete: () => {
-        if (!open) gsap.set(button, { clearProps: "width" });
-      },
-    });
-  }, { dependencies: [open, musicPlaying] });
+      gsap.to(button, {
+        width,
+        duration: open ? 0.68 : 0.68 / 1.2,
+        ease: "power2.inOut",
+        overwrite: "auto",
+        onComplete: () => {
+          if (!open) gsap.set(button, { clearProps: "width" });
+        },
+      });
+    },
+    { dependencies: [open, musicPlaying] },
+  );
 
   function toggle() {
     if (!tl.current) return;
 
-    gsap.set(overlayRef.current, { pointerEvents: open ? "none" : "auto" });
     if (!open) {
       tl.current.timeScale(1).play();
       scrollLockRef.current = true;
@@ -160,19 +157,11 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
       />
 
       {/* Overlay + Panel */}
-      <div
-        ref={overlayRef}
-        id="home-widgets-overlay"
-        className="absolute inset-0 z-20 backdrop-blur-2xl bg-[rgba(12,12,12,0.15)] opacity-0 pointer-events-none"
-        onClick={toggle}
-      />
+      <WidgetBackdrop open={open} buttonRef={buttonRef} onClose={toggle} />
 
       <div
         ref={panelRef}
         id="home-widgets-panel"
-        // Swiper (effect-fade) force `pointer-events: auto` sur sa slide active,
-        // ce qui perce le pointer-events:none du panel fermé. On neutralise tous
-        // les descendants tant que le widget est fermé.
         className={`absolute z-20 top-32 left-1/2 -translate-x-1/2 w-188 opacity-0 ${
           open ? "" : "**:pointer-events-none!"
         }`}
@@ -190,16 +179,31 @@ export default function WidgetPanel({ openRoles }: { openRoles: OpenRole[] }) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 w-75">
-            <div ref={(el) => addWidget(el, 3)}>
-              <PhotoCarouselWidget active={open} />
+          <div id="home-widgets-right" className="flex items-stretch gap-4">
+            <div
+              id="home-widgets-photo-cell"
+              className="relative w-75 shrink-0"
+            >
+              {/* The clock and collapsed roles determine the photo's height. */}
+              <div
+                id="home-widgets-photo"
+                ref={(el) => addWidget(el, 3)}
+                className="absolute inset-0"
+              >
+                <PhotoCarouselWidget active={open} />
+              </div>
             </div>
-            <div ref={(el) => addWidget(el, 4)}>
-              <RolesStackWidget roles={openRoles} />
+            <div
+              id="home-widgets-details"
+              className="flex w-52 shrink-0 flex-col gap-4"
+            >
+              <div id="home-widgets-clock" ref={(el) => addWidget(el, 5)}>
+                <ClockWidget />
+              </div>
+              <div id="home-widgets-roles" ref={(el) => addWidget(el, 4)}>
+                <RolesStackWidget roles={openRoles} active={open} />
+              </div>
             </div>
-          </div>
-          <div ref={(el) => addWidget(el, 5)} className="shrink-0">
-            <ClockWidget />
           </div>
         </div>
       </div>

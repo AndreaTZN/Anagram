@@ -33,7 +33,7 @@ export type CmpMessagesOverrides = Partial<Omit<CmpMessages, "categories">> & {
 export const defaultMessages: CmpMessages = {
   title: "Cookie preferences",
   description:
-    'We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept all", you consent to our use of cookies.',
+    "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic.",
   acceptAll: "Accept all",
   rejectAll: "Disable all",
   customize: "Customize",
