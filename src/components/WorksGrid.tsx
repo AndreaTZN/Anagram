@@ -32,9 +32,10 @@ export const allWorks: Work[] = [
   {
     name: "Incard",
     description:
-      "To celebrate the achievements of its community, Incard set out to create a trophy system that transforms key milestones into meaningful rewards turning business growth into something users can proudly earn and display.",
+      "Incard turns banking into a tangible experience through distinctive cards and collectible trophies, transforming everyday transactions and milestones into visible symbols of identity, status and engagement.",
+    href: "https://www.incard.co/",
     badge: "Coming soon",
-    image: "/works/incard/thumbnail-incard.webp",
+    image: "/thumb-work/incard.avif",
     aspect: "aspect-[378/300]",
   },
   {
@@ -42,7 +43,7 @@ export const allWorks: Work[] = [
     description:
       "Build a brand and digital experience capable of reframing industrial waste as a source of value, translating Wastetide's AI-driven shift in perspective into a clear, credible identity.",
     href: "/works/wastetide",
-    image: "/works/Wastetide/1.webp",
+    image: "/thumb-work/wastetide.webp",
     aspect: "aspect-[378/250]",
   },
   {
@@ -53,7 +54,7 @@ export const allWorks: Work[] = [
     type: "video",
     dataSrc: "1215461019",
     dataRatio: "932/1000",
-    poster: "/works/Fortuneo/fortuneo-grid-poster.webp",
+    poster: "/thumb-work/fortuneo-vimeo-frame.webp",
     aspect: "aspect-[387/300]",
   },
   {
@@ -62,9 +63,9 @@ export const allWorks: Work[] = [
       "Simplify the booking experience by reducing friction and improving conversion, while evolving the product beyond a purely functional interface.",
     href: "/works/planity",
     type: "video",
-    dataSrc: "1215461052",
-    dataRatio: "932/1000",
-    poster: "/works/Planity/planity-grid-poster.webp",
+    dataSrc: "1183437059",
+    dataRatio: "2764/1528",
+    poster: "/thumb-work/planity-vimeo-frame.webp",
     aspect: "aspect-[387/300]",
   },
   {
@@ -72,7 +73,7 @@ export const allWorks: Work[] = [
     description:
       "Produce keys graphics elements required for the app while remaining fully aligned with the visual direction defined by the amo team.",
     href: "/works/amo",
-    image: "/works/Amo/1.avif",
+    image: "/thumb-work/amo.avif",
     aspect: "aspect-[387/200]",
   },
   {
@@ -80,7 +81,7 @@ export const allWorks: Work[] = [
     description:
       "Discover how we reimagined the identity of Arcads, the AI platform that turns text into high-quality video ads with virtual actors. A full rebrand blending technology, emotion, and performance.",
     href: "/works/founders-future",
-    image: "/works/FoundersFuture/release/15.avif",
+    image: "/thumb-work/founders-future.avif",
     aspect: "aspect-[387/250]",
   },
   {
@@ -91,7 +92,7 @@ export const allWorks: Work[] = [
     type: "video",
     dataSrc: "1215462528",
     dataRatio: "1890/1000",
-    poster: "/works/Pennylane/pennylane-grid-poster.webp",
+    poster: "/thumb-work/pennylane-vimeo-frame.webp",
     aspect: "aspect-[387/200]",
   },
   {
@@ -102,7 +103,7 @@ export const allWorks: Work[] = [
     type: "video",
     dataSrc: "1215462530",
     dataRatio: "1890/1500",
-    poster: "/works/Everyday/everyday-grid-poster.webp",
+    poster: "/thumb-work/everyday-vimeo-frame.webp",
     aspect: "aspect-[387/300]",
   },
   {
@@ -110,15 +111,29 @@ export const allWorks: Work[] = [
     description:
       "Discover how we reimagined the identity of Arcads, the AI platform that turns text into high-quality video ads with virtual actors. A full rebrand blending technology, emotion, and performance.",
     href: "/works/arcads",
-    image: "/works/Arcads/9.webp",
+    type: "video",
+    dataSrc: "1172577350",
+    dataRatio: "816/908",
+    poster: "/thumb-work/arcads-vimeo-frame.webp",
     aspect: "aspect-[387/250]",
+  },
+  {
+    name: "Semplice",
+    description:
+      "Present a mature product with one clear message: complete creative control, no code required.",
+    href: "/works/semplice",
+    image: "/thumb-work/semplice.avif",
+    aspect: "aspect-[387/200]",
   },
   {
     name: "Perma",
     description:
       "Municipal teams face daily, concrete problems, illegal dumping, nuisances, and incivility, but traditional public safety and surveillance solutions often feel heavy, costly, and disconnected from the realities of small and mid-sized towns.",
     href: "/works/perma",
-    image: "/works/Perma/perma-work.webp",
+    type: "video",
+    dataSrc: "1172151189",
+    dataRatio: "1094/1254",
+    poster: "/thumb-work/perma-vimeo-frame.webp",
     aspect: "aspect-[387/300]",
   },
   {
@@ -129,34 +144,121 @@ export const allWorks: Work[] = [
     type: "video",
     dataSrc: "1172566718",
     dataRatio: "2000/1124",
-    poster: "/works/Vizzia/1.avif",
+    poster: "/thumb-work/vizzia.avif",
     aspect: "aspect-[387/250]",
   },
   {
-    name: "Semplice",
+    name: "Omnia",
     description:
-      "Present a mature product with one clear message: complete creative control, no code required.",
-    href: "/works/semplice",
-    image: "/works/Semplice/1.avif",
+      "Omnia helps brands understand, monitor and shape how they appear in AI search. Inspired by Ariadne's thread, its identity turns complex data into clear direction, focusing on outcomes, clarity and control.",
+    href: "https://www.useomnia.com/",
+    badge: "Coming soon",
+    image: "/thumb-work/omnia.avif",
+    aspect: "aspect-[387/250]",
+  },
+  {
+    name: "Bee",
+    description:
+      "Bee reimagines personal computing through ambient AI, capturing conversations and context to create insights, summaries and reminders. Its minimal identity makes invisible technology feel useful and trustworthy.",
+    href: "/works/bee",
+    image: "/thumb-work/bee.avif",
+    aspect: "aspect-[387/300]",
+  },
+  {
+    name: "Inbolt",
+    description:
+      "Inbolt redefines industrial automation with real-time vision-guided robotics, enabling robots to see, think and adapt. Its brand makes advanced technology clear, accessible and built for flexible factory use.",
+    href: "/works/inbolt",
+    type: "video",
+    dataSrc: "1172493608",
+    dataRatio: "1920/1080",
+    poster: "/thumb-work/inbolt-vimeo-frame.avif",
     aspect: "aspect-[387/200]",
+  },
+  {
+    name: "Rauva",
+    description:
+      "Rauva simplifies business by bringing banking, invoicing and accounting into one platform. Built around clarity and control, it replaces complexity with a unified system for modern entrepreneurs.",
+    href: "https://rauva.com/",
+    badge: "Coming soon",
+    image: "/thumb-work/rauva.avif",
+    aspect: "aspect-[387/300]",
+  },
+  {
+    name: "Feedly",
+    description:
+      "Feedly turns information into actionable intelligence, bringing clarity to complex data. Its clear, confident identity helps teams anticipate change, stay ahead and act with greater confidence.",
+    href: "https://feedly.com/",
+    badge: "Coming soon",
+    image: "/thumb-work/feedly.avif",
+    aspect: "aspect-[387/300]",
+  },
+  {
+    name: "Vybe",
+    description:
+      "Internal tools become fast, flexible and accessible, letting teams build secure, production-ready apps with AI and their own data while giving operators and engineers greater autonomy and control.",
+    href: "https://www.vybe.build/",
+    image: "/thumb-work/vybe.avif",
+    aspect: "aspect-[387/250]",
+  },
+  {
+    name: "Typebot",
+    description:
+      "Static forms become fluid conversations, helping teams capture data, qualify users and drive engagement without code. The identity reflects a clear, modular and intuitive approach to real-time interaction.",
+    href: "https://www.typebot.com/",
+    type: "video",
+    dataSrc: "1183437079",
+    dataRatio: "1340/1212",
+    poster: "/thumb-work/typebot-vimeo-frame.webp",
+    aspect: "aspect-[387/300]",
+  },
+  {
+    name: "Allo",
+    description:
+      "Conversations become structured business data, with calls recorded, summarized and synced directly to CRM. A clear, product-driven identity turns phone communication into reliable, automated insight.",
+    href: "/works/allo",
+    image: "/thumb-work/allo.avif",
+    aspect: "aspect-[387/250]",
+  },
+  {
+    name: "Alpha Star",
+    description:
+      "Long-term investment becomes a partnership built on conviction, patience and strategic involvement, supporting visionary founders from the earliest stages while aligning capital with lasting impact.",
+    href: "https://alphastar.capital/",
+    type: "video",
+    dataSrc: "1184728014",
+    dataRatio: "1340/1616",
+    poster: "/thumb-work/alphastar-vimeo-frame.png",
+    aspect: "aspect-[387/300]",
+  },
+  {
+    name: "Bonsai",
+    description:
+      "Freelance operations come together in one seamless system, from proposals and projects to payments and reporting. A premium, structured identity helps reduce friction and support scalable growth.",
+    href: "https://www.hellobonsai.com/",
+    image: "/thumb-work/bonsai.avif",
+    aspect: "aspect-[387/250]",
   },
 ];
 
 export const archiveWorks: Work[] = [
   {
-    name: "Tilt",
+    name: "Tilt Energy",
     description:
-      "Tilt is the startup orchestrating energy consumption to match available supply in real time, bringing balance and resilience to an increasingly complex grid. We partnered with Tilt to create a brand identity and website capable of expressing that system: a logo built as an evolving, interconnected network of energy flows.",
+      "Energy becomes a responsive system, with consumption adapting in real time to available supply. Built around flow and balance, the identity makes complex optimization clear, tangible and future-focused.",
     href: "/works/tilt",
-    image: "/works/Tilt/1.avif",
+    type: "video",
+    dataSrc: "1172158224",
+    dataRatio: "1920/1080",
+    poster: "/thumb-work/tilt-vimeo-frame.avif",
     aspect: "aspect-[387/300]",
   },
   {
     name: "Politico",
     description:
-      "Politico is renowned for the accuracy and speed of its political and institutional coverage, and needed a unified experience to support the merger of Politico.com and Politico.eu. We partnered with Politico to build a mobile-first design system and UX capable of expressing that merger: one consistent, modular experience across international markets.",
+      "Politico unified its US and European platforms into a faster, scalable system. A lean, mobile-first design streamlines editorial workflows while delivering a consistent brand and real-time news experience.",
     href: "/works/politico",
-    image: "/works/Politico/1.avif",
+    image: "/thumb-work/politico.avif",
     aspect: "aspect-[387/250]",
   },
   {
@@ -164,15 +266,21 @@ export const archiveWorks: Work[] = [
     description:
       "Twin is the wearable AI built to understand its user, an invisible and highly technical system that needed to become immediately legible. We partnered with Twin to create a brand identity and website capable of expressing that system: a logo conceived as an evolving pattern of points and blocks, evoking an interconnected network.",
     href: "/works/twin",
-    image: "/works/twin/1.avif",
+    image: "/thumb-work/twin.avif",
     aspect: "aspect-[387/300]",
   },
 ];
 
 function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
+  const isExternal = work.href?.startsWith("http");
   const CardWrapper = work.href
     ? ({ children }: { children: React.ReactNode }) => (
-        <Link href={work.href!} aria-label={work.name}>
+        <Link
+          href={work.href!}
+          aria-label={work.name}
+          target={isExternal ? "_blank" : undefined}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+        >
           {children}
         </Link>
       )
@@ -275,7 +383,7 @@ export default function WorksGrid({
   return (
     <div
       id="works-grid"
-      className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${maxThreeColumns ? "" : "min-[90rem]:grid-cols-4"}`}
+      className={`grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-8 ${maxThreeColumns ? "" : "min-[90rem]:grid-cols-4"}`}
     >
       {works.map((work, i) => (
         <WorkCard key={work.name} work={work} priority={i < 4} />

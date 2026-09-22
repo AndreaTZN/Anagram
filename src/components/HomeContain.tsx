@@ -45,7 +45,7 @@ const works: Work[] = [
       "Build a brand and digital experience capable of reframing industrial waste as a source of value, translating Wastetide's AI-driven shift in perspective into a clear, credible identity.",
     media: {
       type: "image",
-      src: "/works/Wastetide/1.webp",
+      src: "/thumb-work/wastetide.webp",
       aspect: "aspect-[279/300]",
     },
   },
@@ -56,7 +56,7 @@ const works: Work[] = [
       "Design a trophy system that transforms key milestones into meaningful, shareable rewards, turning business growth into something Incard's community can proudly earn and display.",
     media: {
       type: "image",
-      src: "/works/incard/thumbnail-incard.webp",
+      src: "/thumb-work/incard-home.webp",
       aspect: "aspect-[279/200]",
     },
   },
@@ -67,7 +67,7 @@ const works: Work[] = [
     externalLink: "https://www.symbl.space/",
     media: {
       type: "image",
-      src: "/works/symbl/card.jpg",
+      src: "/thumb-work/symbl.jpg",
       aspect: "aspect-[280/250]",
       bg: "#f5f5f5",
     },
@@ -95,7 +95,7 @@ const works: Work[] = [
       type: "video",
       dataSrc: "1215461019",
       dataRatio: "932/1000",
-      poster: "/works/Fortuneo/fortuneo-grid-poster.webp",
+      poster: "/thumb-work/fortuneo-vimeo-frame.webp",
       aspect: "aspect-[280/300]",
     },
   },
@@ -119,7 +119,7 @@ const works: Work[] = [
       "Clarify the brand’s positioning in a competitive global investment landscape, strengthen credibility with founders and stakeholders, and build a visual and narrative system capable of supporting international growth.",
     media: {
       type: "image",
-      src: "/works/FoundersFuture/thumbnail-ff.webp",
+      src: "/thumb-work/founders-future-home.webp",
       aspect: "aspect-[280/250]",
     },
   },
@@ -131,9 +131,9 @@ const works: Work[] = [
       "Simplify the booking experience by reducing friction and improving conversion, while evolving the product beyond a purely functional interface.",
     media: {
       type: "video",
-      dataSrc: "1215461052",
-      dataRatio: "932/1000",
-      poster: "/works/Planity/planity-grid-poster.webp",
+      dataSrc: "1183437059",
+      dataRatio: "2764/1528",
+      poster: "/thumb-work/planity-vimeo-frame.webp",
       aspect: "aspect-[280/300]",
     },
   },
@@ -145,7 +145,7 @@ const works: Work[] = [
       "Produce keys graphics elements required for the app while remaining fully aligned with the visual direction defined by the amo team.",
     media: {
       type: "image",
-      src: "/works/Amo/thumbnail-amo.webp",
+      src: "/thumb-work/amo-home.webp",
       aspect: "aspect-[280/200]",
     },
   },
