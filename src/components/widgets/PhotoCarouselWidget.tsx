@@ -12,7 +12,6 @@ import "swiper/css/effect-fade";
 const photos = [
   { src: "/studio/1.webp", alt: "Anagram studio workspace" },
   { src: "/studio/2.webp", alt: "Anagram team at work in the studio" },
-  { src: "/studio/3.webp", alt: "Branding work in progress at Anagram studio" },
 ];
 
 const DELAY = 4000;

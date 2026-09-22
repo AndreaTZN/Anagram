@@ -35,8 +35,6 @@ type MusicContextType = {
   previousTrack: () => void;
 };
 
-type Playlist = { history: number[]; position: number };
-
 const MusicContext = createContext<MusicContextType>({
   playing: false,
   volume: INITIAL_VOLUME,
@@ -51,11 +49,8 @@ const MusicContext = createContext<MusicContextType>({
 export function MusicProvider({ children }: { children: React.ReactNode }) {
   const [playing, setPlaying] = useState(false);
   const [volume, setVolumeState] = useState(INITIAL_VOLUME);
-  const [playlist, setPlaylist] = useState<Playlist>({
-    history: [0],
-    position: 0,
-  });
-  const playlistRef = useRef(playlist);
+  const [trackIndex, setTrackIndex] = useState(0);
+  const trackIndexRef = useRef<number | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const volumeRef = useRef(volume);
   const playbackRequested = useRef(false);
@@ -63,19 +58,17 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const playRequest = useRef(0);
   const pathname = usePathname();
   const prevPathname = useRef(pathname);
-  const track = TRACKS[playlist.history[playlist.position]];
+  const track = TRACKS[trackIndex];
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    // Shuffle after hydration so the server and first client render stay identical.
-    const initial = {
-      history: [Math.floor(Math.random() * TRACKS.length)],
-      position: 0,
-    };
-    playlistRef.current = initial;
-    setPlaylist(initial);
-    audio.src = TRACKS[initial.history[0]].src;
+    // Pick once after hydration, including when Strict Mode replays this effect.
+    const initial =
+      trackIndexRef.current ?? Math.floor(Math.random() * TRACKS.length);
+    trackIndexRef.current = initial;
+    setTrackIndex(initial);
+    audio.src = TRACKS[initial].src;
     audio.volume = INITIAL_VOLUME;
     return () => {
       playbackRequested.current = false;
@@ -112,41 +105,28 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
-  function selectTrack(next: Playlist) {
+  function selectTrack(nextIndex: number) {
     const audio = audioRef.current;
     if (!audio) return;
-    playlistRef.current = next;
-    setPlaylist(next);
+    trackIndexRef.current = nextIndex;
+    setTrackIndex(nextIndex);
     gsap.killTweensOf(audio);
     changingTrack.current = true;
     // Own the source here so skipping and play() share the user's gesture.
-    audio.src = TRACKS[next.history[next.position]].src;
+    audio.src = TRACKS[nextIndex].src;
     audio.volume = volumeRef.current;
     if (playbackRequested.current) startPlayback(audio);
     else changingTrack.current = false;
   }
 
   function nextTrack() {
-    const current = playlistRef.current;
-    if (current.position < current.history.length - 1) {
-      selectTrack({ ...current, position: current.position + 1 });
-      return;
-    }
-
-    const currentIndex = current.history[current.position];
-    // Draw from the other tracks to avoid playing the same song twice in a row.
-    const random = Math.floor(Math.random() * (TRACKS.length - 1));
-    const nextIndex = random >= currentIndex ? random + 1 : random;
-    selectTrack({
-      history: [...current.history, nextIndex],
-      position: current.position + 1,
-    });
+    selectTrack(((trackIndexRef.current ?? 0) + 1) % TRACKS.length);
   }
 
   function previousTrack() {
-    const current = playlistRef.current;
-    if (current.position === 0) return;
-    selectTrack({ ...current, position: current.position - 1 });
+    selectTrack(
+      ((trackIndexRef.current ?? 0) - 1 + TRACKS.length) % TRACKS.length,
+    );
   }
 
   function setVolume(next: number) {
@@ -199,7 +179,7 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
         playing,
         volume,
         track,
-        canPrevious: playlist.position > 0,
+        canPrevious: TRACKS.length > 1,
         toggle,
         setVolume,
         nextTrack,
