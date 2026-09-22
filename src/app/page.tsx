@@ -13,14 +13,14 @@ function getOpenRoles() {
 }
 
 export const metadata: Metadata = {
-  title: "Anagram Club — Shaping brands that need no introduction",
+  title: "Anagram Club — A design studio for brands and more.",
   description:
     "Anagram Club shapes market-defining brands through bold branding, product design, and a sharp creative process. Built for companies that want to stand out.",
   openGraph: {
-    title: "Anagram Club — Shaping brands that need no introduction",
+    title: "Anagram Club — A design studio for brands and more.",
     description:
       "Anagram Club shapes market-defining brands through bold branding, product design, and a sharp creative process. Built for companies that want to stand out.",
-    url: "https://anagram.club",
+    url: "https://www.anagram.club/",
     siteName: "Anagram Club",
     locale: "fr_FR",
     type: "website",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anagram Club — Shaping brands that need no introduction",
+    title: "Anagram Club — A design studio for brands and more.",
     description:
       "Anagram Club shapes market-defining brands through bold branding, product design, and a sharp creative process. Built for companies that want to stand out.",
     images: ["/opengraph.webp"],

@@ -5,11 +5,11 @@ export const metadata: Metadata = {
   title: "Brand Design Agency | anagram",
   description:
     "Anagram is a Paris-based brand design agency founded in 2020. We've shaped 50+ brands across tech, fintech, and consumer: from strategy and visual identity to motion, photography, and web.",
-  alternates: { canonical: "/seo/brand-design-agency" },
+  alternates: { canonical: "/page/brand-design-agency" },
   openGraph: {
     title: "Brand Design Agency | anagram",
     description: "Anagram is a Paris-based brand design agency founded in 2020. We've shaped 50+ brands across tech, fintech, and consumer: from strategy and visual identity to motion, photography, and web.",
-    url: "/seo/brand-design-agency",
+    url: "/page/brand-design-agency",
     images: ["/opengraph.webp"],
   },
   robots: { index: true, follow: true },

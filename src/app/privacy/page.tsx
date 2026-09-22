@@ -6,12 +6,12 @@ import CookieSettingsLink from "./CookieSettingsLink";
 export const metadata: Metadata = {
   title: "Privacy Policy | anagram",
   description:
-    "How anagram collects, uses and protects personal data across anagram.club, including cookies, third-party services and your rights under the GDPR.",
+    "How anagram collects, uses and protects personal data across www.anagram.club, including cookies, third-party services and your rights under the GDPR.",
   alternates: { canonical: "/privacy" },
   openGraph: {
     title: "Privacy Policy | anagram",
     description:
-      "How anagram collects, uses and protects personal data across anagram.club, including cookies, third-party services and your rights under the GDPR.",
+      "How anagram collects, uses and protects personal data across www.anagram.club, including cookies, third-party services and your rights under the GDPR.",
     url: "/privacy",
     images: ["/opengraph.webp"],
   },
@@ -91,7 +91,7 @@ const sections: Section[] = [
           Anagram (&ldquo;anagram&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is
           a brand design studio operating from Paris and New York. We are the
           data controller for the personal data processed through
-          anagram.club.
+          www.anagram.club.
         </p>
         <p>
           For any question about this policy or about how we handle your data,
@@ -288,7 +288,7 @@ export default function PrivacyPage() {
         </h1>
         <p className="text-[#7e7e7e] text-[1.25rem] leading-[1.4] tracking-[-0.1px] max-w-[38.3rem]">
           This policy explains what personal data anagram collects when you use
-          anagram.club, why we collect it, who we share it with, and the
+          www.anagram.club, why we collect it, who we share it with, and the
           control you have over it.
         </p>
       </section>

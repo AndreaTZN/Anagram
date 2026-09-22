@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "https://anagram.club";
+const BASE_URL = "https://www.anagram.club";
 
 // Slugs derived from the filesystem so a new <segment>/<slug>/page.tsx
 // lands in the sitemap without editing this file.
@@ -20,7 +20,7 @@ function getSlugs(segment: string): string[] {
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: BASE_URL,
+      url: `${BASE_URL}/`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
@@ -47,7 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Acquisition landing pages — indexable, so they belong in the sitemap.
-  // There is no /seo index route, only the leaf pages.
+  // There is no /page index route, only the leaf pages.
   const seoRoutes: MetadataRoute.Sitemap = getSlugs("page").map((slug) => ({
     url: `${BASE_URL}/page/${slug}`,
     lastModified: new Date(),

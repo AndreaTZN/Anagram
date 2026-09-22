@@ -22,7 +22,7 @@ import {
 import { CookieServices } from "@/components/CookieServices";
 import { GtmPageView } from "@/components/GtmPageView";
 
-const SITE_URL = "https://anagram.club";
+const SITE_URL = "https://www.anagram.club";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

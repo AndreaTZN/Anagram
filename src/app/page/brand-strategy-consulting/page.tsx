@@ -5,11 +5,11 @@ export const metadata: Metadata = {
   title: "Brand Strategy Consulting | anagram",
   description:
     "Anagram is a brand strategy consultant leading every project through positioning, differentiation, and messaging before any visual design begins.",
-  alternates: { canonical: "/seo/brand-strategy-consulting" },
+  alternates: { canonical: "/page/brand-strategy-consulting" },
   openGraph: {
     title: "Brand Strategy Consulting | anagram",
     description: "Anagram is a brand strategy consultant leading every project through positioning, differentiation, and messaging before any visual design begins.",
-    url: "/seo/brand-strategy-consulting",
+    url: "/page/brand-strategy-consulting",
     images: ["/opengraph.webp"],
   },
   robots: { index: true, follow: true },

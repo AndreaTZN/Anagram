@@ -5,11 +5,11 @@ export const metadata: Metadata = {
   title: "Brand Positioning Agency | anagram",
   description:
     "Anagram is a brand positioning agency: every project starts by defining the unique market position that makes a brand worth choosing over the rest.",
-  alternates: { canonical: "/seo/brand-positioning-agency" },
+  alternates: { canonical: "/page/brand-positioning-agency" },
   openGraph: {
     title: "Brand Positioning Agency | anagram",
     description: "Anagram is a brand positioning agency: every project starts by defining the unique market position that makes a brand worth choosing over the rest.",
-    url: "/seo/brand-positioning-agency",
+    url: "/page/brand-positioning-agency",
     images: ["/opengraph.webp"],
   },
   robots: { index: true, follow: true },

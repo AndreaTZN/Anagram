@@ -5,11 +5,11 @@ export const metadata: Metadata = {
   title: "Creative Agency for Startups: Anagram Studio",
   description:
     "Anagram is the creative agency for startups that build brands with long-term ambition: strategy, identity, motion, photography, and web, built to scale.",
-  alternates: { canonical: "/seo/creative-agency-for-startups" },
+  alternates: { canonical: "/page/creative-agency-for-startups" },
   openGraph: {
     title: "Creative Agency for Startups: Anagram Studio",
     description: "Anagram is the creative agency for startups that build brands with long-term ambition: strategy, identity, motion, photography, and web, built to scale.",
-    url: "/seo/creative-agency-for-startups",
+    url: "/page/creative-agency-for-startups",
     images: ["/opengraph.webp"],
   },
   robots: { index: true, follow: true },
