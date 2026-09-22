@@ -3,8 +3,6 @@
 import { Fragment, useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -16,13 +14,7 @@ import Footer from "@/components/Footer";
 import ArpeRotation from "@/components/ArpeRotation";
 import { type OpenRole } from "@/components/OpenRoles";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
-
 const studioImages = ["/studio/1.webp", "/studio/2.webp"];
-
-// Mobile team loop: seconds each photo stays, then the pause before restarting.
-const TEAM_MOBILE_STEP = 0.3;
-const TEAM_MOBILE_PAUSE = 2;
 
 const manifesto = (
   <>
@@ -307,60 +299,6 @@ export default function AboutPage({
     setHoveredIndex(index);
     setDisplayedIndex(index);
   }
-
-  // Mobile: photos cycle one after another while the section is in view,
-  // vanish for a pause, then loop. Leaving the section resets everything.
-  // GSAP toggles the DOM directly: a React state here would re-render the
-  // whole page every step and stutter the scroll.
-  const teamMobileRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    const mm = gsap.matchMedia();
-
-    mm.add("(max-width: 766px)", () => {
-      const allPhotos = gsap.utils.toArray<HTMLElement>(
-        "[data-team-photo]",
-        teamMobileRef.current,
-      );
-      gsap.set(allPhotos, { autoAlpha: 0 });
-
-      // Members sharing the same file (placeholder) only get one slot.
-      const seen = new Set<string>();
-      const photos = allPhotos.filter((_, i) => {
-        const src = team[i].image ?? "";
-        if (seen.has(src)) return false;
-        seen.add(src);
-        return true;
-      });
-
-      const tl = gsap.timeline({
-        repeat: -1,
-        repeatDelay: TEAM_MOBILE_PAUSE,
-        paused: true,
-      });
-      photos.forEach((photo, i) => {
-        tl.set(photo, { autoAlpha: 1 }, i * TEAM_MOBILE_STEP);
-        tl.set(photo, { autoAlpha: 0 }, (i + 1) * TEAM_MOBILE_STEP);
-      });
-
-      ScrollTrigger.create({
-        trigger: teamMobileRef.current,
-        scroller: document.getElementById("smooth-scroll-container"),
-        start: "top bottom",
-        end: "bottom top",
-        onToggle: (self) => {
-          if (self.isActive) {
-            tl.restart();
-          } else {
-            tl.pause();
-            gsap.set(allPhotos, { autoAlpha: 0 });
-          }
-        },
-      });
-    });
-
-    return () => mm.revert();
-  }, []);
 
   return (
     <main className="pt-4 pr-4 pl-4 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12">
@@ -760,7 +698,6 @@ export default function AboutPage({
               {/* Mobile */}
               <div
                 id="about-team-mobile"
-                ref={teamMobileRef}
                 className="hidden max-[766px]:block"
               >
                 <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem] mb-6">
@@ -780,12 +717,6 @@ export default function AboutPage({
                       </Fragment>
                     ))}
                   </div>
-
-                  <TeamPhotoStack
-                    displayedIndex={-1}
-                    className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-[38%] aspect-square -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded"
-                    sizes="38vw"
-                  />
                 </div>
               </div>
             </div>
