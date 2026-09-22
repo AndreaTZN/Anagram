@@ -382,11 +382,11 @@ function RoleCard({
       aria-expanded={isTrigger ? expanded : undefined}
       aria-controls={isTrigger ? "home-roles-extra-cards" : undefined}
       aria-describedby={`${id}-description`}
-      className={`flex max-w-full origin-bottom items-center gap-4 rounded-lg border-[0.0625rem] border-white/70 bg-white p-2 pr-8 text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c] ${
+      className={`flex max-w-full cursor-default origin-bottom items-center gap-4 rounded-lg border-[0.0625rem] border-white/70 bg-white p-2 pr-8 text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c] ${
         isFirst
           ? "relative z-2"
           : "pointer-events-none invisible absolute left-0 top-0 z-[-1] w-full opacity-0"
-      } ${isTrigger ? "cursor-pointer" : ""}`}
+      }`}
       style={{ boxShadow: CARD_SHADOW }}
     >
       {isFirst && (
