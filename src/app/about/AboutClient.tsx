@@ -454,7 +454,7 @@ export default function AboutPage({
                 className="flex gap-4 text-[#0c0c0c] max-[766px]:order-5 max-[766px]:flex-col max-[766px]:gap-6"
               >
                 <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:w-auto max-[766px]:text-2xl">
-                  Informations
+                  Services
                 </h2>
                 <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-8 max-[766px]:gap-x-8 max-[766px]:gap-y-8">
                   <OfferingCategory
@@ -696,10 +696,7 @@ export default function AboutPage({
               </div>
 
               {/* Mobile */}
-              <div
-                id="about-team-mobile"
-                className="hidden max-[766px]:block"
-              >
+              <div id="about-team-mobile" className="hidden max-[766px]:block">
                 <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem] mb-6">
                   Meet the team
                 </h2>

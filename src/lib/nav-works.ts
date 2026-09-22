@@ -22,7 +22,7 @@ export const navWorks: NavWork[] = [
     poster: "/navigation/poster-fortuneo.webp",
   },
   {
-    name: "Founder Future",
+    name: "Founders Future",
     href: "/works/founders-future",
     category: "Investment",
     video: "/navigation/navbar_vignette_founderfuture.mp4",
