@@ -151,7 +151,6 @@ export const allWorks: Work[] = [
     description:
       "Omnia helps brands understand, monitor and shape how they appear in AI search. Inspired by Ariadne's thread, its identity turns complex data into clear direction, focusing on outcomes, clarity and control.",
     href: "https://www.useomnia.com/",
-    badge: "Coming soon",
     image: "/thumb-work/omnia.avif",
     aspect: "aspect-[387/250]",
   },
@@ -179,7 +178,7 @@ export const allWorks: Work[] = [
     description:
       "Rauva simplifies business by bringing banking, invoicing and accounting into one platform. Built around clarity and control, it replaces complexity with a unified system for modern entrepreneurs.",
     href: "https://rauva.com/",
-    badge: "Coming soon",
+
     image: "/thumb-work/rauva.avif",
     aspect: "aspect-[387/300]",
   },
@@ -188,7 +187,6 @@ export const allWorks: Work[] = [
     description:
       "Feedly turns information into actionable intelligence, bringing clarity to complex data. Its clear, confident identity helps teams anticipate change, stay ahead and act with greater confidence.",
     href: "https://feedly.com/",
-    badge: "Coming soon",
     image: "/thumb-work/feedly.avif",
     aspect: "aspect-[387/300]",
   },
