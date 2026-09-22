@@ -65,7 +65,7 @@ const team = [
     image: "/team/andrea.jpg",
   },
   {
-    name: "Kevin Robin",
+    name: "Kévin Robin",
     role: "Motion Designer",
     year: "2024",
     image: "/team/kevin.jpg",
@@ -89,7 +89,7 @@ const team = [
     image: "/team/remy.jpg",
   },
   {
-    name: "Vicenzo Tilleul",
+    name: "Vincenzo Tilleul",
     role: "Digital Designer",
     year: "2025",
     image: "/team/placeholder.jpg",
