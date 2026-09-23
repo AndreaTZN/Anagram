@@ -724,7 +724,7 @@ export default function AboutPage({
             id="about-merch"
             className="grow shrink-0 basis-0 self-start sticky top-4 bg-[#f4f4f4] overflow-hidden flex justify-center items-start aspect-40/49 max-[766px]:relative max-[766px]:top-0 max-[766px]:self-auto max-[766px]:order-14 max-[766px]:grow-0 max-[766px]:shrink max-[766px]:basis-auto max-[766px]:flex-col max-[766px]:items-center max-[766px]:rounded max-[766px]:aspect-100/100 max-[766px]:mb-2"
           >
-            <div className="absolute inset-0 blur-[20px]">
+            <div className="absolute inset-0">
               <ArpeRotation />
             </div>
             <div className="absolute bottom-8 left-4 right-4 flex items-center justify-between px-4 py-3 rounded-full bg-[#c4c4c4]">

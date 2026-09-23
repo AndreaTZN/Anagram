@@ -302,6 +302,128 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
   );
 }
 
+function WastetideVideoLink() {
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const badgeRef = useRef<HTMLSpanElement>(null);
+
+  useGSAP(
+    () => {
+      const link = linkRef.current;
+      const badge = badgeRef.current;
+      if (!link || !badge) return;
+
+      const media = gsap.matchMedia();
+      media.add(
+        "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
+        () => {
+          gsap.set(badge, { x: "0rem", y: "0rem" });
+          const position = { x: 0, y: 0 };
+          // Explicit setters preserve rem units while quickTo interpolates plain numbers.
+          const setX = gsap.quickSetter(badge, "x", "rem");
+          const setY = gsap.quickSetter(badge, "y", "rem");
+          const xTo = gsap.quickTo(position, "x", {
+            duration: 0.5,
+            ease: "power3.out",
+            onUpdate: () => setX(position.x),
+          });
+          const yTo = gsap.quickTo(position, "y", {
+            duration: 0.5,
+            ease: "power3.out",
+            onUpdate: () => setY(position.y),
+          });
+
+          const follow = (event: PointerEvent) => {
+            if (event.pointerType === "touch") return;
+            const bounds = link.getBoundingClientRect();
+            const rem = parseFloat(
+              getComputedStyle(document.documentElement).fontSize,
+            );
+            const left = gsap.utils.clamp(
+              rem,
+              Math.max(rem, bounds.width - badge.offsetWidth - rem),
+              event.clientX - bounds.left - badge.offsetWidth / 2,
+            );
+            const top = gsap.utils.clamp(
+              rem,
+              Math.max(rem, bounds.height - badge.offsetHeight - rem),
+              event.clientY - bounds.top - badge.offsetHeight / 2,
+            );
+            // Offset positions stay fixed while the badge's transform follows the pointer.
+            xTo((left - badge.offsetLeft) / rem);
+            yTo((top - badge.offsetTop) / rem);
+          };
+
+          function reset() {
+            xTo(0);
+            yTo(0);
+          }
+
+          const observer = new ResizeObserver(reset);
+          observer.observe(link);
+          observer.observe(badge);
+          link.addEventListener("pointerenter", follow);
+          link.addEventListener("pointermove", follow);
+          link.addEventListener("pointerleave", reset);
+          link.addEventListener("pointercancel", reset);
+
+          return () => {
+            observer.disconnect();
+            link.removeEventListener("pointerenter", follow);
+            link.removeEventListener("pointermove", follow);
+            link.removeEventListener("pointerleave", reset);
+            link.removeEventListener("pointercancel", reset);
+          };
+        },
+      );
+
+      return () => media.revert();
+    },
+    { scope: linkRef },
+  );
+
+  return (
+    <Link
+      id="home-wastetide-video"
+      ref={linkRef}
+      href="/works/wastetide"
+      aria-label="View Wastetide project"
+      className="group relative block col-span-1 md:col-span-4 md:my-8 2xl:col-span-5 overflow-hidden aspect-video focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]"
+    >
+      <div
+        id="home-wastetide-media"
+        className="pointer-events-none"
+        inert
+        aria-hidden="true"
+      >
+        <Vimeo169
+          dataSrc="1199785516"
+          dataRatio="1920/1080"
+          src="/works/Wastetide/2.webp"
+          alt="Wastetide video"
+        />
+      </div>
+      <span
+        id="home-wastetide-badge"
+        ref={badgeRef}
+        className="pointer-events-none absolute bottom-4 left-4 z-10 flex items-center gap-4 whitespace-nowrap backdrop-blur-[1.0625rem] bg-[rgba(12,12,12,0.2)] px-4 py-3 rounded-full"
+      >
+        <span
+          id="home-wastetide-badge-title"
+          className="text-white text-sm font-medium leading-[0.9]"
+        >
+          Wastetide
+        </span>
+        <span
+          id="home-wastetide-badge-cta"
+          className="text-white/75 group-hover:text-white text-[0.8125rem] leading-[0.9]"
+        >
+          See project
+        </span>
+      </span>
+    </Link>
+  );
+}
+
 export default function HomeContain() {
   const [activeFilter, setActiveFilter] = useState("All");
   // `pendingFilter` is what the user clicked; `activeFilter` only swaps once the
@@ -557,27 +679,7 @@ export default function HomeContain() {
         {filtered.slice(0, firstRowCount).map((work) => (
           <WorkCard key={work.name} work={work} priority />
         ))}
-        {filtered.length > firstRowCount && (
-          <div className="relative col-span-1 md:col-span-4 md:my-8 2xl:col-span-5 overflow-hidden aspect-video">
-            <Vimeo169
-              dataSrc="1199785516"
-              dataRatio="1920/1080"
-              src="/works/Wastetide/2.webp"
-              alt="Wastetide video"
-            />
-            <Link
-              href="/works/wastetide"
-              className="group absolute bottom-4 left-4 z-10 flex items-center gap-4 backdrop-blur-[17px] bg-[rgba(12,12,12,0.2)] px-4 py-3 rounded-full"
-            >
-              <span className="text-white text-sm font-medium leading-[0.9]">
-                Wastetide
-              </span>
-              <span className="text-white/75 group-hover:text-white text-[0.8125rem] leading-[0.9]">
-                See project
-              </span>
-            </Link>
-          </div>
-        )}
+        {filtered.length > firstRowCount && <WastetideVideoLink />}
         {filtered.slice(firstRowCount).map((work) => (
           <WorkCard key={work.name} work={work} priority={false} />
         ))}
