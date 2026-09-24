@@ -272,7 +272,7 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
         </div>
       </MediaWrapper>
       <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-between gap-2 w-full">
           <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
             {work.name}
           </span>
@@ -282,14 +282,23 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
             </span>
           )}
           {work.externalLink && (
-            <a
-              href={work.externalLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#0c0c0c] leading-[0.9] text-sm"
+            <span
+              id={
+                work.tag === "News"
+                  ? `home-news-${work.name.toLowerCase().replaceAll(" ", "-")}-article`
+                  : undefined
+              }
+              aria-label={
+                work.tag === "News" ? `Read article: ${work.name}` : undefined
+              }
+              className={
+                work.tag === "News"
+                  ? "inline-flex shrink-0 items-center rounded-full bg-[#ebebeb] px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-[2.5rem]"
+                  : "text-[#0c0c0c] leading-[0.9] text-sm"
+              }
             >
-              ↗
-            </a>
+              {work.tag === "News" ? "Article" : "↗"}
+            </span>
           )}
         </div>
         {work.description && (
