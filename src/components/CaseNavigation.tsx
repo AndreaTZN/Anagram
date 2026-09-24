@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { useCaseNav } from "@/contexts/CaseNavContext";
 import { getCaseOrigin } from "@/lib/case-origin";
 import { transitionTo } from "@/lib/page-transition";
@@ -13,11 +15,14 @@ import CloseWebGL, {
   type CloseWebGLHandle,
 } from "@/components/icons/CloseWebGL";
 
+gsap.registerPlugin(useGSAP);
+
 export default function CaseNavigation() {
   const { data, activeTab, setActiveTab } = useCaseNav();
   const [activeSection, setActiveSection] = useState<string>("");
   const activeSectionRef = useRef<string>("");
   const contentRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const sectionIconRefs = useRef<Record<string, HTMLImageElement | null>>({});
 
   const navRef = useRef<HTMLElement>(null);
   const tabReleaseRef = useRef<HTMLButtonElement>(null);
@@ -28,13 +33,35 @@ export default function CaseNavigation() {
 
   const sections = data?.[activeTab]?.sections;
 
-  // Sections dropdown reset on tab change
-  useLayoutEffect(() => {
-    if (!sections?.length) return;
-    const firstId = sections[0].id;
-    activeSectionRef.current = firstId;
-    setActiveSection(firstId);
-  }, [data, activeTab]);
+  const { contextSafe } = useGSAP(
+    () => {
+      const firstId = sections?.[0]?.id ?? "";
+      activeSectionRef.current = firstId;
+      setActiveSection(firstId);
+
+      // Initialize on tab changes, not in ref callbacks that rerun on every click.
+      sections?.forEach((section, index) => {
+        const open = index === 0;
+        const panel = contentRefs.current[section.id];
+        const icon = sectionIconRefs.current[section.id];
+        if (panel) {
+          gsap.set(panel, { height: open ? "auto" : 0, opacity: open ? 1 : 0 });
+          const text = panel.querySelector("p");
+          if (text)
+            gsap.set(text, {
+              opacity: open ? 1 : 0,
+              y: open ? "0rem" : "0.375rem",
+            });
+        }
+        if (icon) {
+          const scale = open ? 1.1 : 1;
+          if (icon.parentElement) gsap.set(icon.parentElement, { scale });
+          gsap.set(icon, { rotation: open ? 45 : 0, scale: 1 / scale });
+        }
+      });
+    },
+    { scope: navRef, dependencies: [data, activeTab], revertOnUpdate: true },
+  );
 
   // Dark / light theme animation
   useLayoutEffect(() => {
@@ -87,45 +114,100 @@ export default function CaseNavigation() {
     }
   }, [activeTab]);
 
-  function handleSectionClick(id: string) {
-    if (id === activeSectionRef.current) return;
-
+  const handleSectionClick = contextSafe((id: string) => {
+    const nextId = id === activeSectionRef.current ? "" : id;
     const prevEl = contentRefs.current[activeSectionRef.current];
-    const nextEl = contentRefs.current[id];
+    const nextEl = contentRefs.current[nextId];
+    const prevIcon = sectionIconRefs.current[activeSectionRef.current];
+    const nextIcon = sectionIconRefs.current[nextId];
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     if (prevEl) {
-      gsap.set(prevEl, { height: prevEl.scrollHeight });
+      gsap.set(prevEl, { height: prevEl.getBoundingClientRect().height });
       const prevText = prevEl.querySelector("p");
-      if (prevText) gsap.set(prevText, { opacity: 0, y: 6 });
+      if (prevText)
+        gsap.to(prevText, {
+          opacity: 0,
+          y: "0.375rem",
+          duration: reduceMotion ? 0 : 0.2,
+          overwrite: true,
+        });
       gsap.to(prevEl, {
         height: 0,
         opacity: 0,
-        duration: 0.5,
+        duration: reduceMotion ? 0 : 0.5,
         ease: "power3.out",
+        overwrite: true,
       });
     }
 
     if (nextEl) {
       const nextText = nextEl.querySelector("p");
-      gsap.set(nextEl, { height: 0, opacity: 0 });
       gsap.to(nextEl, {
         height: "auto",
         opacity: 1,
-        duration: 0.65,
+        duration: reduceMotion ? 0 : 0.65,
         ease: "power4.out",
+        overwrite: true,
       });
       if (nextText) {
-        gsap.fromTo(
-          nextText,
-          { opacity: 0, y: 6 },
-          { opacity: 1, y: 0, duration: 0.65, ease: "power4.out" },
-        );
+        gsap.to(nextText, {
+          opacity: 1,
+          y: "0rem",
+          duration: reduceMotion ? 0 : 0.65,
+          ease: "power4.out",
+          overwrite: true,
+        });
       }
     }
 
-    activeSectionRef.current = id;
-    setActiveSection(id);
-  }
+    [
+      { icon: prevIcon, open: false },
+      { icon: nextIcon, open: true },
+    ].forEach(({ icon, open }) => {
+      const indicator = icon?.parentElement;
+      if (!icon || !indicator) return;
+
+      const scale = open ? 1.1 : 1;
+      gsap.killTweensOf(indicator, "scaleX,scaleY");
+      gsap.killTweensOf(icon, "scaleX,scaleY,rotation");
+
+      if (reduceMotion) {
+        gsap.set(indicator, { scale });
+        gsap.set(icon, { rotation: open ? 45 : 0, scale: 1 / scale });
+        return;
+      }
+
+      gsap
+        .timeline()
+        .to(
+          indicator,
+          { scaleX: scale, duration: 0.55, ease: "elastic.out(1, 0.5)" },
+          0,
+        )
+        .to(
+          indicator,
+          { scaleY: scale, duration: 0.55, ease: "back.out(1.4)" },
+          0.05,
+        )
+        // Match the home filters: let the icon swell, then restore its size.
+        .to(
+          icon,
+          { scale: 1 / scale, duration: 0.4, ease: "power2.out" },
+          open ? 0.12 : 0,
+        )
+        .to(
+          icon,
+          { rotation: open ? 45 : 0, duration: 0.25, ease: "power2.inOut" },
+          0,
+        );
+    });
+
+    activeSectionRef.current = nextId;
+    setActiveSection(nextId);
+  });
 
   return (
     <nav
@@ -218,22 +300,48 @@ export default function CaseNavigation() {
                 {sections.map((section, i) => (
                   <div id={`case-nav-section-${section.id}`} key={section.id}>
                     <button
+                      id={`case-nav-section-toggle-${activeTab}-${i}`}
+                      type="button"
                       onClick={() => handleSectionClick(section.id)}
-                      className={`cursor-pointer text-sm font-medium leading-[1.1]] text-[#0c0c0c] transition-opacity duration-200 ${
-                        activeSection !== section.id ? "opacity-30" : ""
-                      }`}
+                      aria-expanded={activeSection === section.id}
+                      aria-controls={`case-nav-section-panel-${activeTab}-${i}`}
+                      className="flex w-full items-center justify-between gap-4 cursor-pointer text-left text-sm font-medium leading-[1.1] text-[#0c0c0c] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
                     >
-                      {section.label}
+                      <span
+                        className={
+                          activeSection !== section.id
+                            ? "opacity-30"
+                            : undefined
+                        }
+                      >
+                        {section.label}
+                      </span>
+                      <span
+                        id={`case-nav-section-indicator-${activeTab}-${i}`}
+                        aria-hidden="true"
+                        className="inline-flex shrink-0 items-center rounded-full bg-[#f5f5f5] px-4 py-3 backdrop-blur-[2.50625rem]"
+                      >
+                        <Image
+                          ref={(el) => {
+                            sectionIconRefs.current[section.id] = el;
+                          }}
+                          src="/icons/case-section-plus.svg"
+                          alt=""
+                          width={10}
+                          height={10}
+                          className="block size-[0.625rem]"
+                        />
+                      </span>
                     </button>
                     <div
+                      id={`case-nav-section-panel-${activeTab}-${i}`}
                       ref={(el) => {
                         contentRefs.current[section.id] = el;
-                        if (el && i !== 0) {
-                          gsap.set(el, { height: 0, opacity: 0 });
-                          const p = el.querySelector("p");
-                          if (p) gsap.set(p, { opacity: 0, y: 6 });
-                        }
                       }}
+                      role="region"
+                      aria-labelledby={`case-nav-section-toggle-${activeTab}-${i}`}
+                      aria-hidden={activeSection !== section.id}
+                      inert={activeSection !== section.id}
                       className="overflow-hidden"
                     >
                       <p className="section-desc mt-2 text-[#7c7c7c] text-[0.875rem] leading-[1.3] whitespace-pre-line">
