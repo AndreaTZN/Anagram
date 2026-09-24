@@ -73,9 +73,6 @@ export default function CaseNavigation() {
     isFirstTheme.current = false;
 
     const textColor = dark ? "#ffffff" : "#0c0c0c";
-    const navBg = dark ? "#0c0c0c" : "#ffffff";
-
-    gsap.to(nav, { backgroundColor: navBg, duration, ease: "power2.inOut" });
     gsap.to(nav.querySelectorAll("span, p, h1, a, button"), {
       color: textColor,
       duration,
@@ -213,7 +210,7 @@ export default function CaseNavigation() {
     <nav
       ref={navRef}
       id="case-nav"
-      className="relative flex flex-col bg-white h-dvh max-h-screen overflow-y-auto scrollbar-none"
+      className="relative flex flex-col h-dvh max-h-screen overflow-y-auto scrollbar-none"
     >
       <div
         id="case-nav-inner"

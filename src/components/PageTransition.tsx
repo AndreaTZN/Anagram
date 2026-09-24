@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { pageTransitionRef } from "@/lib/page-transition";
+import { useCaseNav } from "@/contexts/CaseNavContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +19,7 @@ export default function PageTransition({
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const { transitionCaseExit, isTabTransitioning } = useCaseNav();
   const prevPathname = useRef(pathname);
   const transitioning = useRef(false);
 
@@ -28,15 +30,24 @@ export default function PageTransition({
     if (!el || prevPathname.current === pathname) return;
     prevPathname.current = pathname;
 
+    if (isTabTransitioning) {
+      transitioning.current = false;
+      return;
+    }
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     // `top` instead of `y`: a transform on this wrapper would turn it into the
     // containing block of the fixed widget layer living inside <main>.
     gsap.fromTo(
       el,
-      { top: OFFSET, opacity: 0 },
+      { top: reduceMotion ? 0 : OFFSET, opacity: 0 },
       {
         top: 0,
         opacity: 1,
-        duration: 0.45,
+        duration: reduceMotion ? 0 : 0.45,
         ease: "power2.out",
         overwrite: true,
         clearProps: "top,opacity",
@@ -47,10 +58,10 @@ export default function PageTransition({
         },
       },
     );
-  }, [pathname]);
+  }, [pathname, isTabTransitioning]);
 
   useEffect(() => {
-    function navigate(href: string) {
+    function navigate(href: string, skipExitAnimation = false) {
       const el = ref.current;
       if (!el || transitioning.current) return;
       transitioning.current = true;
@@ -60,17 +71,28 @@ export default function PageTransition({
         new CustomEvent("anagram:page-exit", { detail: { href } }),
       );
 
+      if (skipExitAnimation) {
+        router.push(href);
+        return;
+      }
+
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
       gsap.to(el, {
-        top: `-${OFFSET}`,
+        top: reduceMotion ? 0 : `-${OFFSET}`,
         opacity: 0,
-        duration: 0.2,
+        duration: reduceMotion ? 0 : 0.2,
         ease: "sine.inOut",
         overwrite: true,
         onComplete: () => router.push(href),
       });
     }
 
-    pageTransitionRef.current = navigate;
+    pageTransitionRef.current = (href) =>
+      transitionCaseExit((skipExitAnimation) =>
+        navigate(href, skipExitAnimation),
+      );
 
     function onClick(e: MouseEvent) {
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
@@ -99,7 +121,7 @@ export default function PageTransition({
       document.removeEventListener("click", onClick, true);
       pageTransitionRef.current = null;
     };
-  }, [router]);
+  }, [router, transitionCaseExit]);
 
   return (
     <div ref={ref} id="page-transition" className="relative">

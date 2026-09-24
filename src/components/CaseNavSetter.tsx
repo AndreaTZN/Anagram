@@ -7,13 +7,13 @@ export default function CaseNavSetter({ data }: { data: CaseNavData }) {
   const { setData, setActiveTab } = useCaseNav();
 
   useLayoutEffect(() => {
-    setActiveTab("release");
+    setActiveTab("release", { immediate: true });
     setData(data);
     return () => {
       setData(null);
-      setActiveTab("release");
+      setActiveTab("release", { immediate: true });
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

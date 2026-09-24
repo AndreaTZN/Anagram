@@ -10,7 +10,7 @@ export default function CaseNavReset() {
 
   useLayoutEffect(() => {
     setData(null);
-    setActiveTab("release");
+    setActiveTab("release", { immediate: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

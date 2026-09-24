@@ -2,7 +2,6 @@
 
 import { useRef, useState, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
-import gsap from "gsap";
 import { useCaseNav } from "@/contexts/CaseNavContext";
 import { globalLenisRef } from "@/lib/lenis";
 import MobileCaseHeader from "./MobileCaseHeader";
@@ -46,25 +45,16 @@ export default function CaseTabContent({ release, backstage }: Props) {
   const { data, activeTab } = useCaseNav();
   const containerRef = useRef<HTMLDivElement>(null);
   const contentHostRef = useRef<HTMLDivElement>(null);
-  const isFirst = useRef(true);
+  const previousTab = useRef(activeTab);
   const [slots, setSlots] = useState<SectionSlots | null>(null);
 
   const sections = data?.[activeTab]?.sections ?? [];
   const dark = activeTab === "backstage";
 
   useLayoutEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    if (isFirst.current) {
-      isFirst.current = false;
-      return;
-    }
+    if (previousTab.current === activeTab) return;
+    previousTab.current = activeTab;
     globalLenisRef.current?.scrollTo(0, { immediate: true });
-    gsap.fromTo(
-      el,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.3, ease: "power2.inOut" },
-    );
   }, [activeTab]);
 
   // The tab content arrives as an opaque server-rendered node, so its children

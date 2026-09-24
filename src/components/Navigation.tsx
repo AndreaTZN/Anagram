@@ -516,7 +516,7 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`relative flex flex-col bg-white h-dvh max-h-screen${pathname === "/about" ? " max-[992px]:hidden" : ""}`}
+      className={`relative flex flex-col h-dvh max-h-screen${pathname === "/about" ? " max-[992px]:hidden" : ""}`}
     >
       <div className="flex flex-col gap-10 pl-4 pr-1.5 pt-6 pb-4">
         {/* Logo */}

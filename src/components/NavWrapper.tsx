@@ -13,7 +13,11 @@ gsap.registerPlugin(useGSAP);
 function getNavGroups(nav: HTMLElement, showCaseNav: boolean) {
   // Animate the containers, leaving link opacity and card transforms untouched.
   const selectors = showCaseNav
-    ? ["#case-nav-close", "#case-nav-header", "#case-nav-tabs, #case-nav-sections"]
+    ? [
+        "#case-nav-close",
+        "#case-nav-header",
+        "#case-nav-tabs, #case-nav-sections",
+      ]
     : [
         ":scope > nav > div:first-child > a",
         ":scope > nav > div:first-child > div",
@@ -26,7 +30,7 @@ function getNavGroups(nav: HTMLElement, showCaseNav: boolean) {
 }
 
 export default function NavWrapper() {
-  const { data } = useCaseNav();
+  const { data, isTabTransitioning } = useCaseNav();
   const showCaseNav = data !== null;
   const pathname = usePathname();
 
@@ -39,16 +43,19 @@ export default function NavWrapper() {
       const nav = navRef.current;
       if (!nav) return;
 
-      const shouldEnter = prevShowCaseNav.current !== showCaseNav || exiting.current;
+      const shouldEnter =
+        prevShowCaseNav.current !== showCaseNav || exiting.current;
       prevShowCaseNav.current = showCaseNav;
       exiting.current = false;
       nav.inert = false;
 
       const groups = getNavGroups(nav, showCaseNav);
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
       let animation: gsap.core.Animation | undefined;
 
-      if (shouldEnter) {
+      if (shouldEnter && !isTabTransitioning) {
         const timeline = gsap.timeline();
         groups.forEach((group, index) => {
           if (!group.length) return;
@@ -69,6 +76,7 @@ export default function NavWrapper() {
       }
 
       const onPageExit = contextSafe!((event: Event) => {
+        if (isTabTransitioning) return;
         const href = (event as CustomEvent<{ href: string }>).detail?.href;
         if (!href) return;
         const nextPathname = new URL(href, window.location.href).pathname;
@@ -92,7 +100,11 @@ export default function NavWrapper() {
         nav.inert = false;
       };
     },
-    { scope: navRef, dependencies: [pathname, showCaseNav], revertOnUpdate: true },
+    {
+      scope: navRef,
+      dependencies: [pathname, showCaseNav, isTabTransitioning],
+      revertOnUpdate: true,
+    },
   );
 
   return (
