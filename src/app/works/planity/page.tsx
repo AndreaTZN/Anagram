@@ -127,7 +127,8 @@ export default function PlanityPage() {
     <main className="relative flex-1 pt-6 pr-6 pl-2 pb-6 max-[766px]:px-4 max-[766px]:pt-4">
       <CaseNavSetter data={navData} />
       <h1 id="case-planity-seo-title" className="sr-only">
-        Planity Branding: brand identity and product design for Europe&apos;s number one beauty booking platform
+        Planity Branding: brand identity and product design for Europe&apos;s
+        number one beauty booking platform
       </h1>
       <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
@@ -341,10 +342,6 @@ export default function PlanityPage() {
                 }}
               />
               <Frame01
-                src="/works/Planity/backstage/35.webp"
-                alt="Planity backstage 35"
-              />
-              <Frame01
                 src="/works/Planity/backstage/36.webp"
                 alt="Planity backstage 36"
               />
@@ -359,10 +356,6 @@ export default function PlanityPage() {
                 alt="poster image video 38"
                 dataSrc="1160987405"
                 dataRatio="3456/1944"
-              />
-              <Frame01
-                src="/works/Planity/backstage/39.webp"
-                alt="Planity backstage 39"
               />
               <VimeoImageCards
                 imagePosition="left"

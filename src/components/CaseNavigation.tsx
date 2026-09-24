@@ -55,8 +55,11 @@ export default function CaseNavigation() {
         }
         if (icon) {
           const scale = open ? 1.1 : 1;
-          if (icon.parentElement) gsap.set(icon.parentElement, { scale });
-          gsap.set(icon, { rotation: open ? 45 : 0, scale: 1 / scale });
+          const background = icon.parentElement?.querySelector<HTMLElement>(
+            "[data-section-indicator-background]",
+          );
+          if (background) gsap.set(background, { scale });
+          gsap.set(icon, { rotation: open ? 45 : 0 });
         }
       });
     },
@@ -167,36 +170,33 @@ export default function CaseNavigation() {
       { icon: prevIcon, open: false },
       { icon: nextIcon, open: true },
     ].forEach(({ icon, open }) => {
-      const indicator = icon?.parentElement;
-      if (!icon || !indicator) return;
+      const background = icon?.parentElement?.querySelector<HTMLElement>(
+        "[data-section-indicator-background]",
+      );
+      if (!icon || !background) return;
 
       const scale = open ? 1.1 : 1;
-      gsap.killTweensOf(indicator, "scaleX,scaleY");
-      gsap.killTweensOf(icon, "scaleX,scaleY,rotation");
+      gsap.killTweensOf(background, "scaleX,scaleY");
+      gsap.killTweensOf(icon, "rotation");
 
       if (reduceMotion) {
-        gsap.set(indicator, { scale });
-        gsap.set(icon, { rotation: open ? 45 : 0, scale: 1 / scale });
+        gsap.set(background, { scale });
+        gsap.set(icon, { rotation: open ? 45 : 0 });
         return;
       }
 
+      // Keep the background's asymmetric bounce from stretching the rotating icon.
       gsap
         .timeline()
         .to(
-          indicator,
+          background,
           { scaleX: scale, duration: 0.55, ease: "elastic.out(1, 0.5)" },
           0,
         )
         .to(
-          indicator,
+          background,
           { scaleY: scale, duration: 0.55, ease: "back.out(1.4)" },
           0.05,
-        )
-        // Match the home filters: let the icon swell, then restore its size.
-        .to(
-          icon,
-          { scale: 1 / scale, duration: 0.4, ease: "power2.out" },
-          open ? 0.12 : 0,
         )
         .to(
           icon,
@@ -319,8 +319,13 @@ export default function CaseNavigation() {
                       <span
                         id={`case-nav-section-indicator-${activeTab}-${i}`}
                         aria-hidden="true"
-                        className="inline-flex shrink-0 items-center rounded-full bg-[#f5f5f5] px-4 py-3 backdrop-blur-[2.50625rem]"
+                        className="relative inline-flex shrink-0 items-center px-4 py-3"
                       >
+                        <span
+                          id={`case-nav-section-indicator-${activeTab}-${i}-background`}
+                          data-section-indicator-background
+                          className="absolute inset-0 rounded-full bg-[#f5f5f5] backdrop-blur-[2.50625rem]"
+                        />
                         <Image
                           ref={(el) => {
                             sectionIconRefs.current[section.id] = el;
@@ -329,7 +334,7 @@ export default function CaseNavigation() {
                           alt=""
                           width={10}
                           height={10}
-                          className="block size-[0.625rem]"
+                          className="relative block size-[0.625rem]"
                         />
                       </span>
                     </button>
