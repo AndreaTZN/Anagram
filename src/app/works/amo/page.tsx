@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fragment } from "react";
 import Image from "next/image";
 import CaseNavSetter from "@/components/CaseNavSetter";
+import CaseStudyJsonLd from "@/components/CaseStudyJsonLd";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
 import type { CaseNavData } from "@/contexts/CaseNavContext";
@@ -102,6 +103,7 @@ const faqItems = [
 export default function AmoCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
+      <CaseStudyJsonLd slug="amo" data={navData} image="/works/Amo/1.avif" />
       <CaseNavSetter data={navData} />
       <h1 id="case-amo-seo-title" className="sr-only">
         amo Brand Design: 3D product design and motion for the app putting

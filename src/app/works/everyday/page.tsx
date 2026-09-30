@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
+import CaseStudyJsonLd from "@/components/CaseStudyJsonLd";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
 import type { CaseNavData } from "@/contexts/CaseNavContext";
@@ -151,6 +152,11 @@ const backstageTeamRows = [
 export default function EverydayCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
+      <CaseStudyJsonLd
+        slug="everyday"
+        data={navData}
+        image="/works/Everyday/release/1.webp"
+      />
       <CaseNavSetter data={navData} />
       <h1 id="case-everyday-seo-title" className="sr-only">
         Everyday Branding: brand identity and strategy for an AI game studio turning play into a daily ritual

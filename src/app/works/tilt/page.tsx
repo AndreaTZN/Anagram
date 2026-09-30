@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
+import CaseStudyJsonLd from "@/components/CaseStudyJsonLd";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
 import type { CaseNavData } from "@/contexts/CaseNavContext";
@@ -73,6 +74,7 @@ const faqItems = [
 export default function TiltCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
+      <CaseStudyJsonLd slug="tilt" data={navData} image="/works/Tilt/1.avif" />
       <CaseNavSetter data={navData} />
       <h1 id="case-tilt-seo-title" className="sr-only">
         Tilt Branding: brand identity and website for the startup balancing the energy grid in real time

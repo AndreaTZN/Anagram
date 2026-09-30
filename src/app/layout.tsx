@@ -21,8 +21,12 @@ import {
 } from "@/components/cmp";
 import { CookieServices } from "@/components/CookieServices";
 import { GtmPageView } from "@/components/GtmPageView";
-
-const SITE_URL = "https://www.anagram.club";
+import {
+  ORGANIZATION_ID,
+  SITE_URL,
+  WEBSITE_ID,
+  serializeJsonLd,
+} from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -103,12 +107,31 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
+      "@id": ORGANIZATION_ID,
       name: "Anagram Club",
+      alternateName: "Anagram",
       url: SITE_URL,
       logo: `${SITE_URL}/webclip.jpg`,
+      email: "hello@anagram.club",
       description:
         "Anagram Club is a creative branding studio shaping market-defining brands through bold branding, product design, and a sharp creative process.",
+      address: [
+        {
+          "@type": "PostalAddress",
+          addressLocality: "Paris",
+          addressCountry: "FR",
+        },
+        {
+          "@type": "PostalAddress",
+          addressLocality: "New York",
+          addressCountry: "US",
+        },
+      ],
+      sameAs: [
+        "https://x.com/anagramclub",
+        "https://www.linkedin.com/company/anagramclub/",
+        "https://www.instagram.com/anagramclub/",
+      ],
       contactPoint: [
         {
           "@type": "ContactPoint",
@@ -121,13 +144,13 @@ const jsonLd = {
     },
     {
       "@type": "WebSite",
-      "@id": `${SITE_URL}/#website`,
+      "@id": WEBSITE_ID,
       name: "Anagram Club",
       url: SITE_URL,
       description:
         "Anagram Club shapes market-defining brands through bold branding, product design, and a sharp creative process.",
-      publisher: { "@id": `${SITE_URL}/#organization` },
-      inLanguage: "fr",
+      publisher: { "@id": ORGANIZATION_ID },
+      inLanguage: "en",
     },
   ],
 };
@@ -148,7 +171,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLd),
+            __html: serializeJsonLd(jsonLd),
           }}
         />
         <GoogleTagManager />

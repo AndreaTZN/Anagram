@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
+import CaseStudyJsonLd from "@/components/CaseStudyJsonLd";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
 import type { CaseNavData } from "@/contexts/CaseNavContext";
@@ -125,6 +126,11 @@ const faqItems = [
 export default function PlanityPage() {
   return (
     <main className="relative flex-1 pt-6 pr-6 pl-2 pb-6 max-[766px]:px-4 max-[766px]:pt-4">
+      <CaseStudyJsonLd
+        slug="planity"
+        data={navData}
+        image="/works/Planity/release/1.webp"
+      />
       <CaseNavSetter data={navData} />
       <h1 id="case-planity-seo-title" className="sr-only">
         Planity Branding: brand identity and product design for Europe&apos;s

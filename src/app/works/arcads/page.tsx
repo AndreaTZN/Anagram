@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
+import CaseStudyJsonLd from "@/components/CaseStudyJsonLd";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
 import Vimeo169 from "@/components/cases-frame/Vimeo169";
@@ -71,6 +72,11 @@ const faqItems = [
 export default function ArcadsCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
+      <CaseStudyJsonLd
+        slug="arcads"
+        data={navData}
+        image="/works/Arcads/1.avif"
+      />
       <CaseNavSetter data={navData} />
       <h1 id="case-arcads-seo-title" className="sr-only">
         Arcads Branding: brand identity for the platform turning text into AI video ads

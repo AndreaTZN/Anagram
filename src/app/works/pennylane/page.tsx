@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
+import CaseStudyJsonLd from "@/components/CaseStudyJsonLd";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
 import CaseStats from "@/components/cases-frame/CaseStats";
@@ -71,6 +72,11 @@ const faqItems = [
 export default function PennylaneCasePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
+      <CaseStudyJsonLd
+        slug="pennylane"
+        data={navData}
+        image="/works/Pennylane/1.avif"
+      />
       <CaseNavSetter data={navData} />
       <h1 id="case-pennylane-seo-title" className="sr-only">
         Pennylane Branding: brand identity and website redesign for the French Tech 120 accounting platform

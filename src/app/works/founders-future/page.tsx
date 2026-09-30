@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import CaseNavSetter from "@/components/CaseNavSetter";
+import CaseStudyJsonLd from "@/components/CaseStudyJsonLd";
 import CaseTabContent from "@/components/CaseTabContent";
 import Frame01 from "@/components/cases-frame/Frame01";
 import Vimeo169 from "@/components/cases-frame/Vimeo169";
@@ -106,6 +107,11 @@ const faqItems = [
 export default function FoundersFuturePage() {
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-2 pb-4 max-[766px]:px-4 max-[766px]:pt-4">
+      <CaseStudyJsonLd
+        slug="founders-future"
+        data={navData}
+        image="/works/FoundersFuture/release/1.webp"
+      />
       <CaseNavSetter data={navData} />
       <h1 id="case-founders-future-seo-title" className="sr-only">
         Founders Future Branding: brand identity and strategy for a tech investment platform with international ambition
