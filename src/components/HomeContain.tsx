@@ -9,6 +9,7 @@ import Badge from "./Badge";
 import MerchCard from "./MerchCard";
 import ToolCard from "./ToolCard";
 import Vimeo169 from "./cases-frame/Vimeo169";
+import NewsModal, { type NewsSection } from "./NewsModal";
 import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
 
 gsap.registerPlugin(useGSAP);
@@ -25,6 +26,8 @@ type Work = {
   externalLink?: string;
   href?: string;
   tag?: string;
+  date?: string;
+  sections?: NewsSection[];
   media: {
     type: "image" | "video";
     src?: string;
@@ -153,7 +156,65 @@ const works: Work[] = [
 
 const FILTERS = ["All", "Works", "Merch", "News", "Coming project", "Tools"];
 
-function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
+function slugify(name: string) {
+  return name.toLowerCase().replaceAll(" ", "-");
+}
+
+// Declared at module level: a wrapper component recreated on each render would
+// remount the media (and its Vimeo player) and drop focus return from the modal.
+function CardMediaLink({
+  work,
+  onOpen,
+  children,
+}: {
+  work: Work;
+  onOpen?: (source: HTMLElement) => void;
+  children: React.ReactNode;
+}) {
+  if (onOpen) {
+    return (
+      <button
+        type="button"
+        aria-haspopup="dialog"
+        aria-label={`Read article: ${work.name}`}
+        onClick={(event) => onOpen(event.currentTarget)}
+        className="block w-full cursor-pointer text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]"
+      >
+        {children}
+      </button>
+    );
+  }
+  if (work.href) {
+    return (
+      <Link href={work.href} aria-label={work.name}>
+        {children}
+      </Link>
+    );
+  }
+  if (work.externalLink) {
+    return (
+      <a
+        href={work.externalLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={work.name}
+      >
+        {children}
+      </a>
+    );
+  }
+  return <>{children}</>;
+}
+
+function WorkCard({
+  work,
+  priority,
+  onOpenNews,
+}: {
+  work: Work;
+  priority: boolean;
+  onOpenNews: (work: Work, source: HTMLElement) => void;
+}) {
   if (work.tag === "Merch" && work.price) {
     return (
       <MerchCard name={work.name} price={work.price} src={work.media.src!} />
@@ -172,29 +233,13 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
     );
   }
 
-  const MediaWrapper = work.href
-    ? ({ children }: { children: React.ReactNode }) => (
-        <Link href={work.href!} aria-label={work.name}>
-          {children}
-        </Link>
-      )
-    : work.externalLink
-      ? ({ children }: { children: React.ReactNode }) => (
-          <a
-            href={work.externalLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={work.name}
-          >
-            {children}
-          </a>
-        )
-      : ({ children }: { children: React.ReactNode }) => <>{children}</>;
+  const isNews = work.tag === "News";
 
   const badgeLabel =
     work.badge ?? (work.tag === "Coming project" ? "Coming soon" : undefined);
 
-  const isClickable = Boolean(work.href) || Boolean(work.externalLink);
+  const isClickable =
+    isNews || Boolean(work.href) || Boolean(work.externalLink);
   const overlayRef = useRef<HTMLDivElement>(null);
   const embedRef = useRef<HTMLDivElement>(null);
 
@@ -229,7 +274,11 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <MediaWrapper>
+      <CardMediaLink
+        work={work}
+        // News open in a modal that morphs out of the card instead of leaving the site.
+        onOpen={isNews ? (source) => onOpenNews(work, source) : undefined}
+      >
         <div
           className={`relative ${work.media.aspect} overflow-hidden w-full`}
           style={{ backgroundColor: work.media.bg }}
@@ -270,7 +319,7 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
           />
           {badgeLabel && <Badge label={badgeLabel} />}
         </div>
-      </MediaWrapper>
+      </CardMediaLink>
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2 w-full">
           <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
@@ -284,20 +333,15 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
           {work.externalLink && (
             <span
               id={
-                work.tag === "News"
-                  ? `home-news-${work.name.toLowerCase().replaceAll(" ", "-")}-article`
-                  : undefined
-              }
-              aria-label={
-                work.tag === "News" ? `Read article: ${work.name}` : undefined
+                isNews ? `home-news-${slugify(work.name)}-article` : undefined
               }
               className={
-                work.tag === "News"
+                isNews
                   ? "inline-flex shrink-0 items-center rounded-full bg-[#ebebeb] px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-[2.5rem]"
                   : "text-[#0c0c0c] leading-[0.9] text-sm"
               }
             >
-              {work.tag === "News" ? "Article" : "↗"}
+              {isNews ? "Article" : "↗"}
             </span>
           )}
         </div>
@@ -448,6 +492,10 @@ export default function HomeContain() {
   const labelWidth = useRef(0);
   const labelHidden = useRef(false);
   const [isWide, setIsWide] = useState(false);
+  const [openNews, setOpenNews] = useState<{
+    work: Work;
+    source: HTMLElement;
+  } | null>(null);
 
   // Mirrors the 2xl breakpoint below so the row before the Wastetide video
   // always fills the grid instead of leaving a trailing empty column.
@@ -686,13 +734,39 @@ export default function HomeContain() {
         className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-10 md:gap-4 items-start"
       >
         {filtered.slice(0, firstRowCount).map((work) => (
-          <WorkCard key={work.name} work={work} priority />
+          <WorkCard
+            key={work.name}
+            work={work}
+            priority
+            onOpenNews={(work, source) => setOpenNews({ work, source })}
+          />
         ))}
         {filtered.length > firstRowCount && <WastetideVideoLink />}
         {filtered.slice(firstRowCount).map((work) => (
-          <WorkCard key={work.name} work={work} priority={false} />
+          <WorkCard
+            key={work.name}
+            work={work}
+            priority={false}
+            onOpenNews={(work, source) => setOpenNews({ work, source })}
+          />
         ))}
       </div>
+
+      {openNews && (
+        <NewsModal
+          article={{
+            title: openNews.work.name,
+            date: openNews.work.date,
+            subtitle: openNews.work.description,
+            image: openNews.work.media.src!,
+            aspect: openNews.work.media.aspect,
+            sections: openNews.work.sections,
+            link: openNews.work.externalLink,
+          }}
+          source={openNews.source}
+          onClosed={() => setOpenNews(null)}
+        />
+      )}
     </div>
   );
 }
