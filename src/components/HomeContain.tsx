@@ -38,6 +38,18 @@ type Work = {
 
 const works: Work[] = [
   {
+    name: "Bitstack",
+    tag: "News",
+    description:
+      "A bold new identity for Bitstack, reflecting its evolution and ambitions for the future.",
+    externalLink: "https://www.instagram.com/p/DfCj3w4xznk/",
+    media: {
+      type: "image",
+      src: "/news/bitstack.webp",
+      aspect: "aspect-[280/250]",
+    },
+  },
+  {
     name: "Wastetide",
     href: "/works/wastetide",
     tag: "Works",
