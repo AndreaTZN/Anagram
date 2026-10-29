@@ -42,7 +42,7 @@ const works: Work[] = [
     tag: "News",
     description:
       "A bold new identity for Bitstack, reflecting its evolution and ambitions for the future.",
-    externalLink: "https://www.instagram.com/p/DfCj3w4xznk/",
+    externalLink: "https://taap.it/PKEgpbt",
     media: {
       type: "image",
       src: "/news/bitstack.webp",
