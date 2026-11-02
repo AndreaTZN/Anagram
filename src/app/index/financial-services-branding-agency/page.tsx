@@ -5,11 +5,11 @@ export const metadata: Metadata = {
   title: "Financial Services Branding Agency: Anagram",
   description:
     "Anagram is a financial services branding agency with a proven track record: from Fortuneo to Qonto. Strategy, identity, motion, and web for brands that earn trust.",
-  alternates: { canonical: "/page/financial-services-branding-agency" },
+  alternates: { canonical: "/index/financial-services-branding-agency" },
   openGraph: {
     title: "Financial Services Branding Agency: Anagram",
     description: "Anagram is a financial services branding agency with a proven track record: from Fortuneo to Qonto. Strategy, identity, motion, and web for brands that earn trust.",
-    url: "/page/financial-services-branding-agency",
+    url: "/index/financial-services-branding-agency",
     images: ["/opengraph.webp"],
   },
   robots: { index: true, follow: true },

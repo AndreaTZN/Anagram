@@ -47,9 +47,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Acquisition landing pages — indexable, so they belong in the sitemap.
-  // There is no /page index route, only the leaf pages.
-  const seoRoutes: MetadataRoute.Sitemap = getSlugs("page").map((slug) => ({
-    url: `${BASE_URL}/page/${slug}`,
+  const seoRoutes: MetadataRoute.Sitemap = getSlugs("index").map((slug) => ({
+    url: `${BASE_URL}/index/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.7,
