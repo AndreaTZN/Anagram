@@ -22,11 +22,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## CMS
 
-The Sanity Studio is embedded at `/studio`. Schemas live in `src/sanity/schemas/`.
+The Sanity Studio runs standalone (not embedded in the Next.js app). Schemas live in `src/sanity/schemas/`.
 
 ```bash
-# Open the studio
-open http://localhost:3000/studio
+# Run the studio locally
+npm run studio
 ```
 
 ## Project structure
