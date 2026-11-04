@@ -32,17 +32,14 @@ function Divider() {
 }
 
 function HubSection({
-  id,
   title,
   children,
 }: {
-  id: string;
   title: string;
   children: ReactNode;
 }) {
   return (
     <section
-      id={id}
       className="flex items-start justify-between gap-4 text-[#0c0c0c] max-[766px]:flex-col max-[766px]:gap-6"
     >
       <h2 className="w-50 shrink-0 text-lg leading-[1.1] tracking-[-0.005625rem] max-[766px]:w-auto max-[766px]:text-2xl">
@@ -58,24 +55,22 @@ export default function IndexHubPage() {
     <main className="relative flex-1 pt-4 pr-4 pl-4 pb-4 max-[992px]:mt-12">
       <h1 className="sr-only">Branding agency services by Anagram</h1>
 
-      <div id="index-hero">
-        <Vimeo169
-          src="/home/poster-hero.webp"
-          alt="Anagram Club — Hero"
-          dataSrc="1213947103"
-          dataRatio="16/9"
-          priority
-        />
-      </div>
+      <Vimeo169
+        src="/home/poster-hero.webp"
+        alt="Anagram Club — Hero"
+        dataSrc="1213947103"
+        dataRatio="16/9"
+        priority
+      />
 
-      <div id="index-content" className="flex flex-col gap-16 pt-8 pb-14">
-        <HubSection id="index-hub" title="Index">
+      <div className="flex flex-col gap-16 pt-8 pb-14">
+        <HubSection title="Index">
           <IndexHubGrid />
         </HubSection>
 
         <Divider />
 
-        <HubSection id="index-services" title="Services">
+        <HubSection title="Services">
           <div className="flex w-150 min-w-0 flex-col gap-8 text-sm font-medium max-[766px]:w-full">
             {SERVICE_ROWS.map((row, rowIndex) => (
               <Fragment key={rowIndex}>
@@ -117,7 +112,7 @@ export default function IndexHubPage() {
 
         <Divider />
 
-        <HubSection id="index-studio" title="Our studio">
+        <HubSection title="Our studio">
           <div className="flex w-150 min-w-0 items-start gap-4 text-sm font-medium max-[766px]:w-full max-[766px]:flex-col max-[766px]:gap-6">
             <div className="flex flex-1 flex-col gap-4">
               <div className="flex flex-col">
@@ -146,7 +141,7 @@ export default function IndexHubPage() {
 
         <Divider />
 
-        <HubSection id="index-clients" title="We worked for">
+        <HubSection title="We worked for">
           <div className="flex w-150 min-w-0 items-start gap-4 text-sm font-medium leading-[1.3] text-[#8b8b8b] max-[766px]:w-full max-[766px]:flex-col max-[766px]:gap-0">
             {[clientColumns.slice(0, 2), clientColumns.slice(2)].map(
               (group, groupIndex) => (

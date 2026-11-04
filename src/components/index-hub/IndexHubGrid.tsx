@@ -86,7 +86,12 @@ const listPages: HubPage[] = [
   { slug: "startup-branding-agency", title: "Startup branding agency" },
 ];
 
-function useHoverTweens() {
+// Muted arrows are the solid black SVG at 25% (same render as the Figma asset,
+// whose opacity sits on its group) so hover can tween them to full black.
+const ARROW_REST_OPACITY = 0.25;
+const LIST_DIMMED_OPACITY = 0.3;
+
+function useHoverTweens(darkenArrow = false) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<HTMLSpanElement>(null);
   const { contextSafe } = useGSAP();
@@ -108,6 +113,7 @@ function useHoverTweens() {
     }
     gsap.to(arrowRef.current, {
       x: hovered && !reduceMotion ? "0.25rem" : 0,
+      ...(darkenArrow ? { opacity: hovered ? 1 : ARROW_REST_OPACITY } : {}),
       duration,
       ease,
       overwrite: true,
@@ -124,17 +130,28 @@ function useHoverTweens() {
   };
 }
 
+const ARROW_SRC = {
+  white: "/icons/index-arrow-white.svg",
+  black: "/icons/index-arrow-black.svg",
+};
+
 function Arrow({
   arrowRef,
-  light = false,
+  tone,
+  className = "",
 }: {
-  arrowRef: RefObject<HTMLSpanElement | null>;
-  light?: boolean;
+  arrowRef?: RefObject<HTMLSpanElement | null>;
+  tone: keyof typeof ARROW_SRC;
+  className?: string;
 }) {
   return (
-    <span ref={arrowRef} className="inline-flex shrink-0">
+    <span
+      ref={arrowRef}
+      data-hub-arrow
+      className={`inline-flex shrink-0 ${className}`}
+    >
       <Image
-        src={light ? "/icons/index-arrow-white.svg" : "/icons/index-arrow.svg"}
+        src={ARROW_SRC[tone]}
         alt=""
         width={9}
         height={8}
@@ -153,17 +170,15 @@ function HubCard({
   mediaClassName: string;
   children?: ReactNode;
 }) {
-  const { overlayRef, arrowRef, hoverHandlers } = useHoverTweens();
+  const { overlayRef, arrowRef, hoverHandlers } = useHoverTweens(true);
 
   return (
     <Link
-      id={`index-card-${page.slug}`}
       href={`/page/${page.slug}`}
       {...hoverHandlers}
       className={`flex flex-col gap-4 ${FOCUS_RING}`}
     >
       <div
-        id={`index-card-${page.slug}-media`}
         className={`relative w-full overflow-hidden ${mediaClassName}`}
       >
         {children}
@@ -183,7 +198,7 @@ function HubCard({
             </span>
           )}
         </div>
-        <Arrow arrowRef={arrowRef} />
+        <Arrow arrowRef={arrowRef} tone="black" className="opacity-25" />
       </div>
     </Link>
   );
@@ -194,13 +209,11 @@ function FeaturedCard({ page }: { page: HubPage }) {
 
   return (
     <Link
-      id={`index-card-${page.slug}`}
       href={`/page/${page.slug}`}
       {...hoverHandlers}
       className={`relative block aspect-[3/2] w-full overflow-hidden bg-[#0c0c0c] ${FOCUS_RING}`}
     >
       <Image
-        id={`index-card-${page.slug}-media`}
         src="/seo/hub/brand-design-agency.webp"
         alt=""
         fill
@@ -215,36 +228,72 @@ function FeaturedCard({ page }: { page: HubPage }) {
         <span className="text-sm font-medium leading-[0.9] text-white">
           {page.title}
         </span>
-        <Arrow arrowRef={arrowRef} light />
+        <Arrow arrowRef={arrowRef} tone="white" />
       </div>
     </Link>
   );
 }
 
-function HubListLink({ page }: { page: HubPage }) {
-  const { arrowRef, hoverHandlers } = useHoverTweens();
+function HubList({ pages }: { pages: HubPage[] }) {
+  const listRef = useRef<HTMLElement>(null);
+  const { contextSafe } = useGSAP({ scope: listRef });
+
+  // null restores every row; a slug dims the other rows and darkens its arrow.
+  const highlight = contextSafe((activeSlug: string | null) => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const duration = reduceMotion ? 0 : 0.3;
+
+    gsap.utils
+      .toArray<HTMLElement>("[data-hub-row]", listRef.current)
+      .forEach((row) => {
+        const active = row.dataset.hubRow === activeSlug;
+        gsap.to(row, {
+          opacity: activeSlug === null || active ? 1 : LIST_DIMMED_OPACITY,
+          duration,
+          ease: "power2.out",
+          overwrite: true,
+        });
+        gsap.to(row.querySelector("[data-hub-arrow]"), {
+          opacity: active ? 1 : ARROW_REST_OPACITY,
+          x: active && !reduceMotion ? "0.25rem" : 0,
+          duration,
+          ease: "power2.out",
+          overwrite: true,
+        });
+      });
+  });
 
   return (
-    <Link
-      id={`index-list-${page.slug}`}
-      href={`/page/${page.slug}`}
-      {...hoverHandlers}
-      className={`flex items-center justify-between gap-4 py-2 text-sm font-medium leading-[0.9] text-[#0c0c0c] ${FOCUS_RING}`}
+    <nav
+      ref={listRef}
+      aria-label="More agency services"
+      className="-my-2 flex flex-col"
+      onMouseLeave={() => highlight(null)}
     >
-      <span>{page.title}</span>
-      <Arrow arrowRef={arrowRef} />
-    </Link>
+      {pages.map((page) => (
+        <Link
+          key={page.slug}
+          href={`/page/${page.slug}`}
+          data-hub-row={page.slug}
+          onMouseEnter={() => highlight(page.slug)}
+          className={`flex items-center justify-between gap-4 py-2 text-sm font-medium leading-[0.9] text-[#0c0c0c] ${FOCUS_RING}`}
+        >
+          <span>{page.title}</span>
+          <Arrow tone="black" className="opacity-25" />
+        </Link>
+      ))}
+    </nav>
   );
 }
 
 export default function IndexHubGrid() {
   return (
     <div
-      id="index-hub-grid"
       className="flex w-150 min-w-0 flex-col gap-8 max-[766px]:w-full"
     >
       <div
-        id="index-hub-row-top"
         className="grid grid-cols-2 items-start gap-4 max-[766px]:grid-cols-1 max-[766px]:gap-8"
       >
         <HubCard
@@ -273,14 +322,12 @@ export default function IndexHubGrid() {
       <FeaturedCard page={featuredPage} />
 
       <div
-        id="index-hub-row-bottom"
         className="grid grid-cols-2 items-start gap-4 max-[766px]:grid-cols-1 max-[766px]:gap-8"
       >
         <HubCard page={servicesPage} mediaClassName="aspect-[4/5] bg-[#e5e5e5]">
           {SERVICES_CLOCKS.map((clock) => (
             <div
               key={clock.id}
-              id={`index-card-${servicesPage.slug}-clock-${clock.id}`}
               aria-hidden="true"
               className={`absolute flex aspect-square w-[48.26%] -translate-x-1/2 -translate-y-1/2 -scale-y-100 items-center justify-center ${clock.className}`}
             >
@@ -305,15 +352,7 @@ export default function IndexHubGrid() {
 
       <div className="h-[0.5px] w-full bg-[#0c0c0c]/15" />
 
-      <nav
-        id="index-hub-list"
-        aria-label="More agency services"
-        className="-my-2 flex flex-col"
-      >
-        {listPages.map((page) => (
-          <HubListLink key={page.slug} page={page} />
-        ))}
-      </nav>
+      <HubList pages={listPages} />
     </div>
   );
 }
