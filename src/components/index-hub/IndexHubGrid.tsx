@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
+import AnalogClock from "@/components/AnalogClock";
 
 gsap.registerPlugin(useGSAP);
 
@@ -15,7 +15,24 @@ type HubPage = {
   description?: string;
 };
 
-const HOME_REEL_VIMEO_ID = "1213947103";
+// Placement, rotation and vertical flip are taken as-is from the Figma card.
+// The wrapper is 48.26% wide because AnalogClock's dial fills 97.5% of its
+// SVG, which puts the dial at Figma's 137px on a 292px card.
+const SERVICES_CLOCKS = [
+  {
+    id: "paris",
+    timezone: "Europe/Paris",
+    color: "#8B7759",
+    className: "left-[32.62%] top-[30.55%] rotate-[-92.06deg]",
+  },
+  {
+    id: "new-york",
+    timezone: "America/New_York",
+    color: "#F981FE",
+    className: "left-[67.38%] top-[70.26%] rotate-[166.51deg]",
+  },
+];
+
 // Cards are half of the 37.5rem column on desktop and full width below 767px.
 const CARD_SIZES = "(max-width: 766px) 100vw, 20vw";
 const FOCUS_RING =
@@ -117,7 +134,7 @@ function Arrow({
   return (
     <span ref={arrowRef} className="inline-flex shrink-0">
       <Image
-        src={light ? "/icons/index-arrow-light.svg" : "/icons/index-arrow.svg"}
+        src={light ? "/icons/index-arrow-white.svg" : "/icons/index-arrow.svg"}
         alt=""
         width={9}
         height={8}
@@ -174,14 +191,6 @@ function HubCard({
 
 function FeaturedCard({ page }: { page: HubPage }) {
   const { overlayRef, arrowRef, hoverHandlers } = useHoverTweens();
-  const embedRef = useRef<HTMLDivElement>(null);
-
-  useVimeoPlayer({
-    embedRef,
-    dataSrc: HOME_REEL_VIMEO_ID,
-    dataRatio: "16/9",
-    title: page.title,
-  });
 
   return (
     <Link
@@ -190,22 +199,14 @@ function FeaturedCard({ page }: { page: HubPage }) {
       {...hoverHandlers}
       className={`relative block aspect-[3/2] w-full overflow-hidden bg-[#0c0c0c] ${FOCUS_RING}`}
     >
-      {/* `isolate` keeps the player's z-index inside the media layer so the
-          overlay and title stay on top once the iframe is injected. */}
-      <div
+      <Image
         id={`index-card-${page.slug}-media`}
-        ref={embedRef}
-        aria-hidden="true"
-        className="absolute inset-0 isolate overflow-hidden"
-      >
-        <Image
-          src="/home/poster-hero.webp"
-          alt=""
-          fill
-          sizes="(max-width: 766px) 100vw, 42vw"
-          className="z-1 object-cover"
-        />
-      </div>
+        src="/seo/hub/brand-design-agency.webp"
+        alt=""
+        fill
+        sizes="(max-width: 766px) 100vw, 42vw"
+        className="object-cover"
+      />
       <div
         ref={overlayRef}
         className="pointer-events-none absolute inset-0 bg-[#0c0c0c] opacity-0"
@@ -275,8 +276,18 @@ export default function IndexHubGrid() {
         id="index-hub-row-bottom"
         className="grid grid-cols-2 items-start gap-4 max-[766px]:grid-cols-1 max-[766px]:gap-8"
       >
-        {/* Placeholder until the "Spin the ball" recording is exported. */}
-        <HubCard page={servicesPage} mediaClassName="aspect-[4/5] bg-[#e5e5e5]" />
+        <HubCard page={servicesPage} mediaClassName="aspect-[4/5] bg-[#e5e5e5]">
+          {SERVICES_CLOCKS.map((clock) => (
+            <div
+              key={clock.id}
+              id={`index-card-${servicesPage.slug}-clock-${clock.id}`}
+              aria-hidden="true"
+              className={`absolute flex aspect-square w-[48.26%] -translate-x-1/2 -translate-y-1/2 -scale-y-100 items-center justify-center ${clock.className}`}
+            >
+              <AnalogClock timezone={clock.timezone} color={clock.color} />
+            </div>
+          ))}
+        </HubCard>
         <HubCard
           page={strategyPage}
           mediaClassName="flex aspect-[4/5] items-center justify-center bg-black"
