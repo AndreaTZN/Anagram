@@ -305,7 +305,7 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
               }
               className={
                 work.tag === "News"
-                  ? "inline-flex shrink-0 items-center rounded-full bg-[#ebebeb] px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-[2.5rem]"
+                  ? "inline-flex shrink-0 items-center rounded-full bg-[#0c0c0c]/5 px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-2xl"
                   : "text-[#0c0c0c] leading-[0.9] text-sm"
               }
             >

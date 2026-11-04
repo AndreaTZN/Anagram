@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
 
       // Archives is now a tab inside /works, not its own route.
       { source: '/archives', destination: '/works', permanent: true },
+
+      // Agency landing pages moved from /page/* to /index/*; the old URLs are
+      // already in search indexes, so they must keep resolving.
+      { source: '/page', destination: '/index', permanent: true },
+      { source: '/page/:slug', destination: '/index/:slug', permanent: true },
     ]
   },
 }
