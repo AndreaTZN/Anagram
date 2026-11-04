@@ -158,7 +158,7 @@ function HubCard({
   return (
     <Link
       id={`index-card-${page.slug}`}
-      href={`/index/${page.slug}`}
+      href={`/page/${page.slug}`}
       {...hoverHandlers}
       className={`flex flex-col gap-4 ${FOCUS_RING}`}
     >
@@ -195,7 +195,7 @@ function FeaturedCard({ page }: { page: HubPage }) {
   return (
     <Link
       id={`index-card-${page.slug}`}
-      href={`/index/${page.slug}`}
+      href={`/page/${page.slug}`}
       {...hoverHandlers}
       className={`relative block aspect-[3/2] w-full overflow-hidden bg-[#0c0c0c] ${FOCUS_RING}`}
     >
@@ -227,7 +227,7 @@ function HubListLink({ page }: { page: HubPage }) {
   return (
     <Link
       id={`index-list-${page.slug}`}
-      href={`/index/${page.slug}`}
+      href={`/page/${page.slug}`}
       {...hoverHandlers}
       className={`flex items-center justify-between gap-4 py-2 text-sm font-medium leading-[0.9] text-[#0c0c0c] ${FOCUS_RING}`}
     >

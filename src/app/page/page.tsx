@@ -13,12 +13,12 @@ export const metadata: Metadata = {
   title: "Branding Agency Services Index | Anagram Studio",
   description:
     "Every branding service Anagram offers in one place: brand identity, positioning, strategy, design, rebranding, and branding for startups and fintech.",
-  alternates: { canonical: "/index" },
+  alternates: { canonical: "/page" },
   openGraph: {
     title: "Branding Agency Services Index | Anagram Studio",
     description:
       "Every branding service Anagram offers in one place: brand identity, positioning, strategy, design, rebranding, and branding for startups and fintech.",
-    url: "/index",
+    url: "/page",
     images: ["/opengraph.webp"],
   },
   robots: { index: true, follow: true },

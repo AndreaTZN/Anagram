@@ -21,10 +21,11 @@ const nextConfig: NextConfig = {
       // Archives is now a tab inside /works, not its own route.
       { source: '/archives', destination: '/works', permanent: true },
 
-      // Agency landing pages moved from /page/* to /index/*; the old URLs are
-      // already in search indexes, so they must keep resolving.
-      { source: '/page', destination: '/index', permanent: true },
-      { source: '/page/:slug', destination: '/index/:slug', permanent: true },
+      // Agency pages briefly lived at /index/* (and in the sitemap). Vercel serves
+      // the home page on /index because Next uses "/index" internally for "/",
+      // so the section went back to /page/*.
+      { source: '/index', destination: '/page', permanent: true },
+      { source: '/index/:slug', destination: '/page/:slug', permanent: true },
     ]
   },
 }
