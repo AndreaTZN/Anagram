@@ -1,11 +1,11 @@
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['next-sanity'],
+  transpilePackages: ["next-sanity"],
   images: {
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
   },
-  allowedDevOrigins: ['*.trycloudflare.com'],
+  allowedDevOrigins: ["*.trycloudflare.com"],
 
   async redirects() {
     return [
@@ -14,19 +14,20 @@ const nextConfig: NextConfig = {
       // Legacy site (anagram.club/sitemap.xml) served /projects/* — the rebuild
       // renamed the section to /works/*. Slugs are unchanged, so a wildcard
       // covers every case page in the old sitemap.
-      { source: '/projects', destination: '/works', permanent: true },
-      { source: '/projects/gigi', destination: '/works', permanent: true }, // no case page in the rebuild
-      { source: '/projects/:slug', destination: '/works/:slug', permanent: true },
+      { source: "/projects", destination: "/works", permanent: true },
+      { source: "/projects/gigi", destination: "/works", permanent: true }, // no case page in the rebuild
+      {
+        source: "/projects/:slug",
+        destination: "/works/:slug",
+        permanent: true,
+      },
 
       // Archives is now a tab inside /works, not its own route.
-      { source: '/archives', destination: '/works', permanent: true },
+      { source: "/archives", destination: "/works", permanent: true },
 
-      // Agency landing pages moved from /page/* to /index/*; the old URLs are
-      // already in search indexes, so they must keep resolving.
-      { source: '/page', destination: '/index', permanent: true },
-      { source: '/page/:slug', destination: '/index/:slug', permanent: true },
-    ]
+      { source: "/index/:slug", destination: "/page/:slug", permanent: true },
+    ];
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
