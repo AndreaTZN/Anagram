@@ -297,7 +297,7 @@ export default function NotFound() {
       ref={surfaceRef}
       id="not-found-root"
       aria-labelledby="not-found-title"
-      className="relative isolate h-dvh min-h-[24rem] w-full overflow-hidden bg-[#f4f4f4] text-[#0c0c0c]"
+      className="relative isolate h-dvh min-h-96 w-full overflow-hidden bg-[#f4f4f4] text-[#0c0c0c]"
     >
       <CaseNavReset />
 
@@ -339,7 +339,7 @@ export default function NotFound() {
 
       <div
         id="not-found-message"
-        className="absolute top-1/2 left-1/2 z-10 flex w-[min(33.75rem,calc(100%-2rem))] -translate-x-1/2 -translate-y-1/2 items-center justify-between gap-6 rounded-full bg-[#0c0c0c]/20 px-[1.625rem] py-[1.125rem] text-base leading-none text-white backdrop-blur-[5rem]"
+        className="absolute top-1/2 left-1/2 z-10 flex w-[min(33.75rem,calc(100%-2rem))] -translate-x-1/2 -translate-y-1/2 items-center justify-between gap-6 rounded-full bg-[#0c0c0c]/20 px-6.5 py-4.5 text-base leading-none text-white backdrop-blur-[5rem]"
       >
         <h1 id="not-found-title" className="font-normal">Error 404</h1>
         <p className="text-white/70">Missing Page</p>

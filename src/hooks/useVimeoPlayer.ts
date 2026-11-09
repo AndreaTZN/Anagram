@@ -8,21 +8,20 @@ gsap.registerPlugin(ScrollTrigger);
 const STAGGER_MS = 180;
 const VOLUME_FADE_DURATION = 0.6;
 let injectionQueue: Promise<void> = Promise.resolve();
-function enqueueInjection(fn: () => Promise<void>): Promise<void> {
-  injectionQueue = injectionQueue.then(fn).then(
-    () => new Promise((r) => setTimeout(r, STAGGER_MS))
-  );
+function enqueueInjection(fn: () => Promise<boolean>): Promise<void> {
+  // Only stagger after a real injection: entries that went stale while
+  // queued (fast scroll) must not delay the video the user stopped on.
+  injectionQueue = injectionQueue.then(fn).then((injected) => {
+    if (injected) return new Promise<void>((r) => setTimeout(r, STAGGER_MS));
+  });
   return injectionQueue;
 }
 
-// Debounced ScrollTrigger.refresh() — batches refreshes from multiple videos
-// injecting in quick succession into a single layout recalculation, instead
-// of one expensive refresh per video (which caused scroll jank on Safari).
-let refreshTimeout: ReturnType<typeof setTimeout> | null = null;
-function scheduleRefresh() {
-  if (refreshTimeout) clearTimeout(refreshTimeout);
-  refreshTimeout = setTimeout(() => ScrollTrigger.refresh(), 200);
-}
+// Players only exist while their block is within this distance of the
+// screen: created on approach, fully destroyed once far away. A paused
+// iframe still holds its document, player JS and decoded video, so keeping
+// every player of a long case page alive is what weighs on scroll.
+const LIVE_MARGIN = "200%";
 
 // SDK singleton — loaded once across all instances
 let sdkPromise: Promise<void> | null = null;
@@ -68,9 +67,12 @@ type Options = {
   dataSrc: string;
   dataRatio?: string;
   title?: string;
+  // Never destroy the player once created, e.g. when it carries user state
+  // (sound on, volume) that a fresh muted player would silently drop.
+  keepAlive?: boolean;
 };
 
-export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title }: Options) {
+export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title, keepAlive = false }: Options) {
   const playerRef = useRef<any>(null);
 
   useEffect(() => {
@@ -82,12 +84,18 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title }: Options)
     let iframeWrapper: HTMLDivElement | null = null;
     let destroyed = false;
     let fadeTween: gsap.core.Tween | null = null;
+    let mounted = false;
+    // Bumped on every mount/unmount so an injection still waiting in the
+    // queue for a block that has since left the live zone bails out.
+    let mountId = 0;
 
     const ratio = dataRatio || "16/9";
     const quality = isMobile() ? "720p" : "auto";
+    const scroller = document.getElementById("smooth-scroll-container") ?? undefined;
 
-    async function inject() {
-      if (destroyed || !el) return;
+    async function inject(id: number): Promise<boolean> {
+      const stale = () => destroyed || id !== mountId;
+      if (stale() || !el) return false;
 
       ensureMobileListeners();
 
@@ -115,26 +123,11 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title }: Options)
       el.appendChild(wrapper);
       iframeWrapper = wrapper;
 
-      // Check again — component may have unmounted while waiting in queue
-      if (destroyed) {
-        el.removeChild(wrapper);
-        iframeWrapper = null;
-        return;
-      }
-
       const Vimeo = (window as any).Vimeo;
-      player = new Vimeo.Player(iframe);
-      playerRef.current = player;
-      activePlayers.add(player);
-
-      // Check again — cleanup may have run between player creation and now
-      if (destroyed) {
-        player.pause().catch(() => {});
-        activePlayers.delete(player);
-        player = null;
-        el.removeChild(wrapper);
-        return;
-      }
+      const created = new Vimeo.Player(iframe);
+      player = created;
+      playerRef.current = created;
+      activePlayers.add(created);
 
       // Muted and volume are independent in the Vimeo SDK — getVolume()
       // stays at its default even while muted, so mute state must be
@@ -204,11 +197,9 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title }: Options)
         }, 120);
       }
 
-      const scroller = document.getElementById("smooth-scroll-container");
-
       st = ScrollTrigger.create({
         trigger: el,
-        scroller: scroller ?? undefined,
+        scroller,
         start: "top bottom",
         end: "bottom top",
         markers: false,
@@ -218,41 +209,62 @@ export function useVimeoPlayer({ embedRef, dataSrc, dataRatio, title }: Options)
         onLeaveBack: fadeOutAndPause,
       });
 
-      scheduleRefresh();
-
       // On ready: play if already in viewport, pause otherwise
-      player.ready().then(() => {
-        if (destroyed) return;
+      created.ready().then(() => {
+        if (stale()) return;
         if (st?.isActive) {
-          setTimeout(() => player?.play().catch(() => {}), 120);
+          setTimeout(() => {
+            if (!stale()) created.play().catch(() => {});
+          }, 120);
         } else {
-          player?.pause().catch(() => {});
+          created.pause().catch(() => {});
         }
       });
+
+      return true;
     }
 
-    async function init() {
+    async function mount() {
+      if (mounted) return;
+      mounted = true;
+      const id = ++mountId;
       await loadVimeoSDK();
-      if (destroyed) return;
-      await enqueueInjection(inject);
+      if (destroyed || id !== mountId) return;
+      await enqueueInjection(() => inject(id));
     }
 
-    init();
+    function unmount() {
+      mounted = false;
+      mountId++;
+      playerRef.current = null;
+      st?.kill();
+      st = null;
+      fadeTween?.kill();
+      fadeTween = null;
+      if (player) {
+        activePlayers.delete(player);
+        player.destroy().catch(() => {});
+        player = null;
+      }
+      iframeWrapper?.remove();
+      iframeWrapper = null;
+    }
+
+    const liveSt = ScrollTrigger.create({
+      trigger: el,
+      scroller,
+      start: `top bottom+=${LIVE_MARGIN}`,
+      end: `bottom top-=${LIVE_MARGIN}`,
+      onToggle: (self) => {
+        if (self.isActive) mount();
+        else if (!keepAlive) unmount();
+      },
+    });
 
     return () => {
       destroyed = true;
-      playerRef.current = null;
-      st?.kill();
-      fadeTween?.kill();
-      if (player) {
-        player.pause().catch(() => {});
-        activePlayers.delete(player);
-        player = null;
-      }
-      if (iframeWrapper && el.contains(iframeWrapper)) {
-        el.removeChild(iframeWrapper);
-        iframeWrapper = null;
-      }
+      liveSt.kill();
+      unmount();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataSrc, dataRatio]);

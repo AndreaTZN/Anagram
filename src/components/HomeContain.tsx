@@ -9,7 +9,7 @@ import Badge from "./Badge";
 import MerchCard from "./MerchCard";
 import ToolCard from "./ToolCard";
 import Vimeo169 from "./cases-frame/Vimeo169";
-import NewsModal, { type NewsSection } from "./NewsModal";
+import NewsModal, { type NewsClosing, type NewsSection } from "./NewsModal";
 import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
 
 gsap.registerPlugin(useGSAP);
@@ -26,8 +26,10 @@ type Work = {
   externalLink?: string;
   href?: string;
   tag?: string;
-  date?: string;
+  // Modal title for news, when it differs from the card's name.
+  headline?: string;
   sections?: NewsSection[];
+  closing?: NewsClosing;
   media: {
     type: "image" | "video";
     src?: string;
@@ -73,6 +75,57 @@ const works: Work[] = [
       src: "/thumb-work/symbl.jpg",
       aspect: "aspect-[280/250]",
       bg: "#f5f5f5",
+    },
+  },
+  {
+    name: "Summer Offsite",
+    headline: "SUMMER OFFSITE:\nA week with Anagram.",
+    tag: "News",
+    description:
+      "Once a year, we step away from the studio for a few days to spend time together and take a break from our usual routine.",
+    media: {
+      type: "image",
+      src: "/news/SummerOffsite/players-hd.webp",
+      aspect: "aspect-[280/250]",
+    },
+    sections: [
+      {
+        title: "Home for the week.",
+        paragraphs: [
+          "We settled into Villa Victoria, a spacious three-storey house in the heart of Arcachon.",
+          "Everyone had their own room, and the ground floor quickly became the place where we gathered.",
+        ],
+        experience: "sphere",
+      },
+      {
+        title: "Same work, different setup.",
+        paragraphs: [
+          "Client work didn’t stop while we were away. We spent mornings on client projects and afternoons on the studio’s own projects.",
+          "It was a chance to work side by side, share ideas and work through challenges more easily than we could remotely.",
+        ],
+        experience: "pile",
+      },
+      {
+        title: "Not everything was about work.",
+        paragraphs: [
+          "There was a foosball table downstairs. Let’s just say it got plenty of use that week.",
+          "We squeezed in plenty of games between work sessions, with varying degrees of success.",
+          "Some of us won more than others. We won’t name names, but a few people had five days to improve, and it still wasn’t enough.",
+        ],
+        experience: "counter",
+      },
+    ],
+    closing: {
+      paragraphs: [
+        "After five days in Arcachon, it was time to head home. Between work, activities and time spent together, the week had been full.",
+        "See you next year for another offsite.",
+      ],
+      image: {
+        src: "/news/SummerOffsite/arcachon.png",
+        alt: "Arcachon 2026, bird illustration",
+        width: 2939,
+        height: 3028,
+      },
     },
   },
   {
@@ -330,14 +383,14 @@ function WorkCard({
               {work.price}
             </span>
           )}
-          {work.externalLink && (
+          {(isNews || work.externalLink) && (
             <span
               id={
                 isNews ? `home-news-${slugify(work.name)}-article` : undefined
               }
               className={
                 isNews
-                  ? "inline-flex shrink-0 items-center rounded-full bg-[#ebebeb] px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-[2.5rem]"
+                  ? "inline-flex shrink-0 items-center rounded-full bg-[#ebebeb] px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-2xl"
                   : "text-[#0c0c0c] leading-[0.9] text-sm"
               }
             >
@@ -755,12 +808,12 @@ export default function HomeContain() {
       {openNews && (
         <NewsModal
           article={{
-            title: openNews.work.name,
-            date: openNews.work.date,
+            title: openNews.work.headline ?? openNews.work.name,
             subtitle: openNews.work.description,
             image: openNews.work.media.src!,
             aspect: openNews.work.media.aspect,
             sections: openNews.work.sections,
+            closing: openNews.work.closing,
             link: openNews.work.externalLink,
           }}
           source={openNews.source}

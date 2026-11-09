@@ -382,7 +382,7 @@ function RoleCard({
       aria-expanded={isTrigger ? expanded : undefined}
       aria-controls={isTrigger ? "home-roles-extra-cards" : undefined}
       aria-describedby={`${id}-description`}
-      className={`flex max-w-full cursor-default origin-bottom items-center gap-4 rounded-lg border-[0.0625rem] border-white/70 bg-white p-2 pr-8 text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c] ${
+      className={`flex max-w-full cursor-default origin-bottom items-center gap-4 rounded-lg border border-white/70 bg-white p-2 pr-8 text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c] ${
         isFirst
           ? "relative z-2"
           : "pointer-events-none invisible absolute left-0 top-0 z-[-1] w-full opacity-0"
@@ -407,7 +407,7 @@ function RoleCard({
         muted
         playsInline
         aria-hidden="true"
-        className="block size-[3.125rem] shrink-0 rounded-lg bg-[#f5f5f5] object-cover"
+        className="block size-12.5 shrink-0 rounded-lg bg-[#f5f5f5] object-cover"
       />
       <span id={`${id}-content`} className="flex min-w-0 flex-col gap-1">
         <span

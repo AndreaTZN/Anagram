@@ -71,7 +71,7 @@ export default function MerchCard({ name, price, src }: Props) {
 
       <div className="absolute bottom-[1.47rem] left-1/2 -translate-x-1/2 flex items-center w-[calc(100%-3rem)]">
         {/* Name + price pill */}
-        <div className="flex-1 min-w-0 flex items-center justify-between px-[1.625rem] py-[1.25rem] rounded-full backdrop-blur-[2.5rem] bg-[rgba(12,12,12,0.2)]">
+        <div className="flex-1 min-w-0 flex items-center justify-between px-6.5 py-5 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">
           <span className="font-medium text-xs leading-[0.9] text-white opacity-50 whitespace-nowrap">
             {name}
           </span>
@@ -83,7 +83,7 @@ export default function MerchCard({ name, price, src }: Props) {
         {/* Add to bag pill */}
         <div
           ref={addToBagRef}
-          className="shrink-0 overflow-hidden flex items-center justify-center py-[1.25rem] rounded-full backdrop-blur-[2.5rem] bg-white ml-1"
+          className="shrink-0 overflow-hidden flex items-center justify-center py-5 rounded-full backdrop-blur-2xl bg-white ml-1"
         >
           <p
             ref={addToBagTextRef}

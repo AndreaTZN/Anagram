@@ -283,7 +283,7 @@ export default function PrivacyPage() {
         <p className="text-[#7c7c7c] text-[0.8125rem] leading-[1.1]">
           Last updated — {LAST_UPDATED}
         </p>
-        <h1 className="text-[#0c0c0c] leading-[0.9] tracking-[-0.04em] text-[2.5rem] md:text-[4rem] max-w-[40rem]">
+        <h1 className="text-[#0c0c0c] leading-[0.9] tracking-[-0.04em] text-[2.5rem] md:text-[4rem] max-w-160">
           Privacy Policy
         </h1>
         <p className="text-[#7e7e7e] text-[1.25rem] leading-[1.4] tracking-[-0.1px] max-w-[38.3rem]">
@@ -295,7 +295,7 @@ export default function PrivacyPage() {
 
       <section
         id="privacy-content"
-        className="flex flex-col gap-16 pb-24 max-w-[48rem]"
+        className="flex flex-col gap-16 pb-24 max-w-3xl"
       >
         {sections.map((section) => (
           <article key={section.id} id={section.id} className="flex flex-col gap-4">
