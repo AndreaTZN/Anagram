@@ -92,12 +92,11 @@ export default function NewsModal({
     panelRef.current = node;
     setPanelMounted(Boolean(node));
   }, []);
-  // The card's already-decoded image stands in during the morph; the larger
-  // variant only loads once it has landed, so no decode lands mid-animation.
+  // The card's already-decoded image stands in while the larger variant loads
+  // underneath; it only fades in once decoded, so the morph never stalls on it.
   const [placeholderSrc] = useState(
     () => source.querySelector("img")?.currentSrc,
   );
-  const [showFullImage, setShowFullImage] = useState(!placeholderSrc);
   // Interactive blocks start loading only once the panel has landed.
   const [opened, setOpened] = useState(false);
 
@@ -128,7 +127,6 @@ export default function NewsModal({
       sheet.scrollTop = 0;
 
       if (prefersReducedMotion()) {
-        setShowFullImage(true);
         setOpened(true);
         return;
       }
@@ -173,7 +171,6 @@ export default function NewsModal({
             });
             gsap.set([media, close], { clearProps: "transform" });
             setOpened(true);
-            setShowFullImage(true);
           },
         })
         .to(
@@ -230,6 +227,22 @@ export default function NewsModal({
     },
     { dependencies: [panelMounted] },
   );
+
+  // Decoding off the main thread first means the fade can't stutter the morph,
+  // and the sharper image never replaces the stand-in in a single frame.
+  const revealFullImage = contextSafe((image: HTMLImageElement) => {
+    if (!placeholderSrc) return;
+    image
+      .decode()
+      .catch(() => {})
+      .then(() => {
+        gsap.to(image, {
+          opacity: 1,
+          duration: prefersReducedMotion() ? 0 : 0.3,
+          ease: NEWS_EASE.standard,
+        });
+      });
+  });
 
   // Same hover as the works close (#case-nav-close), done in GSAP instead of a
   // CSS transition: 500 ms on Tailwind's default curve, which NEWS_EASE.exit matches.
@@ -373,15 +386,14 @@ export default function NewsModal({
                     className="absolute inset-0 size-full object-cover"
                   />
                 )}
-                {showFullImage && (
-                  <Image
-                    src={article.image}
-                    alt={article.title}
-                    fill
-                    sizes="(min-width: 768px) 35.5rem, 100vw"
-                    className="object-cover"
-                  />
-                )}
+                <Image
+                  src={article.image}
+                  alt={article.title}
+                  fill
+                  sizes="(min-width: 768px) 35.5rem, 100vw"
+                  className={`object-cover ${placeholderSrc ? "opacity-0" : ""}`}
+                  onLoad={(event) => revealFullImage(event.currentTarget)}
+                />
               </div>
 
               {article.sections?.map((section, index) => (
