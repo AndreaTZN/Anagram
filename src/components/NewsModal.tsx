@@ -6,6 +6,8 @@ import { Dialog } from "@base-ui/react/dialog";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { scrollLockRef } from "@/lib/lenis";
+import ArticleIcon from "./icons/Article";
+import CloseWebGL, { type CloseWebGLHandle } from "./icons/CloseWebGL";
 import {
   NEWS_DURATION,
   NEWS_EASE,
@@ -77,6 +79,7 @@ export default function NewsModal({
   const backdropRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const closeIconRef = useRef<CloseWebGLHandle>(null);
   const surfaceRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
@@ -228,6 +231,17 @@ export default function NewsModal({
     { dependencies: [panelMounted] },
   );
 
+  // Same hover as the works close (#case-nav-close), done in GSAP instead of a
+  // CSS transition: 500 ms on Tailwind's default curve, which NEWS_EASE.exit matches.
+  const tintClose = contextSafe((hovered: boolean) => {
+    gsap.to(closeRef.current, {
+      backgroundColor: hovered ? "#ededed" : "#f7f7f7",
+      duration: 0.5,
+      ease: NEWS_EASE.exit,
+      overwrite: "auto",
+    });
+  });
+
   const requestClose = contextSafe(() => {
     const panel = panelRef.current;
     if (closingRef.current || !panel) return;
@@ -289,15 +303,16 @@ export default function NewsModal({
               id="home-news-modal-close"
               ref={closeRef}
               aria-label="Close article"
-              className="absolute inset-x-0 -top-14 z-10 mx-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-[#f5f5f5] hover:bg-[#e9e9e9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0c0c0c] md:-top-13.5 md:size-9"
+              onMouseEnter={() => {
+                closeIconRef.current?.play();
+                tintClose(true);
+              }}
+              onMouseLeave={() => tintClose(false)}
+              onFocus={() => closeIconRef.current?.play()}
+              // Works close look (#case-nav-close); 44px on touch screens.
+              className="absolute inset-x-0 -top-14 z-10 mx-auto grid size-11 cursor-pointer place-items-center rounded-full bg-[#f7f7f7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0c0c0c] md:size-9.5"
             >
-              <Image
-                src="/icons/news-modal-close.svg"
-                alt=""
-                width={8}
-                height={8}
-                className="size-[0.515625rem]"
-              />
+              <CloseWebGL ref={closeIconRef} className="block size-3" />
             </Dialog.Close>
 
             <div
@@ -325,28 +340,7 @@ export default function NewsModal({
                   id="home-news-modal-type"
                   className="flex items-center justify-center gap-2 text-sm leading-4.5 text-[#151515]"
                 >
-                  <svg
-                    viewBox="0 0 64 64"
-                    aria-hidden="true"
-                    focusable="false"
-                    className="size-4 shrink-0"
-                  >
-                    <path
-                      d="M12 16h40"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="5"
-                      strokeLinecap="round"
-                    />
-                    <rect
-                      x="7"
-                      y="25"
-                      width="50"
-                      height="36"
-                      rx="5"
-                      fill="currentColor"
-                    />
-                  </svg>
+                  <ArticleIcon className="size-4 shrink-0" />
                   <span>Article</span>
                 </p>
                 <Dialog.Title
@@ -358,7 +352,7 @@ export default function NewsModal({
                 {article.subtitle && (
                   <p
                     id="home-news-modal-subtitle"
-                    className="text-[0.9375rem] leading-5.25 text-[#828282] md:text-sm md:leading-4.5"
+                    className=" max-w-85 mx-auto text-sm leading-[1.3] text-[#828282]"
                   >
                     {article.subtitle}
                   </p>

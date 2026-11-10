@@ -10,6 +10,7 @@ import MerchCard from "./MerchCard";
 import ToolCard from "./ToolCard";
 import Vimeo169 from "./cases-frame/Vimeo169";
 import NewsModal, { type NewsClosing, type NewsSection } from "./NewsModal";
+import ArticleIcon from "./icons/Article";
 import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
 
 gsap.registerPlugin(useGSAP);
@@ -287,6 +288,8 @@ function WorkCard({
   }
 
   const isNews = work.tag === "News";
+  // Only news with an article body open in the modal; the others link out.
+  const opensArticle = isNews && Boolean(work.sections?.length);
 
   const badgeLabel =
     work.badge ?? (work.tag === "Coming project" ? "Coming soon" : undefined);
@@ -329,8 +332,8 @@ function WorkCard({
     <div className="flex flex-col gap-3">
       <CardMediaLink
         work={work}
-        // News open in a modal that morphs out of the card instead of leaving the site.
-        onOpen={isNews ? (source) => onOpenNews(work, source) : undefined}
+        // The article opens in a modal that morphs out of the card instead of leaving the site.
+        onOpen={opensArticle ? (source) => onOpenNews(work, source) : undefined}
       >
         <div
           className={`relative ${work.media.aspect} overflow-hidden w-full`}
@@ -383,19 +386,27 @@ function WorkCard({
               {work.price}
             </span>
           )}
-          {(isNews || work.externalLink) && (
+          {/* The icon marks articles read in the modal; linked news keep the tag. */}
+          {opensArticle ? (
             <span
-              id={
-                isNews ? `home-news-${slugify(work.name)}-article` : undefined
-              }
-              className={
-                isNews
-                  ? "inline-flex shrink-0 items-center rounded-full bg-[#ebebeb] px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-2xl"
-                  : "text-[#0c0c0c] leading-[0.9] text-sm"
-              }
+              id={`home-news-${slugify(work.name)}-article`}
+              role="img"
+              aria-label="Article"
+              className="flex shrink-0 text-[#b3b3b3]"
             >
-              {isNews ? "Article" : "↗"}
+              <ArticleIcon className="size-3" />
             </span>
+          ) : isNews ? (
+            <span
+              id={`home-news-${slugify(work.name)}-article`}
+              className="inline-flex shrink-0 items-center rounded-full bg-[#ebebeb] px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-2xl"
+            >
+              Article
+            </span>
+          ) : (
+            work.externalLink && (
+              <span className="text-[#0c0c0c] leading-[0.9] text-sm">↗</span>
+            )
           )}
         </div>
         {work.description && (

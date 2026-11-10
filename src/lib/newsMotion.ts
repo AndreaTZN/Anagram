@@ -12,14 +12,14 @@ export const NEWS_EASE = {
 };
 
 export const NEWS_DURATION = {
-  open: 0.5,
+  open: 0.7,
   close: 0.48,
   reveal: 0.28,
   control: 0.2,
   title: 0.48,
   text: 0.44,
   stagger: 0.06,
-  textDelay: 0.36,
+  textDelay: 0.4,
   photoIn: 0.48,
   photoOut: 0.44,
 };
