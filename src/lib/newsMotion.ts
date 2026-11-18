@@ -35,7 +35,7 @@ export const NEWS_RATE = {
 // reaches zero velocity, so the return has no snap. Panel and image share it.
 export function panelEase(t: number) {
   const peakTime = 0.72;
-  const peakScale = 1.016;
+  const peakScale = 1.006;
   if (t <= peakTime) return peakScale * (1 - (1 - t / peakTime) ** 3);
   const settle = 1 - (1 - (t - peakTime) / (1 - peakTime)) ** 3;
   return peakScale + (1 - peakScale) * settle;
