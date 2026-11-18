@@ -79,7 +79,8 @@ export default function VizziaPage() {
       />
       <CaseNavSetter data={navData} />
       <h1 id="case-vizzia-seo-title" className="sr-only">
-        Vizzia Branding: brand identity for a deeptech startup making action visible where it matters
+        Vizzia Branding: brand identity for a deeptech startup making action
+        visible where it matters
       </h1>
       <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
@@ -122,7 +123,7 @@ export default function VizziaPage() {
                 dataSrc="1172566828"
                 dataRatio="1920/1080"
               />
-              <Frame01 src="/works/Vizzia/11.avif" alt="Vizzia 11" />
+              <Frame01 src="/works/Vizzia/11.jpg" alt="Vizzia 11" />
               <Frame01 src="/works/Vizzia/12.avif" alt="Vizzia 12" />
               <Vimeo169
                 src="/works/Vizzia/13.avif"
@@ -132,9 +133,9 @@ export default function VizziaPage() {
               />
               <Frame01 src="/works/Vizzia/14.avif" alt="Vizzia 14" />
               <Frame01 src="/works/Vizzia/15.avif" alt="Vizzia 15" />
-              <Frame01 src="/works/Vizzia/16.avif" alt="Vizzia 16" />
-              <Frame01 src="/works/Vizzia/17.avif" alt="Vizzia 17" />
-              <Frame01 src="/works/Vizzia/18.avif" alt="Vizzia 18" />
+              <Frame01 src="/works/Vizzia/16.jpg" alt="Vizzia 16" />
+              <Frame01 src="/works/Vizzia/17.jpg" alt="Vizzia 17" />
+              <Frame01 src="/works/Vizzia/18.jpg" alt="Vizzia 18" />
               <ProjectInfoFaq
                 projectDescription={projectDescription}
                 faq={<Faq key="vizzia-faq" items={faqItems} />}
