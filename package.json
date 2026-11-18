@@ -13,6 +13,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "studio": "sanity dev",
     "lint": "next lint"
   },
   "dependencies": {

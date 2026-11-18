@@ -44,6 +44,18 @@ type Work = {
 
 const works: Work[] = [
   {
+    name: "Bitstack",
+    tag: "News",
+    description:
+      "A bold new identity for Bitstack, reflecting its evolution and ambitions for the future.",
+    externalLink: "https://taap.it/PKEgpbt",
+    media: {
+      type: "image",
+      src: "/news/bitstack.webp",
+      aspect: "aspect-[280/250]",
+    },
+  },
+  {
     name: "Wastetide",
     href: "/works/wastetide",
     tag: "Works",
@@ -214,51 +226,8 @@ function slugify(name: string) {
   return name.toLowerCase().replaceAll(" ", "-");
 }
 
-// Declared at module level: a wrapper component recreated on each render would
-// remount the media (and its Vimeo player) and drop focus return from the modal.
-function CardMediaLink({
-  work,
-  onOpen,
-  children,
-}: {
-  work: Work;
-  onOpen?: (source: HTMLElement) => void;
-  children: React.ReactNode;
-}) {
-  if (onOpen) {
-    return (
-      <button
-        type="button"
-        aria-haspopup="dialog"
-        aria-label={`Read article: ${work.name}`}
-        onClick={(event) => onOpen(event.currentTarget)}
-        className="block w-full cursor-pointer text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]"
-      >
-        {children}
-      </button>
-    );
-  }
-  if (work.href) {
-    return (
-      <Link href={work.href} aria-label={work.name}>
-        {children}
-      </Link>
-    );
-  }
-  if (work.externalLink) {
-    return (
-      <a
-        href={work.externalLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={work.name}
-      >
-        {children}
-      </a>
-    );
-  }
-  return <>{children}</>;
-}
+const FOCUS_RING =
+  "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]";
 
 function WorkCard({
   work,
@@ -294,8 +263,6 @@ function WorkCard({
   const badgeLabel =
     work.badge ?? (work.tag === "Coming project" ? "Coming soon" : undefined);
 
-  const isClickable =
-    isNews || Boolean(work.href) || Boolean(work.externalLink);
   const overlayRef = useRef<HTMLDivElement>(null);
   const embedRef = useRef<HTMLDivElement>(null);
 
@@ -311,7 +278,6 @@ function WorkCard({
   }, []);
 
   function handleEnter() {
-    if (!isClickable) return;
     gsap.to(overlayRef.current, {
       opacity: 0.08,
       duration: 0.3,
@@ -320,7 +286,6 @@ function WorkCard({
   }
 
   function handleLeave() {
-    if (!isClickable) return;
     gsap.to(overlayRef.current, {
       opacity: 0,
       duration: 0.3,
@@ -328,93 +293,148 @@ function WorkCard({
     });
   }
 
-  return (
-    <div className="flex flex-col gap-3">
-      <CardMediaLink
-        work={work}
-        // The article opens in a modal that morphs out of the card instead of leaving the site.
-        onOpen={opensArticle ? (source) => onOpenNews(work, source) : undefined}
-      >
-        <div
-          className={`relative ${work.media.aspect} overflow-hidden w-full`}
-          style={{ backgroundColor: work.media.bg }}
-          onMouseEnter={handleEnter}
-          onMouseLeave={handleLeave}
-        >
-          {work.media.type === "image" ? (
-            work.media.src && (
-              <Image
-                src={work.media.src}
-                alt={work.name}
-                fill
-                sizes={CARD_SIZES}
-                priority={priority}
-                className="object-cover"
-              />
-            )
-          ) : (
-            <div
-              ref={embedRef}
-              className="absolute inset-0 w-full h-full overflow-hidden"
-            >
-              {work.media.poster && (
-                <Image
-                  src={work.media.poster}
-                  alt={work.name}
-                  fill
-                  sizes={CARD_SIZES}
-                  priority={priority}
-                  className="object-cover"
-                />
-              )}
-            </div>
-          )}
-          <div
-            ref={overlayRef}
-            className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
+  const media = (
+    <div
+      className={`relative ${work.media.aspect} overflow-hidden w-full`}
+      style={{ backgroundColor: work.media.bg }}
+    >
+      {work.media.type === "image" ? (
+        work.media.src && (
+          <Image
+            src={work.media.src}
+            alt={work.name}
+            fill
+            sizes={CARD_SIZES}
+            priority={priority}
+            className="object-cover"
           />
-          {badgeLabel && <Badge label={badgeLabel} />}
+        )
+      ) : (
+        <div
+          ref={embedRef}
+          className="absolute inset-0 w-full h-full overflow-hidden"
+        >
+          {work.media.poster && (
+            <Image
+              src={work.media.poster}
+              alt={work.name}
+              fill
+              sizes={CARD_SIZES}
+              priority={priority}
+              className="object-cover"
+            />
+          )}
         </div>
-      </CardMediaLink>
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between gap-2 w-full">
-          <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
-            {work.name}
+      )}
+      <div
+        ref={overlayRef}
+        className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
+      />
+      {badgeLabel && <Badge label={badgeLabel} />}
+    </div>
+  );
+
+  const details = (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between gap-2 w-full">
+        <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
+          {work.name}
+        </span>
+        {work.price && (
+          <span className="text-[#7e7e7e] leading-[1.3] text-sm">
+            {work.price}
           </span>
-          {work.price && (
-            <span className="text-[#7e7e7e] leading-[1.3] text-sm">
-              {work.price}
-            </span>
-          )}
-          {/* The icon marks articles read in the modal; linked news keep the tag. */}
-          {opensArticle ? (
-            <span
-              id={`home-news-${slugify(work.name)}-article`}
-              role="img"
-              aria-label="Article"
-              className="flex shrink-0 text-[#b3b3b3]"
-            >
-              <ArticleIcon className="size-3" />
-            </span>
-          ) : isNews ? (
-            <span
-              id={`home-news-${slugify(work.name)}-article`}
-              className="inline-flex shrink-0 items-center rounded-full bg-[#ebebeb] px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-2xl"
-            >
-              Article
-            </span>
-          ) : (
-            work.externalLink && (
-              <span className="text-[#0c0c0c] leading-[0.9] text-sm">↗</span>
-            )
-          )}
-        </div>
-        {work.description && (
-          <p className="text-[#7e7e7e] leading-[1.3] text-sm">
-            {work.description}
-          </p>
+        )}
+        {/* The icon marks articles read in the modal; linked news keep the tag. */}
+        {opensArticle ? (
+          <span
+            id={`home-news-${slugify(work.name)}-article`}
+            role="img"
+            aria-label="Article"
+            className="flex shrink-0 text-[#b3b3b3]"
+          >
+            <ArticleIcon className="size-3" />
+          </span>
+        ) : isNews ? (
+          <span
+            id={`home-news-${slugify(work.name)}-article`}
+            className="inline-flex shrink-0 items-center rounded-full bg-[#0c0c0c]/5 px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-2xl"
+          >
+            Article
+          </span>
+        ) : (
+          work.externalLink && (
+            <span className="text-[#0c0c0c] leading-[0.9] text-sm">↗</span>
+          )
         )}
       </div>
+      {work.description && (
+        <p className="text-[#7e7e7e] leading-[1.3] text-sm">
+          {work.description}
+        </p>
+      )}
+    </div>
+  );
+
+  const cardId = `home-card-${slugify(work.name)}`;
+
+  if (opensArticle) {
+    return (
+      <div id={cardId} className="flex flex-col gap-3">
+        {/* The article opens in a modal that morphs out of the card instead of leaving the site. */}
+        <button
+          type="button"
+          aria-haspopup="dialog"
+          aria-label={`Read article: ${work.name}`}
+          onClick={(event) => onOpenNews(work, event.currentTarget)}
+          onMouseEnter={handleEnter}
+          onMouseLeave={handleLeave}
+          className={`block w-full cursor-pointer text-left ${FOCUS_RING}`}
+        >
+          {media}
+        </button>
+        {details}
+      </div>
+    );
+  }
+
+  // The whole card is the link so crawlers read the name and description as
+  // anchor text; aria-label keeps the screen-reader name to the project name.
+  const linkProps = {
+    id: cardId,
+    "aria-label": work.name,
+    className: `flex flex-col gap-3 ${FOCUS_RING}`,
+    onMouseEnter: handleEnter,
+    onMouseLeave: handleLeave,
+  };
+
+  if (work.href) {
+    return (
+      <Link href={work.href} {...linkProps}>
+        {media}
+        {details}
+      </Link>
+    );
+  }
+
+  if (work.externalLink) {
+    return (
+      <a
+        href={work.externalLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...linkProps}
+      >
+        {media}
+        {details}
+      </a>
+    );
+  }
+
+  return (
+    <div id={cardId} className="flex flex-col gap-3">
+      {media}
+      {details}
     </div>
   );
 }

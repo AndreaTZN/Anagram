@@ -114,7 +114,8 @@ export default function FoundersFuturePage() {
       />
       <CaseNavSetter data={navData} />
       <h1 id="case-founders-future-seo-title" className="sr-only">
-        Founders Future Branding: brand identity and strategy for a tech investment platform with international ambition
+        Founders Future Branding: brand identity and strategy for a tech
+        investment platform with international ambition
       </h1>
       <div id="case-page" className="flex flex-col gap-10">
         <CaseTabContent
@@ -169,7 +170,7 @@ export default function FoundersFuturePage() {
                 src="/works/FoundersFuture/release/9.webp"
                 alt="Founders Future video 9"
                 dataSrc="1172829785"
-                dataRatio="1920/1080"
+                dataRatio="3000/1548"
               />
               <Vimeo169
                 src="/works/FoundersFuture/release/10.webp"

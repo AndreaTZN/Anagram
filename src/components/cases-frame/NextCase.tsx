@@ -108,7 +108,11 @@ export default function NextCase({ projectName, href, media }: Props) {
         ".nextcase_media",
         // Reveal the top first because it is the first part entering the viewport.
         { clipPath: "inset(0% 0% 100% 0%)" },
-        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.95, ease: "power3.inOut" },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          duration: 0.95,
+          ease: "power3.inOut",
+        },
         0,
       ).fromTo(
         ".projet-card_embed-vimeo-contain",
@@ -153,7 +157,7 @@ export default function NextCase({ projectName, href, media }: Props) {
           </p>
         </div>
         <a
-          href="mailto:hello@anagram.fr"
+          href="mailto:hello@anagram.club"
           className={`nextcase_btn flex items-center gap-2 rounded-full px-4 py-4 text-base leading-[0.9] tracking-[-0.08px] whitespace-nowrap transition-colors duration-300 ease-in-out ${
             activeTab === "backstage"
               ? "bg-[#1a1a1a] text-white hover:bg-[#2a2a2a]"

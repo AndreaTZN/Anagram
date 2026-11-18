@@ -8,6 +8,7 @@ import CaseHighlightCard from "./CaseHighlightCard";
 import ClientsWall from "./ClientsWall";
 import SectorsGrid from "./SectorsGrid";
 import Faq from "./Faq";
+import CtaLink from "./CtaLink";
 
 const HERO_VIDEOS = [
   "/seo/video01.mp4",
@@ -355,27 +356,23 @@ export default function AgencyPageTemplate({
             {faqCta.ctaButtons ? (
               <div className="flex flex-wrap gap-3">
                 {faqCta.ctaButtons.map((button, i) => (
-                  <a
+                  <CtaLink
                     key={button.label}
+                    id={`${idPrefix}-faq-cta-${button.label.toLowerCase().replaceAll(" ", "-")}`}
                     href={button.href}
-                    className={
-                      i === 0
-                        ? "w-fit rounded-full bg-[#0c0c0c] text-white text-sm px-5 py-3"
-                        : "w-fit rounded-full bg-[#f5f5f5] text-[#0c0c0c] text-sm px-5 py-3"
-                    }
-                  >
-                    {button.label}
-                  </a>
+                    label={button.label}
+                    variant={i === 0 ? "dark" : "light"}
+                  />
                 ))}
               </div>
             ) : (
               faqCta.ctaEmail && (
-                <a
+                <CtaLink
+                  id={`${idPrefix}-faq-cta-email`}
                   href={`mailto:${faqCta.ctaEmail}`}
-                  className="w-fit rounded-full bg-[#f5f5f5] text-[#0c0c0c] text-sm px-5 py-3"
-                >
-                  {faqCta.ctaEmail}
-                </a>
+                  label={faqCta.ctaEmail}
+                  variant="light"
+                />
               )
             )}
           </div>

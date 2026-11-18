@@ -37,6 +37,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/page`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
   ];
 
   const workRoutes: MetadataRoute.Sitemap = getSlugs("works").map((slug) => ({
@@ -47,7 +53,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Acquisition landing pages — indexable, so they belong in the sitemap.
-  // There is no /page index route, only the leaf pages.
   const seoRoutes: MetadataRoute.Sitemap = getSlugs("page").map((slug) => ({
     url: `${BASE_URL}/page/${slug}`,
     lastModified: new Date(),
