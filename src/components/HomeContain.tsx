@@ -184,29 +184,9 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
     );
   }
 
-  const MediaWrapper = work.href
-    ? ({ children }: { children: React.ReactNode }) => (
-        <Link href={work.href!} aria-label={work.name}>
-          {children}
-        </Link>
-      )
-    : work.externalLink
-      ? ({ children }: { children: React.ReactNode }) => (
-          <a
-            href={work.externalLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={work.name}
-          >
-            {children}
-          </a>
-        )
-      : ({ children }: { children: React.ReactNode }) => <>{children}</>;
-
   const badgeLabel =
     work.badge ?? (work.tag === "Coming project" ? "Coming soon" : undefined);
 
-  const isClickable = Boolean(work.href) || Boolean(work.externalLink);
   const overlayRef = useRef<HTMLDivElement>(null);
   const embedRef = useRef<HTMLDivElement>(null);
 
@@ -222,7 +202,6 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
   }, []);
 
   function handleEnter() {
-    if (!isClickable) return;
     gsap.to(overlayRef.current, {
       opacity: 0.08,
       duration: 0.3,
@@ -231,7 +210,6 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
   }
 
   function handleLeave() {
-    if (!isClickable) return;
     gsap.to(overlayRef.current, {
       opacity: 0,
       duration: 0.3,
@@ -239,86 +217,126 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
     });
   }
 
-  return (
-    <div className="flex flex-col gap-3">
-      <MediaWrapper>
-        <div
-          className={`relative ${work.media.aspect} overflow-hidden w-full`}
-          style={{ backgroundColor: work.media.bg }}
-          onMouseEnter={handleEnter}
-          onMouseLeave={handleLeave}
-        >
-          {work.media.type === "image" ? (
-            work.media.src && (
-              <Image
-                src={work.media.src}
-                alt={work.name}
-                fill
-                sizes={CARD_SIZES}
-                priority={priority}
-                className="object-cover"
-              />
-            )
-          ) : (
-            <div
-              ref={embedRef}
-              className="absolute inset-0 w-full h-full overflow-hidden"
-            >
-              {work.media.poster && (
-                <Image
-                  src={work.media.poster}
-                  alt={work.name}
-                  fill
-                  sizes={CARD_SIZES}
-                  priority={priority}
-                  className="object-cover"
-                />
-              )}
-            </div>
-          )}
-          <div
-            ref={overlayRef}
-            className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
+  const media = (
+    <div
+      className={`relative ${work.media.aspect} overflow-hidden w-full`}
+      style={{ backgroundColor: work.media.bg }}
+    >
+      {work.media.type === "image" ? (
+        work.media.src && (
+          <Image
+            src={work.media.src}
+            alt={work.name}
+            fill
+            sizes={CARD_SIZES}
+            priority={priority}
+            className="object-cover"
           />
-          {badgeLabel && <Badge label={badgeLabel} />}
+        )
+      ) : (
+        <div
+          ref={embedRef}
+          className="absolute inset-0 w-full h-full overflow-hidden"
+        >
+          {work.media.poster && (
+            <Image
+              src={work.media.poster}
+              alt={work.name}
+              fill
+              sizes={CARD_SIZES}
+              priority={priority}
+              className="object-cover"
+            />
+          )}
         </div>
-      </MediaWrapper>
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between gap-2 w-full">
-          <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
-            {work.name}
+      )}
+      <div
+        ref={overlayRef}
+        className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
+      />
+      {badgeLabel && <Badge label={badgeLabel} />}
+    </div>
+  );
+
+  const details = (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between gap-2 w-full">
+        <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
+          {work.name}
+        </span>
+        {work.price && (
+          <span className="text-[#7e7e7e] leading-[1.3] text-sm">
+            {work.price}
           </span>
-          {work.price && (
-            <span className="text-[#7e7e7e] leading-[1.3] text-sm">
-              {work.price}
-            </span>
-          )}
-          {work.externalLink && (
-            <span
-              id={
-                work.tag === "News"
-                  ? `home-news-${work.name.toLowerCase().replaceAll(" ", "-")}-article`
-                  : undefined
-              }
-              aria-label={
-                work.tag === "News" ? `Read article: ${work.name}` : undefined
-              }
-              className={
-                work.tag === "News"
-                  ? "inline-flex shrink-0 items-center rounded-full bg-[#0c0c0c]/5 px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-2xl"
-                  : "text-[#0c0c0c] leading-[0.9] text-sm"
-              }
-            >
-              {work.tag === "News" ? "Article" : "↗"}
-            </span>
-          )}
-        </div>
-        {work.description && (
-          <p className="text-[#7e7e7e] leading-[1.3] text-sm">
-            {work.description}
-          </p>
+        )}
+        {work.externalLink && (
+          <span
+            id={
+              work.tag === "News"
+                ? `home-news-${work.name.toLowerCase().replaceAll(" ", "-")}-article`
+                : undefined
+            }
+            aria-label={
+              work.tag === "News" ? `Read article: ${work.name}` : undefined
+            }
+            className={
+              work.tag === "News"
+                ? "inline-flex shrink-0 items-center rounded-full bg-[#0c0c0c]/5 px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-2xl"
+                : "text-[#0c0c0c] leading-[0.9] text-sm"
+            }
+          >
+            {work.tag === "News" ? "Article" : "↗"}
+          </span>
         )}
       </div>
+      {work.description && (
+        <p className="text-[#7e7e7e] leading-[1.3] text-sm">
+          {work.description}
+        </p>
+      )}
+    </div>
+  );
+
+  const cardId = `home-card-${work.name.toLowerCase().replaceAll(" ", "-")}`;
+
+  // The whole card is the link so crawlers read the name and description as
+  // anchor text; aria-label keeps the screen-reader name to the project name.
+  const linkProps = {
+    id: cardId,
+    "aria-label": work.name,
+    className:
+      "flex flex-col gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]",
+    onMouseEnter: handleEnter,
+    onMouseLeave: handleLeave,
+  };
+
+  if (work.href) {
+    return (
+      <Link href={work.href} {...linkProps}>
+        {media}
+        {details}
+      </Link>
+    );
+  }
+
+  if (work.externalLink) {
+    return (
+      <a
+        href={work.externalLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...linkProps}
+      >
+        {media}
+        {details}
+      </a>
+    );
+  }
+
+  return (
+    <div id={cardId} className="flex flex-col gap-3">
+      {media}
+      {details}
     </div>
   );
 }
