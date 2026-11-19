@@ -8,13 +8,23 @@ import { EffectFade, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/effect-fade";
+import SlidingDots from "@/components/SlidingDots";
 
-const photos = [
-  { src: "/studio/1.webp", alt: "Anagram studio workspace" },
-  { src: "/studio/2.webp", alt: "Anagram team at work in the studio" },
-];
+const PHOTO_COUNT = 52;
+const photos = Array.from({ length: PHOTO_COUNT }, (_, i) => ({
+  src: `/widgets/carousel/${i + 1}.webp`,
+  alt: `Life at Anagram, photo ${i + 1}`,
+}));
 
 const DELAY = 4000;
+const FADE_SPEED = 800;
+
+// The fade effect stacks every slide in view, so lazy loading would fetch all
+// of them at once: only the active slide and its neighbours get an image.
+function isNearSlide(index: number, active: number) {
+  const distance = Math.abs(index - active);
+  return Math.min(distance, PHOTO_COUNT - distance) <= 1;
+}
 
 // WidgetPanel's open timeline runs ~1.07s and closes with timeScale(1.8), so
 // the panel is gone after ~0.6s — plus a margin before the carousel rewinds.
@@ -50,26 +60,29 @@ export default function PhotoCarouselWidget({ active }: { active: boolean }) {
     // rewind below puts it back to 0 once the panel is gone.
     if (!active) {
       const id = setTimeout(
-        () => gsap.set(progressRef.current, { width: "0%" }),
+        () => gsap.set(progressRef.current, { x: 0, xPercent: -100 }),
         CLOSE_DURATION,
       );
       return () => clearTimeout(id);
     }
+    // Swiper only starts the autoplay delay once the fade has ended, so a full
+    // cycle lasts the fade plus the delay.
     gsap.fromTo(
       progressRef.current,
-      { width: "0%" },
-      { width: "100%", duration: DELAY / 1000, ease: "none" },
+      { x: 0, xPercent: -100 },
+      { xPercent: 0, duration: (DELAY + FADE_SPEED) / 1000, ease: "none" },
     );
   }, [activeSlide, active]);
 
   return (
     <div
       id="home-widgets-photo-carousel"
-      className="relative h-full w-full rounded-lg overflow-hidden bg-[#d9d9d9]"
+      className="relative h-full w-full rounded-lg overflow-hidden"
     >
       <Swiper
         loop
         effect="fade"
+        speed={FADE_SPEED}
         modules={[EffectFade, Autoplay]}
         autoplay={{ delay: DELAY, disableOnInteraction: false }}
         onSwiper={(s) => {
@@ -85,43 +98,27 @@ export default function PhotoCarouselWidget({ active }: { active: boolean }) {
       >
         {photos.map((photo, i) => (
           <SwiperSlide key={i}>
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              fill
-              sizes="18.75rem"
-              className="object-cover"
-            />
+            {isNearSlide(i, activeSlide) && (
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                fill
+                sizes="18.75rem"
+                className="object-cover"
+              />
+            )}
           </SwiperSlide>
         ))}
       </Swiper>
 
-      <div className="absolute bottom-[0.65rem] left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 px-2 py-2 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]">
-        {photos.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => swiperRef.current?.slideToLoop(i)}
-            className="cursor-pointer"
-            aria-label={`Go to photo ${i + 1}`}
-            aria-current={i === activeSlide}
-          >
-            <span
-              className={`relative rounded-full shrink-0 overflow-hidden block transition-[width] duration-300 ${
-                i === activeSlide
-                  ? "h-1.25 w-5.25 bg-white/30"
-                  : "size-1.25 bg-white opacity-30"
-              }`}
-            >
-              {i === activeSlide && (
-                <span
-                  ref={progressRef}
-                  className="absolute inset-y-0 left-0 bg-white rounded-full w-0"
-                />
-              )}
-            </span>
-          </button>
-        ))}
-      </div>
+      <SlidingDots
+        id="home-widgets-photo-carousel-dots"
+        count={PHOTO_COUNT}
+        active={activeSlide}
+        onSelect={(i) => swiperRef.current?.slideToLoop(i)}
+        progressRef={progressRef}
+        className="absolute bottom-[0.65rem] left-1/2 -translate-x-1/2 z-10 flex items-center px-2 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]"
+      />
     </div>
   );
 }

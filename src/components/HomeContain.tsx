@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
@@ -68,29 +68,6 @@ const works: Work[] = [
     },
   },
   {
-    name: "Incard",
-    tag: "Coming project",
-    description:
-      "Design a trophy system that transforms key milestones into meaningful, shareable rewards, turning business growth into something Incard's community can proudly earn and display.",
-    media: {
-      type: "image",
-      src: "/thumb-work/incard-home.webp",
-      aspect: "aspect-[279/200]",
-    },
-  },
-  {
-    name: "Symbl",
-    tag: "Tools",
-    description: "Stress-test your logo before the world does.",
-    externalLink: "https://www.symbl.space/",
-    media: {
-      type: "image",
-      src: "/thumb-work/symbl.jpg",
-      aspect: "aspect-[280/250]",
-      bg: "#f5f5f5",
-    },
-  },
-  {
     name: "Summer Offsite",
     headline: "SUMMER OFFSITE:\nA week with Anagram.",
     tag: "News",
@@ -101,6 +78,7 @@ const works: Work[] = [
       src: "/news/SummerOffsite/players-hd.webp",
       aspect: "aspect-[280/250]",
     },
+
     sections: [
       {
         title: "Home for the week.",
@@ -139,6 +117,30 @@ const works: Work[] = [
         width: 2939,
         height: 3028,
       },
+    },
+  },
+
+  {
+    name: "Symbl",
+    tag: "Tools",
+    description: "Stress-test your logo before the world does.",
+    externalLink: "https://www.symbl.space/",
+    media: {
+      type: "image",
+      src: "/thumb-work/symbl.jpg",
+      aspect: "aspect-[280/250]",
+      bg: "#f5f5f5",
+    },
+  },
+  {
+    name: "Incard",
+    tag: "Coming project",
+    description:
+      "Design a trophy system that transforms key milestones into meaningful, shareable rewards, turning business growth into something Incard's community can proudly earn and display.",
+    media: {
+      type: "image",
+      src: "/thumb-work/incard-home.webp",
+      aspect: "aspect-[279/200]",
     },
   },
   {
@@ -439,7 +441,7 @@ function WorkCard({
   );
 }
 
-function WastetideVideoLink() {
+function WastetideVideoLink({ hideOnWide }: { hideOnWide: boolean }) {
   const linkRef = useRef<HTMLAnchorElement>(null);
   const badgeRef = useRef<HTMLSpanElement>(null);
 
@@ -524,7 +526,7 @@ function WastetideVideoLink() {
       ref={linkRef}
       href="/works/wastetide"
       aria-label="View Wastetide project"
-      className="group relative block col-span-1 md:col-span-4 md:my-8 2xl:col-span-5 overflow-hidden aspect-video focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]"
+      className={`group relative block col-span-1 md:col-span-4 md:row-start-2 md:my-8 2xl:col-span-5 overflow-hidden aspect-video focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c] ${hideOnWide ? "2xl:hidden" : ""}`}
     >
       <div
         id="home-wastetide-media"
@@ -575,21 +577,10 @@ export default function HomeContain() {
   const labelRef = useRef<HTMLSpanElement>(null);
   const labelWidth = useRef(0);
   const labelHidden = useRef(false);
-  const [isWide, setIsWide] = useState(false);
   const [openNews, setOpenNews] = useState<{
     work: Work;
     source: HTMLElement;
   } | null>(null);
-
-  // Mirrors the 2xl breakpoint below so the row before the Wastetide video
-  // always fills the grid instead of leaving a trailing empty column.
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1536px)");
-    const update = () => setIsWide(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
 
   function animateFilters(instant = false) {
     const group = filtersRef.current;
@@ -755,7 +746,10 @@ export default function HomeContain() {
     (filter) => filter === "All" || works.some((w) => w.tag === filter),
   );
 
-  const firstRowCount = isWide ? 5 : 4;
+  // The video sits after 4 cards in the DOM (mobile order). From md it is pinned
+  // to grid row 2 in CSS, so row 1 fills itself with 4 or 5 cards depending on
+  // the columns: server and client render the same layout, with no shift.
+  const cardsBeforeVideo = 4;
 
   return (
     <div id="home-content" className="flex flex-col gap-4">
@@ -817,7 +811,7 @@ export default function HomeContain() {
         ref={gridRef}
         className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-10 md:gap-4 items-start"
       >
-        {filtered.slice(0, firstRowCount).map((work) => (
+        {filtered.slice(0, cardsBeforeVideo).map((work) => (
           <WorkCard
             key={work.name}
             work={work}
@@ -825,8 +819,13 @@ export default function HomeContain() {
             onOpenNews={(work, source) => setOpenNews({ work, source })}
           />
         ))}
-        {filtered.length > firstRowCount && <WastetideVideoLink />}
-        {filtered.slice(firstRowCount).map((work) => (
+        {filtered.length > cardsBeforeVideo && (
+          <WastetideVideoLink
+            // At 2xl, 5 cards fill row 1 alone: the video would trail with nothing after it.
+            hideOnWide={filtered.length <= cardsBeforeVideo + 1}
+          />
+        )}
+        {filtered.slice(cardsBeforeVideo).map((work) => (
           <WorkCard
             key={work.name}
             work={work}
