@@ -540,7 +540,7 @@ export default function Navigation() {
           {/* CTA card */}
           <div className="flex flex-col gap-6">
             <p className="text-[#0c0c0c] leading-[1.1] text-xl tracking-[-0.12px]">
-              A design studio for brands and more.
+              Shaping brands that need no introduction.
             </p>
 
             <div className="flex items-start gap-2 self-start">

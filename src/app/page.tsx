@@ -13,11 +13,11 @@ function getOpenRoles() {
 }
 
 export const metadata: Metadata = {
-  title: "Anagram Club — A design studio for brands and more.",
+  title: "Anagram Club — Shaping brands that need no introduction.",
   description:
     "Anagram Club shapes market-defining brands through bold branding, product design, and a sharp creative process. Built for companies that want to stand out.",
   openGraph: {
-    title: "Anagram Club — A design studio for brands and more.",
+    title: "Anagram Club — Shaping brands that need no introduction.",
     description:
       "Anagram Club shapes market-defining brands through bold branding, product design, and a sharp creative process. Built for companies that want to stand out.",
     url: "https://www.anagram.club/",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anagram Club — A design studio for brands and more.",
+    title: "Anagram Club — Shaping brands that need no introduction.",
     description:
       "Anagram Club shapes market-defining brands through bold branding, product design, and a sharp creative process. Built for companies that want to stand out.",
     images: ["/opengraph.webp"],
@@ -44,7 +44,7 @@ export default async function HomePage() {
 
   return (
     <main className="relative flex-1 pt-4 pr-4 pl-4 pb-4 md:px-4 md:pt-4 max-[62rem]:mt-12">
-      <h1 className="sr-only">We shape brands that need no introduction.</h1>
+      <h1 className="sr-only">Shaping brands that need no introduction.</h1>
       <Vimeo169
         src="/home/poster-hero.webp"
         alt="Anagram Club — Hero"
