@@ -9,6 +9,7 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import AnalogClock from "@/components/AnalogClock";
+import SlidingDots from "@/components/SlidingDots";
 import ClockLabel from "@/components/ClockLabel";
 import Footer from "@/components/Footer";
 import ArpeRotation from "@/components/ArpeRotation";
@@ -19,7 +20,20 @@ import {
   studioDescription,
 } from "@/lib/studio-content";
 
-const studioImages = ["/studio/1.webp", "/studio/2.webp"];
+const STUDIO_IMAGE_COUNT = 18;
+const studioImages = Array.from(
+  { length: STUDIO_IMAGE_COUNT },
+  (_, i) => `/studio/${i + 1}.webp`,
+);
+const HERO_DELAY = 4000;
+const HERO_FADE_SPEED = 800;
+
+// The fade effect stacks every slide in view, so lazy loading would fetch all
+// of them at once: only the active slide and its neighbours get an image.
+function isNearSlide(index: number, active: number) {
+  const distance = Math.abs(index - active);
+  return Math.min(distance, STUDIO_IMAGE_COUNT - distance) <= 1;
+}
 
 const manifesto = (
   <>
@@ -229,10 +243,16 @@ export default function AboutPage({
   useEffect(() => {
     if (!progressRef.current) return;
     gsap.killTweensOf(progressRef.current);
+    // Swiper only starts the autoplay delay once the fade has ended, so a full
+    // cycle lasts the fade plus the delay.
     gsap.fromTo(
       progressRef.current,
-      { width: "0%" },
-      { width: "100%", duration: 4, ease: "none" },
+      { x: 0, xPercent: -100 },
+      {
+        xPercent: 0,
+        duration: (HERO_DELAY + HERO_FADE_SPEED) / 1000,
+        ease: "none",
+      },
     );
   }, [activeSlide]);
 
@@ -302,7 +322,12 @@ export default function AboutPage({
                 onSwiper={(s) => {
                   clockSwiperRef.current = s;
                 }}
+                onClick={(s) => {
+                  s.slideNext();
+                  s.autoplay?.start();
+                }}
                 onSlideChange={(s) => setActiveClockSlide(s.realIndex)}
+                className="cursor-pointer"
               >
                 {clocks.map((clock) => (
                   <SwiperSlide key={clock.city}>
@@ -344,7 +369,7 @@ export default function AboutPage({
           </div>
         </section>
         {/* colonne gauche */}
-        <section className="flex gap-4 max-[766px]:contents">
+        <section className="flex gap-4 max-[47.875rem]:contents">
           {/* Swiper + content column */}
           <div
             id="about-content-col"
@@ -353,52 +378,47 @@ export default function AboutPage({
             {/* Hero image */}
             <div
               id="about-hero"
-              className="relative bg-[#f4f4f4] overflow-hidden aspect-800/490 max-[766px]:order-2 max-[766px]:aspect-square max-[766px]:rounded"
+              className="relative bg-[#f4f4f4] overflow-hidden aspect-800/490 max-[47.875rem]:order-2 max-[47.875rem]:aspect-square max-[47.875rem]:rounded"
             >
               <Swiper
                 loop
                 effect="fade"
+                speed={HERO_FADE_SPEED}
                 modules={[EffectFade, Autoplay]}
-                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                autoplay={{ delay: HERO_DELAY, disableOnInteraction: false }}
                 onSwiper={(s) => {
                   swiperRef.current = s;
                 }}
+                onClick={(s) => {
+                  s.slideNext();
+                  s.autoplay?.start();
+                }}
                 onSlideChange={(s) => setActiveSlide(s.realIndex)}
-                className="h-full"
+                className="h-full cursor-pointer"
               >
                 {studioImages.map((src, i) => (
                   <SwiperSlide key={i}>
-                    <Image
-                      src={src}
-                      alt={`Studio ${i + 1}`}
-                      fill
-                      sizes="(max-width: 766px) 100vw, 55vw"
-                      priority={i === 0}
-                      className="object-cover"
-                    />
+                    {isNearSlide(i, activeSlide) && (
+                      <Image
+                        src={src}
+                        alt={`Studio ${i + 1}`}
+                        fill
+                        sizes="(max-width: 766px) 100vw, 55vw"
+                        priority={i === 0}
+                        className="object-cover"
+                      />
+                    )}
                   </SwiperSlide>
                 ))}
               </Swiper>
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center rounded-full backdrop-blur-xl bg-[rgba(12,12,12,0.2)] px-2">
-                {studioImages.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => swiperRef.current?.slideToLoop(i)}
-                    className="flex items-center justify-center px-1 py-3 cursor-pointer"
-                  >
-                    <span
-                      className={`relative rounded-full shrink-0 overflow-hidden transition-[width,opacity] duration-300 ${i === activeSlide ? "h-1.25 w-5.25 bg-white/30 opacity-100" : "h-1.25 w-1.25 bg-white opacity-30"}`}
-                    >
-                      {i === activeSlide && (
-                        <span
-                          ref={progressRef}
-                          className="absolute inset-y-0 left-0 bg-white rounded-full w-0"
-                        />
-                      )}
-                    </span>
-                  </button>
-                ))}
-              </div>
+              <SlidingDots
+                id="about-hero-dots"
+                count={STUDIO_IMAGE_COUNT}
+                active={activeSlide}
+                onSelect={(i) => swiperRef.current?.slideToLoop(i)}
+                progressRef={progressRef}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center rounded-full backdrop-blur-xl bg-[rgba(12,12,12,0.2)] px-3 py-1"
+              />
             </div>
 
             <div className="flex flex-col gap-10 max-[766px]:contents">

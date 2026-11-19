@@ -13,7 +13,7 @@ import { CookieSettings } from "./cookie-settings";
 gsap.registerPlugin(useGSAP);
 
 const bannerButtonClass =
-  "size-[2.3125rem] shrink-0 cursor-pointer rounded-[0.5rem] border-0 bg-[#0c0c0c]/20 p-0 text-white backdrop-blur-[2.5rem] transition-none hover:bg-[#0c0c0c]/40 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:not-aria-[haspopup]:translate-y-0";
+  "size-[2.3125rem] shrink-0 cursor-pointer rounded-lg border-0 bg-[#0c0c0c]/20 p-0 text-white backdrop-blur-2xl transition-none hover:bg-[#0c0c0c]/40 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:not-aria-[haspopup]:translate-y-0";
 
 export function CookieBanner() {
   const { isOpen, messages, acceptAll, rejectAll } = useCookieConsent();
@@ -119,7 +119,7 @@ export function CookieBanner() {
         id="cookie-banner-card"
         role="region"
         aria-label={messages.title}
-        className="fixed right-3 bottom-4 left-3 z-50 flex items-center gap-3 overflow-hidden rounded-[0.5rem] bg-[#0c0c0c]/20 py-2 pr-2 pl-4 text-white backdrop-blur-[2.5rem] sm:right-4 sm:left-auto sm:w-[35.375rem] sm:max-w-[calc(100%-2rem)] sm:gap-6"
+        className="fixed right-3 bottom-4 left-3 z-50 flex items-center gap-3 overflow-hidden rounded-lg bg-[#0c0c0c]/20 py-2 pr-2 pl-4 text-white backdrop-blur-2xl sm:right-4 sm:left-auto sm:w-141.5 sm:max-w-[calc(100%-2rem)] sm:gap-6"
         onPointerEnter={() => setPaused(true)}
         onPointerLeave={(event) =>
           setPaused(event.currentTarget.contains(document.activeElement))
@@ -140,7 +140,7 @@ export function CookieBanner() {
           role="group"
           aria-label={messages.title}
           aria-describedby="cookie-banner-description"
-          className="min-w-0 flex-1 overflow-hidden rounded-sm text-[0.875rem] leading-[1.3] font-normal [mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%_-_1rem),transparent)] focus-visible:[mask-image:none] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:overflow-x-auto"
+          className="min-w-0 flex-1 overflow-hidden rounded-sm text-[0.875rem] leading-[1.3] font-normal mask-[linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)] focus-visible:mask-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:overflow-x-auto"
         >
           <div
             ref={textRef}

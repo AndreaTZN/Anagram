@@ -73,7 +73,7 @@ export function CookieSettings({
         id="cookie-settings-dialog"
         data-lenis-prevent
         showCloseButton={dismissible}
-        className="flex max-h-[calc(100dvh-2rem)] flex-col gap-0 overflow-hidden rounded-xl border-0 bg-white p-0 text-[#0c0c0c] ring-0 sm:max-w-lg [&_[data-slot=dialog-close]]:transition-none"
+        className="flex max-h-[calc(100dvh-2rem)] flex-col gap-0 overflow-hidden rounded-xl border-0 bg-white p-0 text-[#0c0c0c] ring-0 sm:max-w-lg **:data-[slot=dialog-close]:transition-none"
       >
         {/* Only mounted while open, so the draft always starts from the saved
             consent — nothing to reset, and nothing pre-ticked. */}
@@ -225,7 +225,7 @@ function CategoryItem({
             the root leaves the check itself up to inheritance. */}
         <Checkbox
           id={`cookie-settings-category-${id}-checkbox`}
-          className="z-10 size-5 cursor-pointer rounded-[0.25rem] border-[#0c0c0c]/20 transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0c0c0c] data-checked:border-[#0c0c0c] data-checked:bg-[#0c0c0c] data-checked:text-white **:data-[slot=checkbox-indicator]:text-white"
+          className="z-10 size-5 cursor-pointer rounded-sm border-[#0c0c0c]/20 transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0c0c0c] data-checked:border-[#0c0c0c] data-checked:bg-[#0c0c0c] data-checked:text-white **:data-[slot=checkbox-indicator]:text-white"
           checked={checked}
           disabled={disabled}
           onCheckedChange={(value) => onCheckedChange?.(value === true)}

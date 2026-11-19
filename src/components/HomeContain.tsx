@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
@@ -10,6 +10,8 @@ import { type ArrowWebGLHandle } from "@/components/icons/ArrowWebGL";
 import MerchCard from "./MerchCard";
 import ToolCard from "./ToolCard";
 import Vimeo169 from "./cases-frame/Vimeo169";
+import NewsModal, { type NewsClosing, type NewsSection } from "./NewsModal";
+import ArticleIcon from "./icons/Article";
 import { useVimeoPlayer } from "@/hooks/useVimeoPlayer";
 
 gsap.registerPlugin(useGSAP);
@@ -26,6 +28,10 @@ type Work = {
   externalLink?: string;
   href?: string;
   tag?: string;
+  // Modal title for news, when it differs from the card's name.
+  headline?: string;
+  sections?: NewsSection[];
+  closing?: NewsClosing;
   media: {
     type: "image" | "video";
     src?: string;
@@ -38,6 +44,59 @@ type Work = {
 };
 
 const works: Work[] = [
+  {
+    name: "Summer Offsite",
+    headline: "SUMMER OFFSITE:\nA week with Anagram.",
+    tag: "News",
+    description:
+      "Once a year, we step away from the studio for a few days to spend time together and take a break from our usual routine.",
+    media: {
+      type: "video",
+      src: "/news/SummerOffsite/offsite.mp4",
+      poster: "/news/SummerOffsite/offsite-poster.webp",
+      aspect: "aspect-[34/45]",
+    },
+
+    sections: [
+      {
+        title: "Home for the week.",
+        paragraphs: [
+          "We settled into Villa Victoria, a spacious three-storey house in the heart of Arcachon.",
+          "Everyone had their own room, and the ground floor quickly became the place where we gathered.",
+        ],
+        experience: "sphere",
+      },
+      {
+        title: "Same work, different setup.",
+        paragraphs: [
+          "Client work didn’t stop while we were away. We spent mornings on client projects and afternoons on the studio’s own projects.",
+          "It was a chance to work side by side, share ideas and work through challenges more easily than we could remotely.",
+        ],
+        experience: "pile",
+      },
+      {
+        title: "Not everything was about work.",
+        paragraphs: [
+          "There was a foosball table downstairs. Let’s just say it got plenty of use that week.",
+          "We squeezed in plenty of games between work sessions, with varying degrees of success.",
+          "Some of us won more than others. We won’t name names, but a few people had five days to improve, and it still wasn’t enough.",
+        ],
+        experience: "counter",
+      },
+    ],
+    closing: {
+      paragraphs: [
+        "After five days in Arcachon, it was time to head home. Between work, activities and time spent together, the week had been full.",
+        "See you next year for another offsite.",
+      ],
+      image: {
+        src: "/news/SummerOffsite/arcachon.png",
+        alt: "Arcachon 2026, bird illustration",
+        width: 2939,
+        height: 3028,
+      },
+    },
+  },
   {
     name: "Bitstack",
     tag: "News",
@@ -62,17 +121,7 @@ const works: Work[] = [
       aspect: "aspect-[279/300]",
     },
   },
-  {
-    name: "Incard",
-    tag: "Coming project",
-    description:
-      "Design a trophy system that transforms key milestones into meaningful, shareable rewards, turning business growth into something Incard's community can proudly earn and display.",
-    media: {
-      type: "image",
-      src: "/thumb-work/incard-home.webp",
-      aspect: "aspect-[279/200]",
-    },
-  },
+
   {
     name: "Symbl",
     tag: "Tools",
@@ -83,6 +132,17 @@ const works: Work[] = [
       src: "/thumb-work/symbl.jpg",
       aspect: "aspect-[280/250]",
       bg: "#f5f5f5",
+    },
+  },
+  {
+    name: "Incard",
+    tag: "Coming project",
+    description:
+      "Design a trophy system that transforms key milestones into meaningful, shareable rewards, turning business growth into something Incard's community can proudly earn and display.",
+    media: {
+      type: "image",
+      src: "/thumb-work/incard-home.webp",
+      aspect: "aspect-[279/200]",
     },
   },
   {
@@ -166,7 +226,22 @@ const works: Work[] = [
 
 const FILTERS = ["All", "Works", "Merch", "News", "Coming project", "Tools"];
 
-function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
+function slugify(name: string) {
+  return name.toLowerCase().replaceAll(" ", "-");
+}
+
+const FOCUS_RING =
+  "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]";
+
+function WorkCard({
+  work,
+  priority,
+  onOpenNews,
+}: {
+  work: Work;
+  priority: boolean;
+  onOpenNews: (work: Work, source: HTMLElement) => void;
+}) {
   if (work.tag === "Merch" && work.price) {
     return (
       <MerchCard name={work.name} price={work.price} src={work.media.src!} />
@@ -185,26 +260,13 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
     );
   }
 
-  const MediaWrapper = work.href
-    ? ({ children }: { children: React.ReactNode }) => (
-        <Link href={work.href!} aria-label={work.name}>
-          {children}
-        </Link>
-      )
-    : work.externalLink
-      ? ({ children }: { children: React.ReactNode }) => (
-          <a
-            href={work.externalLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={work.name}
-          >
-            {children}
-          </a>
-        )
-      : ({ children }: { children: React.ReactNode }) => <>{children}</>;
+  const isNews = work.tag === "News";
+  // Only news with an article body open in the modal; the others link out.
+  const opensArticle = isNews && Boolean(work.sections?.length);
 
-  const isArticle = work.tag === "News" && Boolean(work.externalLink);
+  // Linked-out news only: modal articles are marked by the icon next to the title.
+  const isArticle =
+    isNews && !opensArticle && Boolean(work.externalLink);
   const badgeLabel =
     work.badge ??
     (work.tag === "Coming project"
@@ -213,7 +275,6 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
         ? "Article"
         : undefined);
 
-  const isClickable = Boolean(work.href) || Boolean(work.externalLink);
   const overlayRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<ArrowWebGLHandle>(null);
   const embedRef = useRef<HTMLDivElement>(null);
@@ -230,7 +291,6 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
   }, []);
 
   function handleEnter() {
-    if (!isClickable) return;
     gsap.to(overlayRef.current, {
       opacity: 0.08,
       duration: 0.3,
@@ -240,7 +300,6 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
   }
 
   function handleLeave() {
-    if (!isClickable) return;
     gsap.to(overlayRef.current, {
       opacity: 0,
       duration: 0.3,
@@ -248,86 +307,166 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
     });
   }
 
-  return (
-    <div className="flex flex-col gap-3">
-      <MediaWrapper>
-        <div
-          className={`relative ${work.media.aspect} overflow-hidden w-full`}
-          style={{ backgroundColor: work.media.bg }}
-          onMouseEnter={handleEnter}
-          onMouseLeave={handleLeave}
-        >
-          {work.media.type === "image" ? (
-            work.media.src && (
-              <Image
-                src={work.media.src}
-                alt={work.name}
-                fill
-                sizes={CARD_SIZES}
-                priority={priority}
-                className="object-cover"
-              />
-            )
-          ) : (
-            <div
-              ref={embedRef}
-              className="absolute inset-0 w-full h-full overflow-hidden"
-            >
-              {work.media.poster && (
-                <Image
-                  src={work.media.poster}
-                  alt={work.name}
-                  fill
-                  sizes={CARD_SIZES}
-                  priority={priority}
-                  className="object-cover"
-                />
-              )}
-            </div>
-          )}
-          <div
-            ref={overlayRef}
-            className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
+  const media = (
+    <div
+      className={`relative ${work.media.aspect} overflow-hidden w-full`}
+      style={{ backgroundColor: work.media.bg }}
+    >
+      {work.media.type === "image" ? (
+        work.media.src && (
+          <Image
+            src={work.media.src}
+            alt={work.name}
+            fill
+            sizes={CARD_SIZES}
+            priority={priority}
+            className="object-cover"
           />
-          {badgeLabel && (
-            <Badge
-              label={badgeLabel}
-              id={
-                isArticle
-                  ? `home-news-${work.name.toLowerCase().replaceAll(" ", "-")}-article`
-                  : undefined
-              }
-              arrow={isArticle}
-              arrowRef={arrowRef}
+        )
+      ) : work.media.src ? (
+        // A local clip; videos with a dataSrc go through the Vimeo embed below.
+        <video
+          src={work.media.src}
+          poster={work.media.poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          className="absolute inset-0 size-full object-cover"
+        />
+      ) : (
+        <div
+          ref={embedRef}
+          className="absolute inset-0 w-full h-full overflow-hidden"
+        >
+          {work.media.poster && (
+            <Image
+              src={work.media.poster}
+              alt={work.name}
+              fill
+              sizes={CARD_SIZES}
+              priority={priority}
+              className="object-cover"
             />
           )}
         </div>
-      </MediaWrapper>
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between gap-2 w-full">
-          <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
-            {work.name}
+      )}
+      <div
+        ref={overlayRef}
+        className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
+      />
+      {badgeLabel && (
+        <Badge
+          label={badgeLabel}
+          id={isArticle ? `home-news-${slugify(work.name)}-article` : undefined}
+          arrow={isArticle}
+          arrowRef={arrowRef}
+        />
+      )}
+    </div>
+  );
+
+  const details = (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between gap-2 w-full">
+        <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
+          {work.name}
+        </span>
+        {work.price && (
+          <span className="text-[#7e7e7e] leading-[1.3] text-sm">
+            {work.price}
           </span>
-          {work.price && (
-            <span className="text-[#7e7e7e] leading-[1.3] text-sm">
-              {work.price}
-            </span>
-          )}
-          {work.externalLink && !isArticle && (
+        )}
+        {/* The icon marks articles read in the modal; linked news carry the badge on the media. */}
+        {opensArticle ? (
+          <span
+            id={`home-news-${slugify(work.name)}-article`}
+            role="img"
+            aria-label="Article"
+            className="flex shrink-0 text-[#b3b3b3]"
+          >
+            <ArticleIcon className="size-3" />
+          </span>
+        ) : (
+          work.externalLink &&
+          !isArticle && (
             <span className="text-[#0c0c0c] leading-[0.9] text-sm">↗</span>
-          )}
-        </div>
-        {work.description && (
-          <p className="text-[#7e7e7e] leading-[1.3] text-sm">
-            {work.description}
-          </p>
+          )
         )}
       </div>
+      {work.description && (
+        <p className="text-[#7e7e7e] leading-[1.3] text-sm">
+          {work.description}
+        </p>
+      )}
+    </div>
+  );
+
+  const cardId = `home-card-${slugify(work.name)}`;
+
+  if (opensArticle) {
+    return (
+      <div id={cardId} className="flex flex-col gap-3">
+        {/* The article opens in a modal that morphs out of the card instead of leaving the site. */}
+        <button
+          type="button"
+          aria-haspopup="dialog"
+          aria-label={`Read article: ${work.name}`}
+          onClick={(event) => onOpenNews(work, event.currentTarget)}
+          onMouseEnter={handleEnter}
+          onMouseLeave={handleLeave}
+          className="block w-full cursor-pointer text-left outline-none"
+        >
+          {media}
+        </button>
+        {details}
+      </div>
+    );
+  }
+
+  // The whole card is the link so crawlers read the name and description as
+  // anchor text; aria-label keeps the screen-reader name to the project name.
+  const linkProps = {
+    id: cardId,
+    "aria-label": work.name,
+    className: `flex flex-col gap-3 ${FOCUS_RING}`,
+    onMouseEnter: handleEnter,
+    onMouseLeave: handleLeave,
+  };
+
+  if (work.href) {
+    return (
+      <Link href={work.href} {...linkProps}>
+        {media}
+        {details}
+      </Link>
+    );
+  }
+
+  if (work.externalLink) {
+    return (
+      <a
+        href={work.externalLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...linkProps}
+      >
+        {media}
+        {details}
+      </a>
+    );
+  }
+
+  return (
+    <div id={cardId} className="flex flex-col gap-3">
+      {media}
+      {details}
     </div>
   );
 }
 
-function WastetideVideoLink() {
+function WastetideVideoLink({ hideOnWide }: { hideOnWide: boolean }) {
   const linkRef = useRef<HTMLAnchorElement>(null);
   const badgeRef = useRef<HTMLSpanElement>(null);
 
@@ -412,7 +551,7 @@ function WastetideVideoLink() {
       ref={linkRef}
       href="/works/wastetide"
       aria-label="View Wastetide project"
-      className="group relative block col-span-1 md:col-span-4 md:my-8 2xl:col-span-5 overflow-hidden aspect-video focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]"
+      className={`group relative block col-span-1 md:col-span-4 md:row-start-2 md:my-8 2xl:col-span-5 overflow-hidden aspect-video focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c] ${hideOnWide ? "2xl:hidden" : ""}`}
     >
       <div
         id="home-wastetide-media"
@@ -463,17 +602,10 @@ export default function HomeContain() {
   const labelRef = useRef<HTMLSpanElement>(null);
   const labelWidth = useRef(0);
   const labelHidden = useRef(false);
-  const [isWide, setIsWide] = useState(false);
-
-  // Mirrors the 2xl breakpoint below so the row before the Wastetide video
-  // always fills the grid instead of leaving a trailing empty column.
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1536px)");
-    const update = () => setIsWide(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
+  const [openNews, setOpenNews] = useState<{
+    work: Work;
+    source: HTMLElement;
+  } | null>(null);
 
   function animateFilters(instant = false) {
     const group = filtersRef.current;
@@ -639,7 +771,10 @@ export default function HomeContain() {
     (filter) => filter === "All" || works.some((w) => w.tag === filter),
   );
 
-  const firstRowCount = isWide ? 5 : 4;
+  // The video sits after 4 cards in the DOM (mobile order). From md it is pinned
+  // to grid row 2 in CSS, so row 1 fills itself with 4 or 5 cards depending on
+  // the columns: server and client render the same layout, with no shift.
+  const cardsBeforeVideo = 4;
 
   return (
     <div id="home-content" className="flex flex-col gap-4">
@@ -701,14 +836,50 @@ export default function HomeContain() {
         ref={gridRef}
         className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 gap-10 md:gap-4 items-start"
       >
-        {filtered.slice(0, firstRowCount).map((work) => (
-          <WorkCard key={work.name} work={work} priority />
+        {filtered.slice(0, cardsBeforeVideo).map((work) => (
+          <WorkCard
+            key={work.name}
+            work={work}
+            priority
+            onOpenNews={(work, source) => setOpenNews({ work, source })}
+          />
         ))}
-        {filtered.length > firstRowCount && <WastetideVideoLink />}
-        {filtered.slice(firstRowCount).map((work) => (
-          <WorkCard key={work.name} work={work} priority={false} />
+        {filtered.length > cardsBeforeVideo && (
+          <WastetideVideoLink
+            // At 2xl, 5 cards fill row 1 alone: the video would trail with nothing after it.
+            hideOnWide={filtered.length <= cardsBeforeVideo + 1}
+          />
+        )}
+        {filtered.slice(cardsBeforeVideo).map((work) => (
+          <WorkCard
+            key={work.name}
+            work={work}
+            priority={false}
+            onOpenNews={(work, source) => setOpenNews({ work, source })}
+          />
         ))}
       </div>
+
+      {openNews && (
+        <NewsModal
+          article={{
+            title: openNews.work.headline ?? openNews.work.name,
+            subtitle: openNews.work.description,
+            ...(openNews.work.media.type === "video"
+              ? {
+                  image: openNews.work.media.poster!,
+                  video: openNews.work.media.src,
+                }
+              : { image: openNews.work.media.src! }),
+            aspect: openNews.work.media.aspect,
+            sections: openNews.work.sections,
+            closing: openNews.work.closing,
+            link: openNews.work.externalLink,
+          }}
+          source={openNews.source}
+          onClosed={() => setOpenNews(null)}
+        />
+      )}
     </div>
   );
 }

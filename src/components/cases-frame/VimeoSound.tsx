@@ -193,6 +193,9 @@ function VimeoSoundPlayer({
     dataSrc: videoSrc ? "" : dataSrc,
     dataRatio,
     title: alt,
+    // Sound state lives in the player: a recreated one would come back muted
+    // while the toggle still reads "Sound On".
+    keepAlive: true,
   });
 
   useGSAP(

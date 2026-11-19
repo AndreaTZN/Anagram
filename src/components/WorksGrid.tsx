@@ -269,20 +269,6 @@ export const archiveWorks: Work[] = [
 ];
 
 function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
-  const isExternal = work.href?.startsWith("http");
-  const CardWrapper = work.href
-    ? ({ children }: { children: React.ReactNode }) => (
-        <Link
-          href={work.href!}
-          aria-label={work.name}
-          target={isExternal ? "_blank" : undefined}
-          rel={isExternal ? "noopener noreferrer" : undefined}
-        >
-          {children}
-        </Link>
-      )
-    : ({ children }: { children: React.ReactNode }) => <>{children}</>;
-
   const overlayRef = useRef<HTMLDivElement>(null);
   const embedRef = useRef<HTMLDivElement>(null);
 
@@ -298,7 +284,6 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
   }, []);
 
   function handleEnter() {
-    if (!work.href) return;
     gsap.to(overlayRef.current, {
       opacity: 0.08,
       duration: 0.3,
@@ -307,7 +292,6 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
   }
 
   function handleLeave() {
-    if (!work.href) return;
     gsap.to(overlayRef.current, {
       opacity: 0,
       duration: 0.3,
@@ -315,58 +299,82 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
     });
   }
 
-  return (
-    <div className="flex flex-col gap-3">
-      <CardWrapper>
+  const media = (
+    <div className={`relative ${work.aspect} w-full overflow-hidden`}>
+      {work.type === "video" ? (
         <div
-          className={`relative ${work.aspect} w-full overflow-hidden`}
-          onMouseEnter={handleEnter}
-          onMouseLeave={handleLeave}
+          ref={embedRef}
+          className="absolute inset-0 w-full h-full overflow-hidden"
         >
-          {work.type === "video" ? (
-            <div
-              ref={embedRef}
-              className="absolute inset-0 w-full h-full overflow-hidden"
-            >
-              {work.poster && (
-                <Image
-                  src={work.poster}
-                  alt={work.name}
-                  fill
-                  sizes={CARD_SIZES}
-                  priority={priority}
-                  className="object-cover"
-                />
-              )}
-            </div>
-          ) : (
-            work.image && (
-              <Image
-                src={work.image}
-                alt={work.name}
-                fill
-                sizes={CARD_SIZES}
-                priority={priority}
-                className="object-cover"
-              />
-            )
+          {work.poster && (
+            <Image
+              src={work.poster}
+              alt={work.name}
+              fill
+              sizes={CARD_SIZES}
+              priority={priority}
+              className="object-cover"
+            />
           )}
-          <div
-            ref={overlayRef}
-            className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
-          />
-          {work.badge && <Badge label={work.badge} />}
         </div>
-      </CardWrapper>
-      <div className="flex flex-col gap-2">
-        <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
-          {work.name}
-        </span>
-        <p className="text-[#7e7e7e] leading-[1.3] text-sm">
-          {work.description}
-        </p>
-      </div>
+      ) : (
+        work.image && (
+          <Image
+            src={work.image}
+            alt={work.name}
+            fill
+            sizes={CARD_SIZES}
+            priority={priority}
+            className="object-cover"
+          />
+        )
+      )}
+      <div
+        ref={overlayRef}
+        className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
+      />
+      {work.badge && <Badge label={work.badge} />}
     </div>
+  );
+
+  const details = (
+    <div className="flex flex-col gap-2">
+      <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
+        {work.name}
+      </span>
+      <p className="text-[#7e7e7e] leading-[1.3] text-sm">{work.description}</p>
+    </div>
+  );
+
+  const cardId = `works-card-${work.name.toLowerCase().replaceAll(" ", "-")}`;
+
+  if (!work.href) {
+    return (
+      <div id={cardId} className="flex flex-col gap-3">
+        {media}
+        {details}
+      </div>
+    );
+  }
+
+  const isExternal = work.href.startsWith("http");
+
+  // The whole card is the link so crawlers read the name and description as
+  // anchor text; aria-label keeps the screen-reader name to the project name.
+  return (
+    <Link
+      id={cardId}
+      href={work.href}
+      aria-label={work.name}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      className="flex flex-col gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]"
+    >
+      {media}
+      {details}
+    </Link>
   );
 }
 
