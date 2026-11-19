@@ -323,7 +323,7 @@ export default function NewsModal({
               onMouseLeave={() => tintClose(false)}
               onFocus={() => closeIconRef.current?.play()}
               // Works close look (#case-nav-close); 44px on touch screens.
-              className="absolute inset-x-0 -top-14 z-10 mx-auto grid size-11 cursor-pointer place-items-center rounded-full bg-[#f7f7f7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0c0c0c] md:size-9.5"
+              className="absolute inset-x-0 -top-14 z-10 mx-auto grid size-11 cursor-pointer place-items-center rounded-full bg-[#f7f7f7] outline-none md:size-9.5"
             >
               <CloseWebGL ref={closeIconRef} className="block size-3" />
             </Dialog.Close>

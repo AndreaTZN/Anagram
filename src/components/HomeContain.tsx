@@ -391,7 +391,7 @@ function WorkCard({
           onClick={(event) => onOpenNews(work, event.currentTarget)}
           onMouseEnter={handleEnter}
           onMouseLeave={handleLeave}
-          className={`block w-full cursor-pointer text-left ${FOCUS_RING}`}
+          className="block w-full cursor-pointer text-left outline-none"
         >
           {media}
         </button>
