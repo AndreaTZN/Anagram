@@ -474,25 +474,34 @@ export default function AboutPage({
                   {ourStudio.title}
                 </h2>
                 <div className="flex-1 flex gap-4 max-[47.875rem]:flex-col max-[47.875rem]:gap-6">
-                  <div className="flex-1 flex flex-col gap-4">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium leading-[0.9] text-[#0c0c0c] max-[47.875rem]:text-base">
+                  <div
+                    id="about-our-studio-contact"
+                    className="flex-1 flex flex-col gap-4"
+                  >
+                    <div
+                      id="about-our-studio-contact-business"
+                      className="flex flex-col gap-2"
+                    >
+                      <span className="text-sm leading-[1.3] text-[#7c7c7c] max-[47.875rem]:text-base">
                         New Business
                       </span>
                       <a
                         href="mailto:hello@anagram.club"
-                        className="text-sm leading-[1.3] text-[#7c7c7c] max-[47.875rem]:text-base"
+                        className="text-sm font-medium leading-[0.9] text-[#0c0c0c]/80 max-[47.875rem]:text-base"
                       >
                         hello@anagram.club
                       </a>
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium leading-[0.9] text-[#0c0c0c] max-[47.875rem]:text-base">
+                    <div
+                      id="about-our-studio-contact-careers"
+                      className="flex flex-col gap-2"
+                    >
+                      <span className="text-sm leading-[1.3] text-[#7c7c7c] max-[47.875rem]:text-base">
                         Careers
                       </span>
                       <a
                         href="mailto:careers@anagram.club"
-                        className="text-sm leading-[1.3] text-[#7c7c7c] max-[47.875rem]:text-base"
+                        className="text-sm font-medium leading-[0.9] text-[#0c0c0c]/80 max-[47.875rem]:text-base"
                       >
                         careers@anagram.club
                       </a>
@@ -516,11 +525,14 @@ export default function AboutPage({
                 </h2>
                 <div className="flex-1 flex gap-4 items-start max-[47.875rem]:grid max-[47.875rem]:grid-cols-2 max-[47.875rem]:gap-x-4 max-[47.875rem]:gap-y-2 ">
                   {clientColumns.map((column, i) => (
-                    <div key={i} className="flex-1 flex flex-col gap-2">
+                    <div
+                      key={i}
+                      className="flex-1 flex flex-col items-start gap-2"
+                    >
                       {column.map((n) => (
                         <span
                           key={n}
-                          className="text-[#7c7c7c] text-sm font-medium leading-[1.3] max-[47.875rem]:text-base hover:text-[#0c0c0c] transition-colors duration-200 ease-in-out"
+                          className=" text-[#7c7c7c] text-sm font-medium leading-[1.3] max-[47.875rem]:text-base hover:text-[#0c0c0c] transition-colors duration-200 ease-in-out"
                         >
                           {n}
                         </span>
