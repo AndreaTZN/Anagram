@@ -4,9 +4,8 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
-import ArrowWebGL, {
-  type ArrowWebGLHandle,
-} from "@/components/icons/ArrowWebGL";
+import { type ArrowWebGLHandle } from "@/components/icons/ArrowWebGL";
+import Badge from "./Badge";
 
 gsap.registerPlugin(useGSAP);
 
@@ -53,19 +52,7 @@ export default function ToolCard({
 
   const content = (
     <>
-      {/* Try now badge */}
-      {href && (
-        <div className="absolute top-4 right-4 z-10 inline-flex items-center gap-2 px-4 py-3 rounded-full bg-[#FFFFFF]/20 backdrop-blur-[5rem] transition-colors duration-500 group-hover:bg-[#FFFFFF]/10">
-          <span className="text-sm leading-none text-white whitespace-nowrap">
-            Try now
-          </span>
-          <ArrowWebGL
-            ref={arrowRef}
-            light
-            className="block size-3.5 shrink-0"
-          />
-        </div>
-      )}
+      {href && <Badge label="Try now" arrow arrowRef={arrowRef} />}
 
       {/* Logo centered */}
       <div className="absolute inset-0 flex items-center justify-center">

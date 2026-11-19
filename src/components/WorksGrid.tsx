@@ -333,16 +333,16 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
         ref={overlayRef}
         className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
       />
-      {work.badge && <Badge label={work.badge} position="top-left" />}
+      {work.badge && <Badge label={work.badge} />}
     </div>
   );
 
   const details = (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
         {work.name}
       </span>
-      <p className="text-[#7c7c7c] leading-[1.2] text-sm">{work.description}</p>
+      <p className="text-[#7e7e7e] leading-[1.3] text-sm">{work.description}</p>
     </div>
   );
 
@@ -350,7 +350,7 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
 
   if (!work.href) {
     return (
-      <div id={cardId} className="flex flex-col gap-2">
+      <div id={cardId} className="flex flex-col gap-3">
         {media}
         {details}
       </div>
@@ -370,7 +370,7 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
       rel={isExternal ? "noopener noreferrer" : undefined}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      className="flex flex-col gap-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]"
+      className="flex flex-col gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0c0c0c]"
     >
       {media}
       {details}

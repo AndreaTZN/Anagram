@@ -133,7 +133,9 @@ const team = [
 ];
 
 function LineDivider() {
-  return <div className="h-[0.5px] w-full bg-[#0c0c0c26] max-[766px]:hidden" />;
+  return (
+    <div className="h-[0.03125rem] w-full bg-[#0c0c0c26] max-[47.875rem]:hidden" />
+  );
 }
 
 function DotDivider() {
@@ -162,14 +164,14 @@ function OfferingCategory({
 }) {
   return (
     <div className={`flex flex-col gap-2 ${mobileOrder} ${className}`}>
-      <span className="text-[#0c0c0c] text-sm font-medium leading-[0.9] max-[766px]:text-base max-[766px]:font-normal max-[766px]:text-[#7e7e7e]">
+      <span className="text-[#0c0c0c] text-sm font-medium leading-[0.9] max-[47.875rem]:text-base max-[47.875rem]:font-normal max-[47.875rem]:text-[#7e7e7e]">
         {category}
       </span>
       <div className="flex flex-col">
         {items.map((item, i) => (
           <span
             key={i}
-            className="text-sm leading-[1.3] text-[#7c7c7c] max-[766px]:text-base max-[766px]:leading-[1.6] max-[766px]:text-[#0c0c0c]"
+            className="text-sm leading-[1.3] text-[#7c7c7c] max-[47.875rem]:text-base max-[47.875rem]:leading-[1.6] max-[47.875rem]:text-[#0c0c0c]"
           >
             {Array.isArray(item)
               ? item.map((line, li) => (
@@ -275,16 +277,16 @@ export default function AboutPage({
   }
 
   return (
-    <main className="pt-4 pr-4 pl-4 pb-4 max-[766px]:px-4 max-[766px]:pt-4 max-[992px]:mt-12">
+    <main className="pt-4 pr-4 pl-4 pb-4 max-[47.875rem]:px-4 max-[47.875rem]:pt-4 max-[62rem]:mt-12">
       {/* Hero */}
       <h1 className="sr-only">
         anagram, a branding and product design studio in Paris
       </h1>
-      <div className="flex flex-col gap-6 flex-1 max-[766px]:gap-8">
+      <div className="flex flex-col gap-6 flex-1 max-[47.875rem]:gap-8">
         {/* colonne droite */}
-        <section className="flex gap-8 mb-8 max-[766px]:contents">
+        <section className="flex gap-8 mb-8 max-[47.875rem]:contents">
           {/* Manifesto text */}
-          <div className="max-w-141.75 max-[766px]:order-1">
+          <div className="max-w-141.75 max-[47.875rem]:order-1">
             <p
               id="about-manifesto"
               className="text-[#0c0c0c] leading-[1.1] tracking-[-0.03125rem] text-2xl"
@@ -294,9 +296,9 @@ export default function AboutPage({
           </div>
 
           {/* Clocks */}
-          <div id="about-clocks" className="flex-1 max-[766px]:order-7">
+          <div id="about-clocks" className="flex-1 max-[47.875rem]:order-7">
             {/* Desktop */}
-            <div className="flex gap-8 justify-center w-full max-[766px]:hidden">
+            <div className="flex gap-8 justify-center w-full max-[47.875rem]:hidden">
               {clocks.map((clock) => (
                 <div
                   key={clock.city}
@@ -313,7 +315,7 @@ export default function AboutPage({
             </div>
 
             {/* Mobile — Swiper */}
-            <div className="hidden max-[766px]:block overflow-hidden">
+            <div className="hidden max-[47.875rem]:block overflow-hidden">
               <Swiper
                 loop
                 effect="fade"
@@ -373,7 +375,7 @@ export default function AboutPage({
           {/* Swiper + content column */}
           <div
             id="about-content-col"
-            className="grow-2 shrink-0 basis-0 min-w-0 flex flex-col gap-8 max-[766px]:contents"
+            className="grow-2 shrink-0 basis-0 min-w-0 flex flex-col gap-8 max-[47.875rem]:contents"
           >
             {/* Hero image */}
             <div
@@ -403,7 +405,7 @@ export default function AboutPage({
                         src={src}
                         alt={`Studio ${i + 1}`}
                         fill
-                        sizes="(max-width: 766px) 100vw, 55vw"
+                        sizes="(max-width: 47.875rem) 100vw, 55vw"
                         priority={i === 0}
                         className="object-cover"
                       />
@@ -421,16 +423,16 @@ export default function AboutPage({
               />
             </div>
 
-            <div className="flex flex-col gap-10 max-[766px]:contents">
+            <div className="flex flex-col gap-10 max-[47.875rem]:contents">
               {/* Offerings */}
               <div
                 id="about-offerings"
-                className="flex gap-4 text-[#0c0c0c] max-[766px]:order-5 max-[766px]:flex-col max-[766px]:gap-6"
+                className="flex gap-4 text-[#0c0c0c] max-[47.875rem]:order-5 max-[47.875rem]:flex-col max-[47.875rem]:gap-6"
               >
-                <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:w-auto max-[766px]:text-2xl">
+                <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[47.875rem]:w-auto max-[47.875rem]:text-2xl">
                   Services
                 </h2>
-                <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-8 max-[766px]:gap-x-8 max-[766px]:gap-y-8">
+                <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-8 max-[47.875rem]:gap-x-8 max-[47.875rem]:gap-y-8">
                   <OfferingCategory
                     category={offeringsCategories[0].category}
                     mobileOrder={offeringsCategories[0].mobileOrder}
@@ -441,7 +443,7 @@ export default function AboutPage({
                     mobileOrder={offeringsCategories[1].mobileOrder}
                     items={offeringsCategories[1].items}
                   />
-                  <div className="col-span-2 h-[0.5px] bg-[#0c0c0c]/15 max-[766px]:hidden" />
+                  <div className="col-span-2 h-[0.03125rem] bg-[#0c0c0c]/15 max-[47.875rem]:hidden" />
                   <OfferingCategory
                     category={offeringsCategories[2].category}
                     mobileOrder={offeringsCategories[2].mobileOrder}
@@ -452,12 +454,12 @@ export default function AboutPage({
                     mobileOrder={offeringsCategories[3].mobileOrder}
                     items={offeringsCategories[3].items}
                   />
-                  <div className="col-span-2 h-[0.5px] bg-[#0c0c0c]/15 max-[766px]:hidden" />
+                  <div className="col-span-2 h-[0.03125rem] bg-[#0c0c0c]/15 max-[47.875rem]:hidden" />
                   <OfferingCategory
                     category={offeringsCategories[4].category}
                     mobileOrder={offeringsCategories[4].mobileOrder}
                     items={offeringsCategories[4].items}
-                    className="col-span-2 max-[766px]:col-span-1"
+                    className="col-span-2 max-[47.875rem]:col-span-1"
                   />
                 </div>
               </div>
@@ -466,37 +468,46 @@ export default function AboutPage({
 
               <div
                 id="about-our-studio"
-                className="flex gap-4 text-[#0c0c0c] max-[766px]:order-3 max-[766px]:flex-col max-[766px]:gap-6"
+                className="flex gap-4 text-[#0c0c0c] max-[47.875rem]:order-3 max-[47.875rem]:flex-col max-[47.875rem]:gap-6"
               >
-                <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:w-auto max-[766px]:text-2xl">
+                <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[47.875rem]:w-auto max-[47.875rem]:text-2xl">
                   {ourStudio.title}
                 </h2>
-                <div className="flex-1 flex gap-4 max-[766px]:flex-col max-[766px]:gap-6">
-                  <div className="flex-1 flex flex-col gap-4">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium leading-[0.9] text-[#0c0c0c] max-[766px]:text-base">
+                <div className="flex-1 flex gap-4 max-[47.875rem]:flex-col max-[47.875rem]:gap-6">
+                  <div
+                    id="about-our-studio-contact"
+                    className="flex-1 flex flex-col gap-4"
+                  >
+                    <div
+                      id="about-our-studio-contact-business"
+                      className="flex flex-col gap-2"
+                    >
+                      <span className="text-sm leading-[1.3] text-[#7c7c7c] max-[47.875rem]:text-base">
                         New Business
                       </span>
                       <a
                         href="mailto:hello@anagram.club"
-                        className="text-sm leading-[1.3] text-[#7c7c7c] max-[766px]:text-base"
+                        className="text-sm font-medium leading-[0.9] text-[#0c0c0c]/80 max-[47.875rem]:text-base"
                       >
                         hello@anagram.club
                       </a>
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium leading-[0.9] text-[#0c0c0c] max-[766px]:text-base">
+                    <div
+                      id="about-our-studio-contact-careers"
+                      className="flex flex-col gap-2"
+                    >
+                      <span className="text-sm leading-[1.3] text-[#7c7c7c] max-[47.875rem]:text-base">
                         Careers
                       </span>
                       <a
                         href="mailto:careers@anagram.club"
-                        className="text-sm leading-[1.3] text-[#7c7c7c] max-[766px]:text-base"
+                        className="text-sm font-medium leading-[0.9] text-[#0c0c0c]/80 max-[47.875rem]:text-base"
                       >
                         careers@anagram.club
                       </a>
                     </div>
                   </div>
-                  <p className="flex-1 text-sm leading-[1.3] text-[#7c7c7c] max-[766px]:text-base">
+                  <p className="flex-1 text-sm leading-[1.3] text-[#7c7c7c] max-[47.875rem]:text-base">
                     {ourStudio.description}
                   </p>
                 </div>
@@ -507,16 +518,24 @@ export default function AboutPage({
               {/* We worked for */}
               <div
                 id="about-worked-for"
-                className="flex gap-4 text-[#0c0c0c] max-[766px]:order-12 max-[766px]:flex-col max-[766px]:gap-6"
+                className="flex gap-4 text-[#0c0c0c] max-[47.875rem]:order-12 max-[47.875rem]:flex-col max-[47.875rem]:gap-6"
               >
-                <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:w-auto max-[766px]:text-2xl">
+                <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[47.875rem]:w-auto max-[47.875rem]:text-2xl">
                   We worked for
                 </h2>
-                <div className="flex-1 flex gap-4 items-start text-[#7c7c7c] text-sm leading-[1.3] max-[766px]:grid max-[766px]:grid-cols-2 max-[766px]:gap-x-4 max-[766px]:gap-y-0 max-[766px]:text-base">
+                <div className="flex-1 flex gap-4 items-start max-[47.875rem]:grid max-[47.875rem]:grid-cols-2 max-[47.875rem]:gap-x-4 max-[47.875rem]:gap-y-2 ">
                   {clientColumns.map((column, i) => (
-                    <div key={i} className="flex-1 flex flex-col">
+                    <div
+                      key={i}
+                      className="flex-1 flex flex-col items-start gap-2"
+                    >
                       {column.map((n) => (
-                        <span key={n}>{n}</span>
+                        <span
+                          key={n}
+                          className=" text-[#7c7c7c] text-sm font-medium leading-[1.3] max-[47.875rem]:text-base hover:text-[#0c0c0c] transition-colors duration-200 ease-in-out"
+                        >
+                          {n}
+                        </span>
                       ))}
                     </div>
                   ))}
@@ -529,26 +548,29 @@ export default function AboutPage({
                   <LineDivider />
                   <div
                     id="about-open-roles"
-                    className="flex gap-4 text-[#0c0c0c] max-[766px]:order-8 max-[766px]:flex-col max-[766px]:gap-6"
+                    className="flex gap-4 text-[#0c0c0c] max-[47.875rem]:order-8 max-[47.875rem]:flex-col max-[47.875rem]:gap-6"
                   >
-                    <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[766px]:w-auto max-[766px]:text-2xl">
+                    <h2 className="w-62.5 shrink-0 text-lg leading-[1.1] tracking-[-0.0075rem] max-[47.875rem]:w-auto max-[47.875rem]:text-2xl">
                       Open roles
                     </h2>
-                    <div className="flex-1 flex gap-4 max-[766px]:flex-col max-[766px]:gap-6">
+                    <div className="flex-1 flex gap-4 max-[47.875rem]:flex-col max-[47.875rem]:gap-6">
                       <div className="flex-1 flex flex-col gap-2">
                         {openRoles.map((role) => (
                           <span
                             key={role._id}
-                            className="text-sm font-medium leading-[0.9] text-[#0c0c0c] max-[766px]:text-base"
+                            className="text-sm font-medium leading-[0.9] text-[#0c0c0c] max-[47.875rem]:text-base"
                           >
                             {role.title}
                           </span>
                         ))}
                       </div>
-                      <p className="flex-1 text-sm leading-[1.3] text-[#7c7c7c] max-[766px]:text-base">
+                      <p className="flex-1 text-sm leading-[1.3] text-[#7c7c7c] max-[47.875rem]:text-base">
                         All of these roles are fully remote. Please send all
                         resumes and work examples to{" "}
-                        <a href="mailto:careers@anagram.club">
+                        <a
+                          href="mailto:careers@anagram.club"
+                          className="hover:text-[#0c0c0c] transition-colors duration-200 ease-in-out"
+                        >
                           careers@anagram.club
                         </a>
                         .
@@ -562,11 +584,11 @@ export default function AboutPage({
             {/* Meet the team */}
             <div
               id="about-meet-the-team"
-              className="flex flex-col gap-6 max-[766px]:order-10"
+              className="flex flex-col gap-6 max-[47.875rem]:order-10"
             >
               <LineDivider />
               {/* Desktop */}
-              <div className="flex gap-4 items-stretch max-[766px]:hidden">
+              <div className="flex gap-4 items-stretch max-[47.875rem]:hidden">
                 <div className="flex w-62.5 shrink-0 flex-col items-start justify-between">
                   <h2 className="text-[#0c0c0c] text-lg leading-[1.1] tracking-[-0.0075rem]">
                     Meet the team
@@ -593,7 +615,7 @@ export default function AboutPage({
                       }}
                       onMouseEnter={() => handleNameHover(i)}
                     >
-                      <span className="flex-1 text-[#0c0c0c] whitespace-nowrap">
+                      <span className="flex-1 text-[#0c0c0c] font-medium whitespace-nowrap">
                         {member.name}
                       </span>
                       <div className="flex-1 flex justify-between gap-4 items-baseline">
@@ -610,7 +632,10 @@ export default function AboutPage({
               </div>
 
               {/* Mobile */}
-              <div id="about-team-mobile" className="hidden max-[766px]:block">
+              <div
+                id="about-team-mobile"
+                className="hidden max-[47.875rem]:block"
+              >
                 <h2 className="text-[#0c0c0c] text-2xl leading-[1.1] tracking-[-0.0075rem] mb-6">
                   Meet the team
                 </h2>
@@ -619,7 +644,7 @@ export default function AboutPage({
                   <div className="relative z-10 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 text-base leading-[1.3]">
                     {team.map((member) => (
                       <Fragment key={member.name}>
-                        <p className="text-[#b2b2b2] whitespace-nowrap">
+                        <p className="text-[#0c0c0c] font-medium whitespace-nowrap">
                           {member.name}
                         </p>
                         <p className="text-[#b2b2b2] whitespace-nowrap text-right">
@@ -636,7 +661,7 @@ export default function AboutPage({
           {/* Merch — T-shirt */}
           <div
             id="about-merch"
-            className="grow shrink-0 basis-0 self-start sticky top-4 bg-[#f4f4f4] overflow-hidden flex justify-center items-start aspect-40/49 max-[766px]:relative max-[766px]:top-0 max-[766px]:self-auto max-[766px]:order-14 max-[766px]:grow-0 max-[766px]:shrink max-[766px]:basis-auto max-[766px]:flex-col max-[766px]:items-center max-[766px]:rounded max-[766px]:aspect-100/100 max-[766px]:mb-2"
+            className="grow shrink-0 basis-0 self-start sticky top-4 bg-[#f4f4f4] overflow-hidden flex justify-center items-start aspect-40/49 max-[47.875rem]:relative max-[47.875rem]:top-0 max-[47.875rem]:self-auto max-[47.875rem]:order-14 max-[47.875rem]:grow-0 max-[47.875rem]:shrink max-[47.875rem]:basis-auto max-[47.875rem]:flex-col max-[47.875rem]:items-center max-[47.875rem]:rounded max-[47.875rem]:aspect-100/100 max-[47.875rem]:mb-2"
           >
             <div className="absolute inset-0">
               <ArpeRotation />
@@ -652,19 +677,19 @@ export default function AboutPage({
           </div>
 
           {/* Mobile — dot dividers */}
-          <div className="hidden max-[766px]:block max-[766px]:order-4">
+          <div className="hidden max-[47.875rem]:block max-[47.875rem]:order-4">
             <DotDivider />
           </div>
-          <div className="hidden max-[766px]:block max-[766px]:order-6">
+          <div className="hidden max-[47.875rem]:block max-[47.875rem]:order-6">
             <DotDivider />
           </div>
-          <div className="hidden max-[766px]:block max-[766px]:order-9">
+          <div className="hidden max-[47.875rem]:block max-[47.875rem]:order-9">
             <DotDivider />
           </div>
-          <div className="hidden max-[766px]:block max-[766px]:order-11">
+          <div className="hidden max-[47.875rem]:block max-[47.875rem]:order-11">
             <DotDivider />
           </div>
-          <div className="hidden max-[766px]:block max-[766px]:order-13">
+          <div className="hidden max-[47.875rem]:block max-[47.875rem]:order-13">
             <DotDivider />
           </div>
         </section>

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Badge from "./Badge";
+import { type ArrowWebGLHandle } from "@/components/icons/ArrowWebGL";
 import MerchCard from "./MerchCard";
 import ToolCard from "./ToolCard";
 import Vimeo169 from "./cases-frame/Vimeo169";
@@ -263,10 +264,19 @@ function WorkCard({
   // Only news with an article body open in the modal; the others link out.
   const opensArticle = isNews && Boolean(work.sections?.length);
 
+  // Linked-out news only: modal articles are marked by the icon next to the title.
+  const isArticle =
+    isNews && !opensArticle && Boolean(work.externalLink);
   const badgeLabel =
-    work.badge ?? (work.tag === "Coming project" ? "Coming soon" : undefined);
+    work.badge ??
+    (work.tag === "Coming project"
+      ? "Coming soon"
+      : isArticle
+        ? "Article"
+        : undefined);
 
   const overlayRef = useRef<HTMLDivElement>(null);
+  const arrowRef = useRef<ArrowWebGLHandle>(null);
   const embedRef = useRef<HTMLDivElement>(null);
 
   useVimeoPlayer({
@@ -286,6 +296,7 @@ function WorkCard({
       duration: 0.3,
       ease: "power2.out",
     });
+    arrowRef.current?.play();
   }
 
   function handleLeave() {
@@ -345,7 +356,14 @@ function WorkCard({
         ref={overlayRef}
         className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
       />
-      {badgeLabel && <Badge label={badgeLabel} />}
+      {badgeLabel && (
+        <Badge
+          label={badgeLabel}
+          id={isArticle ? `home-news-${slugify(work.name)}-article` : undefined}
+          arrow={isArticle}
+          arrowRef={arrowRef}
+        />
+      )}
     </div>
   );
 
@@ -360,7 +378,7 @@ function WorkCard({
             {work.price}
           </span>
         )}
-        {/* The icon marks articles read in the modal; linked news keep the tag. */}
+        {/* The icon marks articles read in the modal; linked news carry the badge on the media. */}
         {opensArticle ? (
           <span
             id={`home-news-${slugify(work.name)}-article`}
@@ -370,15 +388,9 @@ function WorkCard({
           >
             <ArticleIcon className="size-3" />
           </span>
-        ) : isNews ? (
-          <span
-            id={`home-news-${slugify(work.name)}-article`}
-            className="inline-flex shrink-0 items-center rounded-full bg-[#0c0c0c]/5 px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-2xl"
-          >
-            Article
-          </span>
         ) : (
-          work.externalLink && (
+          work.externalLink &&
+          !isArticle && (
             <span className="text-[#0c0c0c] leading-[0.9] text-sm">↗</span>
           )
         )}
