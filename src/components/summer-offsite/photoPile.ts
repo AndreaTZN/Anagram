@@ -17,6 +17,8 @@ type Card = {
   photo: OffsitePhoto;
   // The thumbnail; `full` only loads once the card is drawn larger than it.
   image: HTMLImageElement;
+  // Shrinking copies of the thumbnail with transparent margins; see buildEdgeLevels.
+  edges: EdgeLevel[];
   full: HTMLImageElement | null;
   body: Matter.Body;
   width: number;
@@ -41,6 +43,67 @@ const gallerySettings = {
   mobileAdvanceInterval: 0.5,
   maxPhotoSize: 290,
 };
+
+// Safari doesn't antialias the edges of a rotated drawImage, so tilted cards
+// get stair-stepped borders. Cards are drawn from copies wrapped in a
+// transparent margin instead: the photo's edge then sits inside the bitmap,
+// where image filtering smooths it. Copies shrink in √2 steps, because shrinking
+// one further at draw time would squeeze the margin under a pixel again.
+const EDGE_PADDING = 2;
+const SMALLEST_EDGE_LEVEL = 48;
+
+type EdgeLevel = { canvas: HTMLCanvasElement; width: number; height: number };
+
+function buildEdgeLevels(image: HTMLImageElement) {
+  const levels: EdgeLevel[] = [];
+  let source: CanvasImageSource = image;
+  let offset = 0;
+  let scale = 1;
+  for (;;) {
+    const width = Math.max(1, Math.round(image.naturalWidth * scale));
+    const height = Math.max(1, Math.round(image.naturalHeight * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = width + EDGE_PADDING * 2;
+    canvas.height = height + EDGE_PADDING * 2;
+    const context = canvas.getContext("2d");
+    if (!context) break;
+    context.imageSmoothingQuality = "high";
+    const previous = levels[levels.length - 1];
+    context.drawImage(
+      source,
+      offset,
+      offset,
+      previous?.width ?? image.naturalWidth,
+      previous?.height ?? image.naturalHeight,
+      EDGE_PADDING,
+      EDGE_PADDING,
+      width,
+      height,
+    );
+    levels.push({ canvas, width, height });
+    if (Math.max(width, height) <= SMALLEST_EDGE_LEVEL) break;
+    // Each copy comes from the previous one so no single step shrinks past √2.
+    source = canvas;
+    offset = EDGE_PADDING;
+    scale /= Math.SQRT2;
+  }
+  return levels;
+}
+
+// The smallest copy still at least as large as the drawn photo.
+function edgeLevelFor(levels: EdgeLevel[], drawn: number) {
+  let chosen = levels[0];
+  for (const level of levels) {
+    if (Math.max(level.width, level.height) < drawn) break;
+    chosen = level;
+  }
+  return chosen;
+}
+
+function releaseEdgeLevels(levels: EdgeLevel[]) {
+  // Safari reclaims canvas memory lazily and caps the total, so free it now.
+  for (const { canvas } of levels) canvas.width = canvas.height = 0;
+}
 
 // XP2: hover-collectable photo pile. Matter.js owns collisions; Canvas 2D draws
 // the original photos.
@@ -146,6 +209,7 @@ export function createPhotoPile(
         Bodies.rectangle(598, 180, 60, 1100, wallOptions),
         Bodies.rectangle(284, -30, 688, 60, wallOptions),
       ]);
+      for (const card of cards) releaseEdgeLevels(card.edges);
       cards = images.flatMap((image, index) => {
         if (!image) return [];
         const size = 57 + Math.random() * 22;
@@ -171,6 +235,7 @@ export function createPhotoPile(
           {
             photo: sources[index],
             image,
+            edges: buildEdgeLevels(image),
             full: null,
             body,
             width,
@@ -254,13 +319,27 @@ export function createPhotoPile(
       if (sharper && (!galleryActive || galleryRank(card) <= 1)) {
         card.full ??= loadImage(card.photo.full, invalidate);
       }
-      context!.drawImage(
-        sharper && isReady(card.full) ? card.full! : card.image,
-        -visual.width / 2,
-        -visual.height / 2,
-        visual.width,
-        visual.height,
-      );
+      const level = edgeLevelFor(card.edges, drawn);
+      if ((sharper && isReady(card.full)) || !level) {
+        // The front card is upright once enlarged, so its edges stay clean.
+        context!.drawImage(
+          sharper && isReady(card.full) ? card.full! : card.image,
+          -visual.width / 2,
+          -visual.height / 2,
+          visual.width,
+          visual.height,
+        );
+      } else {
+        const padX = (EDGE_PADDING * visual.width) / level.width;
+        const padY = (EDGE_PADDING * visual.height) / level.height;
+        context!.drawImage(
+          level.canvas,
+          -visual.width / 2 - padX,
+          -visual.height / 2 - padY,
+          visual.width + padX * 2,
+          visual.height + padY * 2,
+        );
+      }
       context!.restore();
     }
   }
@@ -722,6 +801,7 @@ export function createPhotoPile(
     intersectionObserver.disconnect();
     for (const card of cards) {
       if (card.full) card.full.onload = null;
+      releaseEdgeLevels(card.edges);
     }
     cache.clear();
     Composite.clear(engine.world, false);

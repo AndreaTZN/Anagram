@@ -322,7 +322,12 @@ export default function AboutPage({
                 onSwiper={(s) => {
                   clockSwiperRef.current = s;
                 }}
+                onClick={(s) => {
+                  s.slideNext();
+                  s.autoplay?.start();
+                }}
                 onSlideChange={(s) => setActiveClockSlide(s.realIndex)}
+                className="cursor-pointer"
               >
                 {clocks.map((clock) => (
                   <SwiperSlide key={clock.city}>
@@ -384,8 +389,12 @@ export default function AboutPage({
                 onSwiper={(s) => {
                   swiperRef.current = s;
                 }}
+                onClick={(s) => {
+                  s.slideNext();
+                  s.autoplay?.start();
+                }}
                 onSlideChange={(s) => setActiveSlide(s.realIndex)}
-                className="h-full"
+                className="h-full cursor-pointer"
               >
                 {studioImages.map((src, i) => (
                   <SwiperSlide key={i}>
