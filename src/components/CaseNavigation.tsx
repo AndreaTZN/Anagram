@@ -334,7 +334,7 @@ export default function CaseNavigation() {
                           alt=""
                           width={10}
                           height={10}
-                          className="relative block size-[0.625rem]"
+                          className="relative block size-2.5"
                         />
                       </span>
                     </button>
