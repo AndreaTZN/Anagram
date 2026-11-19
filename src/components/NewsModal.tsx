@@ -37,6 +37,8 @@ export type NewsArticle = {
   title: string;
   subtitle?: string;
   image: string;
+  // Looping clip shown instead of the image, which then serves as its poster.
+  video?: string;
   // Same Tailwind aspect class as the card, so the image morph is a uniform scale.
   aspect: string;
   sections?: NewsSection[];
@@ -96,6 +98,27 @@ export default function NewsModal({
   // underneath; it only fades in once decoded, so the morph never stalls on it.
   const [placeholderSrc] = useState(
     () => source.querySelector("img")?.currentSrc,
+  );
+  // A card clip is picked up where it is: the modal's copy starts at the same
+  // time, and the card's current frame covers it until it actually plays.
+  const [sourceVideo] = useState(() => source.querySelector("video"));
+  const sourceFrameRef = useRef<HTMLCanvasElement | null>(null);
+  const paintSourceFrame = useCallback(
+    (canvas: HTMLCanvasElement | null) => {
+      sourceFrameRef.current = canvas;
+      // HAVE_CURRENT_DATA: before that there is no frame, and the poster shows through.
+      if (!canvas || !sourceVideo || sourceVideo.readyState < 2) return;
+      canvas.width = sourceVideo.videoWidth;
+      canvas.height = sourceVideo.videoHeight;
+      canvas.getContext("2d")?.drawImage(sourceVideo, 0, 0);
+    },
+    [sourceVideo],
+  );
+  const startVideo = useCallback(
+    (video: HTMLVideoElement | null) => {
+      if (video && sourceVideo) video.currentTime = sourceVideo.currentTime;
+    },
+    [sourceVideo],
   );
   // Interactive blocks start loading only once the panel has landed.
   const [opened, setOpened] = useState(false);
@@ -377,23 +400,50 @@ export default function NewsModal({
                 ref={mediaRef}
                 className={`relative ${article.aspect} w-full overflow-hidden`}
               >
-                {placeholderSrc && (
-                  // Plain <img>: it must reuse the card's exact cached URL.
-                  <img
-                    src={placeholderSrc}
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute inset-0 size-full object-cover"
-                  />
+                {article.video ? (
+                  <>
+                    <video
+                      ref={startVideo}
+                      src={article.video}
+                      poster={article.image}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      aria-hidden="true"
+                      className="absolute inset-0 size-full object-cover"
+                      onPlaying={() =>
+                        gsap.set(sourceFrameRef.current, { autoAlpha: 0 })
+                      }
+                    />
+                    {/* Same frame, same time: swapped instantly, a fade would ghost the motion. */}
+                    <canvas
+                      ref={paintSourceFrame}
+                      aria-hidden="true"
+                      className="absolute inset-0 size-full object-cover"
+                    />
+                  </>
+                ) : (
+                  <>
+                    {placeholderSrc && (
+                      // Plain <img>: it must reuse the card's exact cached URL.
+                      <img
+                        src={placeholderSrc}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 size-full object-cover"
+                      />
+                    )}
+                    <Image
+                      src={article.image}
+                      alt={article.title}
+                      fill
+                      sizes="(min-width: 768px) 35.5rem, 100vw"
+                      className={`object-cover ${placeholderSrc ? "opacity-0" : ""}`}
+                      onLoad={(event) => revealFullImage(event.currentTarget)}
+                    />
+                  </>
                 )}
-                <Image
-                  src={article.image}
-                  alt={article.title}
-                  fill
-                  sizes="(min-width: 768px) 35.5rem, 100vw"
-                  className={`object-cover ${placeholderSrc ? "opacity-0" : ""}`}
-                  onLoad={(event) => revealFullImage(event.currentTarget)}
-                />
               </div>
 
               {article.sections?.map((section, index) => (

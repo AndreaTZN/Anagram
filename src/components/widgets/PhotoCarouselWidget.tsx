@@ -10,7 +10,7 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import SlidingDots from "@/components/SlidingDots";
 
-const PHOTO_COUNT = 52;
+const PHOTO_COUNT = 51;
 const photos = Array.from({ length: PHOTO_COUNT }, (_, i) => ({
   src: `/widgets/carousel/${i + 1}.webp`,
   alt: `Life at Anagram, photo ${i + 1}`,

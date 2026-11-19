@@ -227,6 +227,9 @@ export function createPhotoPile(
       0,
       0,
     );
+    // Safari's default "low" filter aliases the downscaled, rotated thumbnails
+    // on phones. Set per frame since resizing the canvas resets it.
+    context!.imageSmoothingQuality = "high";
     context!.clearRect(0, 0, settings.width, settings.height);
     // Preserve the existing stack throughout enlargement: changing front cards every
     // stagger slot causes visible flashes. Only explicit browsing rotates the order.

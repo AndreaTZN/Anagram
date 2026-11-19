@@ -44,39 +44,16 @@ type Work = {
 
 const works: Work[] = [
   {
-    name: "Bitstack",
-    tag: "News",
-    description:
-      "A bold new identity for Bitstack, reflecting its evolution and ambitions for the future.",
-    externalLink: "https://taap.it/PKEgpbt",
-    media: {
-      type: "image",
-      src: "/news/bitstack.webp",
-      aspect: "aspect-[280/250]",
-    },
-  },
-  {
-    name: "Wastetide",
-    href: "/works/wastetide",
-    tag: "Works",
-    description:
-      "Build a brand and digital experience capable of reframing industrial waste as a source of value, translating Wastetide's AI-driven shift in perspective into a clear, credible identity.",
-    media: {
-      type: "image",
-      src: "/thumb-work/wastetide.webp",
-      aspect: "aspect-[279/300]",
-    },
-  },
-  {
     name: "Summer Offsite",
     headline: "SUMMER OFFSITE:\nA week with Anagram.",
     tag: "News",
     description:
       "Once a year, we step away from the studio for a few days to spend time together and take a break from our usual routine.",
     media: {
-      type: "image",
-      src: "/news/SummerOffsite/players-hd.webp",
-      aspect: "aspect-[280/250]",
+      type: "video",
+      src: "/news/SummerOffsite/offsite.mp4",
+      poster: "/news/SummerOffsite/offsite-poster.webp",
+      aspect: "aspect-[34/45]",
     },
 
     sections: [
@@ -117,6 +94,30 @@ const works: Work[] = [
         width: 2939,
         height: 3028,
       },
+    },
+  },
+  {
+    name: "Bitstack",
+    tag: "News",
+    description:
+      "A bold new identity for Bitstack, reflecting its evolution and ambitions for the future.",
+    externalLink: "https://taap.it/PKEgpbt",
+    media: {
+      type: "image",
+      src: "/news/bitstack.webp",
+      aspect: "aspect-[280/250]",
+    },
+  },
+  {
+    name: "Wastetide",
+    href: "/works/wastetide",
+    tag: "Works",
+    description:
+      "Build a brand and digital experience capable of reframing industrial waste as a source of value, translating Wastetide's AI-driven shift in perspective into a clear, credible identity.",
+    media: {
+      type: "image",
+      src: "/thumb-work/wastetide.webp",
+      aspect: "aspect-[279/300]",
     },
   },
 
@@ -311,6 +312,18 @@ function WorkCard({
             className="object-cover"
           />
         )
+      ) : work.media.src ? (
+        // A local clip; videos with a dataSrc go through the Vimeo embed below.
+        <video
+          src={work.media.src}
+          poster={work.media.poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          className="absolute inset-0 size-full object-cover"
+        />
       ) : (
         <div
           ref={embedRef}
@@ -840,7 +853,12 @@ export default function HomeContain() {
           article={{
             title: openNews.work.headline ?? openNews.work.name,
             subtitle: openNews.work.description,
-            image: openNews.work.media.src!,
+            ...(openNews.work.media.type === "video"
+              ? {
+                  image: openNews.work.media.poster!,
+                  video: openNews.work.media.src,
+                }
+              : { image: openNews.work.media.src! }),
             aspect: openNews.work.media.aspect,
             sections: openNews.work.sections,
             closing: openNews.work.closing,

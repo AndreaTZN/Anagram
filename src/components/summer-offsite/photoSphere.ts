@@ -250,6 +250,9 @@ export function createPhotoSphere(
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // Safari's default "low" filter aliases the ~3.5x thumbnail downscale on
+    // phones, so photos shimmer as the sphere turns. Resizing resets it.
+    ctx!.imageSmoothingQuality = "high";
     invalidate();
   }
 
