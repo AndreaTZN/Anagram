@@ -316,7 +316,7 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <CardWrapper>
         <div
           className={`relative ${work.aspect} w-full overflow-hidden`}
@@ -355,14 +355,14 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
             ref={overlayRef}
             className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
           />
-          {work.badge && <Badge label={work.badge} position="top-left" />}
+          {work.badge && <Badge label={work.badge} />}
         </div>
       </CardWrapper>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         <span className="text-[#0c0c0c] font-medium leading-[0.9] text-sm">
           {work.name}
         </span>
-        <p className="text-[#7c7c7c] leading-[1.2] text-sm">
+        <p className="text-[#7e7e7e] leading-[1.3] text-sm">
           {work.description}
         </p>
       </div>

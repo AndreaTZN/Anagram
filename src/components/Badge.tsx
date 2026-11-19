@@ -1,25 +1,26 @@
-type BadgePosition = "top-left" | "top-right" | "bottom-left" | "bottom-right";
-
-const positionClasses: Record<BadgePosition, string> = {
-  "top-left": "top-5 left-5",
-  "top-right": "top-5 right-5",
-  "bottom-left": "bottom-5 left-5",
-  "bottom-right": "bottom-5 right-5",
-};
+import ArrowWebGL, {
+  type ArrowWebGLHandle,
+} from "@/components/icons/ArrowWebGL";
 
 interface BadgeProps {
   label: string;
-  position?: BadgePosition;
+  id?: string;
+  arrow?: boolean;
+  arrowRef?: React.Ref<ArrowWebGLHandle>;
 }
 
-export default function Badge({ label, position = "top-left" }: BadgeProps) {
+export default function Badge({ label, id, arrow, arrowRef }: BadgeProps) {
   return (
     <div
-      className={`absolute ${positionClasses[position]} flex items-center justify-center px-4 py-3 rounded-full backdrop-blur-2xl bg-[rgba(12,12,12,0.2)]`}
+      id={id}
+      className="absolute top-4 right-4 z-10 inline-flex items-center gap-2 px-4 py-3 rounded-full bg-[#0c0c0c]/20 backdrop-blur-[2.5rem] transition-colors duration-500 group-hover:bg-[#FFFFFF]/10"
     >
-      <span className="text-white leading-[0.8] whitespace-nowrap text-sm">
+      <span className="text-sm leading-none text-white whitespace-nowrap">
         {label}
       </span>
+      {arrow && (
+        <ArrowWebGL ref={arrowRef} light className="block size-3.5 shrink-0" />
+      )}
     </div>
   );
 }

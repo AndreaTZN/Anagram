@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Badge from "./Badge";
+import { type ArrowWebGLHandle } from "@/components/icons/ArrowWebGL";
 import MerchCard from "./MerchCard";
 import ToolCard from "./ToolCard";
 import Vimeo169 from "./cases-frame/Vimeo169";
@@ -203,11 +204,18 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
         )
       : ({ children }: { children: React.ReactNode }) => <>{children}</>;
 
+  const isArticle = work.tag === "News" && Boolean(work.externalLink);
   const badgeLabel =
-    work.badge ?? (work.tag === "Coming project" ? "Coming soon" : undefined);
+    work.badge ??
+    (work.tag === "Coming project"
+      ? "Coming soon"
+      : isArticle
+        ? "Article"
+        : undefined);
 
   const isClickable = Boolean(work.href) || Boolean(work.externalLink);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const arrowRef = useRef<ArrowWebGLHandle>(null);
   const embedRef = useRef<HTMLDivElement>(null);
 
   useVimeoPlayer({
@@ -228,6 +236,7 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
       duration: 0.3,
       ease: "power2.out",
     });
+    arrowRef.current?.play();
   }
 
   function handleLeave() {
@@ -280,7 +289,18 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
             ref={overlayRef}
             className="absolute inset-0 bg-[#0c0c0c] opacity-0 pointer-events-none"
           />
-          {badgeLabel && <Badge label={badgeLabel} />}
+          {badgeLabel && (
+            <Badge
+              label={badgeLabel}
+              id={
+                isArticle
+                  ? `home-news-${work.name.toLowerCase().replaceAll(" ", "-")}-article`
+                  : undefined
+              }
+              arrow={isArticle}
+              arrowRef={arrowRef}
+            />
+          )}
         </div>
       </MediaWrapper>
       <div className="flex flex-col gap-2">
@@ -293,24 +313,8 @@ function WorkCard({ work, priority }: { work: Work; priority: boolean }) {
               {work.price}
             </span>
           )}
-          {work.externalLink && (
-            <span
-              id={
-                work.tag === "News"
-                  ? `home-news-${work.name.toLowerCase().replaceAll(" ", "-")}-article`
-                  : undefined
-              }
-              aria-label={
-                work.tag === "News" ? `Read article: ${work.name}` : undefined
-              }
-              className={
-                work.tag === "News"
-                  ? "inline-flex shrink-0 items-center rounded-full bg-[#0c0c0c]/5 px-2 py-1 font-normal text-[0.625rem] leading-[0.8] tracking-[-0.003125rem] whitespace-nowrap text-[#7c7c7c] backdrop-blur-2xl"
-                  : "text-[#0c0c0c] leading-[0.9] text-sm"
-              }
-            >
-              {work.tag === "News" ? "Article" : "↗"}
-            </span>
+          {work.externalLink && !isArticle && (
+            <span className="text-[#0c0c0c] leading-[0.9] text-sm">↗</span>
           )}
         </div>
         {work.description && (

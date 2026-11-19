@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import Link from "next/link";
 import { globalLenisRef } from "@/lib/lenis";
 import { useCookieConsent } from "@/components/cmp";
@@ -9,6 +10,60 @@ const Divider = () => {
     <div className="nextcase_separator bg-[#0c0c0c]/15 w-full h-[0.5px]"></div>
   );
 };
+
+const officeLinks = [
+  {
+    label: "Paris",
+    href: "https://www.google.com/maps/search/?api=1&query=8+Rue+Saint-Fiacre,+75002+Paris",
+  },
+  {
+    label: "New York",
+    href: "https://www.google.com/maps/place/WeWork+Office+Space+%26+Coworking/@40.71635,-73.9628805,16.95z/data=!4m6!3m5!1s0x89c25960a04ac82d:0x62d74599d8b115d6!8m2!3d40.7163141!4d-73.9602023!16s%2Fg%2F11bwqpw4w3?entry=ttu&g_ep=EgoyMDI2MTExNS4wIKXMDSoASAFQAw%3D%3D",
+  },
+];
+
+const externalLinkProps = { target: "_blank", rel: "noopener noreferrer" };
+
+function ContactLinks({
+  className,
+  linkClassName,
+}: {
+  className: string;
+  linkClassName?: string;
+}) {
+  return (
+    <div className={className}>
+      <p>
+        {officeLinks.map((office, i) => (
+          <Fragment key={office.href}>
+            {i > 0 && <span className={linkClassName}> / </span>}
+            <a
+              href={office.href}
+              {...externalLinkProps}
+              className={linkClassName}
+            >
+              {office.label}
+            </a>
+          </Fragment>
+        ))}
+      </p>
+      <p>
+        <a href="mailto:hello@anagram.club" className={linkClassName}>
+          hello@anagram.club
+        </a>
+      </p>
+      <p>
+        <a
+          href="https://cal.com/anagram/hello"
+          {...externalLinkProps}
+          className={linkClassName}
+        >
+          Book a call
+        </a>
+      </p>
+    </div>
+  );
+}
 
 const sitemapLinks = [
   { label: "Home", href: "/" },
@@ -48,37 +103,10 @@ export default function Footer() {
             className="flex flex-col gap-16 flex-2"
           >
             <p className="text-[#7c7c7c] text-[0.8125rem]">Contact</p>
-            <div className="flex flex-col gap-8">
-              <div className="flex flex-col gap-1">
-                <p className="leading-[1.1]  font-medium text-sm">Anagram</p>
-                <p className="leading-[1.1]  font-medium text-sm">
-                  Paris / New York
-                </p>
-              </div>
-              <div className="flex flex-col gap-4">
-                <div>
-                  <p className="leading-[1.1]  font-medium text-sm">
-                    New Business
-                  </p>
-                  <a
-                    href="mailto:hello@anagram.club"
-                    className="text-[#7C7C7C] leading-[1.1] hover:text-[#0c0c0c]/70 transition-colors duration-300 ease-linear"
-                  >
-                    hello@anagram.club
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="https://cal.com/anagram/hello"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                    className="leading-[1.1] font-medium text-sm"
-                  >
-                    Book a call
-                  </a>
-                </div>
-              </div>
-            </div>
+            <ContactLinks
+              className="flex flex-col items-start gap-8 whitespace-nowrap leading-[1.1] font-medium text-sm has-[a:hover]:[&_*:not(:hover)]:text-[#0c0c0c]/30"
+              linkClassName="transition-colors duration-300 ease-linear"
+            />
           </div>
 
           <div
@@ -185,16 +213,9 @@ export default function Footer() {
               className="flex flex-1 min-w-px flex-col gap-6"
             >
               <p className="text-[#7c7c7c] text-sm leading-[0.9]">Contact</p>
-              <div className="flex flex-col gap-6 font-medium text-base leading-[0.9] text-[#0c0c0c]">
-                <div className="flex flex-col gap-2 ">
-                  <p>Anagram</p>
-                  <p>Paris / New York</p>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <p>Book a call</p>
-                  <a href="mailto:hello@anagram.club">hello@anagram.club</a>
-                </div>
-              </div>
+              <ContactLinks
+                className="flex flex-col gap-6 font-medium text-base leading-[0.9] text-[#0c0c0c]"
+              />
             </div>
 
             <div
